@@ -1,0 +1,61 @@
+PCHIP: Piecewise Cubic Hermite Interpolation Package
+https://github.com/jacobwilliams/PCHIP
+
+Copyright (c) 2019, Jacob Williams
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+* Redistributions of source code must retain the above copyright notice, this
+  list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above copyright notice, this
+  list of conditions and the following disclaimer in the documentation and/or
+  other materials provided with the distribution.
+
+* The names of its contributors may not be used to endorse or promote products
+  derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+*********************************************************************************
+
+This library contains code from SLATEC a public domain work of the U.S. Government.
+The SLATEC notice follows:
+
+The SLATEC Common Mathematical Library is issued by the following
+
+        Air Force Weapons Laboratory, Albuquerque
+        Lawrence Livermore National Laboratory, Livermore
+        Los Alamos National Laboratory, Los Alamos
+        National Institute of Standards and Technology, Washington
+        National Energy Research Supercomputer Center, Livermore
+        Oak Ridge National Laboratory, Oak Ridge
+        Sandia National Laboratories, Albuquerque
+        Sandia National Laboratories, Livermore
+
+All questions concerning the distribution of the library should be
+directed to the NATIONAL ENERGY SOFTWARE CENTER, 9700 Cass Ave.,
+Argonne, Illinois  60439, and not to the authors of the subprograms.
+
+                 * * * * * Notice * * * * *
+
+This material was prepared as an account of work sponsored by the
+United States Government.  Neither the United States, nor the
+Department of Energy, nor the Department of Defense, nor any of
+their employees, nor any of their contractors, subcontractors, or
+their employees, makes any warranty, expressed or implied, or
+assumes any legal liability or responsibility for the accuracy,
+completeness, or usefulness of any information, apparatus, product,
+or process disclosed, or represents that its use would not infringe
+upon privately owned rights.
