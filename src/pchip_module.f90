@@ -1,24 +1,44 @@
+!*******************************************************************************************************
+!>
+!
+   module pchip_module
+
+   use, intrinsic :: iso_fortran_env, only: wp => real64
+
+   implicit none
+
+   real(wp),parameter :: zero   = 0.0_wp
+   real(wp),parameter :: half   = 0.5_wp
+   real(wp),parameter :: one    = 1.0_wp
+   real(wp),parameter :: two    = 2.0_wp
+   real(wp),parameter :: three  = 3.0_wp
+   real(wp),parameter :: four   = 4.0_wp
+   real(wp),parameter :: six    = 6.0_wp
+   real(wp),parameter :: ten    = 10.0_wp
+
+   real(wp),parameter :: d1mach4 = epsilon(one)   !! d1mach(4) -- the largest relative spacing
+
+   contains
+!*******************************************************************************************************
+
+   pure function dpchsd(s1,s2,h1,h2)
+   !! inline function for weighted average of slopes.
+   real(wp),intent(in) :: s1, s2, h1, h2
+   real(wp) :: dpchsd
+   dpchsd = (h2/(h1+h2))*s1 + (h1/(h1+h2))*s2
+   end function dpchsd
 
 
 
-
-
-
-
-
-!DECK DCHFCM
-integer function dchfcm (d1, d2, delta)
-!***BEGIN PROLOGUE  DCHFCM
-!***SUBSIDIARY
 !***PURPOSE  Check a single cubic for monotonicity.
 !***LIBRARY   SLATEC (PCHIP)
-!***TYPE      DOUBLE PRECISION (CHFCM-S, DCHFCM-D)
+!***TYPE      real(wp) (CHFCM-S, DCHFCM-D)
 !***AUTHOR  Fritsch, F. N., (LLNL)
 !***DESCRIPTION
 !
 ! *Usage:
 !
-!        DOUBLE PRECISION  D1, D2, DELTA
+!        real(wp)  D1, D2, DELTA
 !        INTEGER  ISMON, DCHFCM
 !
 !        ISMON = DCHFCM (D1, D2, DELTA)
@@ -52,10 +72,10 @@ integer function dchfcm (d1, d2, delta)
 !     This is essentially the same as old DCHFMC, except that a
 !     new output value, -3, was added February 1989.  (Formerly, -3
 !     and +3 were lumped together in the single value 3.)  Codes that
-!     flag nonmonotonicity by "IF (ISMON.EQ.2)" need not be changed.
-!     Codes that check via "IF (ISMON.GE.3)" should change the test to
-!     "IF (IABS(ISMON).GE.3)".  Codes that declare monotonicity via
-!     "IF (ISMON.LE.1)" should change to "IF (IABS(ISMON).LE.1)".
+!     flag nonmonotonicity by "IF (ISMON==2)" need not be changed.
+!     Codes that check via "IF (ISMON>=3)" should change the test to
+!     "IF (IABS(ISMON)>=3)".  Codes that declare monotonicity via
+!     "IF (ISMON<=1)" should change to "IF (IABS(ISMON)<=1)".
 !
 !   REFER TO  DPCHCM
 !
@@ -64,7 +84,7 @@ integer function dchfcm (d1, d2, delta)
 !   820518  DATE WRITTEN
 !   820805  Converted to SLATEC library version.
 !   831201  Changed from  ISIGN  to SIGN  to correct bug that
-!           produced wrong sign when -1 .LT. DELTA .LT. 0 .
+!           produced wrong sign when -1 < DELTA < 0 .
 !   890206  Added SAVE statements.
 !   890209  Added sign to returned value ISMON=3 and corrected
 !           argument description accordingly.
@@ -75,93 +95,63 @@ integer function dchfcm (d1, d2, delta)
 !   890407  Converted to new SLATEC format.
 !   890407  Modified DESCRIPTION to LDOC format.
 !   891214  Moved SAVE statements.  (WRB)
-!***END PROLOGUE  DCHFCM
-!
-!  Fortran intrinsics used:  DSIGN.
-!  Other routines used:  D1MACH.
-!
-! ----------------------------------------------------------------------
-!
-!  Programming notes:
-!
-!     TEN is actually a tuning parameter, which determines the width of
-!     the fuzz around the elliptical boundary.
-!
-!     To produce a single precision version, simply:
-!        a. Change DCHFCM to CHFCM wherever it occurs,
-!        b. Change the double precision declarations to real, and
-!        c. Change the constants ZERO, ONE, ... to single precision.
-!
-!  DECLARE ARGUMENTS.
-!
-double precision  d1, d2, delta, d1mach
-!
-!  DECLARE LOCAL VARIABLES.
-!
-integer ismon, itrue
-double precision  a, b, eps, four, one, phi, ten, three, two, &
- zero
-save zero, one, two, three, four
-save ten
-!
-!  INITIALIZE.
-!
-data zero /0.d0/, one/1.d0/, two/2.d0/, three/3.d0/, four/4.d0/, &
-      ten /10.d0/
-!
-!        MACHINE-DEPENDENT PARAMETER -- SHOULD BE ABOUT 10*UROUND.
-!***FIRST EXECUTABLE STATEMENT  DCHFCM
-eps = ten*d1mach(4)
-!
-!  MAKE THE CHECK.
-!
-if (delta .eq. zero)  then
-!        CASE OF CONSTANT DATA.
-   if ((d1.eq.zero) .and. (d2.eq.zero))  then
-      ismon = 0
+
+   integer function dchfcm (d1, d2, delta)
+
+   real(wp) d1, d2, delta
+
+   integer ismon, itrue
+   real(wp)  a, b, phi
+
+   real(wp),parameter :: eps = ten*d1mach4  !! machine-dependent parameter -- should be about 10*uround.
+                                          !! TEN is actually a tuning parameter, which determines the width of
+                                          !! the fuzz around the elliptical boundary.
+
+   !  MAKE THE CHECK.
+
+   if (delta == zero)  then
+   !        CASE OF CONSTANT DATA.
+      if ((d1==zero) .and. (d2==zero))  then
+         ismon = 0
+      else
+         ismon = 2
+      endif
    else
-      ismon = 2
-   endif
-else
-!        DATA IS NOT CONSTANT -- PICK UP SIGN.
-   itrue = dsign (one, delta)
-   a = d1/delta
-   b = d2/delta
-   if ((a.lt.zero) .or. (b.lt.zero))  then
-      ismon = 2
-   else if ((a.le.three-eps) .and. (b.le.three-eps))  then
-!           INSIDE SQUARE (0,3)X(0,3)  IMPLIES   OK.
-      ismon = itrue
-   else if ((a.gt.four+eps) .and. (b.gt.four+eps))  then
-!           OUTSIDE SQUARE (0,4)X(0,4)  IMPLIES   NONMONOTONIC.
-      ismon = 2
-   else
-!           MUST CHECK AGAINST BOUNDARY OF ELLIPSE.
-      a = a - two
-      b = b - two
-      phi = ((a*a + b*b) + a*b) - three
-      if (phi .lt. -eps)  then
+   !        DATA IS NOT CONSTANT -- PICK UP SIGN.
+      itrue = sign (one, delta)
+      a = d1/delta
+      b = d2/delta
+      if ((a<zero) .or. (b<zero))  then
+         ismon = 2
+      else if ((a<=three-eps) .and. (b<=three-eps))  then
+   !           INSIDE SQUARE (0,3)X(0,3)  IMPLIES   OK.
          ismon = itrue
-      else if (phi .gt. eps)  then
+      else if ((a>four+eps) .and. (b>four+eps))  then
+   !           OUTSIDE SQUARE (0,4)X(0,4)  IMPLIES   NONMONOTONIC.
          ismon = 2
       else
-!              TO CLOSE TO BOUNDARY TO TELL,
-!                  IN THE PRESENCE OF ROUND-OFF ERRORS.
-         ismon = 3*itrue
+   !           MUST CHECK AGAINST BOUNDARY OF ELLIPSE.
+         a = a - two
+         b = b - two
+         phi = ((a*a + b*b) + a*b) - three
+         if (phi < -eps)  then
+            ismon = itrue
+         else if (phi > eps)  then
+            ismon = 2
+         else
+   !              TO CLOSE TO BOUNDARY TO TELL,
+   !                  IN THE PRESENCE OF ROUND-OFF ERRORS.
+            ismon = 3*itrue
+         endif
       endif
    endif
-endif
-!
-!  RETURN VALUE.
-!
-dchfcm = ismon
-return
-!------------- LAST LINE OF DCHFCM FOLLOWS -----------------------------
-end
-!DECK DCHFDV
-subroutine dchfdv (x1, x2, f1, f2, d1, d2, ne, xe, fe, de, next, &
-   ierr)
-!***BEGIN PROLOGUE  DCHFDV
+
+   dchfcm = ismon
+
+   end function dchfcm
+
+subroutine dchfdv (x1, x2, f1, f2, d1, d2, ne, xe, fe, de, next, ierr)
+
 !***PURPOSE  Evaluate a cubic polynomial given in Hermite form and its
 !            first derivative at an array of points.  While designed for
 !            use by DPCHFD, it may be useful directly as an evaluator
@@ -170,7 +160,7 @@ subroutine dchfdv (x1, x2, f1, f2, d1, d2, ne, xe, fe, de, next, &
 !            If only function values are required, use DCHFEV instead.
 !***LIBRARY   SLATEC (PCHIP)
 !***CATEGORY  E3, H1
-!***TYPE      DOUBLE PRECISION (CHFDV-S, DCHFDV-D)
+!***TYPE      real(wp) (CHFDV-S, DCHFDV-D)
 !***KEYWORDS  CUBIC HERMITE DIFFERENTIATION, CUBIC HERMITE EVALUATION,
 !             CUBIC POLYNOMIAL EVALUATION, PCHIP
 !***AUTHOR  Fritsch, F. N., (LLNL)
@@ -193,7 +183,7 @@ subroutine dchfdv (x1, x2, f1, f2, d1, d2, ne, xe, fe, de, next, &
 !  Calling sequence:
 !
 !        INTEGER  NE, NEXT(2), IERR
-!        DOUBLE PRECISION  X1, X2, F1, F2, D1, D2, XE(NE), FE(NE),
+!        real(wp)  X1, X2, F1, F2, D1, D2, XE(NE), FE(NE),
 !                          DE(NE)
 !
 !        CALL  DCHFDV (X1,X2, F1,F2, D1,D2, NE, XE, FE, DE, NEXT, IERR)
@@ -201,14 +191,14 @@ subroutine dchfdv (x1, x2, f1, f2, d1, d2, ne, xe, fe, de, next, &
 !   Parameters:
 !
 !     X1,X2 -- (input) endpoints of interval of definition of cubic.
-!           (Error return if  X1.EQ.X2 .)
+!           (Error return if  X1==X2 .)
 !
 !     F1,F2 -- (input) values of function at X1 and X2, respectively.
 !
 !     D1,D2 -- (input) values of derivative at X1 and X2, respectively.
 !
 !     NE -- (input) number of evaluation points.  (Error return if
-!           NE.LT.1 .)
+!           NE<1 .)
 !
 !     XE -- (input) real*8 array of points at which the functions are to
 !           be evaluated.  If any of the XE are outside the interval
@@ -229,8 +219,8 @@ subroutine dchfdv (x1, x2, f1, f2, d1, d2, ne, xe, fe, de, next, &
 !           Normal return:
 !              IERR = 0  (no errors).
 !           "Recoverable" errors:
-!              IERR = -1  if NE.LT.1 .
-!              IERR = -2  if X1.EQ.X2 .
+!              IERR = -1  if NE<1 .
+!              IERR = -2  if X1==X2 .
 !                (Output arrays have not been changed in either case.)
 !
 !***REFERENCES  (NONE)
@@ -248,32 +238,18 @@ subroutine dchfdv (x1, x2, f1, f2, d1, d2, ne, xe, fe, de, next, &
 !   891214  Prologue converted to Version 4.0 format.  (BAB)
 !   900315  CALLs to XERROR changed to CALLs to XERMSG.  (THJ)
 !***END PROLOGUE  DCHFDV
-!  Programming notes:
-!
-!     To produce a single precision version, simply:
-!        a. Change DCHFDV to CHFDV wherever it occurs,
-!        b. Change the double precision declaration to real, and
-!        c. Change the constant ZERO to single precision.
-!
-!  DECLARE ARGUMENTS.
-!
+
 integer  ne, next(2), ierr
-double precision  x1, x2, f1, f2, d1, d2, xe(*), fe(*), de(*)
-!
-!  DECLARE LOCAL VARIABLES.
-!
+real(wp)  x1, x2, f1, f2, d1, d2, xe(*), fe(*), de(*)
+
 integer  i
-double precision  c2, c2t2, c3, c3t3, del1, del2, delta, h, x, &
-  xmi, xma, zero
-save zero
-data  zero /0.d0/
-!
+real(wp)  c2, c2t2, c3, c3t3, del1, del2, delta, h, x, xmi, xma
+
 !  VALIDITY-CHECK ARGUMENTS.
-!
-!***FIRST EXECUTABLE STATEMENT  DCHFDV
-if (ne .lt. 1)  go to 5001
+
+if (ne < 1)  go to 5001
 h = x2 - x1
-if (h .eq. zero)  go to 5002
+if (h == zero)  go to 5002
 !
 !  INITIALIZE.
 !
@@ -302,8 +278,8 @@ do 500  i = 1, ne
    fe(i) = f1 + x*(d1 + x*(c2 + x*c3))
    de(i) = d1 + x*(c2t2 + x*c3t3)
 !          COUNT EXTRAPOLATION POINTS.
-   if ( x.lt.xmi )  next(1) = next(1) + 1
-   if ( x.gt.xma )  next(2) = next(2) + 1
+   if ( x<xmi )  next(1) = next(1) + 1
+   if ( x>xma )  next(2) = next(2) + 1
 !        (NOTE REDUNDANCY--IF EITHER CONDITION IS TRUE, OTHER IS FALSE.)
 500 continue
 !
@@ -314,23 +290,22 @@ return
 !  ERROR RETURNS.
 !
 5001 continue
-!     NE.LT.1 RETURN.
+!     NE<1 RETURN.
 ierr = -1
 call xermsg ('SLATEC', 'DCHFDV', &
    'NUMBER OF EVALUATION POINTS LESS THAN ONE', ierr, 1)
 return
 !
 5002 continue
-!     X1.EQ.X2 RETURN.
+!     X1==X2 RETURN.
 ierr = -2
 call xermsg ('SLATEC', 'DCHFDV', 'INTERVAL ENDPOINTS EQUAL', &
    ierr, 1)
-return
-!------------- LAST LINE OF DCHFDV FOLLOWS -----------------------------
-end
-!DECK DCHFEV
+
+end subroutine dchfdv
+
 subroutine dchfev (x1, x2, f1, f2, d1, d2, ne, xe, fe, next, ierr)
-!***BEGIN PROLOGUE  DCHFEV
+
 !***PURPOSE  Evaluate a cubic polynomial given in Hermite form at an
 !            array of points.  While designed for use by DPCHFE, it may
 !            be useful directly as an evaluator for a piecewise cubic
@@ -338,7 +313,7 @@ subroutine dchfev (x1, x2, f1, f2, d1, d2, ne, xe, fe, next, ierr)
 !            the interval is known in advance.
 !***LIBRARY   SLATEC (PCHIP)
 !***CATEGORY  E3
-!***TYPE      DOUBLE PRECISION (CHFEV-S, DCHFEV-D)
+!***TYPE      real(wp) (CHFEV-S, DCHFEV-D)
 !***KEYWORDS  CUBIC HERMITE EVALUATION, CUBIC POLYNOMIAL EVALUATION,
 !             PCHIP
 !***AUTHOR  Fritsch, F. N., (LLNL)
@@ -359,21 +334,21 @@ subroutine dchfev (x1, x2, f1, f2, d1, d2, ne, xe, fe, next, ierr)
 !  Calling sequence:
 !
 !        INTEGER  NE, NEXT(2), IERR
-!        DOUBLE PRECISION  X1, X2, F1, F2, D1, D2, XE(NE), FE(NE)
+!        real(wp)  X1, X2, F1, F2, D1, D2, XE(NE), FE(NE)
 !
 !        CALL  DCHFEV (X1,X2, F1,F2, D1,D2, NE, XE, FE, NEXT, IERR)
 !
 !   Parameters:
 !
 !     X1,X2 -- (input) endpoints of interval of definition of cubic.
-!           (Error return if  X1.EQ.X2 .)
+!           (Error return if  X1==X2 .)
 !
 !     F1,F2 -- (input) values of function at X1 and X2, respectively.
 !
 !     D1,D2 -- (input) values of derivative at X1 and X2, respectively.
 !
 !     NE -- (input) number of evaluation points.  (Error return if
-!           NE.LT.1 .)
+!           NE<1 .)
 !
 !     XE -- (input) real*8 array of points at which the function is to
 !           be evaluated.  If any of the XE are outside the interval
@@ -391,8 +366,8 @@ subroutine dchfev (x1, x2, f1, f2, d1, d2, ne, xe, fe, next, ierr)
 !           Normal return:
 !              IERR = 0  (no errors).
 !           "Recoverable" errors:
-!              IERR = -1  if NE.LT.1 .
-!              IERR = -2  if X1.EQ.X2 .
+!              IERR = -1  if NE<1 .
+!              IERR = -2  if X1==X2 .
 !                (The FE-array has not been changed in either case.)
 !
 !***REFERENCES  (NONE)
@@ -411,32 +386,18 @@ subroutine dchfev (x1, x2, f1, f2, d1, d2, ne, xe, fe, next, ierr)
 !   891214  Prologue converted to Version 4.0 format.  (BAB)
 !   900315  CALLs to XERROR changed to CALLs to XERMSG.  (THJ)
 !***END PROLOGUE  DCHFEV
-!  Programming notes:
-!
-!     To produce a single precision version, simply:
-!        a. Change DCHFEV to CHFEV wherever it occurs,
-!        b. Change the double precision declaration to real, and
-!        c. Change the constant ZERO to single precision.
-!
-!  DECLARE ARGUMENTS.
-!
+
 integer  ne, next(2), ierr
-double precision  x1, x2, f1, f2, d1, d2, xe(*), fe(*)
-!
-!  DECLARE LOCAL VARIABLES.
-!
+real(wp)  x1, x2, f1, f2, d1, d2, xe(*), fe(*)
+
 integer  i
-double precision  c2, c3, del1, del2, delta, h, x, xmi, xma, &
- zero
-save zero
-data  zero /0.d0/
-!
+real(wp)  c2, c3, del1, del2, delta, h, x, xmi, xma
+
 !  VALIDITY-CHECK ARGUMENTS.
-!
-!***FIRST EXECUTABLE STATEMENT  DCHFEV
-if (ne .lt. 1)  go to 5001
+
+if (ne < 1)  go to 5001
 h = x2 - x1
-if (h .eq. zero)  go to 5002
+if (h == zero)  go to 5002
 !
 !  INITIALIZE.
 !
@@ -462,8 +423,8 @@ do 500  i = 1, ne
    x = xe(i) - x1
    fe(i) = f1 + x*(d1 + x*(c2 + x*c3))
 !          COUNT EXTRAPOLATION POINTS.
-   if ( x.lt.xmi )  next(1) = next(1) + 1
-   if ( x.gt.xma )  next(2) = next(2) + 1
+   if ( x<xmi )  next(1) = next(1) + 1
+   if ( x>xma )  next(2) = next(2) + 1
 !        (NOTE REDUNDANCY--IF EITHER CONDITION IS TRUE, OTHER IS FALSE.)
 500 continue
 !
@@ -474,27 +435,26 @@ return
 !  ERROR RETURNS.
 !
 5001 continue
-!     NE.LT.1 RETURN.
+!     NE<1 RETURN.
 ierr = -1
 call xermsg ('SLATEC', 'DCHFEV', &
    'NUMBER OF EVALUATION POINTS LESS THAN ONE', ierr, 1)
 return
 !
 5002 continue
-!     X1.EQ.X2 RETURN.
+!     X1==X2 RETURN.
 ierr = -2
 call xermsg ('SLATEC', 'DCHFEV', 'INTERVAL ENDPOINTS EQUAL', &
    ierr, 1)
-return
-!------------- LAST LINE OF DCHFEV FOLLOWS -----------------------------
-end
-!DECK DCHFIE
-double precision function dchfie (x1, x2, f1, f2, d1, d2, a, b)
-!***BEGIN PROLOGUE  DCHFIE
-!***SUBSIDIARY
+
+end subroutine dchfev
+
+real(wp) function dchfie (x1, x2, f1, f2, d1, d2, a, b)
+
+
 !***PURPOSE  Evaluates integral of a single cubic for DPCHIA
 !***LIBRARY   SLATEC (PCHIP)
-!***TYPE      DOUBLE PRECISION (CHFIE-S, DCHFIE-D)
+!***TYPE      real(wp) (CHFIE-S, DCHFIE-D)
 !***AUTHOR  Fritsch, F. N., (LLNL)
 !***DESCRIPTION
 !
@@ -507,8 +467,8 @@ double precision function dchfie (x1, x2, f1, f2, d1, d2, a, b)
 !
 !  Calling sequence:
 !
-!        DOUBLE PRECISION  X1, X2, F1, F2, D1, D2, A, B
-!        DOUBLE PRECISION  VALUE, DCHFIE
+!        real(wp)  X1, X2, F1, F2, D1, D2, A, B
+!        real(wp)  VALUE, DCHFIE
 !
 !        VALUE = DCHFIE (X1, X2, F1, F2, D1, D2, A, B)
 !
@@ -532,40 +492,31 @@ double precision function dchfie (x1, x2, f1, f2, d1, d2, a, b)
 !   870707  Corrected subroutine name from DCHIV to DCHFIV.
 !   870813  Minor cosmetic changes.
 !   890411  1. Added SAVE statements (Vers. 3.2).
-!           2. Added SIX to DOUBLE PRECISION declaration.
+!           2. Added SIX to real(wp) declaration.
 !   890411  REVISION DATE from Version 3.2
 !   891214  Prologue converted to Version 4.0 format.  (BAB)
 !   900315  CALLs to XERROR changed to CALLs to XERMSG.  (THJ)
 !   900328  Added TYPE section.  (WRB)
 !   910408  Updated AUTHOR section in prologue.  (WRB)
-!   930503  Corrected to set VALUE=0 when IERR.ne.0.  (FNF)
+!   930503  Corrected to set VALUE=0 when IERR/=0.  (FNF)
 !   930504  Eliminated IERR and changed name DCHFIV to DCHFIE.  (FNF)
 !***END PROLOGUE  DCHFIE
 !
 !  Programming notes:
 !  1. There is no error return from this routine because zero is
-!     indeed the mathematically correct answer when X1.EQ.X2 .
+!     indeed the mathematically correct answer when X1==X2 .
 !**End
-!
-!  DECLARE ARGUMENTS.
-!
-double precision  x1, x2, f1, f2, d1, d2, a, b
-!
-!  DECLARE LOCAL VARIABLES.
-!
-double precision  dterm, four, fterm, h, half, phia1, phia2, &
-      phib1, phib2, psia1, psia2, psib1, psib2, six, ta1, ta2, &
-      tb1, tb2, three, two, ua1, ua2, ub1, ub2
-save half, two, three, four, six
-!
-!  INITIALIZE.
-!
-data  half/.5d0/, two/2.d0/, three/3.d0/, four/4.d0/, six/6.d0/
-!
+
+
+real(wp)  x1, x2, f1, f2, d1, d2, a, b
+
+real(wp)  dterm, fterm, h, phia1, phia2, &
+      phib1, phib2, psia1, psia2, psib1, psib2, ta1, ta2, &
+      tb1, tb2, ua1, ua2, ub1, ub2
+
 !  VALIDITY CHECK INPUT.
-!
-!***FIRST EXECUTABLE STATEMENT  DCHFIE
-if (x1 .eq. x2)  then
+
+if (x1 == x2)  then
    dchfie = 0
 else
    h = x2 - x1
@@ -594,17 +545,16 @@ else
    dchfie = (half*h) * (fterm + dterm)
 endif
 !
-return
-!------------- LAST LINE OF DCHFIE FOLLOWS -----------------------------
-end
-!DECK DPCHBS
+
+end function dchfie
+
 subroutine dpchbs (n, x, f, d, incfd, knotyp, nknots, t, bcoef, &
    ndim, kord, ierr)
-!***BEGIN PROLOGUE  DPCHBS
+
 !***PURPOSE  Piecewise Cubic Hermite to B-Spline converter.
 !***LIBRARY   SLATEC (PCHIP)
 !***CATEGORY  E3
-!***TYPE      DOUBLE PRECISION (PCHBS-S, DPCHBS-D)
+!***TYPE      real(wp) (PCHBS-S, DPCHBS-D)
 !***KEYWORDS  B-SPLINES, CONVERSION, CUBIC HERMITE INTERPOLATION,
 !             PIECEWISE CUBIC INTERPOLATION
 !***AUTHOR  Fritsch, F. N., (LLNL)
@@ -619,7 +569,7 @@ subroutine dpchbs (n, x, f, d, incfd, knotyp, nknots, t, bcoef, &
 !
 !        INTEGER  N, INCFD, KNOTYP, NKNOTS, NDIM, KORD, IERR
 !        PARAMETER  (INCFD = ...)
-!        DOUBLE PRECISION  X(nmax), F(INCFD,nmax), D(INCFD,nmax),
+!        real(wp)  X(nmax), F(INCFD,nmax), D(INCFD,nmax),
 !       *      T(2*nmax+4), BCOEF(2*nmax)
 !
 !        CALL DPCHBS (N, X, F, D, INCFD, KNOTYP, NKNOTS, T, BCOEF,
@@ -627,20 +577,20 @@ subroutine dpchbs (n, x, f, d, incfd, knotyp, nknots, t, bcoef, &
 !
 ! *Arguments:
 !
-!     N:IN  is the number of data points, N.ge.2 .  (not checked)
+!     N:IN  is the number of data points, N>=2 .  (not checked)
 !
 !     X:IN  is the real array of independent variable values.  The
 !           elements of X must be strictly increasing:
-!                X(I-1) .LT. X(I),  I = 2(1)N.   (not checked)
-!           nmax, the dimension of X, must be .ge.N.
+!                X(I-1) < X(I),  I = 2(1)N.   (not checked)
+!           nmax, the dimension of X, must be >=N.
 !
 !     F:IN  is the real array of dependent variable values.
 !           F(1+(I-1)*INCFD) is the value corresponding to X(I).
-!           nmax, the second dimension of F, must be .ge.N.
+!           nmax, the second dimension of F, must be >=N.
 !
 !     D:IN  is the real array of derivative values at the data points.
 !           D(1+(I-1)*INCFD) is the value corresponding to X(I).
-!           nmax, the second dimension of D, must be .ge.N.
+!           nmax, the second dimension of D, must be >=N.
 !
 !     INCFD:IN  is the increment between successive values in F and D.
 !           This argument is provided primarily for 2-D applications.
@@ -665,15 +615,15 @@ subroutine dpchbs (n, x, f, d, incfd, knotyp, nknots, t, bcoef, &
 !           in a parametric setting.
 !
 !     NKNOTS:INOUT  is the number of knots.
-!           If KNOTYP.GE.0, then NKNOTS will be set to NDIM+4.
-!           If KNOTYP.LT.0, then NKNOTS is an input variable, and an
+!           If KNOTYP>=0, then NKNOTS will be set to NDIM+4.
+!           If KNOTYP<0, then NKNOTS is an input variable, and an
 !              error return will be taken if it is not equal to NDIM+4.
 !
 !     T:INOUT  is the array of 2*N+4 knots for the B-representation.
-!           If KNOTYP.GE.0, T will be returned by DPCHBS with the
+!           If KNOTYP>=0, T will be returned by DPCHBS with the
 !              interior double knots equal to the X-values and the
 !              boundary knots set as indicated above.
-!           If KNOTYP.LT.0, it is assumed that T was set by a
+!           If KNOTYP<0, it is assumed that T was set by a
 !              previous call to DPCHBS.  (This routine does **not**
 !              verify that T forms a legitimate knot sequence.)
 !
@@ -687,8 +637,8 @@ subroutine dpchbs (n, x, f, d, incfd, knotyp, nknots, t, bcoef, &
 !           Normal return:
 !              IERR = 0  (no errors).
 !           "Recoverable" errors:
-!              IERR = -4  if KNOTYP.GT.2 .
-!              IERR = -5  if KNOTYP.LT.0 and NKNOTS.NE.(2*N+4).
+!              IERR = -4  if KNOTYP>2 .
+!              IERR = -5  if KNOTYP<0 and NKNOTS/=(2*N+4).
 !
 ! *Description:
 !     DPCHBS computes the B-spline representation of the PCH function
@@ -705,14 +655,14 @@ subroutine dpchbs (n, x, f, d, incfd, knotyp, nknots, t, bcoef, &
 !     input arguments N, X, INCFD are **not** checked for validity.
 !
 ! *Restrictions/assumptions:
-!     1. N.GE.2 .  (not checked)
-!     2. X(i).LT.X(i+1), i=1,...,N .  (not checked)
-!     3. INCFD.GT.0 .  (not checked)
-!     4. KNOTYP.LE.2 .  (error return if not)
+!     1. N>=2 .  (not checked)
+!     2. X(i)<X(i+1), i=1,...,N .  (not checked)
+!     3. INCFD>0 .  (not checked)
+!     4. KNOTYP<=2 .  (error return if not)
 !    *5. NKNOTS = NDIM+4 = 2*N+4 .  (error return if not)
 !    *6. T(2*k+1) = T(2*k) = X(k), k=1,...,N .  (not checked)
 !
-!       * Indicates this applies only if KNOTYP.LT.0 .
+!       * Indicates this applies only if KNOTYP<0 .
 !
 ! *Portability:
 !     Argument INCFD is used only to cause the compiler to generate
@@ -743,7 +693,7 @@ subroutine dpchbs (n, x, f, d, incfd, knotyp, nknots, t, bcoef, &
 !   900410  Added calls to XERMSG and changed constant 3. to 3 to
 !           reduce single/double differences.
 !   900411  Added reference.
-!   900430  Produced double precision version.
+!   900430  Produced real(wp) version.
 !   900501  Corrected declarations.
 !   930317  Minor cosmetic changes.  (FNF)
 !   930514  Corrected problems with dimensioning of arguments and
@@ -754,21 +704,16 @@ subroutine dpchbs (n, x, f, d, incfd, knotyp, nknots, t, bcoef, &
 !*Internal Notes:
 !
 !**End
-!
-!  Declare arguments.
-!
+
+
 integer  n, incfd, knotyp, nknots, ndim, kord, ierr
-double precision  x(*), f(incfd,*), d(incfd,*), t(*), bcoef(*)
-!
-!  Declare local variables.
-!
+real(wp)  x(*), f(incfd,*), d(incfd,*), t(*), bcoef(*)
+
 integer  k, kk
-double precision  dov3, hnew, hold
+real(wp)  dov3, hnew, hold
 character*8  libnam, subnam
-!***FIRST EXECUTABLE STATEMENT  DPCHBS
-!
+
 !  Initialize.
-!
 ndim = 2*n
 kord = 4
 ierr = 0
@@ -777,16 +722,16 @@ subnam = 'DPCHBS'
 !
 !  Check argument validity.  Set up knot sequence if OK.
 !
-if ( knotyp.gt.2 )  then
+if ( knotyp>2 )  then
    ierr = -1
    call xermsg (libnam, subnam, 'KNOTYP GREATER THAN 2', ierr, 1)
    return
 endif
-if ( knotyp.lt.0 )  then
-   if ( nknots.ne.ndim+4 )  then
+if ( knotyp<0 )  then
+   if ( nknots/=ndim+4 )  then
       ierr = -2
       call xermsg (libnam, subnam, &
-                    'KNOTYP.LT.0 AND NKNOTS.NE.(2*N+4)', ierr, 1)
+                    'KNOTYP<0 AND NKNOTS/=(2*N+4)', ierr, 1)
       return
    endif
 else
@@ -811,16 +756,15 @@ do 40  k = 1, n
 !
 !  Terminate.
 !
-return
-!------------- LAST LINE OF DPCHBS FOLLOWS -----------------------------
-end
-!DECK DPCHCE
+
+end subroutine dpchbs
+
 subroutine dpchce (ic, vc, n, x, h, slope, d, incfd, ierr)
-!***BEGIN PROLOGUE  DPCHCE
-!***SUBSIDIARY
+
+
 !***PURPOSE  Set boundary conditions for DPCHIC
 !***LIBRARY   SLATEC (PCHIP)
-!***TYPE      DOUBLE PRECISION (PCHCE-S, DPCHCE-D)
+!***TYPE      real(wp) (PCHCE-S, DPCHCE-D)
 !***AUTHOR  Fritsch, F. N., (LLNL)
 !***DESCRIPTION
 !
@@ -839,7 +783,7 @@ subroutine dpchce (ic, vc, n, x, h, slope, d, incfd, ierr)
 !
 !        PARAMETER  (INCFD = ...)
 !        INTEGER  IC(2), N, IERR
-!        DOUBLE PRECISION  VC(2), X(N), H(N), SLOPE(N), D(INCFD,N)
+!        real(wp)  VC(2), X(N), H(N), SLOPE(N), D(INCFD,N)
 !
 !        CALL  DPCHCE (IC, VC, N, X, H, SLOPE, D, INCFD, IERR)
 !
@@ -855,7 +799,7 @@ subroutine dpchce (ic, vc, n, x, h, slope, d, incfd, ierr)
 !           values.  VC(1) need be set only if IC(1) = 2 or 3 .
 !                    VC(2) need be set only if IC(2) = 2 or 3 .
 !
-!     N -- (input) number of data points.  (assumes N.GE.2)
+!     N -- (input) number of data points.  (assumes N>=2)
 !
 !     X -- (input) real*8 array of independent variable values.  (the
 !           elements of X are assumed to be strictly increasing.)
@@ -880,18 +824,15 @@ subroutine dpchce (ic, vc, n, x, h, slope, d, incfd, ierr)
 !           Normal return:
 !              IERR = 0  (no errors).
 !           Warning errors:
-!              IERR = 1  if IBEG.LT.0 and D(1) had to be adjusted for
+!              IERR = 1  if IBEG<0 and D(1) had to be adjusted for
 !                        monotonicity.
-!              IERR = 2  if IEND.LT.0 and D(1+(N-1)*INCFD) had to be
+!              IERR = 2  if IEND<0 and D(1+(N-1)*INCFD) had to be
 !                        adjusted for monotonicity.
 !              IERR = 3  if both of the above are true.
 !
 !    -------
 !    WARNING:  This routine does no validity-checking of arguments.
 !    -------
-!
-!  Fortran intrinsics used:  ABS.
-!
 !***SEE ALSO  DPCHIC
 !***ROUTINES CALLED  DPCHDF, DPCHST, XERMSG
 !***REVISION HISTORY  (YYMMDD)
@@ -923,75 +864,65 @@ subroutine dpchce (ic, vc, n, x, h, slope, d, incfd, ierr)
 !        be changed, even though the original interpolant was monotonic.
 !        (At least the result is a continuous function of the data.)
 !**End
-!
-!  DECLARE ARGUMENTS.
-!
+
+
 integer  ic(2), n, incfd, ierr
-double precision  vc(2), x(*), h(*), slope(*), d(incfd,*)
-!
-!  DECLARE LOCAL VARIABLES.
-!
+real(wp)  vc(2), x(*), h(*), slope(*), d(incfd,*)
+
 integer  ibeg, iend, ierf, index, j, k
-double precision  half, stemp(3), three, two, xtemp(4), zero
-save zero, half, two, three
-double precision  dpchdf, dpchst
-!
-!  INITIALIZE.
-!
-data  zero /0.d0/,  half/.5d0/,  two/2.d0/, three/3.d0/
-!
-!***FIRST EXECUTABLE STATEMENT  DPCHCE
+real(wp)  stemp(3), xtemp(4)
+
 ibeg = ic(1)
 iend = ic(2)
 ierr = 0
 !
 !  SET TO DEFAULT BOUNDARY CONDITIONS IF N IS TOO SMALL.
 !
-if ( abs(ibeg).gt.n )  ibeg = 0
-if ( abs(iend).gt.n )  iend = 0
+if ( abs(ibeg)>n )  ibeg = 0
+if ( abs(iend)>n )  iend = 0
 !
 !  TREAT BEGINNING BOUNDARY CONDITION.
 !
-if (ibeg .eq. 0)  go to 2000
+if (ibeg == 0)  go to 2000
 k = abs(ibeg)
-if (k .eq. 1)  then
+if (k == 1)  then
 !        BOUNDARY VALUE PROVIDED.
    d(1,1) = vc(1)
-else if (k .eq. 2)  then
+else if (k == 2)  then
 !        BOUNDARY SECOND DERIVATIVE PROVIDED.
    d(1,1) = half*( (three*slope(1) - d(1,2)) - half*vc(1)*h(1) )
-else if (k .lt. 5)  then
+else if (k < 5)  then
 !        USE K-POINT DERIVATIVE FORMULA.
 !        PICK UP FIRST K POINTS, IN REVERSE ORDER.
    do 10  j = 1, k
       index = k-j+1
 !           INDEX RUNS FROM K DOWN TO 1.
       xtemp(j) = x(index)
-      if (j .lt. k)  stemp(j) = slope(index-1)
+      if (j < k)  stemp(j) = slope(index-1)
 10    continue
 !                 -----------------------------
    d(1,1) = dpchdf (k, xtemp, stemp, ierf)
 !                 -----------------------------
-   if (ierf .ne. 0)  go to 5001
+   if (ierf /= 0)  go to 5001
 else
 !        USE 'NOT A KNOT' CONDITION.
    d(1,1) = ( three*(h(1)*slope(2) + h(2)*slope(1)) &
              - two*(h(1)+h(2))*d(1,2) - h(1)*d(1,3) ) / h(2)
 endif
 !
-if (ibeg .gt. 0)  go to 2000
+if (ibeg > 0)  go to 2000
 !
 !  CHECK D(1,1) FOR COMPATIBILITY WITH MONOTONICITY.
 !
-if (slope(1) .eq. zero)  then
-   if (d(1,1) .ne. zero)  then
+if (slope(1) == zero)  then
+   if (d(1,1) /= zero)  then
       d(1,1) = zero
       ierr = ierr + 1
    endif
-else if ( dpchst(d(1,1),slope(1)) .lt. zero)  then
+else if ( dpchst(d(1,1),slope(1)) < zero)  then
    d(1,1) = zero
    ierr = ierr + 1
-else if ( abs(d(1,1)) .gt. three*abs(slope(1)) )  then
+else if ( abs(d(1,1)) > three*abs(slope(1)) )  then
    d(1,1) = three*slope(1)
    ierr = ierr + 1
 endif
@@ -999,28 +930,28 @@ endif
 !  TREAT END BOUNDARY CONDITION.
 !
 2000 continue
-if (iend .eq. 0)  go to 5000
+if (iend == 0)  go to 5000
 k = abs(iend)
-if (k .eq. 1)  then
+if (k == 1)  then
 !        BOUNDARY VALUE PROVIDED.
    d(1,n) = vc(2)
-else if (k .eq. 2)  then
+else if (k == 2)  then
 !        BOUNDARY SECOND DERIVATIVE PROVIDED.
    d(1,n) = half*( (three*slope(n-1) - d(1,n-1)) + &
                                            half*vc(2)*h(n-1) )
-else if (k .lt. 5)  then
+else if (k < 5)  then
 !        USE K-POINT DERIVATIVE FORMULA.
 !        PICK UP LAST K POINTS.
    do 2010  j = 1, k
       index = n-k+j
 !           INDEX RUNS FROM N+1-K UP TO N.
       xtemp(j) = x(index)
-      if (j .lt. k)  stemp(j) = slope(index)
+      if (j < k)  stemp(j) = slope(index)
 2010    continue
 !                 -----------------------------
    d(1,n) = dpchdf (k, xtemp, stemp, ierf)
 !                 -----------------------------
-   if (ierf .ne. 0)  go to 5001
+   if (ierf /= 0)  go to 5001
 else
 !        USE 'NOT A KNOT' CONDITION.
    d(1,n) = ( three*(h(n-1)*slope(n-2) + h(n-2)*slope(n-1)) &
@@ -1028,19 +959,19 @@ else
                                                          / h(n-2)
 endif
 !
-if (iend .gt. 0)  go to 5000
+if (iend > 0)  go to 5000
 !
 !  CHECK D(1,N) FOR COMPATIBILITY WITH MONOTONICITY.
 !
-if (slope(n-1) .eq. zero)  then
-   if (d(1,n) .ne. zero)  then
+if (slope(n-1) == zero)  then
+   if (d(1,n) /= zero)  then
       d(1,n) = zero
       ierr = ierr + 2
    endif
-else if ( dpchst(d(1,n),slope(n-1)) .lt. zero)  then
+else if ( dpchst(d(1,n),slope(n-1)) < zero)  then
    d(1,n) = zero
    ierr = ierr + 2
-else if ( abs(d(1,n)) .gt. three*abs(slope(n-1)) )  then
+else if ( abs(d(1,n)) > three*abs(slope(n-1)) )  then
    d(1,n) = three*slope(n-1)
    ierr = ierr + 2
 endif
@@ -1058,16 +989,15 @@ return
 ierr = -1
 call xermsg ('SLATEC', 'DPCHCE', 'ERROR RETURN FROM DPCHDF', &
    ierr, 1)
-return
-!------------- LAST LINE OF DPCHCE FOLLOWS -----------------------------
-end
-!DECK DPCHCI
+
+end subroutine dpchce
+
 subroutine dpchci (n, h, slope, d, incfd)
-!***BEGIN PROLOGUE  DPCHCI
-!***SUBSIDIARY
+
+
 !***PURPOSE  Set interior derivatives for DPCHIC
 !***LIBRARY   SLATEC (PCHIP)
-!***TYPE      DOUBLE PRECISION (PCHCI-S, DPCHCI-D)
+!***TYPE      real(wp) (PCHCI-S, DPCHCI-D)
 !***AUTHOR  Fritsch, F. N., (LLNL)
 !***DESCRIPTION
 !
@@ -1093,7 +1023,7 @@ subroutine dpchci (n, h, slope, d, incfd)
 !
 !        PARAMETER  (INCFD = ...)
 !        INTEGER  N
-!        DOUBLE PRECISION  H(N), SLOPE(N), D(INCFD,N)
+!        real(wp)  H(N), SLOPE(N), D(INCFD,N)
 !
 !        CALL  DPCHCI (N, H, SLOPE, D, INCFD)
 !
@@ -1122,8 +1052,6 @@ subroutine dpchci (n, h, slope, d, incfd)
 !    WARNING:  This routine does no validity-checking of arguments.
 !    -------
 !
-!  Fortran intrinsics used:  ABS, MAX, MIN.
-!
 !***SEE ALSO  DPCHIC
 !***ROUTINES CALLED  DPCHST
 !***REVISION HISTORY  (YYMMDD)
@@ -1150,35 +1078,26 @@ subroutine dpchci (n, h, slope, d, incfd)
 !        either argument is zero, +1 if they are of the same sign, and
 !        -1 if they are of opposite sign.
 !**End
-!
-!  DECLARE ARGUMENTS.
-!
+
+
 integer  n, incfd
-double precision  h(*), slope(*), d(incfd,*)
-!
-!  DECLARE LOCAL VARIABLES.
-!
+real(wp)  h(*), slope(*), d(incfd,*)
+
 integer  i, nless1
-double precision  del1, del2, dmax, dmin, drat1, drat2, hsum, &
-      hsumt3, three, w1, w2, zero
-save zero, three
-double precision  dpchst
-!
-!  INITIALIZE.
-!
-data  zero /0.d0/, three/3.d0/
-!***FIRST EXECUTABLE STATEMENT  DPCHCI
+real(wp)  del1, del2, dmax, dmin, drat1, drat2, hsum, &
+      hsumt3, w1, w2
+
 nless1 = n - 1
 del1 = slope(1)
 !
 !  SPECIAL CASE N=2 -- USE LINEAR INTERPOLATION.
 !
-if (nless1 .gt. 1)  go to 10
+if (nless1 > 1)  go to 10
 d(1,1) = del1
 d(1,n) = del1
 go to 5000
 !
-!  NORMAL CASE  (N .GE. 3).
+!  NORMAL CASE  (N >= 3).
 !
 10 continue
 del2 = slope(2)
@@ -1190,18 +1109,18 @@ hsum = h(1) + h(2)
 w1 = (h(1) + hsum)/hsum
 w2 = -h(1)/hsum
 d(1,1) = w1*del1 + w2*del2
-if ( dpchst(d(1,1),del1) .le. zero)  then
+if ( dpchst(d(1,1),del1) <= zero)  then
    d(1,1) = zero
-else if ( dpchst(del1,del2) .lt. zero)  then
+else if ( dpchst(del1,del2) < zero)  then
 !        NEED DO THIS CHECK ONLY IF MONOTONICITY SWITCHES.
    dmax = three*del1
-   if (abs(d(1,1)) .gt. abs(dmax))  d(1,1) = dmax
+   if (abs(d(1,1)) > abs(dmax))  d(1,1) = dmax
 endif
 !
 !  LOOP THROUGH INTERIOR POINTS.
 !
 do 50  i = 2, nless1
-   if (i .eq. 2)  go to 40
+   if (i == 2)  go to 40
 !
    hsum = h(i-1) + h(i)
    del1 = del2
@@ -1211,7 +1130,7 @@ do 50  i = 2, nless1
 !        SET D(I)=0 UNLESS DATA ARE STRICTLY MONOTONIC.
 !
    d(1,i) = zero
-   if ( dpchst(del1,del2) .le. zero)  go to 50
+   if ( dpchst(del1,del2) <= zero)  go to 50
 !
 !        USE BRODLIE MODIFICATION OF BUTLAND FORMULA.
 !
@@ -1232,27 +1151,26 @@ do 50  i = 2, nless1
 w1 = -h(n-1)/hsum
 w2 = (h(n-1) + hsum)/hsum
 d(1,n) = w1*del1 + w2*del2
-if ( dpchst(d(1,n),del2) .le. zero)  then
+if ( dpchst(d(1,n),del2) <= zero)  then
    d(1,n) = zero
-else if ( dpchst(del1,del2) .lt. zero)  then
+else if ( dpchst(del1,del2) < zero)  then
 !        NEED DO THIS CHECK ONLY IF MONOTONICITY SWITCHES.
    dmax = three*del2
-   if (abs(d(1,n)) .gt. abs(dmax))  d(1,n) = dmax
+   if (abs(d(1,n)) > abs(dmax))  d(1,n) = dmax
 endif
 !
 !  NORMAL RETURN.
 !
 5000 continue
-return
-!------------- LAST LINE OF DPCHCI FOLLOWS -----------------------------
-end
-!DECK DPCHCM
+
+end subroutine dpchci
+
 subroutine dpchcm (n, x, f, d, incfd, skip, ismon, ierr)
-!***BEGIN PROLOGUE  DPCHCM
+
 !***PURPOSE  Check a cubic Hermite function for monotonicity.
 !***LIBRARY   SLATEC (PCHIP)
 !***CATEGORY  E3
-!***TYPE      DOUBLE PRECISION (PCHCM-S, DPCHCM-D)
+!***TYPE      real(wp) (PCHCM-S, DPCHCM-D)
 !***KEYWORDS  CUBIC HERMITE INTERPOLATION, MONOTONE INTERPOLATION,
 !             PCHIP, PIECEWISE CUBIC INTERPOLATION, UTILITY ROUTINE
 !***AUTHOR  Fritsch, F. N., (LLNL)
@@ -1267,18 +1185,18 @@ subroutine dpchcm (n, x, f, d, incfd, skip, ismon, ierr)
 !
 !        PARAMETER  (INCFD = ...)
 !        INTEGER  N, ISMON(N), IERR
-!        DOUBLE PRECISION  X(N), F(INCFD,N), D(INCFD,N)
+!        real(wp)  X(N), F(INCFD,N), D(INCFD,N)
 !        LOGICAL  SKIP
 !
 !        CALL  DPCHCM (N, X, F, D, INCFD, SKIP, ISMON, IERR)
 !
 ! *Arguments:
 !
-!     N:IN  is the number of data points.  (Error return if N.LT.2 .)
+!     N:IN  is the number of data points.  (Error return if N<2 .)
 !
 !     X:IN  is a real*8 array of independent variable values.  The
 !           elements of X must be strictly increasing:
-!                X(I-1) .LT. X(I),  I = 2(1)N.
+!                X(I-1) < X(I),  I = 2(1)N.
 !           (Error return if not.)
 !
 !     F:IN  is a real*8 array of function values.  F(1+(I-1)*INCFD) is
@@ -1288,7 +1206,7 @@ subroutine dpchcm (n, x, f, d, incfd, skip, ismon, ierr)
 !           is the value corresponding to X(I).
 !
 !     INCFD:IN  is the increment between successive values in F and D.
-!           (Error return if  INCFD.LT.1 .)
+!           (Error return if  INCFD<1 .)
 !
 !     SKIP:INOUT  is a logical variable which should be set to
 !           .TRUE. if the user wishes to skip checks for validity of
@@ -1317,8 +1235,8 @@ subroutine dpchcm (n, x, f, d, incfd, skip, ismon, ierr)
 !           Normal return:
 !              IERR = 0  (no errors).
 !           "Recoverable" errors:
-!              IERR = -1  if N.LT.2 .
-!              IERR = -2  if INCFD.LT.1 .
+!              IERR = -1  if N<2 .
+!              IERR = -2  if INCFD<1 .
 !              IERR = -3  if the X-array is not strictly increasing.
 !          (The ISMON-array has not been changed in any of these cases.)
 !               NOTE:  The above errors are checked in the order listed,
@@ -1338,10 +1256,10 @@ subroutine dpchcm (n, x, f, d, incfd, skip, ismon, ierr)
 !     This provides the same capability as old DPCHMC, except that a
 !     new output value, -3, was added February 1989.  (Formerly, -3
 !     and +3 were lumped together in the single value 3.)  Codes that
-!     flag nonmonotonicity by "IF (ISMON.EQ.2)" need not be changed.
-!     Codes that check via "IF (ISMON.GE.3)" should change the test to
-!     "IF (IABS(ISMON).GE.3)".  Codes that declare monotonicity via
-!     "IF (ISMON.LE.1)" should change to "IF (IABS(ISMON).LE.1)".
+!     flag nonmonotonicity by "IF (ISMON==2)" need not be changed.
+!     Codes that check via "IF (ISMON>=3)" should change the test to
+!     "IF (IABS(ISMON)>=3)".  Codes that declare monotonicity via
+!     "IF (ISMON<=1)" should change to "IF (IABS(ISMON)<=1)".
 !
 !***REFERENCES  F. N. Fritsch and R. E. Carlson, Monotone piecewise
 !                 cubic interpolation, SIAM Journal on Numerical Ana-
@@ -1351,7 +1269,7 @@ subroutine dpchcm (n, x, f, d, incfd, skip, ismon, ierr)
 !   820518  DATE WRITTEN
 !   820804  Converted to SLATEC library version.
 !   831201  Reversed order of subscripts of F and D, so that the
-!           routine will work properly when INCFD.GT.1 .  (Bug!)
+!           routine will work properly when INCFD>1 .  (Bug!)
 !   870707  Corrected XERROR calls for d.p. name(s).
 !   890206  Corrected XERROR calls.
 !   890209  Added possible ISMON value of -3 and modified code so
@@ -1366,9 +1284,6 @@ subroutine dpchcm (n, x, f, d, incfd, skip, ismon, ierr)
 !   920429  Revised format and order of references.  (WRB,FNF)
 !***END PROLOGUE  DPCHCM
 !
-!  Fortran intrinsics used:  ISIGN.
-!  Other routines used:  CHFCM, XERMSG.
-!
 ! ----------------------------------------------------------------------
 !
 !  Programming notes:
@@ -1378,33 +1293,23 @@ subroutine dpchcm (n, x, f, d, incfd, skip, ismon, ierr)
 !     first loop can be readily parallelized, since the NSEG calls to
 !     CHFCM are independent.  The second loop can be cut short if
 !     ISMON(N) is ever equal to 2, for it cannot be changed further.
-!
-!     To produce a single precision version, simply:
-!        a. Change DPCHCM to PCHCM wherever it occurs,
-!        b. Change DCHFCM to CHFCM wherever it occurs, and
-!        c. Change the double precision declarations to real.
-!
-!  DECLARE ARGUMENTS.
-!
+
+
 integer n, incfd, ismon(n), ierr
-double precision  x(n), f(incfd,n), d(incfd,n)
+real(wp)  x(n), f(incfd,n), d(incfd,n)
 logical  skip
-!
-!  DECLARE LOCAL VARIABLES.
-!
+
 integer i, nseg
-double precision  delta
-integer dchfcm
-!
+real(wp)  delta
+
 !  VALIDITY-CHECK ARGUMENTS.
-!
-!***FIRST EXECUTABLE STATEMENT  DPCHCM
+
 if (skip)  go to 5
 !
-if ( n.lt.2 )  go to 5001
-if ( incfd.lt.1 )  go to 5002
+if ( n<2 )  go to 5001
+if ( incfd<1 )  go to 5002
 do 1  i = 2, n
-   if ( x(i).le.x(i-1) )  go to 5003
+   if ( x(i)<=x(i-1) )  go to 5003
 1 continue
 skip = .true.
 !
@@ -1417,7 +1322,7 @@ do 90  i = 1, nseg
 !                   -------------------------------
    ismon(i) = dchfcm (d(1,i), d(1,i+1), delta)
 !                   -------------------------------
-   if (i .eq. 1)  then
+   if (i == 1)  then
       ismon(n) = ismon(1)
    else
 !           Need to figure out cumulative monotonicity from following
@@ -1438,17 +1343,17 @@ do 90  i = 1, nseg
 !
 !           No change needed if equal or constant on this interval or
 !           already declared nonmonotonic.
-      if ( (ismon(i).ne.ismon(n)) .and. (ismon(i).ne.0) &
-                                  .and. (ismon(n).ne.2) )  then
-         if ( (ismon(i).eq.2) .or. (ismon(n).eq.0) )  then
+      if ( (ismon(i)/=ismon(n)) .and. (ismon(i)/=0) &
+                                  .and. (ismon(n)/=2) )  then
+         if ( (ismon(i)==2) .or. (ismon(n)==0) )  then
             ismon(n) =  ismon(i)
-         else if (ismon(i)*ismon(n) .lt. 0)  then
+         else if (ismon(i)*ismon(n) < 0)  then
 !                 This interval has opposite sense from curve so far.
             ismon(n) = 2
          else
 !                 At this point, both are nonzero with same sign, and
 !                 we have already eliminated case both +-1.
-            ismon(n) = isign (3, ismon(n))
+            ismon(n) = sign (3, ismon(n))
          endif
       endif
    endif
@@ -1462,14 +1367,14 @@ return
 !  ERROR RETURNS.
 !
 5001 continue
-!     N.LT.2 RETURN.
+!     N<2 RETURN.
 ierr = -1
 call xermsg ('SLATEC', 'DPCHCM', &
    'NUMBER OF DATA POINTS LESS THAN TWO', ierr, 1)
 return
 !
 5002 continue
-!     INCFD.LT.1 RETURN.
+!     INCFD<1 RETURN.
 ierr = -2
 call xermsg ('SLATEC', 'DPCHCM', 'INCREMENT LESS THAN ONE', ierr, &
    1)
@@ -1480,16 +1385,15 @@ return
 ierr = -3
 call xermsg ('SLATEC', 'DPCHCM', &
    'X-ARRAY NOT STRICTLY INCREASING', ierr, 1)
-return
-!------------- LAST LINE OF DPCHCM FOLLOWS -----------------------------
-end
-!DECK DPCHCS
+
+end subroutine dpchcm
+
 subroutine dpchcs (switch, n, h, slope, d, incfd, ierr)
-!***BEGIN PROLOGUE  DPCHCS
-!***SUBSIDIARY
+
+
 !***PURPOSE  Adjusts derivative values for DPCHIC
 !***LIBRARY   SLATEC (PCHIP)
-!***TYPE      DOUBLE PRECISION (PCHCS-S, DPCHCS-D)
+!***TYPE      real(wp) (PCHCS-S, DPCHCS-D)
 !***AUTHOR  Fritsch, F. N., (LLNL)
 !***DESCRIPTION
 !
@@ -1505,7 +1409,7 @@ subroutine dpchcs (switch, n, h, slope, d, incfd, ierr)
 !
 !        PARAMETER  (INCFD = ...)
 !        INTEGER  N, IERR
-!        DOUBLE PRECISION  SWITCH, H(N), SLOPE(N), D(INCFD,N)
+!        real(wp)  SWITCH, H(N), SLOPE(N), D(INCFD,N)
 !
 !        CALL  DPCHCS (SWITCH, N, H, SLOPE, D, INCFD, IERR)
 !
@@ -1514,7 +1418,7 @@ subroutine dpchcs (switch, n, h, slope, d, incfd, ierr)
 !     SWITCH -- (input) indicates the amount of control desired over
 !           local excursions from data.
 !
-!     N -- (input) number of data points.  (assumes N.GT.2 .)
+!     N -- (input) number of data points.  (assumes N>2 .)
 !
 !     H -- (input) real*8 array of interval lengths.
 !     SLOPE -- (input) real*8 array of data slopes.
@@ -1541,8 +1445,6 @@ subroutine dpchcs (switch, n, h, slope, d, incfd, ierr)
 !    WARNING:  This routine does no validity-checking of arguments.
 !    -------
 !
-!  Fortran intrinsics used:  ABS, MAX, MIN.
-!
 !***SEE ALSO  DPCHIC
 !***ROUTINES CALLED  DPCHST, DPCHSW
 !***REVISION HISTORY  (YYMMDD)
@@ -1556,7 +1458,7 @@ subroutine dpchcs (switch, n, h, slope, d, incfd, ierr)
 !           2. Changed fudge from 1 to 4 (based on experiments).
 !   820623  Moved PCHSD to an inline function (eliminating MSWTYP).
 !   820805  Converted to SLATEC library version.
-!   870707  Corrected conversion to double precision.
+!   870707  Corrected conversion to real(wp).
 !   870813  Minor cosmetic changes.
 !   890411  Added SAVE statements (Vers. 3.2).
 !   890531  Changed all specific intrinsics to generic.  (WRB)
@@ -1574,30 +1476,16 @@ subroutine dpchcs (switch, n, h, slope, d, incfd, ierr)
 !        either argument is zero, +1 if they are of the same sign, and
 !        -1 if they are of opposite sign.
 !**End
-!
-!  DECLARE ARGUMENTS.
-!
+
+
 integer  n, incfd, ierr
-double precision  switch, h(*), slope(*), d(incfd,*)
-!
-!  DECLARE LOCAL VARIABLES.
-!
+real(wp)  switch, h(*), slope(*), d(incfd,*)
+
 integer  i, indx, k, nless1
-double precision  del(3), dext, dfloc, dfmx, fact, fudge, one, &
-      slmax, wtave(2), zero
-save zero, one, fudge
-double precision  dpchst
-!
-!  DEFINE INLINE FUNCTION FOR WEIGHTED AVERAGE OF SLOPES.
-!
-double precision  dpchsd, s1, s2, h1, h2
-dpchsd(s1,s2,h1,h2) = (h2/(h1+h2))*s1 + (h1/(h1+h2))*s2
-!
-!  INITIALIZE.
-!
-data  zero /0.d0/,  one/1.d0/
-data  fudge /4.d0/
-!***FIRST EXECUTABLE STATEMENT  DPCHCS
+real(wp)  del(3), dext, dfloc, dfmx, fact, slmax, wtave(2)
+
+real(wp),parameter :: fudge = four
+
 ierr = 0
 nless1 = n - 1
 !
@@ -1612,12 +1500,12 @@ do 900  i = 2, nless1
 !....... SLOPE SWITCHES MONOTONICITY AT I-TH POINT .....................
 !
 !           DO NOT CHANGE D IF 'UP-DOWN-UP'.
-      if (i .gt. 2)  then
-         if ( dpchst(slope(i-2),slope(i)) .gt. zero)  go to 900
+      if (i > 2)  then
+         if ( dpchst(slope(i-2),slope(i)) > zero)  go to 900
 !                   --------------------------
       endif
-      if (i .lt. nless1)  then
-         if ( dpchst(slope(i+1),slope(i-1)) .gt. zero)  go to 900
+      if (i < nless1)  then
+         if ( dpchst(slope(i+1),slope(i-1)) > zero)  go to 900
 !                   ----------------------------
       endif
 !
@@ -1636,7 +1524,7 @@ do 900  i = 2, nless1
          k = i-1
 !              SET UP TO COMPUTE NEW VALUES FOR D(1,I-1) AND D(1,I).
          wtave(2) = dext
-         if (k .gt. 1) &
+         if (k > 1) &
             wtave(1) = dpchsd (slope(k-1), slope(k), h(k-1), h(k))
          go to 400
 !
@@ -1646,7 +1534,7 @@ do 900  i = 2, nless1
          k = i
 !              SET UP TO COMPUTE NEW VALUES FOR D(1,I) AND D(1,I+1).
          wtave(1) = dext
-         if (k .lt. nless1) &
+         if (k < nless1) &
             wtave(2) = dpchsd (slope(k), slope(k+1), h(k), h(k+1))
          go to 400
 !
@@ -1655,8 +1543,8 @@ do 900  i = 2, nless1
 !....... AT LEAST ONE OF SLOPE(I-1) AND SLOPE(I) IS ZERO --
 !                     CHECK FOR FLAT-TOPPED PEAK .......................
 !
-      if (i .eq. nless1)  go to 900
-      if ( dpchst(slope(i-1), slope(i+1)) .ge. zero)  go to 900
+      if (i == nless1)  go to 900
+      if ( dpchst(slope(i-1), slope(i+1)) >= zero)  go to 900
 !                -----------------------------
 !
 !           WE HAVE FLAT-TOPPED PEAK ON (X(I),X(I+1)).
@@ -1670,19 +1558,19 @@ do 900  i = 2, nless1
 !....... AT THIS POINT WE HAVE DETERMINED THAT THERE WILL BE AN EXTREMUM
 !        ON (X(K),X(K+1)), WHERE K=I OR I-1, AND HAVE SET ARRAY WTAVE--
 !           WTAVE(1) IS A WEIGHTED AVERAGE OF SLOPE(K-1) AND SLOPE(K),
-!                    IF K.GT.1
+!                    IF K>1
 !           WTAVE(2) IS A WEIGHTED AVERAGE OF SLOPE(K) AND SLOPE(K+1),
-!                    IF K.LT.N-1
+!                    IF K<N-1
 !
    slmax = abs(slope(k))
-   if (k .gt. 1)    slmax = max( slmax, abs(slope(k-1)) )
-   if (k.lt.nless1) slmax = max( slmax, abs(slope(k+1)) )
+   if (k > 1)    slmax = max( slmax, abs(slope(k-1)) )
+   if (k<nless1) slmax = max( slmax, abs(slope(k+1)) )
 !
-   if (k .gt. 1)  del(1) = slope(k-1) / slmax
+   if (k > 1)  del(1) = slope(k-1) / slmax
    del(2) = slope(k) / slmax
-   if (k.lt.nless1)  del(3) = slope(k+1) / slmax
+   if (k<nless1)  del(3) = slope(k+1) / slmax
 !
-   if ((k.gt.1) .and. (k.lt.nless1))  then
+   if ((k>1) .and. (k<nless1))  then
 !           NORMAL CASE -- EXTREMUM IS NOT IN A BOUNDARY INTERVAL.
       fact = fudge* abs(del(3)*(del(1)-del(2))*(wtave(2)/slmax))
       d(1,k) = d(1,k) + min(fact,one)*(wtave(1) - d(1,k))
@@ -1700,33 +1588,32 @@ do 900  i = 2, nless1
 !
 !....... ADJUST IF NECESSARY TO LIMIT EXCURSIONS FROM DATA.
 !
-   if (switch .le. zero)  go to 900
+   if (switch <= zero)  go to 900
 !
    dfloc = h(k)*abs(slope(k))
-   if (k .gt. 1)    dfloc = max( dfloc, h(k-1)*abs(slope(k-1)) )
-   if (k.lt.nless1) dfloc = max( dfloc, h(k+1)*abs(slope(k+1)) )
+   if (k > 1)    dfloc = max( dfloc, h(k-1)*abs(slope(k-1)) )
+   if (k<nless1) dfloc = max( dfloc, h(k+1)*abs(slope(k+1)) )
    dfmx = switch*dfloc
    indx = i-k+1
 !        INDX = 1 IF K=I, 2 IF K=I-1.
 !        ---------------------------------------------------------------
    call dpchsw(dfmx, indx, d(1,k), d(1,k+1), h(k), slope(k), ierr)
 !        ---------------------------------------------------------------
-   if (ierr .ne. 0)  return
+   if (ierr /= 0)  return
 !
 !....... END OF SEGMENT LOOP.
 !
 900 continue
 !
-return
-!------------- LAST LINE OF DPCHCS FOLLOWS -----------------------------
-end
-!DECK DPCHDF
-double precision function dpchdf (k, x, s, ierr)
-!***BEGIN PROLOGUE  DPCHDF
-!***SUBSIDIARY
+
+end subroutine dpchcs
+
+real(wp) function dpchdf (k, x, s, ierr)
+
+
 !***PURPOSE  Computes divided differences for DPCHCE and DPCHSP
 !***LIBRARY   SLATEC (PCHIP)
-!***TYPE      DOUBLE PRECISION (PCHDF-S, DPCHDF-D)
+!***TYPE      real(wp) (PCHDF-S, DPCHDF-D)
 !***AUTHOR  Fritsch, F. N., (LLNL)
 !***DESCRIPTION
 !
@@ -1752,7 +1639,7 @@ double precision function dpchdf (k, x, s, ierr)
 !
 !     On return:
 !        S      will be destroyed.
-!        IERR   will be set to -1 if K.LT.2 .
+!        IERR   will be set to -1 if K<2 .
 !        DPCHDF  will be set to the desired derivative approximation if
 !               IERR=0 or to zero if IERR=-1.
 !
@@ -1779,23 +1666,17 @@ double precision function dpchdf (k, x, s, ierr)
 !***END PROLOGUE  DPCHDF
 !
 !**End
-!
-!  DECLARE ARGUMENTS.
-!
+
+
 integer  k, ierr
-double precision  x(k), s(k)
-!
-!  DECLARE LOCAL VARIABLES.
-!
+real(wp)  x(k), s(k)
+
 integer  i, j
-double precision  value, zero
-save zero
-data  zero /0.d0/
-!
+real(wp)  value
+
 !  CHECK FOR LEGAL VALUE OF K.
-!
-!***FIRST EXECUTABLE STATEMENT  DPCHDF
-if (k .lt. 3)  go to 5001
+
+if (k < 3)  go to 5001
 !
 !  COMPUTE COEFFICIENTS OF INTERPOLATING POLYNOMIAL.
 !
@@ -1821,16 +1702,15 @@ return
 !  ERROR RETURN.
 !
 5001 continue
-!     K.LT.3 RETURN.
+!     K<3 RETURN.
 ierr = -1
 call xermsg ('SLATEC', 'DPCHDF', 'K LESS THAN THREE', ierr, 1)
 dpchdf = zero
-return
-!------------- LAST LINE OF DPCHDF FOLLOWS -----------------------------
-end
-!DECK DPCHFD
+
+end function dpchdf
+
 subroutine dpchfd (n, x, f, d, incfd, skip, ne, xe, fe, de, ierr)
-!***BEGIN PROLOGUE  DPCHFD
+
 !***PURPOSE  Evaluate a piecewise cubic Hermite function and its first
 !            derivative at an array of points.  May be used by itself
 !            for Hermite interpolation, or as an evaluator for DPCHIM
@@ -1838,7 +1718,7 @@ subroutine dpchfd (n, x, f, d, incfd, skip, ne, xe, fe, de, ierr)
 !            DPCHFE instead.
 !***LIBRARY   SLATEC (PCHIP)
 !***CATEGORY  E3, H1
-!***TYPE      DOUBLE PRECISION (PCHFD-S, DPCHFD-D)
+!***TYPE      real(wp) (PCHFD-S, DPCHFD-D)
 !***KEYWORDS  CUBIC HERMITE DIFFERENTIATION, CUBIC HERMITE EVALUATION,
 !             HERMITE INTERPOLATION, PCHIP, PIECEWISE CUBIC EVALUATION
 !***AUTHOR  Fritsch, F. N., (LLNL)
@@ -1865,7 +1745,7 @@ subroutine dpchfd (n, x, f, d, incfd, skip, ne, xe, fe, de, ierr)
 !
 !        PARAMETER  (INCFD = ...)
 !        INTEGER  N, NE, IERR
-!        DOUBLE PRECISION  X(N), F(INCFD,N), D(INCFD,N), XE(NE), FE(NE),
+!        real(wp)  X(N), F(INCFD,N), D(INCFD,N), XE(NE), FE(NE),
 !                          DE(NE)
 !        LOGICAL  SKIP
 !
@@ -1873,11 +1753,11 @@ subroutine dpchfd (n, x, f, d, incfd, skip, ne, xe, fe, de, ierr)
 !
 !   Parameters:
 !
-!     N -- (input) number of data points.  (Error return if N.LT.2 .)
+!     N -- (input) number of data points.  (Error return if N<2 .)
 !
 !     X -- (input) real*8 array of independent variable values.  The
 !           elements of X must be strictly increasing:
-!                X(I-1) .LT. X(I),  I = 2(1)N.
+!                X(I-1) < X(I),  I = 2(1)N.
 !           (Error return if not.)
 !
 !     F -- (input) real*8 array of function values.  F(1+(I-1)*INCFD) is
@@ -1887,7 +1767,7 @@ subroutine dpchfd (n, x, f, d, incfd, skip, ne, xe, fe, de, ierr)
 !           is the value corresponding to X(I).
 !
 !     INCFD -- (input) increment between successive values in F and D.
-!           (Error return if  INCFD.LT.1 .)
+!           (Error return if  INCFD<1 .)
 !
 !     SKIP -- (input/output) logical variable which should be set to
 !           .TRUE. if the user wishes to skip checks for validity of
@@ -1897,7 +1777,7 @@ subroutine dpchfd (n, x, f, d, incfd, skip, ne, xe, fe, de, ierr)
 !           SKIP will be set to .TRUE. on normal return.
 !
 !     NE -- (input) number of evaluation points.  (Error return if
-!           NE.LT.1 .)
+!           NE<1 .)
 !
 !     XE -- (input) real*8 array of points at which the functions are to
 !           be evaluated.
@@ -1906,8 +1786,8 @@ subroutine dpchfd (n, x, f, d, incfd, skip, ne, xe, fe, de, ierr)
 !          NOTES:
 !           1. The evaluation will be most efficient if the elements
 !              of XE are increasing relative to X;
-!              that is,   XE(J) .GE. X(I)
-!              implies    XE(K) .GE. X(I),  all K.GE.J .
+!              that is,   XE(J) >= X(I)
+!              implies    XE(K) >= X(I),  all K>=J .
 !           2. If any of the XE are outside the interval [X(1),X(N)],
 !              values are extrapolated from the nearest extreme cubic,
 !              and a warning error is returned.
@@ -1922,13 +1802,13 @@ subroutine dpchfd (n, x, f, d, incfd, skip, ne, xe, fe, de, ierr)
 !           Normal return:
 !              IERR = 0  (no errors).
 !           Warning error:
-!              IERR.GT.0  means that extrapolation was performed at
+!              IERR>0  means that extrapolation was performed at
 !                 IERR points.
 !           "Recoverable" errors:
-!              IERR = -1  if N.LT.2 .
-!              IERR = -2  if INCFD.LT.1 .
+!              IERR = -1  if N<2 .
+!              IERR = -2  if INCFD<1 .
 !              IERR = -3  if the X-array is not strictly increasing.
-!              IERR = -4  if NE.LT.1 .
+!              IERR = -4  if NE<1 .
 !           (Output arrays have not been changed in any of these cases.)
 !               NOTE:  The above errors are checked in the order listed,
 !                   and following arguments have **NOT** been validated.
@@ -1952,11 +1832,6 @@ subroutine dpchfd (n, x, f, d, incfd, skip, ne, xe, fe, de, ierr)
 !***END PROLOGUE  DPCHFD
 !  Programming notes:
 !
-!     1. To produce a single precision version, simply:
-!        a. Change DPCHFD to PCHFD, and DCHFDV to CHFDV, wherever they
-!           occur,
-!        b. Change the double precision declaration to real,
-!
 !     2. Most of the coding between the call to DCHFDV and the end of
 !        the IR-loop could be eliminated if it were permissible to
 !        assume that XE is ordered relative to X.
@@ -1968,53 +1843,49 @@ subroutine dpchfd (n, x, f, d, incfd, skip, ne, xe, fe, de, ierr)
 !
 !     4. The present code has a minor bug, which I have decided is not
 !        worth the effort that would be required to fix it.
-!        If XE contains points in [X(N-1),X(N)], followed by points .LT.
-!        X(N-1), followed by points .GT.X(N), the extrapolation points
+!        If XE contains points in [X(N-1),X(N)], followed by points <
+!        X(N-1), followed by points >X(N), the extrapolation points
 !        will be counted (at least) twice in the total returned in IERR.
-!
-!  DECLARE ARGUMENTS.
-!
+
+
 integer  n, incfd, ne, ierr
-double precision  x(*), f(incfd,*), d(incfd,*), xe(*), fe(*), &
+real(wp)  x(*), f(incfd,*), d(incfd,*), xe(*), fe(*), &
  de(*)
 logical  skip
-!
-!  DECLARE LOCAL VARIABLES.
-!
+
 integer  i, ierc, ir, j, jfirst, next(2), nj
-!
+
 !  VALIDITY-CHECK ARGUMENTS.
-!
-!***FIRST EXECUTABLE STATEMENT  DPCHFD
+
 if (skip)  go to 5
 !
-if ( n.lt.2 )  go to 5001
-if ( incfd.lt.1 )  go to 5002
+if ( n<2 )  go to 5001
+if ( incfd<1 )  go to 5002
 do 1  i = 2, n
-   if ( x(i).le.x(i-1) )  go to 5003
+   if ( x(i)<=x(i-1) )  go to 5003
 1 continue
 !
 !  FUNCTION DEFINITION IS OK, GO ON.
 !
 5 continue
-if ( ne.lt.1 )  go to 5004
+if ( ne<1 )  go to 5004
 ierr = 0
 skip = .true.
 !
 !  LOOP OVER INTERVALS.        (   INTERVAL INDEX IS  IL = IR-1  . )
-!                              ( INTERVAL IS X(IL).LE.X.LT.X(IR) . )
+!                              ( INTERVAL IS X(IL)<=X<X(IR) . )
 jfirst = 1
 ir = 2
 10 continue
 !
 !     SKIP OUT OF LOOP IF HAVE PROCESSED ALL EVALUATION POINTS.
 !
-   if (jfirst .gt. ne)  go to 5000
+   if (jfirst > ne)  go to 5000
 !
 !     LOCATE ALL POINTS IN INTERVAL.
 !
    do 20  j = jfirst, ne
-      if (xe(j) .ge. x(ir))  go to 30
+      if (xe(j) >= x(ir))  go to 30
 20    continue
    j = ne + 1
    go to 40
@@ -2022,14 +1893,14 @@ ir = 2
 !     HAVE LOCATED FIRST POINT BEYOND INTERVAL.
 !
 30    continue
-   if (ir .eq. n)  j = ne + 1
+   if (ir == n)  j = ne + 1
 !
 40    continue
    nj = j - jfirst
 !
 !     SKIP EVALUATION IF NO POINTS IN INTERVAL.
 !
-   if (nj .eq. 0)  go to 50
+   if (nj == 0)  go to 50
 !
 !     EVALUATE CUBIC AT XE(I),  I = JFIRST (1) J-1 .
 !
@@ -2037,15 +1908,15 @@ ir = 2
   call dchfdv (x(ir-1),x(ir), f(1,ir-1),f(1,ir), d(1,ir-1),d(1,ir) &
               ,nj, xe(jfirst), fe(jfirst), de(jfirst), next, ierc)
 !       ----------------------------------------------------------------
-   if (ierc .lt. 0)  go to 5005
+   if (ierc < 0)  go to 5005
 !
-   if (next(2) .eq. 0)  go to 42
-!        IF (NEXT(2) .GT. 0)  THEN
+   if (next(2) == 0)  go to 42
+!        IF (NEXT(2) > 0)  THEN
 !           IN THE CURRENT SET OF XE-POINTS, THERE ARE NEXT(2) TO THE
 !           RIGHT OF X(IR).
 !
-      if (ir .lt. n)  go to 41
-!           IF (IR .EQ. N)  THEN
+      if (ir < n)  go to 41
+!           IF (IR == N)  THEN
 !              THESE ARE ACTUALLY EXTRAPOLATION POINTS.
          ierr = ierr + next(2)
          go to 42
@@ -2057,13 +1928,13 @@ ir = 2
 !        ENDIF
 42    continue
 !
-   if (next(1) .eq. 0)  go to 49
-!        IF (NEXT(1) .GT. 0)  THEN
+   if (next(1) == 0)  go to 49
+!        IF (NEXT(1) > 0)  THEN
 !           IN THE CURRENT SET OF XE-POINTS, THERE ARE NEXT(1) TO THE
 !           LEFT OF X(IR-1).
 !
-      if (ir .gt. 2)  go to 43
-!           IF (IR .EQ. 2)  THEN
+      if (ir > 2)  go to 43
+!           IF (IR == 2)  THEN
 !              THESE ARE ACTUALLY EXTRAPOLATION POINTS.
          ierr = ierr + next(1)
          go to 49
@@ -2074,7 +1945,7 @@ ir = 2
 !
 !              FIRST, LOCATE FIRST POINT TO LEFT OF X(IR-1).
          do 44  i = jfirst, j-1
-            if (xe(i) .lt. x(ir-1))  go to 45
+            if (xe(i) < x(ir-1))  go to 45
 44          continue
 !              NOTE-- CANNOT DROP THROUGH HERE UNLESS THERE IS AN ERROR
 !                     IN DCHFDV.
@@ -2086,13 +1957,13 @@ ir = 2
 !
 !              NOW FIND OUT HOW FAR TO BACK UP IN THE X-ARRAY.
          do 46  i = 1, ir-1
-            if (xe(j) .lt. x(i)) go to 47
+            if (xe(j) < x(i)) go to 47
 46          continue
-!              NB-- CAN NEVER DROP THROUGH HERE, SINCE XE(J).LT.X(IR-1).
+!              NB-- CAN NEVER DROP THROUGH HERE, SINCE XE(J)<X(IR-1).
 !
 47          continue
-!              AT THIS POINT, EITHER  XE(J) .LT. X(1)
-!                 OR      X(I-1) .LE. XE(J) .LT. X(I) .
+!              AT THIS POINT, EITHER  XE(J) < X(1)
+!                 OR      X(I-1) <= XE(J) < X(I) .
 !              RESET IR, RECOGNIZING THAT IT WILL BE INCREMENTED BEFORE
 !              CYCLING.
          ir = max(1, i-1)
@@ -2106,7 +1977,7 @@ ir = 2
 !
 50 continue
 ir = ir + 1
-if (ir .le. n)  go to 10
+if (ir <= n)  go to 10
 !
 !  NORMAL RETURN.
 !
@@ -2116,14 +1987,14 @@ return
 !  ERROR RETURNS.
 !
 5001 continue
-!     N.LT.2 RETURN.
+!     N<2 RETURN.
 ierr = -1
 call xermsg ('SLATEC', 'DPCHFD', &
    'NUMBER OF DATA POINTS LESS THAN TWO', ierr, 1)
 return
 !
 5002 continue
-!     INCFD.LT.1 RETURN.
+!     INCFD<1 RETURN.
 ierr = -2
 call xermsg ('SLATEC', 'DPCHFD', 'INCREMENT LESS THAN ONE', ierr, &
    1)
@@ -2137,7 +2008,7 @@ call xermsg ('SLATEC', 'DPCHFD', &
 return
 !
 5004 continue
-!     NE.LT.1 RETURN.
+!     NE<1 RETURN.
 ierr = -4
 call xermsg ('SLATEC', 'DPCHFD', &
    'NUMBER OF EVALUATION POINTS LESS THAN ONE', ierr, 1)
@@ -2149,18 +2020,17 @@ return
 ierr = -5
 call xermsg ('SLATEC', 'DPCHFD', &
    'ERROR RETURN FROM DCHFDV -- FATAL', ierr, 2)
-return
-!------------- LAST LINE OF DPCHFD FOLLOWS -----------------------------
-end
-!DECK DPCHFE
+
+end subroutine dpchfd
+
 subroutine dpchfe (n, x, f, d, incfd, skip, ne, xe, fe, ierr)
-!***BEGIN PROLOGUE  DPCHFE
+
 !***PURPOSE  Evaluate a piecewise cubic Hermite function at an array of
 !            points.  May be used by itself for Hermite interpolation,
 !            or as an evaluator for DPCHIM or DPCHIC.
 !***LIBRARY   SLATEC (PCHIP)
 !***CATEGORY  E3
-!***TYPE      DOUBLE PRECISION (PCHFE-S, DPCHFE-D)
+!***TYPE      real(wp) (PCHFE-S, DPCHFE-D)
 !***KEYWORDS  CUBIC HERMITE EVALUATION, HERMITE INTERPOLATION, PCHIP,
 !             PIECEWISE CUBIC EVALUATION
 !***AUTHOR  Fritsch, F. N., (LLNL)
@@ -2184,18 +2054,18 @@ subroutine dpchfe (n, x, f, d, incfd, skip, ne, xe, fe, ierr)
 !
 !        PARAMETER  (INCFD = ...)
 !        INTEGER  N, NE, IERR
-!        DOUBLE PRECISION  X(N), F(INCFD,N), D(INCFD,N), XE(NE), FE(NE)
+!        real(wp)  X(N), F(INCFD,N), D(INCFD,N), XE(NE), FE(NE)
 !        LOGICAL  SKIP
 !
 !        CALL  DPCHFE (N, X, F, D, INCFD, SKIP, NE, XE, FE, IERR)
 !
 !   Parameters:
 !
-!     N -- (input) number of data points.  (Error return if N.LT.2 .)
+!     N -- (input) number of data points.  (Error return if N<2 .)
 !
 !     X -- (input) real*8 array of independent variable values.  The
 !           elements of X must be strictly increasing:
-!                X(I-1) .LT. X(I),  I = 2(1)N.
+!                X(I-1) < X(I),  I = 2(1)N.
 !           (Error return if not.)
 !
 !     F -- (input) real*8 array of function values.  F(1+(I-1)*INCFD) is
@@ -2205,7 +2075,7 @@ subroutine dpchfe (n, x, f, d, incfd, skip, ne, xe, fe, ierr)
 !           is the value corresponding to X(I).
 !
 !     INCFD -- (input) increment between successive values in F and D.
-!           (Error return if  INCFD.LT.1 .)
+!           (Error return if  INCFD<1 .)
 !
 !     SKIP -- (input/output) logical variable which should be set to
 !           .TRUE. if the user wishes to skip checks for validity of
@@ -2215,7 +2085,7 @@ subroutine dpchfe (n, x, f, d, incfd, skip, ne, xe, fe, ierr)
 !           SKIP will be set to .TRUE. on normal return.
 !
 !     NE -- (input) number of evaluation points.  (Error return if
-!           NE.LT.1 .)
+!           NE<1 .)
 !
 !     XE -- (input) real*8 array of points at which the function is to
 !           be evaluated.
@@ -2223,8 +2093,8 @@ subroutine dpchfe (n, x, f, d, incfd, skip, ne, xe, fe, ierr)
 !          NOTES:
 !           1. The evaluation will be most efficient if the elements
 !              of XE are increasing relative to X;
-!              that is,   XE(J) .GE. X(I)
-!              implies    XE(K) .GE. X(I),  all K.GE.J .
+!              that is,   XE(J) >= X(I)
+!              implies    XE(K) >= X(I),  all K>=J .
 !           2. If any of the XE are outside the interval [X(1),X(N)],
 !              values are extrapolated from the nearest extreme cubic,
 !              and a warning error is returned.
@@ -2236,13 +2106,13 @@ subroutine dpchfe (n, x, f, d, incfd, skip, ne, xe, fe, ierr)
 !           Normal return:
 !              IERR = 0  (no errors).
 !           Warning error:
-!              IERR.GT.0  means that extrapolation was performed at
+!              IERR>0  means that extrapolation was performed at
 !                 IERR points.
 !           "Recoverable" errors:
-!              IERR = -1  if N.LT.2 .
-!              IERR = -2  if INCFD.LT.1 .
+!              IERR = -1  if N<2 .
+!              IERR = -2  if INCFD<1 .
 !              IERR = -3  if the X-array is not strictly increasing.
-!              IERR = -4  if NE.LT.1 .
+!              IERR = -4  if NE<1 .
 !             (The FE-array has not been changed in any of these cases.)
 !               NOTE:  The above errors are checked in the order listed,
 !                   and following arguments have **NOT** been validated.
@@ -2263,11 +2133,6 @@ subroutine dpchfe (n, x, f, d, incfd, skip, ne, xe, fe, ierr)
 !***END PROLOGUE  DPCHFE
 !  Programming notes:
 !
-!     1. To produce a single precision version, simply:
-!        a. Change DPCHFE to PCHFE, and DCHFEV to CHFEV, wherever they
-!           occur,
-!        b. Change the double precision declaration to real,
-!
 !     2. Most of the coding between the call to DCHFEV and the end of
 !        the IR-loop could be eliminated if it were permissible to
 !        assume that XE is ordered relative to X.
@@ -2279,52 +2144,47 @@ subroutine dpchfe (n, x, f, d, incfd, skip, ne, xe, fe, ierr)
 !
 !     4. The present code has a minor bug, which I have decided is not
 !        worth the effort that would be required to fix it.
-!        If XE contains points in [X(N-1),X(N)], followed by points .LT.
-!        X(N-1), followed by points .GT.X(N), the extrapolation points
+!        If XE contains points in [X(N-1),X(N)], followed by points <
+!        X(N-1), followed by points >X(N), the extrapolation points
 !        will be counted (at least) twice in the total returned in IERR.
-!
-!  DECLARE ARGUMENTS.
-!
+
+
 integer  n, incfd, ne, ierr
-double precision  x(*), f(incfd,*), d(incfd,*), xe(*), fe(*)
+real(wp)  x(*), f(incfd,*), d(incfd,*), xe(*), fe(*)
 logical  skip
-!
-!  DECLARE LOCAL VARIABLES.
-!
+
 integer  i, ierc, ir, j, jfirst, next(2), nj
-!
+
 !  VALIDITY-CHECK ARGUMENTS.
-!
-!***FIRST EXECUTABLE STATEMENT  DPCHFE
 if (skip)  go to 5
 !
-if ( n.lt.2 )  go to 5001
-if ( incfd.lt.1 )  go to 5002
+if ( n<2 )  go to 5001
+if ( incfd<1 )  go to 5002
 do 1  i = 2, n
-   if ( x(i).le.x(i-1) )  go to 5003
+   if ( x(i)<=x(i-1) )  go to 5003
 1 continue
 !
 !  FUNCTION DEFINITION IS OK, GO ON.
 !
 5 continue
-if ( ne.lt.1 )  go to 5004
+if ( ne<1 )  go to 5004
 ierr = 0
 skip = .true.
 !
 !  LOOP OVER INTERVALS.        (   INTERVAL INDEX IS  IL = IR-1  . )
-!                              ( INTERVAL IS X(IL).LE.X.LT.X(IR) . )
+!                              ( INTERVAL IS X(IL)<=X<X(IR) . )
 jfirst = 1
 ir = 2
 10 continue
 !
 !     SKIP OUT OF LOOP IF HAVE PROCESSED ALL EVALUATION POINTS.
 !
-   if (jfirst .gt. ne)  go to 5000
+   if (jfirst > ne)  go to 5000
 !
 !     LOCATE ALL POINTS IN INTERVAL.
 !
    do 20  j = jfirst, ne
-      if (xe(j) .ge. x(ir))  go to 30
+      if (xe(j) >= x(ir))  go to 30
 20    continue
    j = ne + 1
    go to 40
@@ -2332,14 +2192,14 @@ ir = 2
 !     HAVE LOCATED FIRST POINT BEYOND INTERVAL.
 !
 30    continue
-   if (ir .eq. n)  j = ne + 1
+   if (ir == n)  j = ne + 1
 !
 40    continue
    nj = j - jfirst
 !
 !     SKIP EVALUATION IF NO POINTS IN INTERVAL.
 !
-   if (nj .eq. 0)  go to 50
+   if (nj == 0)  go to 50
 !
 !     EVALUATE CUBIC AT XE(I),  I = JFIRST (1) J-1 .
 !
@@ -2347,15 +2207,15 @@ ir = 2
   call dchfev (x(ir-1),x(ir), f(1,ir-1),f(1,ir), d(1,ir-1),d(1,ir) &
               ,nj, xe(jfirst), fe(jfirst), next, ierc)
 !       ----------------------------------------------------------------
-   if (ierc .lt. 0)  go to 5005
+   if (ierc < 0)  go to 5005
 !
-   if (next(2) .eq. 0)  go to 42
-!        IF (NEXT(2) .GT. 0)  THEN
+   if (next(2) == 0)  go to 42
+!        IF (NEXT(2) > 0)  THEN
 !           IN THE CURRENT SET OF XE-POINTS, THERE ARE NEXT(2) TO THE
 !           RIGHT OF X(IR).
 !
-      if (ir .lt. n)  go to 41
-!           IF (IR .EQ. N)  THEN
+      if (ir < n)  go to 41
+!           IF (IR == N)  THEN
 !              THESE ARE ACTUALLY EXTRAPOLATION POINTS.
          ierr = ierr + next(2)
          go to 42
@@ -2367,13 +2227,13 @@ ir = 2
 !        ENDIF
 42    continue
 !
-   if (next(1) .eq. 0)  go to 49
-!        IF (NEXT(1) .GT. 0)  THEN
+   if (next(1) == 0)  go to 49
+!        IF (NEXT(1) > 0)  THEN
 !           IN THE CURRENT SET OF XE-POINTS, THERE ARE NEXT(1) TO THE
 !           LEFT OF X(IR-1).
 !
-      if (ir .gt. 2)  go to 43
-!           IF (IR .EQ. 2)  THEN
+      if (ir > 2)  go to 43
+!           IF (IR == 2)  THEN
 !              THESE ARE ACTUALLY EXTRAPOLATION POINTS.
          ierr = ierr + next(1)
          go to 49
@@ -2384,7 +2244,7 @@ ir = 2
 !
 !              FIRST, LOCATE FIRST POINT TO LEFT OF X(IR-1).
          do 44  i = jfirst, j-1
-            if (xe(i) .lt. x(ir-1))  go to 45
+            if (xe(i) < x(ir-1))  go to 45
 44          continue
 !              NOTE-- CANNOT DROP THROUGH HERE UNLESS THERE IS AN ERROR
 !                     IN DCHFEV.
@@ -2396,13 +2256,13 @@ ir = 2
 !
 !              NOW FIND OUT HOW FAR TO BACK UP IN THE X-ARRAY.
          do 46  i = 1, ir-1
-            if (xe(j) .lt. x(i)) go to 47
+            if (xe(j) < x(i)) go to 47
 46          continue
-!              NB-- CAN NEVER DROP THROUGH HERE, SINCE XE(J).LT.X(IR-1).
+!              NB-- CAN NEVER DROP THROUGH HERE, SINCE XE(J)<X(IR-1).
 !
 47          continue
-!              AT THIS POINT, EITHER  XE(J) .LT. X(1)
-!                 OR      X(I-1) .LE. XE(J) .LT. X(I) .
+!              AT THIS POINT, EITHER  XE(J) < X(1)
+!                 OR      X(I-1) <= XE(J) < X(I) .
 !              RESET IR, RECOGNIZING THAT IT WILL BE INCREMENTED BEFORE
 !              CYCLING.
          ir = max(1, i-1)
@@ -2416,7 +2276,7 @@ ir = 2
 !
 50 continue
 ir = ir + 1
-if (ir .le. n)  go to 10
+if (ir <= n)  go to 10
 !
 !  NORMAL RETURN.
 !
@@ -2426,14 +2286,14 @@ return
 !  ERROR RETURNS.
 !
 5001 continue
-!     N.LT.2 RETURN.
+!     N<2 RETURN.
 ierr = -1
 call xermsg ('SLATEC', 'DPCHFE', &
    'NUMBER OF DATA POINTS LESS THAN TWO', ierr, 1)
 return
 !
 5002 continue
-!     INCFD.LT.1 RETURN.
+!     INCFD<1 RETURN.
 ierr = -2
 call xermsg ('SLATEC', 'DPCHFE', 'INCREMENT LESS THAN ONE', ierr, &
    1)
@@ -2447,7 +2307,7 @@ call xermsg ('SLATEC', 'DPCHFE', &
 return
 !
 5004 continue
-!     NE.LT.1 RETURN.
+!     NE<1 RETURN.
 ierr = -4
 call xermsg ('SLATEC', 'DPCHFE', &
    'NUMBER OF EVALUATION POINTS LESS THAN ONE', ierr, 1)
@@ -2459,18 +2319,17 @@ return
 ierr = -5
 call xermsg ('SLATEC', 'DPCHFE', &
    'ERROR RETURN FROM DCHFEV -- FATAL', ierr, 2)
-return
-!------------- LAST LINE OF DPCHFE FOLLOWS -----------------------------
-end
-!DECK DPCHIA
-double precision function dpchia (n, x, f, d, incfd, skip, a, b, &
+
+end subroutine dpchfe
+
+real(wp) function dpchia (n, x, f, d, incfd, skip, a, b, &
    ierr)
-!***BEGIN PROLOGUE  DPCHIA
+
 !***PURPOSE  Evaluate the definite integral of a piecewise cubic
 !            Hermite function over an arbitrary interval.
 !***LIBRARY   SLATEC (PCHIP)
 !***CATEGORY  E3, H2A1B2
-!***TYPE      DOUBLE PRECISION (PCHIA-S, DPCHIA-D)
+!***TYPE      real(wp) (PCHIA-S, DPCHIA-D)
 !***KEYWORDS  CUBIC HERMITE INTERPOLATION, NUMERICAL INTEGRATION, PCHIP,
 !             QUADRATURE
 !***AUTHOR  Fritsch, F. N., (LLNL)
@@ -2494,8 +2353,8 @@ double precision function dpchia (n, x, f, d, incfd, skip, a, b, &
 !
 !        PARAMETER  (INCFD = ...)
 !        INTEGER  N, IERR
-!        DOUBLE PRECISION  X(N), F(INCFD,N), D(INCFD,N), A, B
-!        DOUBLE PRECISION  VALUE, DPCHIA
+!        real(wp)  X(N), F(INCFD,N), D(INCFD,N), A, B
+!        real(wp)  VALUE, DPCHIA
 !        LOGICAL  SKIP
 !
 !        VALUE = DPCHIA (N, X, F, D, INCFD, SKIP, A, B, IERR)
@@ -2504,11 +2363,11 @@ double precision function dpchia (n, x, f, d, incfd, skip, a, b, &
 !
 !     VALUE -- (output) value of the requested integral.
 !
-!     N -- (input) number of data points.  (Error return if N.LT.2 .)
+!     N -- (input) number of data points.  (Error return if N<2 .)
 !
 !     X -- (input) real*8 array of independent variable values.  The
 !           elements of X must be strictly increasing:
-!                X(I-1) .LT. X(I),  I = 2(1)N.
+!                X(I-1) < X(I),  I = 2(1)N.
 !           (Error return if not.)
 !
 !     F -- (input) real*8 array of function values.  F(1+(I-1)*INCFD) is
@@ -2518,14 +2377,14 @@ double precision function dpchia (n, x, f, d, incfd, skip, a, b, &
 !           is the value corresponding to X(I).
 !
 !     INCFD -- (input) increment between successive values in F and D.
-!           (Error return if  INCFD.LT.1 .)
+!           (Error return if  INCFD<1 .)
 !
 !     SKIP -- (input/output) logical variable which should be set to
 !           .TRUE. if the user wishes to skip checks for validity of
 !           preceding parameters, or to .FALSE. otherwise.
 !           This will save time in case these checks have already
 !           been performed (say, in DPCHIM or DPCHIC).
-!           SKIP will be set to .TRUE. on return with IERR.GE.0 .
+!           SKIP will be set to .TRUE. on return with IERR>=0 .
 !
 !     A,B -- (input) the limits of integration.
 !           NOTE:  There is no requirement that [A,B] be contained in
@@ -2542,8 +2401,8 @@ double precision function dpchia (n, x, f, d, incfd, skip, a, b, &
 !                        means that either [A,B] contains data interval
 !                        or the intervals do not intersect at all.)
 !           "Recoverable" errors:
-!              IERR = -1  if N.LT.2 .
-!              IERR = -2  if INCFD.LT.1 .
+!              IERR = -1  if N<2 .
+!              IERR = -2  if INCFD<1 .
 !              IERR = -3  if the X-array is not strictly increasing.
 !                (VALUE will be zero in any of these cases.)
 !               NOTE:  The above errors are checked in the order listed,
@@ -2557,7 +2416,7 @@ double precision function dpchia (n, x, f, d, incfd, skip, a, b, &
 !   820730  DATE WRITTEN
 !   820804  Converted to SLATEC library version.
 !   870707  Corrected XERROR calls for d.p. name(s).
-!   870707  Corrected conversion to double precision.
+!   870707  Corrected conversion to real(wp).
 !   870813  Minor cosmetic changes.
 !   890206  Corrected XERROR calls.
 !   890411  Added SAVE statements (Vers. 3.2).
@@ -2568,7 +2427,7 @@ double precision function dpchia (n, x, f, d, incfd, skip, a, b, &
 !   891006  REVISION DATE from Version 3.2
 !   891214  Prologue converted to Version 4.0 format.  (BAB)
 !   900315  CALLs to XERROR changed to CALLs to XERMSG.  (THJ)
-!   930503  Corrected to set VALUE=0 when IERR.lt.0.  (FNF)
+!   930503  Corrected to set VALUE=0 when IERR<0.  (FNF)
 !   930504  Changed DCHFIV to DCHFIE.  (FNF)
 !***END PROLOGUE  DPCHIA
 !
@@ -2576,34 +2435,25 @@ double precision function dpchia (n, x, f, d, incfd, skip, a, b, &
 !  1. The error flag from DPCHID is tested, because a logic flaw
 !     could conceivably result in IERD=-4, which should be reported.
 !**End
-!
-!  DECLARE ARGUMENTS.
-!
+
+
 integer  n, incfd, ierr
-double precision  x(*), f(incfd,*), d(incfd,*), a, b
+real(wp)  x(*), f(incfd,*), d(incfd,*), a, b
 logical  skip
-!
-!  DECLARE LOCAL VARIABLES.
-!
+
 integer  i, ia, ib, ierd, il, ir
-double precision  value, xa, xb, zero
-save zero
-double precision  dchfie, dpchid
-!
-!  INITIALIZE.
-!
-data  zero /0.d0/
-!***FIRST EXECUTABLE STATEMENT  DPCHIA
+real(wp)  value, xa, xb
+
 value = zero
 !
 !  VALIDITY-CHECK ARGUMENTS.
 !
 if (skip)  go to 5
 !
-if ( n.lt.2 )  go to 5001
-if ( incfd.lt.1 )  go to 5002
+if ( n<2 )  go to 5001
+if ( incfd<1 )  go to 5002
 do 1  i = 2, n
-   if ( x(i).le.x(i-1) )  go to 5003
+   if ( x(i)<=x(i-1) )  go to 5003
 1 continue
 !
 !  FUNCTION DEFINITION IS OK, GO ON.
@@ -2611,46 +2461,46 @@ do 1  i = 2, n
 5 continue
 skip = .true.
 ierr = 0
-if ( (a.lt.x(1)) .or. (a.gt.x(n)) )  ierr = ierr + 1
-if ( (b.lt.x(1)) .or. (b.gt.x(n)) )  ierr = ierr + 2
+if ( (a<x(1)) .or. (a>x(n)) )  ierr = ierr + 1
+if ( (b<x(1)) .or. (b>x(n)) )  ierr = ierr + 2
 !
 !  COMPUTE INTEGRAL VALUE.
 !
-if (a .ne. b)  then
+if (a /= b)  then
    xa = min (a, b)
    xb = max (a, b)
-   if (xb .le. x(2))  then
+   if (xb <= x(2))  then
 !           INTERVAL IS TO LEFT OF X(2), SO USE FIRST CUBIC.
 !                   ---------------------------------------
       value = dchfie (x(1),x(2), f(1,1),f(1,2), &
                                  d(1,1),d(1,2), a, b)
 !                   ---------------------------------------
-   else if (xa .ge. x(n-1))  then
+   else if (xa >= x(n-1))  then
 !           INTERVAL IS TO RIGHT OF X(N-1), SO USE LAST CUBIC.
 !                   ------------------------------------------
       value = dchfie(x(n-1),x(n), f(1,n-1),f(1,n), &
                                   d(1,n-1),d(1,n), a, b)
 !                   ------------------------------------------
    else
-!           'NORMAL' CASE -- XA.LT.XB, XA.LT.X(N-1), XB.GT.X(2).
+!           'NORMAL' CASE -- XA<XB, XA<X(N-1), XB>X(2).
 !      ......LOCATE IA AND IB SUCH THAT
-!               X(IA-1).LT.XA.LE.X(IA).LE.X(IB).LE.XB.LE.X(IB+1)
+!               X(IA-1)<XA<=X(IA)<=X(IB)<=XB<=X(IB+1)
       ia = 1
       do 10  i = 1, n-1
-         if (xa .gt. x(i))  ia = i + 1
+         if (xa > x(i))  ia = i + 1
 10       continue
-!             IA = 1 IMPLIES XA.LT.X(1) .  OTHERWISE,
-!             IA IS LARGEST INDEX SUCH THAT X(IA-1).LT.XA,.
+!             IA = 1 IMPLIES XA<X(1) .  OTHERWISE,
+!             IA IS LARGEST INDEX SUCH THAT X(IA-1)<XA,.
 !
       ib = n
       do 20  i = n, ia, -1
-         if (xb .lt. x(i))  ib = i - 1
+         if (xb < x(i))  ib = i - 1
 20       continue
-!             IB = N IMPLIES XB.GT.X(N) .  OTHERWISE,
-!             IB IS SMALLEST INDEX SUCH THAT XB.LT.X(IB+1) .
+!             IB = N IMPLIES XB>X(N) .  OTHERWISE,
+!             IB IS SMALLEST INDEX SUCH THAT XB<X(IB+1) .
 !
 !     ......COMPUTE THE INTEGRAL.
-      if (ib .lt. ia)  then
+      if (ib < ia)  then
 !              THIS MEANS IB = IA-1 AND
 !                 (A,B) IS A SUBSET OF (X(IB),X(IA)).
 !                      -------------------------------------------
@@ -2660,17 +2510,17 @@ if (a .ne. b)  then
       else
 !
 !              FIRST COMPUTE INTEGRAL OVER (X(IA),X(IB)).
-!                (Case (IB .EQ. IA) is taken care of by initialization
+!                (Case (IB == IA) is taken care of by initialization
 !                 of VALUE to ZERO.)
-         if (ib .gt. ia)  then
+         if (ib > ia)  then
 !                         ---------------------------------------------
             value = dpchid (n, x, f, d, incfd, skip, ia, ib, ierd)
 !                         ---------------------------------------------
-            if (ierd .lt. 0)  go to 5004
+            if (ierd < 0)  go to 5004
          endif
 !
 !              THEN ADD ON INTEGRAL OVER (XA,X(IA)).
-         if (xa .lt. x(ia))  then
+         if (xa < x(ia))  then
             il = max(1, ia-1)
             ir = il + 1
 !                                 -------------------------------------
@@ -2680,7 +2530,7 @@ if (a .ne. b)  then
          endif
 !
 !              THEN ADD ON INTEGRAL OVER (X(IB),XB).
-         if (xb .gt. x(ib))  then
+         if (xb > x(ib))  then
             ir = min (ib+1, n)
             il = ir - 1
 !                                 -------------------------------------
@@ -2690,7 +2540,7 @@ if (a .ne. b)  then
          endif
 !
 !              FINALLY, ADJUST SIGN IF NECESSARY.
-         if (a .gt. b)  value = -value
+         if (a > b)  value = -value
       endif
    endif
 endif
@@ -2704,14 +2554,14 @@ return
 !  ERROR RETURNS.
 !
 5001 continue
-!     N.LT.2 RETURN.
+!     N<2 RETURN.
 ierr = -1
 call xermsg ('SLATEC', 'DPCHIA', &
    'NUMBER OF DATA POINTS LESS THAN TWO', ierr, 1)
 go to 5000
 !
 5002 continue
-!     INCFD.LT.1 RETURN.
+!     INCFD<1 RETURN.
 ierr = -2
 call xermsg ('SLATEC', 'DPCHIA', 'INCREMENT LESS THAN ONE', ierr, &
    1)
@@ -2730,18 +2580,18 @@ ierr = -4
 call xermsg ('SLATEC', 'DPCHIA', 'TROUBLE IN DPCHID', ierr, 1)
 go to 5000
 !------------- LAST LINE OF DPCHIA FOLLOWS -----------------------------
-end
-!DECK DPCHIC
+end function dpchia
+
 subroutine dpchic (ic, vc, switch, n, x, f, d, incfd, wk, nwk, &
    ierr)
-!***BEGIN PROLOGUE  DPCHIC
+
 !***PURPOSE  Set derivatives needed to determine a piecewise monotone
 !            piecewise cubic Hermite interpolant to given data.
 !            User control is available over boundary conditions and/or
 !            treatment of points where monotonicity switches direction.
 !***LIBRARY   SLATEC (PCHIP)
 !***CATEGORY  E1A
-!***TYPE      DOUBLE PRECISION (PCHIC-S, DPCHIC-D)
+!***TYPE      real(wp) (PCHIC-S, DPCHIC-D)
 !***KEYWORDS  CUBIC HERMITE INTERPOLATION, MONOTONE INTERPOLATION,
 !             PCHIP, PIECEWISE CUBIC INTERPOLATION,
 !             SHAPE-PRESERVING INTERPOLATION
@@ -2773,7 +2623,7 @@ subroutine dpchic (ic, vc, switch, n, x, f, d, incfd, wk, nwk, &
 !
 !        PARAMETER  (INCFD = ...)
 !        INTEGER  IC(2), N, NWK, IERR
-!        DOUBLE PRECISION  VC(2), SWITCH, X(N), F(INCFD,N), D(INCFD,N),
+!        real(wp)  VC(2), SWITCH, X(N), F(INCFD,N), D(INCFD,N),
 !                          WK(NWK)
 !
 !        CALL DPCHIC (IC, VC, SWITCH, N, X, F, D, INCFD, WK, NWK, IERR)
@@ -2787,33 +2637,33 @@ subroutine dpchic (ic, vc, switch, n, x, f, d, incfd, wk, nwk, &
 !
 !           IBEG = 0  for the default boundary condition (the same as
 !                     used by DPCHIM).
-!           If IBEG.NE.0, then its sign indicates whether the boundary
+!           If IBEG/=0, then its sign indicates whether the boundary
 !                     derivative is to be adjusted, if necessary, to be
 !                     compatible with monotonicity:
-!              IBEG.GT.0  if no adjustment is to be performed.
-!              IBEG.LT.0  if the derivative is to be adjusted for
+!              IBEG>0  if no adjustment is to be performed.
+!              IBEG<0  if the derivative is to be adjusted for
 !                     monotonicity.
 !
 !           Allowable values for the magnitude of IBEG are:
 !           IBEG = 1  if first derivative at X(1) is given in VC(1).
 !           IBEG = 2  if second derivative at X(1) is given in VC(1).
 !           IBEG = 3  to use the 3-point difference formula for D(1).
-!                     (Reverts to the default b.c. if N.LT.3 .)
+!                     (Reverts to the default b.c. if N<3 .)
 !           IBEG = 4  to use the 4-point difference formula for D(1).
-!                     (Reverts to the default b.c. if N.LT.4 .)
+!                     (Reverts to the default b.c. if N<4 .)
 !           IBEG = 5  to set D(1) so that the second derivative is con-
-!              tinuous at X(2). (Reverts to the default b.c. if N.LT.4.)
+!              tinuous at X(2). (Reverts to the default b.c. if N<4.)
 !              This option is somewhat analogous to the "not a knot"
 !              boundary condition provided by DPCHSP.
 !
 !          NOTES (IBEG):
-!           1. An error return is taken if ABS(IBEG).GT.5 .
-!           2. Only in case  IBEG.LE.0  is it guaranteed that the
+!           1. An error return is taken if ABS(IBEG)>5 .
+!           2. Only in case  IBEG<=0  is it guaranteed that the
 !              interpolant will be monotonic in the first interval.
 !              If the returned value of D(1) lies between zero and
 !              3*SLOPE(1), the interpolant will be monotonic.  This
-!              is **NOT** checked if IBEG.GT.0 .
-!           3. If IBEG.LT.0 and D(1) had to be changed to achieve mono-
+!              is **NOT** checked if IBEG>0 .
+!           3. If IBEG<0 and D(1) had to be changed to achieve mono-
 !              tonicity, a warning error is returned.
 !
 !           IEND may take on the same values as IBEG, but applied to
@@ -2821,13 +2671,13 @@ subroutine dpchic (ic, vc, switch, n, x, f, d, incfd, wk, nwk, &
 !           given in VC(2).
 !
 !          NOTES (IEND):
-!           1. An error return is taken if ABS(IEND).GT.5 .
-!           2. Only in case  IEND.LE.0  is it guaranteed that the
+!           1. An error return is taken if ABS(IEND)>5 .
+!           2. Only in case  IEND<=0  is it guaranteed that the
 !              interpolant will be monotonic in the last interval.
 !              If the returned value of D(1+(N-1)*INCFD) lies between
 !              zero and 3*SLOPE(N-1), the interpolant will be monotonic.
-!              This is **NOT** checked if IEND.GT.0 .
-!           3. If IEND.LT.0 and D(1+(N-1)*INCFD) had to be changed to
+!              This is **NOT** checked if IEND>0 .
+!           3. If IEND<0 and D(1+(N-1)*INCFD) had to be changed to
 !              achieve monotonicity, a warning error is returned.
 !
 !     VC -- (input) real*8 array of length 2 specifying desired boundary
@@ -2856,11 +2706,11 @@ subroutine dpchic (ic, vc, switch, n, x, f, d, incfd, wk, nwk, &
 !              immediate neighbors.
 !           If SWITCH is negative, no such control is to be imposed.
 !
-!     N -- (input) number of data points.  (Error return if N.LT.2 .)
+!     N -- (input) number of data points.  (Error return if N<2 .)
 !
 !     X -- (input) real*8 array of independent variable values.  The
 !           elements of X must be strictly increasing:
-!                X(I-1) .LT. X(I),  I = 2(1)N.
+!                X(I-1) < X(I),  I = 2(1)N.
 !           (Error return if not.)
 !
 !     F -- (input) real*8 array of dependent variable values to be
@@ -2877,7 +2727,7 @@ subroutine dpchic (ic, vc, switch, n, x, f, d, incfd, wk, nwk, &
 !
 !     INCFD -- (input) increment between successive values in F and D.
 !           This argument is provided primarily for 2-D applications.
-!           (Error return if  INCFD.LT.1 .)
+!           (Error return if  INCFD<1 .)
 !
 !     WK -- (scratch) real*8 array of working storage.  The user may
 !           wish to know that the returned values are:
@@ -2886,25 +2736,25 @@ subroutine dpchic (ic, vc, switch, n, x, f, d, incfd, wk, nwk, &
 !           for  I = 1(1)N-1.
 !
 !     NWK -- (input) length of work array.
-!           (Error return if  NWK.LT.2*(N-1) .)
+!           (Error return if  NWK<2*(N-1) .)
 !
 !     IERR -- (output) error flag.
 !           Normal return:
 !              IERR = 0  (no errors).
 !           Warning errors:
-!              IERR = 1  if IBEG.LT.0 and D(1) had to be adjusted for
+!              IERR = 1  if IBEG<0 and D(1) had to be adjusted for
 !                        monotonicity.
-!              IERR = 2  if IEND.LT.0 and D(1+(N-1)*INCFD) had to be
+!              IERR = 2  if IEND<0 and D(1+(N-1)*INCFD) had to be
 !                        adjusted for monotonicity.
 !              IERR = 3  if both of the above are true.
 !           "Recoverable" errors:
-!              IERR = -1  if N.LT.2 .
-!              IERR = -2  if INCFD.LT.1 .
+!              IERR = -1  if N<2 .
+!              IERR = -2  if INCFD<1 .
 !              IERR = -3  if the X-array is not strictly increasing.
-!              IERR = -4  if ABS(IBEG).GT.5 .
-!              IERR = -5  if ABS(IEND).GT.5 .
+!              IERR = -4  if ABS(IBEG)>5 .
+!              IERR = -5  if ABS(IEND)>5 .
 !              IERR = -6  if both of the above are true.
-!              IERR = -7  if NWK.LT.2*(N-1) .
+!              IERR = -7  if NWK<2*(N-1) .
 !             (The D-array has not been changed in any of these cases.)
 !               NOTE:  The above errors are checked in the order listed,
 !                   and following arguments have **NOT** been validated.
@@ -2937,49 +2787,31 @@ subroutine dpchic (ic, vc, switch, n, x, f, d, incfd, wk, nwk, &
 !   900315  CALLs to XERROR changed to CALLs to XERMSG.  (THJ)
 !   920429  Revised format and order of references.  (WRB,FNF)
 !***END PROLOGUE  DPCHIC
-!  Programming notes:
-!
-!     To produce a single precision version, simply:
-!        a. Change DPCHIC to PCHIC wherever it occurs,
-!        b. Change DPCHCE to PCHCE wherever it occurs,
-!        c. Change DPCHCI to PCHCI wherever it occurs,
-!        d. Change DPCHCS to PCHCS wherever it occurs,
-!        e. Change the double precision declarations to real, and
-!        f. Change the constant  ZERO  to single precision.
-!
-!  DECLARE ARGUMENTS.
-!
+
 integer  ic(2), n, incfd, nwk, ierr
-double precision  vc(2), switch, x(*), f(incfd,*), d(incfd,*), &
+real(wp)  vc(2), switch, x(*), f(incfd,*), d(incfd,*), &
  wk(nwk)
-!
-!  DECLARE LOCAL VARIABLES.
-!
+
 integer  i, ibeg, iend, nless1
-double precision  zero
-save zero
-data  zero /0.d0/
-!
+
 !  VALIDITY-CHECK ARGUMENTS.
-!
-!***FIRST EXECUTABLE STATEMENT  DPCHIC
-if ( n.lt.2 )  go to 5001
-if ( incfd.lt.1 )  go to 5002
+if ( n<2 )  go to 5001
+if ( incfd<1 )  go to 5002
 do 1  i = 2, n
-   if ( x(i).le.x(i-1) )  go to 5003
+   if ( x(i)<=x(i-1) )  go to 5003
 1 continue
 !
 ibeg = ic(1)
 iend = ic(2)
 ierr = 0
-if (abs(ibeg) .gt. 5)  ierr = ierr - 1
-if (abs(iend) .gt. 5)  ierr = ierr - 2
-if (ierr .lt. 0)  go to 5004
+if (abs(ibeg) > 5)  ierr = ierr - 1
+if (abs(iend) > 5)  ierr = ierr - 2
+if (ierr < 0)  go to 5004
 !
 !  FUNCTION DEFINITION IS OK -- GO ON.
 !
 nless1 = n - 1
-if ( nwk .lt. 2*nless1 )  go to 5007
+if ( nwk < 2*nless1 )  go to 5007
 !
 !  SET UP H AND SLOPE ARRAYS.
 !
@@ -2990,12 +2822,12 @@ do 20  i = 1, nless1
 !
 !  SPECIAL CASE N=2 -- USE LINEAR INTERPOLATION.
 !
-if (nless1 .gt. 1)  go to 1000
+if (nless1 > 1)  go to 1000
 d(1,1) = wk(2)
 d(1,n) = wk(2)
 go to 3000
 !
-!  NORMAL CASE  (N .GE. 3) .
+!  NORMAL CASE  (N >= 3) .
 !
 1000 continue
 !
@@ -3007,20 +2839,20 @@ call dpchci (n, wk(1), wk(n), d, incfd)
 !
 !  SET DERIVATIVES AT POINTS WHERE MONOTONICITY SWITCHES DIRECTION.
 !
-if (switch .eq. zero)  go to 3000
+if (switch == zero)  go to 3000
 !     ----------------------------------------------------
 call dpchcs (switch, n, wk(1), wk(n), d, incfd, ierr)
 !     ----------------------------------------------------
-if (ierr .ne. 0)  go to 5008
+if (ierr /= 0)  go to 5008
 !
 !  SET END CONDITIONS.
 !
 3000 continue
-if ( (ibeg.eq.0) .and. (iend.eq.0) )  go to 5000
+if ( (ibeg==0) .and. (iend==0) )  go to 5000
 !     -------------------------------------------------------
 call dpchce (ic, vc, n, x, wk(1), wk(n), d, incfd, ierr)
 !     -------------------------------------------------------
-if (ierr .lt. 0)  go to 5009
+if (ierr < 0)  go to 5009
 !
 !  NORMAL RETURN.
 !
@@ -3030,14 +2862,14 @@ return
 !  ERROR RETURNS.
 !
 5001 continue
-!     N.LT.2 RETURN.
+!     N<2 RETURN.
 ierr = -1
 call xermsg ('SLATEC', 'DPCHIC', &
    'NUMBER OF DATA POINTS LESS THAN TWO', ierr, 1)
 return
 !
 5002 continue
-!     INCFD.LT.1 RETURN.
+!     INCFD<1 RETURN.
 ierr = -2
 call xermsg ('SLATEC', 'DPCHIC', 'INCREMENT LESS THAN ONE', ierr, &
    1)
@@ -3057,7 +2889,7 @@ call xermsg ('SLATEC', 'DPCHIC', 'IC OUT OF RANGE', ierr, 1)
 return
 !
 5007 continue
-!     NWK .LT. 2*(N-1)  RETURN.
+!     NWK < 2*(N-1)  RETURN.
 ierr = -7
 call xermsg ('SLATEC', 'DPCHIC', 'WORK ARRAY TOO SMALL', ierr, 1)
 return
@@ -3075,19 +2907,18 @@ return
 ierr = -9
 call xermsg ('SLATEC', 'DPCHIC', 'ERROR RETURN FROM DPCHCE', &
    ierr, 1)
-return
-!------------- LAST LINE OF DPCHIC FOLLOWS -----------------------------
-end
-!DECK DPCHID
-double precision function dpchid (n, x, f, d, incfd, skip, ia, ib, &
+
+end subroutine dpchic
+
+real(wp) function dpchid (n, x, f, d, incfd, skip, ia, ib, &
    ierr)
-!***BEGIN PROLOGUE  DPCHID
+
 !***PURPOSE  Evaluate the definite integral of a piecewise cubic
 !            Hermite function over an interval whose endpoints are data
 !            points.
 !***LIBRARY   SLATEC (PCHIP)
 !***CATEGORY  E3, H2A1B2
-!***TYPE      DOUBLE PRECISION (PCHID-S, DPCHID-D)
+!***TYPE      real(wp) (PCHID-S, DPCHID-D)
 !***KEYWORDS  CUBIC HERMITE INTERPOLATION, NUMERICAL INTEGRATION, PCHIP,
 !             QUADRATURE
 !***AUTHOR  Fritsch, F. N., (LLNL)
@@ -3111,7 +2942,7 @@ double precision function dpchid (n, x, f, d, incfd, skip, ia, ib, &
 !
 !        PARAMETER  (INCFD = ...)
 !        INTEGER  N, IA, IB, IERR
-!        DOUBLE PRECISION  X(N), F(INCFD,N), D(INCFD,N)
+!        real(wp)  X(N), F(INCFD,N), D(INCFD,N)
 !        LOGICAL  SKIP
 !
 !        VALUE = DPCHID (N, X, F, D, INCFD, SKIP, IA, IB, IERR)
@@ -3120,11 +2951,11 @@ double precision function dpchid (n, x, f, d, incfd, skip, ia, ib, &
 !
 !     VALUE -- (output) value of the requested integral.
 !
-!     N -- (input) number of data points.  (Error return if N.LT.2 .)
+!     N -- (input) number of data points.  (Error return if N<2 .)
 !
 !     X -- (input) real*8 array of independent variable values.  The
 !           elements of X must be strictly increasing:
-!                X(I-1) .LT. X(I),  I = 2(1)N.
+!                X(I-1) < X(I),  I = 2(1)N.
 !           (Error return if not.)
 !
 !     F -- (input) real*8 array of function values.  F(1+(I-1)*INCFD) is
@@ -3134,7 +2965,7 @@ double precision function dpchid (n, x, f, d, incfd, skip, ia, ib, &
 !           is the value corresponding to X(I).
 !
 !     INCFD -- (input) increment between successive values in F and D.
-!           (Error return if  INCFD.LT.1 .)
+!           (Error return if  INCFD<1 .)
 !
 !     SKIP -- (input/output) logical variable which should be set to
 !           .TRUE. if the user wishes to skip checks for validity of
@@ -3151,8 +2982,8 @@ double precision function dpchid (n, x, f, d, incfd, skip, ia, ib, &
 !           Normal return:
 !              IERR = 0  (no errors).
 !           "Recoverable" errors:
-!              IERR = -1  if N.LT.2 .
-!              IERR = -2  if INCFD.LT.1 .
+!              IERR = -1  if N<2 .
+!              IERR = -2  if INCFD<1 .
 !              IERR = -3  if the X-array is not strictly increasing.
 !              IERR = -4  if IA or IB is out of range.
 !                (VALUE will be zero in any of these cases.)
@@ -3175,7 +3006,7 @@ double precision function dpchid (n, x, f, d, incfd, skip, ia, ib, &
 !   891006  REVISION DATE from Version 3.2
 !   891214  Prologue converted to Version 4.0 format.  (BAB)
 !   900315  CALLs to XERROR changed to CALLs to XERMSG.  (THJ)
-!   930504  Corrected to set VALUE=0 when IERR.ne.0.  (FNF)
+!   930504  Corrected to set VALUE=0 when IERR/=0.  (FNF)
 !***END PROLOGUE  DPCHID
 !
 !  Programming notes:
@@ -3184,46 +3015,38 @@ double precision function dpchid (n, x, f, d, incfd, skip, ia, ib, &
 !     mathematically equivalent to, but much more efficient than,
 !     calls to DCHFIE.
 !**End
-!
-!  DECLARE ARGUMENTS.
-!
+
+
 integer  n, incfd, ia, ib, ierr
-double precision  x(*), f(incfd,*), d(incfd,*)
+real(wp)  x(*), f(incfd,*), d(incfd,*)
 logical  skip
-!
-!  DECLARE LOCAL VARIABLES.
-!
+
 integer  i, iup, low
-double precision  h, half, six, sum, value, zero
-save zero, half, six
-!
-!  INITIALIZE.
-!
-data  zero /0.d0/,  half/.5d0/, six/6.d0/
-!***FIRST EXECUTABLE STATEMENT  DPCHID
+real(wp)  h, sum, value
+
 value = zero
 !
 !  VALIDITY-CHECK ARGUMENTS.
 !
 if (skip)  go to 5
 !
-if ( n.lt.2 )  go to 5001
-if ( incfd.lt.1 )  go to 5002
+if ( n<2 )  go to 5001
+if ( incfd<1 )  go to 5002
 do 1  i = 2, n
-   if ( x(i).le.x(i-1) )  go to 5003
+   if ( x(i)<=x(i-1) )  go to 5003
 1 continue
 !
 !  FUNCTION DEFINITION IS OK, GO ON.
 !
 5 continue
 skip = .true.
-if ((ia.lt.1) .or. (ia.gt.n))  go to 5004
-if ((ib.lt.1) .or. (ib.gt.n))  go to 5004
+if ((ia<1) .or. (ia>n))  go to 5004
+if ((ib<1) .or. (ib>n))  go to 5004
 ierr = 0
 !
 !  COMPUTE INTEGRAL VALUE.
 !
-if (ia .ne. ib)  then
+if (ia /= ib)  then
    low = min(ia, ib)
    iup = max(ia, ib) - 1
    sum = zero
@@ -3233,7 +3056,7 @@ if (ia .ne. ib)  then
                       (d(1,i) - d(1,i+1))*(h/six) )
 10    continue
    value = half * sum
-   if (ia .gt. ib)  value = -value
+   if (ia > ib)  value = -value
 endif
 !
 !  NORMAL RETURN.
@@ -3245,14 +3068,14 @@ return
 !  ERROR RETURNS.
 !
 5001 continue
-!     N.LT.2 RETURN.
+!     N<2 RETURN.
 ierr = -1
 call xermsg ('SLATEC', 'DPCHID', &
    'NUMBER OF DATA POINTS LESS THAN TWO', ierr, 1)
 go to 5000
 !
 5002 continue
-!     INCFD.LT.1 RETURN.
+!     INCFD<1 RETURN.
 ierr = -2
 call xermsg ('SLATEC', 'DPCHID', 'INCREMENT LESS THAN ONE', ierr, &
    1)
@@ -3272,10 +3095,10 @@ call xermsg ('SLATEC', 'DPCHID', 'IA OR IB OUT OF RANGE', ierr, &
    1)
 go to 5000
 !------------- LAST LINE OF DPCHID FOLLOWS -----------------------------
-end
-!DECK DPCHIM
+end function dpchid
+
 subroutine dpchim (n, x, f, d, incfd, ierr)
-!***BEGIN PROLOGUE  DPCHIM
+
 !***PURPOSE  Set derivatives needed to determine a monotone piecewise
 !            cubic Hermite interpolant to given data.  Boundary values
 !            are provided which are compatible with monotonicity.  The
@@ -3284,7 +3107,7 @@ subroutine dpchim (n, x, f, d, incfd, ierr)
 !            is desired over boundary or switch conditions.)
 !***LIBRARY   SLATEC (PCHIP)
 !***CATEGORY  E1A
-!***TYPE      DOUBLE PRECISION (PCHIM-S, DPCHIM-D)
+!***TYPE      real(wp) (PCHIM-S, DPCHIM-D)
 !***KEYWORDS  CUBIC HERMITE INTERPOLATION, MONOTONE INTERPOLATION,
 !             PCHIP, PIECEWISE CUBIC INTERPOLATION
 !***AUTHOR  Fritsch, F. N., (LLNL)
@@ -3320,18 +3143,18 @@ subroutine dpchim (n, x, f, d, incfd, ierr)
 !
 !        PARAMETER  (INCFD = ...)
 !        INTEGER  N, IERR
-!        DOUBLE PRECISION  X(N), F(INCFD,N), D(INCFD,N)
+!        real(wp)  X(N), F(INCFD,N), D(INCFD,N)
 !
 !        CALL  DPCHIM (N, X, F, D, INCFD, IERR)
 !
 !   Parameters:
 !
-!     N -- (input) number of data points.  (Error return if N.LT.2 .)
+!     N -- (input) number of data points.  (Error return if N<2 .)
 !           If N=2, simply does linear interpolation.
 !
 !     X -- (input) real*8 array of independent variable values.  The
 !           elements of X must be strictly increasing:
-!                X(I-1) .LT. X(I),  I = 2(1)N.
+!                X(I-1) < X(I),  I = 2(1)N.
 !           (Error return if not.)
 !
 !     F -- (input) real*8 array of dependent variable values to be
@@ -3350,17 +3173,17 @@ subroutine dpchim (n, x, f, d, incfd, ierr)
 !
 !     INCFD -- (input) increment between successive values in F and D.
 !           This argument is provided primarily for 2-D applications.
-!           (Error return if  INCFD.LT.1 .)
+!           (Error return if  INCFD<1 .)
 !
 !     IERR -- (output) error flag.
 !           Normal return:
 !              IERR = 0  (no errors).
 !           Warning error:
-!              IERR.GT.0  means that IERR switches in the direction
+!              IERR>0  means that IERR switches in the direction
 !                 of monotonicity were detected.
 !           "Recoverable" errors:
-!              IERR = -1  if N.LT.2 .
-!              IERR = -2  if INCFD.LT.1 .
+!              IERR = -1  if N<2 .
+!              IERR = -2  if INCFD<1 .
 !              IERR = -3  if the X-array is not strictly increasing.
 !             (The D-array has not been changed in any of these cases.)
 !               NOTE:  The above errors are checked in the order listed,
@@ -3402,35 +3225,19 @@ subroutine dpchim (n, x, f, d, incfd, ierr)
 !     1. The function  DPCHST(ARG1,ARG2)  is assumed to return zero if
 !        either argument is zero, +1 if they are of the same sign, and
 !        -1 if they are of opposite sign.
-!     2. To produce a single precision version, simply:
-!        a. Change DPCHIM to PCHIM wherever it occurs,
-!        b. Change DPCHST to PCHST wherever it occurs,
-!        c. Change all references to the Fortran intrinsics to their
-!           single precision equivalents,
-!        d. Change the double precision declarations to real, and
-!        e. Change the constants ZERO and THREE to single precision.
-!
-!  DECLARE ARGUMENTS.
-!
+
 integer  n, incfd, ierr
-double precision  x(*), f(incfd,*), d(incfd,*)
-!
-!  DECLARE LOCAL VARIABLES.
-!
+real(wp)  x(*), f(incfd,*), d(incfd,*)
+
 integer  i, nless1
-double precision  del1, del2, dmax, dmin, drat1, drat2, dsave, &
-      h1, h2, hsum, hsumt3, three, w1, w2, zero
-save zero, three
-double precision  dpchst
-data  zero /0.d0/, three/3.d0/
-!
+real(wp)  del1, del2, dmax, dmin, drat1, drat2, dsave, &
+      h1, h2, hsum, hsumt3, w1, w2
+
 !  VALIDITY-CHECK ARGUMENTS.
-!
-!***FIRST EXECUTABLE STATEMENT  DPCHIM
-if ( n.lt.2 )  go to 5001
-if ( incfd.lt.1 )  go to 5002
+if ( n<2 )  go to 5001
+if ( incfd<1 )  go to 5002
 do 1  i = 2, n
-   if ( x(i).le.x(i-1) )  go to 5003
+   if ( x(i)<=x(i-1) )  go to 5003
 1 continue
 !
 !  FUNCTION DEFINITION IS OK, GO ON.
@@ -3443,12 +3250,12 @@ dsave = del1
 !
 !  SPECIAL CASE N=2 -- USE LINEAR INTERPOLATION.
 !
-if (nless1 .gt. 1)  go to 10
+if (nless1 > 1)  go to 10
 d(1,1) = del1
 d(1,n) = del1
 go to 5000
 !
-!  NORMAL CASE  (N .GE. 3).
+!  NORMAL CASE  (N >= 3).
 !
 10 continue
 h2 = x(3) - x(2)
@@ -3461,18 +3268,18 @@ hsum = h1 + h2
 w1 = (h1 + hsum)/hsum
 w2 = -h1/hsum
 d(1,1) = w1*del1 + w2*del2
-if ( dpchst(d(1,1),del1) .le. zero)  then
+if ( dpchst(d(1,1),del1) <= zero)  then
    d(1,1) = zero
-else if ( dpchst(del1,del2) .lt. zero)  then
+else if ( dpchst(del1,del2) < zero)  then
 !        NEED DO THIS CHECK ONLY IF MONOTONICITY SWITCHES.
    dmax = three*del1
-   if (abs(d(1,1)) .gt. abs(dmax))  d(1,1) = dmax
+   if (abs(d(1,1)) > abs(dmax))  d(1,1) = dmax
 endif
 !
 !  LOOP THROUGH INTERIOR POINTS.
 !
 do 50  i = 2, nless1
-   if (i .eq. 2)  go to 40
+   if (i == 2)  go to 40
 !
    h1 = h2
    h2 = x(i+1) - x(i)
@@ -3489,8 +3296,8 @@ do 50  i = 2, nless1
 !        COUNT NUMBER OF CHANGES IN DIRECTION OF MONOTONICITY.
 !
 41    continue
-   if (del2 .eq. zero)  go to 50
-   if ( dpchst(dsave,del2) .lt. zero)  ierr = ierr + 1
+   if (del2 == zero)  go to 50
+   if ( dpchst(dsave,del2) < zero)  ierr = ierr + 1
    dsave = del2
    go to 50
 !
@@ -3519,12 +3326,12 @@ do 50  i = 2, nless1
 w1 = -h2/hsum
 w2 = (h2 + hsum)/hsum
 d(1,n) = w1*del1 + w2*del2
-if ( dpchst(d(1,n),del2) .le. zero)  then
+if ( dpchst(d(1,n),del2) <= zero)  then
    d(1,n) = zero
-else if ( dpchst(del1,del2) .lt. zero)  then
+else if ( dpchst(del1,del2) < zero)  then
 !        NEED DO THIS CHECK ONLY IF MONOTONICITY SWITCHES.
    dmax = three*del2
-   if (abs(d(1,n)) .gt. abs(dmax))  d(1,n) = dmax
+   if (abs(d(1,n)) > abs(dmax))  d(1,n) = dmax
 endif
 !
 !  NORMAL RETURN.
@@ -3535,14 +3342,14 @@ return
 !  ERROR RETURNS.
 !
 5001 continue
-!     N.LT.2 RETURN.
+!     N<2 RETURN.
 ierr = -1
 call xermsg ('SLATEC', 'DPCHIM', &
    'NUMBER OF DATA POINTS LESS THAN TWO', ierr, 1)
 return
 !
 5002 continue
-!     INCFD.LT.1 RETURN.
+!     INCFD<1 RETURN.
 ierr = -2
 call xermsg ('SLATEC', 'DPCHIM', 'INCREMENT LESS THAN ONE', ierr, &
    1)
@@ -3553,17 +3360,16 @@ return
 ierr = -3
 call xermsg ('SLATEC', 'DPCHIM', &
    'X-ARRAY NOT STRICTLY INCREASING', ierr, 1)
-return
-!------------- LAST LINE OF DPCHIM FOLLOWS -----------------------------
-end
-!DECK DPCHKT
+
+end subroutine dpchim
+
 subroutine dpchkt (n, x, knotyp, t)
-!***BEGIN PROLOGUE  DPCHKT
-!***SUBSIDIARY
+
+
 !***PURPOSE  Compute B-spline knot sequence for DPCHBS.
 !***LIBRARY   SLATEC (PCHIP)
 !***CATEGORY  E3
-!***TYPE      DOUBLE PRECISION (PCHKT-S, DPCHKT-D)
+!***TYPE      real(wp) (PCHKT-S, DPCHKT-D)
 !***AUTHOR  Fritsch, F. N., (LLNL)
 !***DESCRIPTION
 !
@@ -3578,9 +3384,9 @@ subroutine dpchkt (n, x, knotyp, t)
 !  Output arguments:  T.
 !
 !  Restrictions/assumptions:
-!     1. N.GE.2 .  (not checked)
-!     2. X(i).LT.X(i+1), i=1,...,N .  (not checked)
-!     3. 0.LE.KNOTYP.LE.2 .  (Acts like KNOTYP=0 for any other value.)
+!     1. N>=2 .  (not checked)
+!     2. X(i)<X(i+1), i=1,...,N .  (not checked)
+!     3. 0<=KNOTYP<=2 .  (Acts like KNOTYP=0 for any other value.)
 !
 !***SEE ALSO  DPCHBS
 !***ROUTINES CALLED  (NONE)
@@ -3589,7 +3395,7 @@ subroutine dpchkt (n, x, knotyp, t)
 !   900405  Converted Fortran to upper case.
 !   900410  Converted prologue to SLATEC 4.0 format.
 !   900410  Minor cosmetic changes.
-!   900430  Produced double precision version.
+!   900430  Produced real(wp) version.
 !   930514  Changed NKNOTS from an output to an input variable.  (FNF)
 !   930604  Removed unused variable NKNOTS from argument list.  (FNF)
 !***END PROLOGUE  DPCHKT
@@ -3600,20 +3406,15 @@ subroutine dpchkt (n, x, knotyp, t)
 !  calling, it is unnecessary for such validation to be done here.
 !
 !**End
-!
-!  Declare arguments.
-!
+
+
 integer  n, knotyp
-double precision  x(*), t(*)
-!
-!  Declare local variables.
-!
+real(wp)  x(*), t(*)
+
 integer  j, k, ndim
-double precision  hbeg, hend
-!***FIRST EXECUTABLE STATEMENT  DPCHKT
-!
+real(wp)  hbeg, hend
+
 !  Initialize.
-!
 ndim = 2*n
 !
 !  Set interior knots.
@@ -3631,11 +3432,11 @@ do 20  k = 1, n
 !
 hbeg = x(2) - x(1)
 hend = x(n) - x(n-1)
-if (knotyp.eq.1 )  then
+if (knotyp==1 )  then
 !          Extrapolate.
    t(2) = x(1) - hbeg
    t(ndim+3) = x(n) + hend
-else if ( knotyp.eq.2 )  then
+else if ( knotyp==2 )  then
 !          Periodic.
    t(2) = x(1) - hend
    t(ndim+3) = x(n) + hbeg
@@ -3649,18 +3450,17 @@ t(ndim+4) = t(ndim+3)
 !
 !  Terminate.
 !
-return
-!------------- LAST LINE OF DPCHKT FOLLOWS -----------------------------
-end
-!DECK DPCHSP
+
+end subroutine dpchkt
+
 subroutine dpchsp (ic, vc, n, x, f, d, incfd, wk, nwk, ierr)
-!***BEGIN PROLOGUE  DPCHSP
+
 !***PURPOSE  Set derivatives needed to determine the Hermite represen-
 !            tation of the cubic spline interpolant to given data, with
 !            specified boundary conditions.
 !***LIBRARY   SLATEC (PCHIP)
 !***CATEGORY  E1A
-!***TYPE      DOUBLE PRECISION (PCHSP-S, DPCHSP-D)
+!***TYPE      real(wp) (PCHSP-S, DPCHSP-D)
 !***KEYWORDS  CUBIC HERMITE INTERPOLATION, PCHIP,
 !             PIECEWISE CUBIC INTERPOLATION, SPLINE INTERPOLATION
 !***AUTHOR  Fritsch, F. N., (LLNL)
@@ -3691,7 +3491,7 @@ subroutine dpchsp (ic, vc, n, x, f, d, incfd, wk, nwk, ierr)
 !
 !        PARAMETER  (INCFD = ...)
 !        INTEGER  IC(2), N, NWK, IERR
-!        DOUBLE PRECISION  VC(2), X(N), F(INCFD,N), D(INCFD,N), WK(NWK)
+!        real(wp)  VC(2), X(N), F(INCFD,N), D(INCFD,N), WK(NWK)
 !
 !        CALL  DPCHSP (IC, VC, N, X, F, D, INCFD, WK, NWK, IERR)
 !
@@ -3709,9 +3509,9 @@ subroutine dpchsp (ic, vc, n, x, f, d, incfd, wk, nwk, ierr)
 !           IBEG = 1  if first derivative at X(1) is given in VC(1).
 !           IBEG = 2  if second derivative at X(1) is given in VC(1).
 !           IBEG = 3  to use the 3-point difference formula for D(1).
-!                     (Reverts to the default b.c. if N.LT.3 .)
+!                     (Reverts to the default b.c. if N<3 .)
 !           IBEG = 4  to use the 4-point difference formula for D(1).
-!                     (Reverts to the default b.c. if N.LT.4 .)
+!                     (Reverts to the default b.c. if N<4 .)
 !          NOTES:
 !           1. An error return is taken if IBEG is out of range.
 !           2. For the "natural" boundary condition, use IBEG=2 and
@@ -3731,11 +3531,11 @@ subroutine dpchsp (ic, vc, n, x, f, d, incfd, wk, nwk, ierr)
 !           VC(1) need be set only if IC(1) = 1 or 2 .
 !           VC(2) need be set only if IC(2) = 1 or 2 .
 !
-!     N -- (input) number of data points.  (Error return if N.LT.2 .)
+!     N -- (input) number of data points.  (Error return if N<2 .)
 !
 !     X -- (input) real*8 array of independent variable values.  The
 !           elements of X must be strictly increasing:
-!                X(I-1) .LT. X(I),  I = 2(1)N.
+!                X(I-1) < X(I),  I = 2(1)N.
 !           (Error return if not.)
 !
 !     F -- (input) real*8 array of dependent variable values to be
@@ -3751,22 +3551,22 @@ subroutine dpchsp (ic, vc, n, x, f, d, incfd, wk, nwk, ierr)
 !
 !     INCFD -- (input) increment between successive values in F and D.
 !           This argument is provided primarily for 2-D applications.
-!           (Error return if  INCFD.LT.1 .)
+!           (Error return if  INCFD<1 .)
 !
 !     WK -- (scratch) real*8 array of working storage.
 !
 !     NWK -- (input) length of work array.
-!           (Error return if NWK.LT.2*N .)
+!           (Error return if NWK<2*N .)
 !
 !     IERR -- (output) error flag.
 !           Normal return:
 !              IERR = 0  (no errors).
 !           "Recoverable" errors:
-!              IERR = -1  if N.LT.2 .
-!              IERR = -2  if INCFD.LT.1 .
+!              IERR = -1  if N<2 .
+!              IERR = -2  if INCFD<1 .
 !              IERR = -3  if the X-array is not strictly increasing.
-!              IERR = -4  if IBEG.LT.0 or IBEG.GT.4 .
-!              IERR = -5  if IEND.LT.0 of IEND.GT.4 .
+!              IERR = -4  if IBEG<0 or IBEG>4 .
+!              IERR = -5  if IEND<0 of IEND>4 .
 !              IERR = -6  if both of the above are true.
 !              IERR = -7  if NWK is too small.
 !               NOTE:  The above errors are checked in the order listed,
@@ -3794,47 +3594,30 @@ subroutine dpchsp (ic, vc, n, x, f, d, incfd, wk, nwk, ierr)
 !   900315  CALLs to XERROR changed to CALLs to XERMSG.  (THJ)
 !   920429  Revised format and order of references.  (WRB,FNF)
 !***END PROLOGUE  DPCHSP
-!  Programming notes:
-!
-!     To produce a single precision version, simply:
-!        a. Change DPCHSP to PCHSP wherever it occurs,
-!        b. Change the double precision declarations to real, and
-!        c. Change the constants ZERO, HALF, ... to single precision.
-!
-!  DECLARE ARGUMENTS.
-!
+
 integer  ic(2), n, incfd, nwk, ierr
-double precision  vc(2), x(*), f(incfd,*), d(incfd,*), wk(2,*)
-!
-!  DECLARE LOCAL VARIABLES.
-!
+real(wp)  vc(2), x(*), f(incfd,*), d(incfd,*), wk(2,*)
+
 integer  ibeg, iend, index, j, nm1
-double precision  g, half, one, stemp(3), three, two, xtemp(4), &
-  zero
-save zero, half, one, two, three
-double precision  dpchdf
-!
-data  zero /0.d0/, half/.5d0/, one/1.d0/, two/2.d0/, three/3.d0/
-!
+real(wp)  g, stemp(3), xtemp(4)
+
 !  VALIDITY-CHECK ARGUMENTS.
-!
-!***FIRST EXECUTABLE STATEMENT  DPCHSP
-if ( n.lt.2 )  go to 5001
-if ( incfd.lt.1 )  go to 5002
+if ( n<2 )  go to 5001
+if ( incfd<1 )  go to 5002
 do 1  j = 2, n
-   if ( x(j).le.x(j-1) )  go to 5003
+   if ( x(j)<=x(j-1) )  go to 5003
 1 continue
 !
 ibeg = ic(1)
 iend = ic(2)
 ierr = 0
-if ( (ibeg.lt.0).or.(ibeg.gt.4) )  ierr = ierr - 1
-if ( (iend.lt.0).or.(iend.gt.4) )  ierr = ierr - 2
-if ( ierr.lt.0 )  go to 5004
+if ( (ibeg<0).or.(ibeg>4) )  ierr = ierr - 1
+if ( (iend<0).or.(iend>4) )  ierr = ierr - 2
+if ( ierr<0 )  go to 5004
 !
 !  FUNCTION DEFINITION IS OK -- GO ON.
 !
-if ( nwk .lt. 2*n )  go to 5007
+if ( nwk < 2*n )  go to 5007
 !
 !  COMPUTE FIRST DIFFERENCES OF X SEQUENCE AND STORE IN WK(1,.). ALSO,
 !  COMPUTE FIRST DIVIDED DIFFERENCE OF DATA AND STORE IN WK(2,.).
@@ -3845,42 +3628,42 @@ do 5  j=2,n
 !
 !  SET TO DEFAULT BOUNDARY CONDITIONS IF N IS TOO SMALL.
 !
-if ( ibeg.gt.n )  ibeg = 0
-if ( iend.gt.n )  iend = 0
+if ( ibeg>n )  ibeg = 0
+if ( iend>n )  iend = 0
 !
 !  SET UP FOR BOUNDARY CONDITIONS.
 !
-if ( (ibeg.eq.1).or.(ibeg.eq.2) )  then
+if ( (ibeg==1).or.(ibeg==2) )  then
    d(1,1) = vc(1)
-else if (ibeg .gt. 2)  then
+else if (ibeg > 2)  then
 !        PICK UP FIRST IBEG POINTS, IN REVERSE ORDER.
    do 10  j = 1, ibeg
       index = ibeg-j+1
 !           INDEX RUNS FROM IBEG DOWN TO 1.
       xtemp(j) = x(index)
-      if (j .lt. ibeg)  stemp(j) = wk(2,index)
+      if (j < ibeg)  stemp(j) = wk(2,index)
 10    continue
 !                 --------------------------------
    d(1,1) = dpchdf (ibeg, xtemp, stemp, ierr)
 !                 --------------------------------
-   if (ierr .ne. 0)  go to 5009
+   if (ierr /= 0)  go to 5009
    ibeg = 1
 endif
 !
-if ( (iend.eq.1).or.(iend.eq.2) )  then
+if ( (iend==1).or.(iend==2) )  then
    d(1,n) = vc(2)
-else if (iend .gt. 2)  then
+else if (iend > 2)  then
 !        PICK UP LAST IEND POINTS.
    do 15  j = 1, iend
       index = n-iend+j
 !           INDEX RUNS FROM N+1-IEND UP TO N.
       xtemp(j) = x(index)
-      if (j .lt. iend)  stemp(j) = wk(2,index+1)
+      if (j < iend)  stemp(j) = wk(2,index+1)
 15    continue
 !                 --------------------------------
    d(1,n) = dpchdf (iend, xtemp, stemp, ierr)
 !                 --------------------------------
-   if (ierr .ne. 0)  go to 5009
+   if (ierr /= 0)  go to 5009
    iend = 1
 endif
 !
@@ -3894,20 +3677,20 @@ endif
 !  CONSTRUCT FIRST EQUATION FROM FIRST BOUNDARY CONDITION, OF THE FORM
 !             WK(2,1)*S(1) + WK(1,1)*S(2) = D(1,1)
 !
-if (ibeg .eq. 0)  then
-   if (n .eq. 2)  then
+if (ibeg == 0)  then
+   if (n == 2)  then
 !           NO CONDITION AT LEFT END AND N = 2.
       wk(2,1) = one
       wk(1,1) = one
       d(1,1) = two*wk(2,2)
    else
-!           NOT-A-KNOT CONDITION AT LEFT END AND N .GT. 2.
+!           NOT-A-KNOT CONDITION AT LEFT END AND N > 2.
       wk(2,1) = wk(1,3)
       wk(1,1) = wk(1,2) + wk(1,3)
       d(1,1) =((wk(1,2) + two*wk(1,1))*wk(2,2)*wk(1,3) &
                         + wk(1,2)**2*wk(2,3)) / wk(1,1)
    endif
-else if (ibeg .eq. 1)  then
+else if (ibeg == 1)  then
 !        SLOPE PRESCRIBED AT LEFT END.
    wk(2,1) = one
    wk(1,1) = zero
@@ -3923,9 +3706,9 @@ endif
 !  EQUATION READS    WK(2,J)*S(J) + WK(1,J)*S(J+1) = D(1,J).
 !
 nm1 = n-1
-if (nm1 .gt. 1)  then
+if (nm1 > 1)  then
    do 20 j=2,nm1
-      if (wk(2,j-1) .eq. zero)  go to 5008
+      if (wk(2,j-1) == zero)  go to 5008
       g = -wk(1,j+1)/wk(2,j-1)
       d(1,j) = g*d(1,j-1) &
                   + three*(wk(1,j)*wk(2,j+1) + wk(1,j+1)*wk(2,j))
@@ -3939,28 +3722,28 @@ endif
 !     IF SLOPE IS PRESCRIBED AT RIGHT END, ONE CAN GO DIRECTLY TO BACK-
 !     SUBSTITUTION, SINCE ARRAYS HAPPEN TO BE SET UP JUST RIGHT FOR IT
 !     AT THIS POINT.
-if (iend .eq. 1)  go to 30
+if (iend == 1)  go to 30
 !
-if (iend .eq. 0)  then
-   if (n.eq.2 .and. ibeg.eq.0)  then
+if (iend == 0)  then
+   if (n==2 .and. ibeg==0)  then
 !           NOT-A-KNOT AT RIGHT ENDPOINT AND AT LEFT ENDPOINT AND N = 2.
       d(1,2) = wk(2,2)
       go to 30
-   else if ((n.eq.2) .or. (n.eq.3 .and. ibeg.eq.0))  then
+   else if ((n==2) .or. (n==3 .and. ibeg==0))  then
 !           EITHER (N=3 AND NOT-A-KNOT ALSO AT LEFT) OR (N=2 AND *NOT*
 !           NOT-A-KNOT AT LEFT END POINT).
       d(1,n) = two*wk(2,n)
       wk(2,n) = one
-      if (wk(2,n-1) .eq. zero)  go to 5008
+      if (wk(2,n-1) == zero)  go to 5008
       g = -one/wk(2,n-1)
    else
-!           NOT-A-KNOT AND N .GE. 3, AND EITHER N.GT.3 OR  ALSO NOT-A-
+!           NOT-A-KNOT AND N >= 3, AND EITHER N>3 OR  ALSO NOT-A-
 !           KNOT AT LEFT END POINT.
       g = wk(1,n-1) + wk(1,n)
 !           DO NOT NEED TO CHECK FOLLOWING DENOMINATORS (X-DIFFERENCES).
       d(1,n) = ((wk(1,n)+two*g)*wk(2,n)*wk(1,n-1) &
                   + wk(1,n)**2*(f(1,n-1)-f(1,n-2))/wk(1,n-1))/g
-      if (wk(2,n-1) .eq. zero)  go to 5008
+      if (wk(2,n-1) == zero)  go to 5008
       g = -g/wk(2,n-1)
       wk(2,n) = wk(1,n-1)
    endif
@@ -3968,21 +3751,21 @@ else
 !        SECOND DERIVATIVE PRESCRIBED AT RIGHT ENDPOINT.
    d(1,n) = three*wk(2,n) + half*wk(1,n)*d(1,n)
    wk(2,n) = two
-   if (wk(2,n-1) .eq. zero)  go to 5008
+   if (wk(2,n-1) == zero)  go to 5008
    g = -one/wk(2,n-1)
 endif
 !
 !  COMPLETE FORWARD PASS OF GAUSS ELIMINATION.
 !
 wk(2,n) = g*wk(1,n-1) + wk(2,n)
-if (wk(2,n) .eq. zero)   go to 5008
+if (wk(2,n) == zero)   go to 5008
 d(1,n) = (g*d(1,n-1) + d(1,n))/wk(2,n)
 !
 !  CARRY OUT BACK SUBSTITUTION
 !
 30 continue
 do 40 j=nm1,1,-1
-   if (wk(2,j) .eq. zero)  go to 5008
+   if (wk(2,j) == zero)  go to 5008
    d(1,j) = (d(1,j) - wk(1,j)*d(1,j+1))/wk(2,j)
 40 continue
 ! --------------------(  END  CODING FROM CUBSPL )--------------------
@@ -3994,14 +3777,14 @@ return
 !  ERROR RETURNS.
 !
 5001 continue
-!     N.LT.2 RETURN.
+!     N<2 RETURN.
 ierr = -1
 call xermsg ('SLATEC', 'DPCHSP', &
    'NUMBER OF DATA POINTS LESS THAN TWO', ierr, 1)
 return
 !
 5002 continue
-!     INCFD.LT.1 RETURN.
+!     INCFD<1 RETURN.
 ierr = -2
 call xermsg ('SLATEC', 'DPCHSP', 'INCREMENT LESS THAN ONE', ierr, &
    1)
@@ -4041,16 +3824,12 @@ return
 ierr = -9
 call xermsg ('SLATEC', 'DPCHSP', 'ERROR RETURN FROM DPCHDF', &
    ierr, 1)
-return
-!------------- LAST LINE OF DPCHSP FOLLOWS -----------------------------
-end
-!DECK DPCHST
-double precision function dpchst (arg1, arg2)
-!***BEGIN PROLOGUE  DPCHST
-!***SUBSIDIARY
+
+end subroutine dpchsp
+
 !***PURPOSE  DPCHIP Sign-Testing Routine
 !***LIBRARY   SLATEC (PCHIP)
-!***TYPE      DOUBLE PRECISION (PCHST-S, DPCHST-D)
+!***TYPE      real(wp) (PCHST-S, DPCHST-D)
 !***AUTHOR  Fritsch, F. N., (LLNL)
 !***DESCRIPTION
 !
@@ -4064,8 +3843,6 @@ double precision function dpchst (arg1, arg2)
 !
 !     The object is to do this without multiplying ARG1*ARG2, to avoid
 !     possible over/underflow problems.
-!
-!  Fortran intrinsics used:  SIGN.
 !
 !***SEE ALSO  DPCHCE, DPCHCI, DPCHCS, DPCHIM
 !***ROUTINES CALLED  (NONE)
@@ -4083,33 +3860,22 @@ double precision function dpchst (arg1, arg2)
 !***END PROLOGUE  DPCHST
 !
 !**End
-!
-!  DECLARE ARGUMENTS.
-!
-double precision  arg1, arg2
-!
-!  DECLARE LOCAL VARIABLES.
-!
-double precision  one, zero
-save zero, one
-data  zero /0.d0/,  one/1.d0/
-!
+
+real(wp) function dpchst (arg1, arg2)
+
+real(wp)  arg1, arg2
+
 !  PERFORM THE TEST.
-!
-!***FIRST EXECUTABLE STATEMENT  DPCHST
 dpchst = sign(one,arg1) * sign(one,arg2)
-if ((arg1.eq.zero) .or. (arg2.eq.zero))  dpchst = zero
-!
-return
-!------------- LAST LINE OF DPCHST FOLLOWS -----------------------------
-end
-!DECK DPCHSW
+if ((arg1==zero) .or. (arg2==zero))  dpchst = zero
+
+end function dpchst
+
 subroutine dpchsw (dfmax, iextrm, d1, d2, h, slope, ierr)
-!***BEGIN PROLOGUE  DPCHSW
-!***SUBSIDIARY
+
 !***PURPOSE  Limits excursion from data for DPCHCS
 !***LIBRARY   SLATEC (PCHIP)
-!***TYPE      DOUBLE PRECISION (PCHSW-S, DPCHSW-D)
+!***TYPE      real(wp) (PCHSW-S, DPCHSW-D)
 !***AUTHOR  Fritsch, F. N., (LLNL)
 !***DESCRIPTION
 !
@@ -4124,7 +3890,7 @@ subroutine dpchsw (dfmax, iextrm, d1, d2, h, slope, ierr)
 !  Calling sequence:
 !
 !        INTEGER  IEXTRM, IERR
-!        DOUBLE PRECISION  DFMAX, D1, D2, H, SLOPE
+!        real(wp)  DFMAX, D1, D2, H, SLOPE
 !
 !        CALL  DPCHSW (DFMAX, IEXTRM, D1, D2, H, SLOPE, IERR)
 !
@@ -4132,17 +3898,17 @@ subroutine dpchsw (dfmax, iextrm, d1, d2, h, slope, ierr)
 !
 !     DFMAX -- (input) maximum allowed difference between F(IEXTRM) and
 !           the cubic determined by derivative values D1,D2.  (assumes
-!           DFMAX.GT.0.)
+!           DFMAX>0.)
 !
 !     IEXTRM -- (input) index of the extreme data value.  (assumes
-!           IEXTRM = 1 or 2 .  Any value .NE.1 is treated as 2.)
+!           IEXTRM = 1 or 2 .  Any value /=1 is treated as 2.)
 !
 !     D1,D2 -- (input) derivative values at the ends of the interval.
-!           (Assumes D1*D2 .LE. 0.)
+!           (Assumes D1*D2 <= 0.)
 !          (output) may be modified if necessary to meet the restriction
 !           imposed by DFMAX.
 !
-!     H -- (input) interval length.  (Assumes  H.GT.0.)
+!     H -- (input) interval length.  (Assumes  H>0.)
 !
 !     SLOPE -- (input) data slope on the interval.
 !
@@ -4155,8 +3921,6 @@ subroutine dpchsw (dfmax, iextrm, d1, d2, h, slope, ierr)
 !    WARNING:  This routine does no validity-checking of arguments.
 !    -------
 !
-!  Fortran intrinsics used:  ABS, SIGN, SQRT.
-!
 !***SEE ALSO  DPCHCS
 !***ROUTINES CALLED  D1MACH, XERMSG
 !***REVISION HISTORY  (YYMMDD)
@@ -4167,7 +3931,7 @@ subroutine dpchsw (dfmax, iextrm, d1, d2, h, slope, ierr)
 !   870813  Minor cosmetic changes.
 !   890206  Corrected XERROR calls.
 !   890411  1. Added SAVE statements (Vers. 3.2).
-!           2. Added DOUBLE PRECISION declaration for D1MACH.
+!           2. Added real(wp) declaration for D1MACH.
 !   890531  Changed all specific intrinsics to generic.  (WRB)
 !   890531  REVISION DATE from Version 3.2
 !   891214  Prologue converted to Version 4.0 format.  (BAB)
@@ -4179,24 +3943,17 @@ subroutine dpchsw (dfmax, iextrm, d1, d2, h, slope, ierr)
 !***END PROLOGUE  DPCHSW
 !
 !**End
-!
-!  DECLARE ARGUMENTS.
-!
+
 integer  iextrm, ierr
-double precision  dfmax, d1, d2, h, slope
-!
-!  DECLARE LOCAL VARIABLES.
-!
-double precision  cp, fact, hphi, lambda, nu, one, phi, radcal, &
-                  rho, sigma, small, that, third, three, two, zero
-save zero, one, two, three, fact
-save third
-double precision  d1mach
-!
-data  zero /0.d0/,  one /1.d0/,  two /2.d0/, three /3.d0/, &
-      fact /100.d0/
-!        THIRD SHOULD BE SLIGHTLY LESS THAN 1/3.
-data  third /0.33333d0/
+real(wp)  dfmax, d1, d2, h, slope
+
+real(wp)  cp, hphi, lambda, nu, phi, radcal, &
+                  rho, sigma, that
+
+real(wp),parameter :: fact = 100.0_wp
+real(wp),parameter :: third = one/three - d1mach4  !! third should be slightly less than 1/3 (original code had 0.33333)
+real(wp),parameter :: small = fact*d1mach4 !! small should be a few orders of magnitude greater than macheps.
+
 !
 !  NOTATION AND GENERAL REMARKS.
 !
@@ -4207,59 +3964,56 @@ data  third /0.33333d0/
 !           WHERE  THAT = (XHAT - X1)/H .
 !        THAT IS, P(XHAT)-F1 = D*H*PHI,  WHERE D=D1 OR D2.
 !     SIMILARLY,  P(XHAT)-F2 = D*H*(PHI-RHO) .
-!
-!      SMALL SHOULD BE A FEW ORDERS OF MAGNITUDE GREATER THAN MACHEPS.
-!***FIRST EXECUTABLE STATEMENT  DPCHSW
-small = fact*d1mach(4)
+
 !
 !  DO MAIN CALCULATION.
 !
-if (d1 .eq. zero)  then
+if (d1 == zero)  then
 !
-!        SPECIAL CASE -- D1.EQ.ZERO .
+!        SPECIAL CASE -- D1==ZERO .
 !
 !          IF D2 IS ALSO ZERO, THIS ROUTINE SHOULD NOT HAVE BEEN CALLED.
-   if (d2 .eq. zero)  go to 5001
+   if (d2 == zero)  go to 5001
 !
    rho = slope/d2
-!          EXTREMUM IS OUTSIDE INTERVAL WHEN RHO .GE. 1/3 .
-   if (rho .ge. third)  go to 5000
+!          EXTREMUM IS OUTSIDE INTERVAL WHEN RHO >= 1/3 .
+   if (rho >= third)  go to 5000
    that = (two*(three*rho-one)) / (three*(two*rho-one))
    phi = that**2 * ((three*rho-one)/three)
 !
-!          CONVERT TO DISTANCE FROM F2 IF IEXTRM.NE.1 .
-   if (iextrm .ne. 1)  phi = phi - rho
+!          CONVERT TO DISTANCE FROM F2 IF IEXTRM/=1 .
+   if (iextrm /= 1)  phi = phi - rho
 !
 !          TEST FOR EXCEEDING LIMIT, AND ADJUST ACCORDINGLY.
    hphi = h * abs(phi)
-   if (hphi*abs(d2) .gt. dfmax)  then
-!           AT THIS POINT, HPHI.GT.0, SO DIVIDE IS OK.
+   if (hphi*abs(d2) > dfmax)  then
+!           AT THIS POINT, HPHI>0, SO DIVIDE IS OK.
       d2 = sign (dfmax/hphi, d2)
    endif
 else
 !
    rho = slope/d1
    lambda = -d2/d1
-   if (d2 .eq. zero)  then
+   if (d2 == zero)  then
 !
-!           SPECIAL CASE -- D2.EQ.ZERO .
+!           SPECIAL CASE -- D2==ZERO .
 !
-!             EXTREMUM IS OUTSIDE INTERVAL WHEN RHO .GE. 1/3 .
-      if (rho .ge. third)  go to 5000
+!             EXTREMUM IS OUTSIDE INTERVAL WHEN RHO >= 1/3 .
+      if (rho >= third)  go to 5000
       cp = two - three*rho
       nu = one - two*rho
       that = one / (three*nu)
    else
-      if (lambda .le. zero)  go to 5001
+      if (lambda <= zero)  go to 5001
 !
 !           NORMAL CASE -- D1 AND D2 BOTH NONZERO, OPPOSITE SIGNS.
 !
       nu = one - lambda - two*rho
       sigma = one - rho
       cp = nu + sigma
-      if (abs(nu) .gt. small)  then
+      if (abs(nu) > small)  then
          radcal = (nu - (two*rho+one))*nu + sigma**2
-         if (radcal .lt. zero)  go to 5002
+         if (radcal < zero)  go to 5002
          that = (cp - sqrt(radcal)) / (three*nu)
       else
          that = one/(two*sigma)
@@ -4267,13 +4021,13 @@ else
    endif
    phi = that*((nu*that - cp)*that + one)
 !
-!          CONVERT TO DISTANCE FROM F2 IF IEXTRM.NE.1 .
-   if (iextrm .ne. 1)  phi = phi - rho
+!          CONVERT TO DISTANCE FROM F2 IF IEXTRM/=1 .
+   if (iextrm /= 1)  phi = phi - rho
 !
 !          TEST FOR EXCEEDING LIMIT, AND ADJUST ACCORDINGLY.
    hphi = h * abs(phi)
-   if (hphi*abs(d1) .gt. dfmax)  then
-!           AT THIS POINT, HPHI.GT.0, SO DIVIDE IS OK.
+   if (hphi*abs(d1) > dfmax)  then
+!           AT THIS POINT, HPHI>0, SO DIVIDE IS OK.
       d1 = sign (dfmax/hphi, d1)
       d2 = -lambda*d1
    endif
@@ -4297,6 +4051,9 @@ return
 !     NEGATIVE VALUE OF RADICAL (SHOULD NEVER OCCUR).
 ierr = -2
 call xermsg ('SLATEC', 'DPCHSW', 'NEGATIVE RADICAL', ierr, 1)
-return
-!------------- LAST LINE OF DPCHSW FOLLOWS -----------------------------
-end
+
+end subroutine dpchsw
+
+!*******************************************************************************************************
+   end module pchip_module
+!*******************************************************************************************************
