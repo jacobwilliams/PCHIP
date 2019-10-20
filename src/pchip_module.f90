@@ -1,1715 +1,1179 @@
 !*******************************************************************************************************
 !>
+!  A Fortran package for piecewise cubic Hermite interpolation of data.
 !
-   module pchip_module
+!### Author
+!  * Fritsch, F. N., (LLNL) -- original author
+!  * Oct 2019 : Jacob Williams, Extensive refactoring
+!    and modernization of the SLATEC code.
 
-   use, intrinsic :: iso_fortran_env, only: wp => real64
+    module pchip_module
 
-   implicit none
+    use, intrinsic :: iso_fortran_env, only: wp => real64
 
-   real(wp),parameter :: zero   = 0.0_wp
-   real(wp),parameter :: half   = 0.5_wp
-   real(wp),parameter :: one    = 1.0_wp
-   real(wp),parameter :: two    = 2.0_wp
-   real(wp),parameter :: three  = 3.0_wp
-   real(wp),parameter :: four   = 4.0_wp
-   real(wp),parameter :: six    = 6.0_wp
-   real(wp),parameter :: ten    = 10.0_wp
+    implicit none
 
-   real(wp),parameter :: d1mach4 = epsilon(one)   !! d1mach(4) -- the largest relative spacing
+    real(wp),parameter :: zero   = 0.0_wp
+    real(wp),parameter :: half   = 0.5_wp
+    real(wp),parameter :: one    = 1.0_wp
+    real(wp),parameter :: two    = 2.0_wp
+    real(wp),parameter :: three  = 3.0_wp
+    real(wp),parameter :: four   = 4.0_wp
+    real(wp),parameter :: six    = 6.0_wp
+    real(wp),parameter :: ten    = 10.0_wp
 
-   contains
+    real(wp),parameter :: d1mach4 = epsilon(one)   !! d1mach(4) -- the largest relative spacing
+
+    contains
 !*******************************************************************************************************
 
+!***************************************************************************
+!>
+!  inline function for weighted average of slopes.
+
    pure function dpchsd(s1,s2,h1,h2)
-   !! inline function for weighted average of slopes.
+
    real(wp),intent(in) :: s1, s2, h1, h2
    real(wp) :: dpchsd
+
    dpchsd = (h2/(h1+h2))*s1 + (h1/(h1+h2))*s2
+
    end function dpchsd
+!***************************************************************************
 
+!***************************************************************************
+!>
+!  Check a single cubic for monotonicity
+!
+!  Called by [[DPCHCM]] to determine the monotonicity properties of the
+!  cubic with boundary derivative values D1,D2 and chord slope DELTA.
+!
+!### Cautions
+!  This is essentially the same as old DCHFMC, except that a
+!  new output value, -3, was added February 1989.  (Formerly, -3
+!  and +3 were lumped together in the single value 3.)  Codes that
+!  flag nonmonotonicity by "IF (ISMON==2)" need not be changed.
+!  Codes that check via "IF (ISMON>=3)" should change the test to
+!  "IF (IABS(ISMON)>=3)".  Codes that declare monotonicity via
+!  "IF (ISMON<=1)" should change to "IF (IABS(ISMON)<=1)".
 
+    function dchfcm (d1, d2, delta) result(ismon)
 
-!***PURPOSE  Check a single cubic for monotonicity.
-!***LIBRARY   SLATEC (PCHIP)
-!***TYPE      real(wp) (CHFCM-S, DCHFCM-D)
-!***AUTHOR  Fritsch, F. N., (LLNL)
-!***DESCRIPTION
-!
-! *Usage:
-!
-!        real(wp)  D1, D2, DELTA
-!        INTEGER  ISMON, DCHFCM
-!
-!        ISMON = DCHFCM (D1, D2, DELTA)
-!
-! *Arguments:
-!
-!     D1,D2:IN  are the derivative values at the ends of an interval.
-!
-!     DELTA:IN  is the data slope over that interval.
-!
-! *Function Return Values:
-!     ISMON : indicates the monotonicity of the cubic segment:
-!             ISMON = -3  if function is probably decreasing;
-!             ISMON = -1  if function is strictly decreasing;
-!             ISMON =  0  if function is constant;
-!             ISMON =  1  if function is strictly increasing;
-!             ISMON =  2  if function is non-monotonic;
-!             ISMON =  3  if function is probably increasing.
-!           If ABS(ISMON)=3, the derivative values are too close to the
-!           boundary of the monotonicity region to declare monotonicity
-!           in the presence of roundoff error.
-!
-! *Description:
-!
-!          DCHFCM:  Cubic Hermite Function -- Check Monotonicity.
-!
-!    Called by  DPCHCM  to determine the monotonicity properties of the
-!    cubic with boundary derivative values D1,D2 and chord slope DELTA.
-!
-! *Cautions:
-!     This is essentially the same as old DCHFMC, except that a
-!     new output value, -3, was added February 1989.  (Formerly, -3
-!     and +3 were lumped together in the single value 3.)  Codes that
-!     flag nonmonotonicity by "IF (ISMON==2)" need not be changed.
-!     Codes that check via "IF (ISMON>=3)" should change the test to
-!     "IF (IABS(ISMON)>=3)".  Codes that declare monotonicity via
-!     "IF (ISMON<=1)" should change to "IF (IABS(ISMON)<=1)".
-!
-!   REFER TO  DPCHCM
-!
-!***ROUTINES CALLED  D1MACH
-!***REVISION HISTORY  (YYMMDD)
-!   820518  DATE WRITTEN
-!   820805  Converted to SLATEC library version.
-!   831201  Changed from  ISIGN  to SIGN  to correct bug that
-!           produced wrong sign when -1 < DELTA < 0 .
-!   890206  Added SAVE statements.
-!   890209  Added sign to returned value ISMON=3 and corrected
-!           argument description accordingly.
-!   890306  Added caution about changed output.
-!   890407  Changed name from DCHFMC to DCHFCM, as requested at the
-!           March 1989 SLATEC CML meeting, and made a few other
-!           minor modifications necessitated by this change.
-!   890407  Converted to new SLATEC format.
-!   890407  Modified DESCRIPTION to LDOC format.
-!   891214  Moved SAVE statements.  (WRB)
+    real(wp),intent(in) :: d1    !! derivative value at the end of an interval.
+    real(wp),intent(in) :: d2    !! derivative value at the end of an interval.
+    real(wp),intent(in) :: delta !! the data slope over that interval
+    integer :: ismon        !! indicates the monotonicity of the cubic segment:
+                            !!
+                            !!  * ISMON = -3  if function is probably decreasing
+                            !!  * ISMON = -1  if function is strictly decreasing
+                            !!  * ISMON =  0  if function is constant
+                            !!  * ISMON =  1  if function is strictly increasing
+                            !!  * ISMON =  2  if function is non-monotonic
+                            !!  * ISMON =  3  if function is probably increasing
+                            !!
+                            !! If ABS(ISMON)=3, the derivative values are too close to the
+                            !! boundary of the monotonicity region to declare monotonicity
+                            !! in the presence of roundoff error.
 
-   integer function dchfcm (d1, d2, delta)
+    integer :: itrue
+    real(wp) :: a, b, phi
 
-   real(wp) d1, d2, delta
+    real(wp),parameter :: eps = ten*d1mach4 !! machine-dependent parameter -- should be about 10*uround.
+                                            !! TEN is actually a tuning parameter, which determines the
+                                            !! width of the fuzz around the elliptical boundary.
 
-   integer ismon, itrue
-   real(wp)  a, b, phi
-
-   real(wp),parameter :: eps = ten*d1mach4  !! machine-dependent parameter -- should be about 10*uround.
-                                          !! TEN is actually a tuning parameter, which determines the width of
-                                          !! the fuzz around the elliptical boundary.
-
-   !  MAKE THE CHECK.
-
-   if (delta == zero)  then
-   !        CASE OF CONSTANT DATA.
-      if ((d1==zero) .and. (d2==zero))  then
-         ismon = 0
-      else
-         ismon = 2
-      endif
-   else
-   !        DATA IS NOT CONSTANT -- PICK UP SIGN.
-      itrue = sign (one, delta)
-      a = d1/delta
-      b = d2/delta
-      if ((a<zero) .or. (b<zero))  then
-         ismon = 2
-      else if ((a<=three-eps) .and. (b<=three-eps))  then
-   !           INSIDE SQUARE (0,3)X(0,3)  IMPLIES   OK.
-         ismon = itrue
-      else if ((a>four+eps) .and. (b>four+eps))  then
-   !           OUTSIDE SQUARE (0,4)X(0,4)  IMPLIES   NONMONOTONIC.
-         ismon = 2
-      else
-   !           MUST CHECK AGAINST BOUNDARY OF ELLIPSE.
-         a = a - two
-         b = b - two
-         phi = ((a*a + b*b) + a*b) - three
-         if (phi < -eps)  then
-            ismon = itrue
-         else if (phi > eps)  then
+    if (delta == zero) then
+        ! case of constant data.
+        if ((d1==zero) .and. (d2==zero)) then
+            ismon = 0
+        else
             ismon = 2
-         else
-   !              TO CLOSE TO BOUNDARY TO TELL,
-   !                  IN THE PRESENCE OF ROUND-OFF ERRORS.
-            ismon = 3*itrue
-         endif
-      endif
-   endif
-
-   dchfcm = ismon
-
-   end function dchfcm
-
-subroutine dchfdv (x1, x2, f1, f2, d1, d2, ne, xe, fe, de, next, ierr)
-
-!***PURPOSE  Evaluate a cubic polynomial given in Hermite form and its
-!            first derivative at an array of points.  While designed for
-!            use by DPCHFD, it may be useful directly as an evaluator
-!            for a piecewise cubic Hermite function in applications,
-!            such as graphing, where the interval is known in advance.
-!            If only function values are required, use DCHFEV instead.
-!***LIBRARY   SLATEC (PCHIP)
-!***CATEGORY  E3, H1
-!***TYPE      real(wp) (CHFDV-S, DCHFDV-D)
-!***KEYWORDS  CUBIC HERMITE DIFFERENTIATION, CUBIC HERMITE EVALUATION,
-!             CUBIC POLYNOMIAL EVALUATION, PCHIP
-!***AUTHOR  Fritsch, F. N., (LLNL)
-!             Lawrence Livermore National Laboratory
-!             P.O. Box 808  (L-316)
-!             Livermore, CA  94550
-!             FTS 532-4275, (510) 422-4275
-!***DESCRIPTION
-!
-!        DCHFDV:  Cubic Hermite Function and Derivative Evaluator
-!
-!     Evaluates the cubic polynomial determined by function values
-!     F1,F2 and derivatives D1,D2 on interval (X1,X2), together with
-!     its first derivative, at the points  XE(J), J=1(1)NE.
-!
-!     If only function values are required, use DCHFEV, instead.
-!
-! ----------------------------------------------------------------------
-!
-!  Calling sequence:
-!
-!        INTEGER  NE, NEXT(2), IERR
-!        real(wp)  X1, X2, F1, F2, D1, D2, XE(NE), FE(NE),
-!                          DE(NE)
-!
-!        CALL  DCHFDV (X1,X2, F1,F2, D1,D2, NE, XE, FE, DE, NEXT, IERR)
-!
-!   Parameters:
-!
-!     X1,X2 -- (input) endpoints of interval of definition of cubic.
-!           (Error return if  X1==X2 .)
-!
-!     F1,F2 -- (input) values of function at X1 and X2, respectively.
-!
-!     D1,D2 -- (input) values of derivative at X1 and X2, respectively.
-!
-!     NE -- (input) number of evaluation points.  (Error return if
-!           NE<1 .)
-!
-!     XE -- (input) real*8 array of points at which the functions are to
-!           be evaluated.  If any of the XE are outside the interval
-!           [X1,X2], a warning error is returned in NEXT.
-!
-!     FE -- (output) real*8 array of values of the cubic function
-!           defined by  X1,X2, F1,F2, D1,D2  at the points  XE.
-!
-!     DE -- (output) real*8 array of values of the first derivative of
-!           the same function at the points  XE.
-!
-!     NEXT -- (output) integer array indicating number of extrapolation
-!           points:
-!            NEXT(1) = number of evaluation points to left of interval.
-!            NEXT(2) = number of evaluation points to right of interval.
-!
-!     IERR -- (output) error flag.
-!           Normal return:
-!              IERR = 0  (no errors).
-!           "Recoverable" errors:
-!              IERR = -1  if NE<1 .
-!              IERR = -2  if X1==X2 .
-!                (Output arrays have not been changed in either case.)
-!
-!***REFERENCES  (NONE)
-!***ROUTINES CALLED  XERMSG
-!***REVISION HISTORY  (YYMMDD)
-!   811019  DATE WRITTEN
-!   820803  Minor cosmetic changes for release 1.
-!   870707  Corrected XERROR calls for d.p. names(s).
-!   870813  Minor cosmetic changes.
-!   890411  Added SAVE statements (Vers. 3.2).
-!   890531  Changed all specific intrinsics to generic.  (WRB)
-!   890831  Modified array declarations.  (WRB)
-!   891006  Cosmetic changes to prologue.  (WRB)
-!   891006  REVISION DATE from Version 3.2
-!   891214  Prologue converted to Version 4.0 format.  (BAB)
-!   900315  CALLs to XERROR changed to CALLs to XERMSG.  (THJ)
-!***END PROLOGUE  DCHFDV
-
-integer  ne, next(2), ierr
-real(wp)  x1, x2, f1, f2, d1, d2, xe(*), fe(*), de(*)
-
-integer  i
-real(wp)  c2, c2t2, c3, c3t3, del1, del2, delta, h, x, xmi, xma
-
-!  VALIDITY-CHECK ARGUMENTS.
-
-if (ne < 1)  go to 5001
-h = x2 - x1
-if (h == zero)  go to 5002
-!
-!  INITIALIZE.
-!
-ierr = 0
-next(1) = 0
-next(2) = 0
-xmi = min(zero, h)
-xma = max(zero, h)
-!
-!  COMPUTE CUBIC COEFFICIENTS (EXPANDED ABOUT X1).
-!
-delta = (f2 - f1)/h
-del1 = (d1 - delta)/h
-del2 = (d2 - delta)/h
-!                                           (DELTA IS NO LONGER NEEDED.)
-c2 = -(del1+del1 + del2)
-c2t2 = c2 + c2
-c3 = (del1 + del2)/h
-!                               (H, DEL1 AND DEL2 ARE NO LONGER NEEDED.)
-c3t3 = c3+c3+c3
-!
-!  EVALUATION LOOP.
-!
-do 500  i = 1, ne
-   x = xe(i) - x1
-   fe(i) = f1 + x*(d1 + x*(c2 + x*c3))
-   de(i) = d1 + x*(c2t2 + x*c3t3)
-!          COUNT EXTRAPOLATION POINTS.
-   if ( x<xmi )  next(1) = next(1) + 1
-   if ( x>xma )  next(2) = next(2) + 1
-!        (NOTE REDUNDANCY--IF EITHER CONDITION IS TRUE, OTHER IS FALSE.)
-500 continue
-!
-!  NORMAL RETURN.
-!
-return
-!
-!  ERROR RETURNS.
-!
-5001 continue
-!     NE<1 RETURN.
-ierr = -1
-call xermsg ('SLATEC', 'DCHFDV', &
-   'NUMBER OF EVALUATION POINTS LESS THAN ONE', ierr, 1)
-return
-!
-5002 continue
-!     X1==X2 RETURN.
-ierr = -2
-call xermsg ('SLATEC', 'DCHFDV', 'INTERVAL ENDPOINTS EQUAL', &
-   ierr, 1)
-
-end subroutine dchfdv
-
-subroutine dchfev (x1, x2, f1, f2, d1, d2, ne, xe, fe, next, ierr)
-
-!***PURPOSE  Evaluate a cubic polynomial given in Hermite form at an
-!            array of points.  While designed for use by DPCHFE, it may
-!            be useful directly as an evaluator for a piecewise cubic
-!            Hermite function in applications, such as graphing, where
-!            the interval is known in advance.
-!***LIBRARY   SLATEC (PCHIP)
-!***CATEGORY  E3
-!***TYPE      real(wp) (CHFEV-S, DCHFEV-D)
-!***KEYWORDS  CUBIC HERMITE EVALUATION, CUBIC POLYNOMIAL EVALUATION,
-!             PCHIP
-!***AUTHOR  Fritsch, F. N., (LLNL)
-!             Lawrence Livermore National Laboratory
-!             P.O. Box 808  (L-316)
-!             Livermore, CA  94550
-!             FTS 532-4275, (510) 422-4275
-!***DESCRIPTION
-!
-!          DCHFEV:  Cubic Hermite Function EValuator
-!
-!     Evaluates the cubic polynomial determined by function values
-!     F1,F2 and derivatives D1,D2 on interval (X1,X2) at the points
-!     XE(J), J=1(1)NE.
-!
-! ----------------------------------------------------------------------
-!
-!  Calling sequence:
-!
-!        INTEGER  NE, NEXT(2), IERR
-!        real(wp)  X1, X2, F1, F2, D1, D2, XE(NE), FE(NE)
-!
-!        CALL  DCHFEV (X1,X2, F1,F2, D1,D2, NE, XE, FE, NEXT, IERR)
-!
-!   Parameters:
-!
-!     X1,X2 -- (input) endpoints of interval of definition of cubic.
-!           (Error return if  X1==X2 .)
-!
-!     F1,F2 -- (input) values of function at X1 and X2, respectively.
-!
-!     D1,D2 -- (input) values of derivative at X1 and X2, respectively.
-!
-!     NE -- (input) number of evaluation points.  (Error return if
-!           NE<1 .)
-!
-!     XE -- (input) real*8 array of points at which the function is to
-!           be evaluated.  If any of the XE are outside the interval
-!           [X1,X2], a warning error is returned in NEXT.
-!
-!     FE -- (output) real*8 array of values of the cubic function
-!           defined by  X1,X2, F1,F2, D1,D2  at the points  XE.
-!
-!     NEXT -- (output) integer array indicating number of extrapolation
-!           points:
-!            NEXT(1) = number of evaluation points to left of interval.
-!            NEXT(2) = number of evaluation points to right of interval.
-!
-!     IERR -- (output) error flag.
-!           Normal return:
-!              IERR = 0  (no errors).
-!           "Recoverable" errors:
-!              IERR = -1  if NE<1 .
-!              IERR = -2  if X1==X2 .
-!                (The FE-array has not been changed in either case.)
-!
-!***REFERENCES  (NONE)
-!***ROUTINES CALLED  XERMSG
-!***REVISION HISTORY  (YYMMDD)
-!   811019  DATE WRITTEN
-!   820803  Minor cosmetic changes for release 1.
-!   870813  Corrected XERROR calls for d.p. names(s).
-!   890206  Corrected XERROR calls.
-!   890411  Added SAVE statements (Vers. 3.2).
-!   890531  Changed all specific intrinsics to generic.  (WRB)
-!   890703  Corrected category record.  (WRB)
-!   890831  Modified array declarations.  (WRB)
-!   891006  Cosmetic changes to prologue.  (WRB)
-!   891006  REVISION DATE from Version 3.2
-!   891214  Prologue converted to Version 4.0 format.  (BAB)
-!   900315  CALLs to XERROR changed to CALLs to XERMSG.  (THJ)
-!***END PROLOGUE  DCHFEV
-
-integer  ne, next(2), ierr
-real(wp)  x1, x2, f1, f2, d1, d2, xe(*), fe(*)
-
-integer  i
-real(wp)  c2, c3, del1, del2, delta, h, x, xmi, xma
-
-!  VALIDITY-CHECK ARGUMENTS.
-
-if (ne < 1)  go to 5001
-h = x2 - x1
-if (h == zero)  go to 5002
-!
-!  INITIALIZE.
-!
-ierr = 0
-next(1) = 0
-next(2) = 0
-xmi = min(zero, h)
-xma = max(zero, h)
-!
-!  COMPUTE CUBIC COEFFICIENTS (EXPANDED ABOUT X1).
-!
-delta = (f2 - f1)/h
-del1 = (d1 - delta)/h
-del2 = (d2 - delta)/h
-!                                           (DELTA IS NO LONGER NEEDED.)
-c2 = -(del1+del1 + del2)
-c3 = (del1 + del2)/h
-!                               (H, DEL1 AND DEL2 ARE NO LONGER NEEDED.)
-!
-!  EVALUATION LOOP.
-!
-do 500  i = 1, ne
-   x = xe(i) - x1
-   fe(i) = f1 + x*(d1 + x*(c2 + x*c3))
-!          COUNT EXTRAPOLATION POINTS.
-   if ( x<xmi )  next(1) = next(1) + 1
-   if ( x>xma )  next(2) = next(2) + 1
-!        (NOTE REDUNDANCY--IF EITHER CONDITION IS TRUE, OTHER IS FALSE.)
-500 continue
-!
-!  NORMAL RETURN.
-!
-return
-!
-!  ERROR RETURNS.
-!
-5001 continue
-!     NE<1 RETURN.
-ierr = -1
-call xermsg ('SLATEC', 'DCHFEV', &
-   'NUMBER OF EVALUATION POINTS LESS THAN ONE', ierr, 1)
-return
-!
-5002 continue
-!     X1==X2 RETURN.
-ierr = -2
-call xermsg ('SLATEC', 'DCHFEV', 'INTERVAL ENDPOINTS EQUAL', &
-   ierr, 1)
-
-end subroutine dchfev
-
-real(wp) function dchfie (x1, x2, f1, f2, d1, d2, a, b)
-
-
-!***PURPOSE  Evaluates integral of a single cubic for DPCHIA
-!***LIBRARY   SLATEC (PCHIP)
-!***TYPE      real(wp) (CHFIE-S, DCHFIE-D)
-!***AUTHOR  Fritsch, F. N., (LLNL)
-!***DESCRIPTION
-!
-!          DCHFIE:  Cubic Hermite Function Integral Evaluator.
-!
-!     Called by  DPCHIA  to evaluate the integral of a single cubic (in
-!     Hermite form) over an arbitrary interval (A,B).
-!
-! ----------------------------------------------------------------------
-!
-!  Calling sequence:
-!
-!        real(wp)  X1, X2, F1, F2, D1, D2, A, B
-!        real(wp)  VALUE, DCHFIE
-!
-!        VALUE = DCHFIE (X1, X2, F1, F2, D1, D2, A, B)
-!
-!   Parameters:
-!
-!     VALUE -- (output) value of the requested integral.
-!
-!     X1,X2 -- (input) endpoints if interval of definition of cubic.
-!
-!     F1,F2 -- (input) function values at the ends of the interval.
-!
-!     D1,D2 -- (input) derivative values at the ends of the interval.
+        endif
+    else
+        ! data is not constant -- pick up sign.
+        itrue = int(sign (one, delta))
+        a = d1/delta
+        b = d2/delta
+        if ((a<zero) .or. (b<zero)) then
+            ismon = 2
+        else if ((a<=three-eps) .and. (b<=three-eps)) then
+            ! inside square (0,3)x(0,3) implies ok.
+            ismon = itrue
+        else if ((a>four+eps) .and. (b>four+eps)) then
+            ! outside square (0,4)x(0,4) implies nonmonotonic.
+            ismon = 2
+        else
+            ! must check against boundary of ellipse.
+            a = a - two
+            b = b - two
+            phi = ((a*a + b*b) + a*b) - three
+            if (phi < -eps) then
+                ismon = itrue
+            else if (phi > eps) then
+                ismon = 2
+            else
+                ! to close to boundary to tell,
+                ! in the presence of round-off errors.
+                ismon = 3*itrue
+            endif
+        endif
+    endif
+
+    end function dchfcm
+!***************************************************************************
+
+!***************************************************************************
+!>
+!  Cubic Hermite Function and Derivative Evaluator
+!
+!  Evaluate a cubic polynomial given in Hermite form and its
+!  first derivative at an array of points.  While designed for
+!  use by [[DPCHFD]], it may be useful directly as an evaluator
+!  for a piecewise cubic Hermite function in applications,
+!  such as graphing, where the interval is known in advance.
+!  If only function values are required, use [[DCHFEV]] instead.
+!
+!  Evaluates the cubic polynomial determined by function values
+!  F1,F2 and derivatives D1,D2 on interval (X1,X2), together with
+!  its first derivative, at the points  XE(J), J=1(1)NE.
+
+    subroutine dchfdv (x1, x2, f1, f2, d1, d2, ne, xe, fe, de, next, ierr)
+
+    integer,intent(in)                :: ne !! number of evaluation points.  (Error return if NE<1 .)
+    real(wp),dimension(*),intent(in)  :: xe !! array of points at which the functions are to
+                                            !! be evaluated.  If any of the XE are outside the interval
+                                            !! [X1,X2], a warning error is returned in NEXT.
+    real(wp),dimension(*),intent(out) :: fe !! array of values of the cubic function
+                                            !! defined by X1,X2, F1,F2, D1,D2 at the points XE.
+    real(wp),dimension(*),intent(out) :: de !! array of values of the first derivative of
+                                            !! the same function at the points XE.
+    real(wp),intent(in)               :: x1 !! initial endpoint of interval of definition of cubic. (Error return if X1==X2.)
+    real(wp),intent(in)               :: x2 !! final endpoint of interval of definition of cubic. (Error return if X1==X2.)
+    real(wp),intent(in)               :: f1 !! value of function at X1.
+    real(wp),intent(in)               :: f2 !! value of function at X2.
+    real(wp),intent(in)               :: d1 !! value of derivative at X1.
+    real(wp),intent(in)               :: d2 !! value of derivative at X2.
+    integer,dimension(2),intent(out) :: next !! array indicating number of extrapolation points:
+                                             !!
+                                             !! * NEXT(1) = number of evaluation points to left of interval.
+                                             !! * NEXT(2) = number of evaluation points to right of interval.
+    integer,intent(out) :: ierr     !! error flag.
+                                    !!
+                                    !! Normal return:
+                                    !!
+                                    !! * IERR = 0  (no errors).
+                                    !!
+                                    !! "Recoverable" errors (output arrays have not been changed):
+                                    !!
+                                    !! * IERR = -1  if NE<1 .
+                                    !! * IERR = -2  if X1==X2 .
+
+    integer :: i
+    real(wp) :: c2, c2t2, c3, c3t3, del1, del2, delta, h, x, xmi, xma
+
+    ! validity-check arguments.
+
+    if (ne < 1) then
+        ierr = -1
+        call xermsg ('slatec', 'dchfdv', 'number of evaluation points less than one', ierr, 1)
+        return
+    end if
+    h = x2 - x1
+    if (h == zero) then
+        ierr = -2
+        call xermsg ('slatec', 'dchfdv', 'interval endpoints equal', ierr, 1)
+        return
+    end if
+
+    ! initialize:
+    ierr = 0
+    next = 0
+    xmi = min(zero, h)
+    xma = max(zero, h)
+
+    ! compute cubic coefficients (expanded about x1).
+    delta = (f2 - f1)/h
+    del1 = (d1 - delta)/h
+    del2 = (d2 - delta)/h
+    ! (delta is no longer needed.)
+    c2 = -(del1+del1 + del2)
+    c2t2 = c2 + c2
+    c3 = (del1 + del2)/h
+    ! (h, del1 and del2 are no longer needed.)
+    c3t3 = c3+c3+c3
+
+    ! evaluation loop.
+    do i = 1, ne
+        x = xe(i) - x1
+        fe(i) = f1 + x*(d1 + x*(c2 + x*c3))
+        de(i) = d1 + x*(c2t2 + x*c3t3)
+        ! count extrapolation points.
+        if ( x<xmi ) next(1) = next(1) + 1
+        if ( x>xma ) next(2) = next(2) + 1
+        ! (note redundancy--if either condition is true, other is false.)
+    end do
+
+    end subroutine dchfdv
+!***************************************************************************
+
+!***************************************************************************
+!>
+!  Cubic Hermite Function EValuator
+!
+!  Evaluate a cubic polynomial given in Hermite form at an
+!  array of points.  While designed for use by [[DPCHFE]], it may
+!  be useful directly as an evaluator for a piecewise cubic
+!  Hermite function in applications, such as graphing, where
+!  the interval is known in advance.
+!
+!  Evaluates the cubic polynomial determined by function values
+!  F1,F2 and derivatives D1,D2 on interval (X1,X2) at the points
+!  XE(J), J=1(1)NE.
+
+    subroutine dchfev (x1, x2, f1, f2, d1, d2, ne, xe, fe, next, ierr)
+
+    integer,intent(in)                :: ne     !! number of evaluation points.  (Error return if NE<1 .)
+    integer,dimension(2),intent(out)  :: next   !! integer array indicating number of extrapolation points:
+                                                !!
+                                                !! * NEXT(1) = number of evaluation points to left of interval.
+                                                !! * NEXT(2) = number of evaluation points to right of interval.
+    integer,intent(out)               :: ierr   !! error flag.
+                                                !!
+                                                !! * Normal return:
+                                                !!   * IERR = 0  (no errors).
+                                                !! * "Recoverable" errors (output arrays have not been changed):
+                                                !!   * IERR = -1  if NE<1 .
+                                                !!   * IERR = -2  if X1==X2 .
+    real(wp),intent(in)               :: x1     !! initial endpoint of interval of definition of cubic. (Error return if X1==X2.)
+    real(wp),intent(in)               :: x2     !! final endpoint of interval of definition of cubic. (Error return if X1==X2.)
+    real(wp),intent(in)               :: f1     !! value of function at X1.
+    real(wp),intent(in)               :: f2     !! value of function at X2.
+    real(wp),intent(in)               :: d1     !! value of derivative at X1.
+    real(wp),intent(in)               :: d2     !! value of derivative at X2.
+    real(wp),dimension(*),intent(in)  :: xe     !! array of points at which the function is to
+                                                !! be evaluated. If any of the XE are outside the interval
+                                                !! [X1,X2], a warning error is returned in NEXT.
+    real(wp),dimension(*),intent(out) :: fe     !! array of values of the cubic function
+                                                !! defined by X1,X2, F1,F2, D1,D2 at the points XE.
+
+    integer :: i
+    real(wp) :: c2, c3, del1, del2, delta, h, x, xmi, xma
+
+    ! validity-check arguments.
+    if (ne < 1) then
+        ierr = -1
+        call xermsg ('slatec', 'dchfev', 'number of evaluation points less than one', ierr, 1)
+        return
+    end if
+    h = x2 - x1
+    if (h == zero) then
+        ierr = -2
+        call xermsg ('slatec', 'dchfev', 'interval endpoints equal', ierr, 1)
+        return
+    end if
+
+    ! initialize.
+    ierr = 0
+    next = 0
+    xmi = min(zero, h)
+    xma = max(zero, h)
+
+    ! compute cubic coefficients (expanded about x1).
+    delta = (f2 - f1)/h
+    del1 = (d1 - delta)/h
+    del2 = (d2 - delta)/h
+    ! (delta is no longer needed.)
+    c2 = -(del1+del1 + del2)
+    c3 = (del1 + del2)/h
+    ! (h, del1 and del2 are no longer needed.)
+
+    ! evaluation loop.
+
+    do i = 1, ne
+        x = xe(i) - x1
+        fe(i) = f1 + x*(d1 + x*(c2 + x*c3))
+        ! count extrapolation points.
+        if ( x<xmi )  next(1) = next(1) + 1
+        if ( x>xma )  next(2) = next(2) + 1
+        ! (note redundancy--if either condition is true, other is false.)
+    end do
+
+    end subroutine dchfev
+!***************************************************************************
+
+!***************************************************************************
+!>
+!  Cubic Hermite Function Integral Evaluator
+!
+!  Called by [[DPCHIA]] to evaluate the integral of a single cubic (in
+!  Hermite form) over an arbitrary interval (A,B).
+!
+!@note There is no error return from this routine because zero is
+!      indeed the mathematically correct answer when X1==X2 .
+
+    real(wp) function dchfie (x1, x2, f1, f2, d1, d2, a, b)
+
+    real(wp),intent(in) :: x1 !! endpoints if interval of definition of cubic
+    real(wp),intent(in) :: x2 !! endpoints if interval of definition of cubic
+    real(wp),intent(in) :: f1 !! function values at the ends of the interval
+    real(wp),intent(in) :: f2 !! function values at the ends of the interval
+    real(wp),intent(in) :: d1 !! derivative values at the ends of the interval
+    real(wp),intent(in) :: d2 !! derivative values at the ends of the interval
+    real(wp),intent(in) :: a  !! endpoints of interval of integration
+    real(wp),intent(in) :: b  !! endpoints of interval of integration
+
+    real(wp) :: dterm, fterm, h, phia1, phia2, &
+                phib1, phib2, psia1, psia2, psib1, psib2, &
+                ta1, ta2, tb1, tb2, ua1, ua2, ub1, ub2
+
+    ! validity check input.
+    if (x1 == x2) then
+        dchfie = zero
+    else
+        h = x2 - x1
+        ta1 = (a - x1) / h
+        ta2 = (x2 - a) / h
+        tb1 = (b - x1) / h
+        tb2 = (x2 - b) / h
+
+        ua1 = ta1**3
+        phia1 = ua1 * (two - ta1)
+        psia1 = ua1 * (three*ta1 - four)
+        ua2 = ta2**3
+        phia2 =  ua2 * (two - ta2)
+        psia2 = -ua2 * (three*ta2 - four)
+
+        ub1 = tb1**3
+        phib1 = ub1 * (two - tb1)
+        psib1 = ub1 * (three*tb1 - four)
+        ub2 = tb2**3
+        phib2 =  ub2 * (two - tb2)
+        psib2 = -ub2 * (three*tb2 - four)
+
+        fterm =   f1*(phia2 - phib2) + f2*(phib1 - phia1)
+        dterm = ( d1*(psia2 - psib2) + d2*(psib1 - psia1) )*(h/six)
+
+        dchfie = (half*h) * (fterm + dterm)
+    endif
+
+    end function dchfie
+!***************************************************************************
+
+!***************************************************************************
+!>
+!  Piecewise Cubic Hermite to B-Spline converter.
+!
+!  DPCHBS computes the B-spline representation of the PCH function
+!  determined by N,X,F,D.  To be compatible with the rest of PCHIP,
+!  DPCHBS includes INCFD, the increment between successive values of
+!  the F- and D-arrays.
+!
+!  The output is the B-representation for the function:
+!  NKNOTS, T, BCOEF, NDIM, KORD.
+!
+!### Caution:
+!  Since it is assumed that the input PCH function has been
+!  computed by one of the other routines in the package PCHIP,
+!  input arguments N, X, INCFD are **not** checked for validity.
+!
+!### Restrictions/assumptions:
+!   1. N>=2 .  (not checked)
+!   2. X(i)<X(i+1), i=1,...,N .  (not checked)
+!   3. INCFD>0 .  (not checked)
+!   4. KNOTYP<=2 .  (error return if not)
+!  *5. NKNOTS = NDIM+4 = 2*N+4 .  (error return if not)
+!  *6. T(2*k+1) = T(2*k) = X(k), k=1,...,N .  (not checked)
+!
+!  * Indicates this applies only if KNOTYP<0 .
+!
+!### Portability:
+!  Argument INCFD is used only to cause the compiler to generate
+!  efficient code for the subscript expressions (1+(I-1)*INCFD) .
+!  The normal usage, in which DPCHBS is called with one-dimensional
+!  arrays F and D, is probably non-Fortran 77, in the strict sense,
+!  but it works on all systems on which DPCHBS has been tested.
+!
+!### See Also
+!  * PCHIC, PCHIM, or PCHSP can be used to determine an interpolating
+!    PCH function from a set of data.
+!  * The B-spline routine DBVALU can be used to evaluate the
+!    B-representation that is output by DPCHBS.
+!    (See BSPDOC for more information.)
+!
+!### References
+!  * F. N. Fritsch, "Representations for parametric cubic
+!    splines," Computer Aided Geometric Design 6 (1989),
+!    pp.79-82.
+
+    subroutine dpchbs (n, x, f, d, incfd, knotyp, nknots, t, bcoef, ndim, kord, ierr)
+
+    integer,intent(in)     :: n               !! the number of data points, N>=2 .  (not checked)
+    integer,intent(in)     :: incfd           !! the increment between successive values in F and D.
+                                              !! This argument is provided primarily for 2-D applications.
+                                              !! It may have the value 1 for one-dimensional applications,
+                                              !! in which case F and D may be singly-subscripted arrays.
+    integer,intent(in)     :: knotyp          !! a flag to control the knot sequence.
+                                              !! The knot sequence T is normally computed from X by putting
+                                              !! a double knot at each X and setting the end knot pairs
+                                              !! according to the value of KNOTYP:
+                                              !!
+                                              !!  * KNOTYP = 0:  Quadruple knots at X(1) and X(N).  (default)
+                                              !!  * KNOTYP = 1:  Replicate lengths of extreme subintervals:
+                                              !!                 T( 1 ) = T( 2 ) = X(1) - (X(2)-X(1))  ;
+                                              !!                 T(M+4) = T(M+3) = X(N) + (X(N)-X(N-1)).
+                                              !!  * KNOTYP = 2:  Periodic placement of boundary knots:
+                                              !!                 T( 1 ) = T( 2 ) = X(1) - (X(N)-X(N-1));
+                                              !!                 T(M+4) = T(M+3) = X(N) + (X(2)-X(1))  .
+                                              !! Here M=NDIM=2*N.
+                                              !!
+                                              !! If the input value of KNOTYP is negative, however, it is
+                                              !! assumed that NKNOTS and T were set in a previous call.
+                                              !! This option is provided for improved efficiency when used
+                                              !! in a parametric setting.
+    integer,intent(inout)  :: nknots          !! the number of knots.
+                                              !!
+                                              !!  * If KNOTYP>=0, then NKNOTS will be set to NDIM+4.
+                                              !!  * If KNOTYP<0, then NKNOTS is an input variable, and an
+                                              !!    error return will be taken if it is not equal to NDIM+4.
+    integer,intent(out)    :: ndim            !! the dimension of the B-spline space.  (Set to 2*N.)
+    integer,intent(out)    :: kord            !! the order of the B-spline.  (Set to 4.)
+    integer,intent(out)    :: ierr            !! an error flag:
+                                              !!
+                                              !! * Normal return:
+                                              !!    * IERR = 0  (no errors).
+                                              !! * "Recoverable" errors:
+                                              !!    * IERR = -4  if KNOTYP>2 .
+                                              !!    * IERR = -5  if KNOTYP<0 and NKNOTS/=(2*N+4).
+    real(wp),intent(in)    :: x(*)            !! array of independent variable values.  The
+                                              !! elements of X must be strictly increasing:
+                                              !!      X(I-1) < X(I),  I = 2(1)N.   (not checked)
+                                              !! nmax, the dimension of X, must be >=N.
+    real(wp),intent(in)    :: f(incfd,*)      !! array of dependent variable values.
+                                              !! F(1+(I-1)*INCFD) is the value corresponding to X(I).
+                                              !! nmax, the second dimension of F, must be >=N.
+    real(wp),intent(in)    :: d(incfd,*)      !! array of derivative values at the data points.
+                                              !! D(1+(I-1)*INCFD) is the value corresponding to X(I).
+                                              !! nmax, the second dimension of D, must be >=N.
+    real(wp),intent(inout) :: t(*)            !! array of 2*N+4 knots for the B-representation.
+                                              !!
+                                              !! * If KNOTYP>=0, T will be returned by DPCHBS with the
+                                              !!   interior double knots equal to the X-values and the
+                                              !!   boundary knots set as indicated above.
+                                              !! * If KNOTYP<0, it is assumed that T was set by a
+                                              !!   previous call to DPCHBS.  (This routine does **not**
+                                              !!   verify that T forms a legitimate knot sequence.)
+    real(wp),intent(out)   :: bcoef(*)        !! array of 2*N B-spline coefficients.
+
+    integer :: k, kk
+    real(wp) :: dov3, hnew, hold
+
+    ! Initialize.
+    ndim = 2*n
+    kord = 4
+    ierr = 0
+
+    ! Check argument validity.  Set up knot sequence if OK.
+    if ( knotyp>2 ) then
+        ierr = -1
+        call xermsg ('SLATEC', 'DPCHBS', 'KNOTYP GREATER THAN 2', ierr, 1)
+        return
+    endif
+    if ( knotyp<0 ) then
+        if ( nknots/=ndim+4 ) then
+            ierr = -2
+            call xermsg ('SLATEC', 'DPCHBS', 'KNOTYP<0 AND NKNOTS/=(2*N+4)', ierr, 1)
+            return
+        endif
+    else
+        ! Set up knot sequence.
+        nknots = ndim + 4
+        call dpchkt (n, x, knotyp, t)
+    endif
+
+    ! Compute B-spline coefficients.
+    hnew = t(3) - t(1)
+    do k = 1, n
+        kk = 2*k
+        hold = hnew
+        ! The following requires mixed mode arithmetic.
+        dov3 = d(1,k)/3
+        bcoef(kk-1) = f(1,k) - hold*dov3
+        ! The following assumes T(2*K+1) = X(K).
+        hnew = t(kk+3) - t(kk+1)
+        bcoef(kk) = f(1,k) + hnew*dov3
+    end do
+
+    end subroutine dpchbs
+!***************************************************************************
+
+!***************************************************************************
+!>
+!  Set boundary conditions for [[DPCHIC]]
+!
+!  Called by [[DPCHIC]] to set end derivatives as requested by the user.
+!  It must be called after interior derivative values have been set.
+!
+!  To facilitate two-dimensional applications, includes an increment
+!  between successive values of the D-array.
+!
+!### Programming notes
+!  1. The function [[DPCHST]](ARG1,ARG2) is assumed to return zero if
+!     either argument is zero, +1 if they are of the same sign, and
+!     -1 if they are of opposite sign.
+!  2. One could reduce the number of arguments and amount of local
+!     storage, at the expense of reduced code clarity, by passing in
+!     the array WK (rather than splitting it into H and SLOPE) and
+!     increasing its length enough to incorporate STEMP and XTEMP.
+!  3. The two monotonicity checks only use the sufficient conditions.
+!     Thus, it is possible (but unlikely) for a boundary condition to
+!     be changed, even though the original interpolant was monotonic.
+!     (At least the result is a continuous function of the data.)
+!
+!@warning This routine does no validity-checking of arguments.
+
+    subroutine dpchce (ic, vc, n, x, h, slope, d, incfd, ierr)
+
+    integer,intent(in)  :: ic(2)    !! array of length 2 specifying desired
+                                    !! boundary conditions:
+                                    !!
+                                    !! * IC(1) = IBEG, desired condition at beginning of data.
+                                    !! * IC(2) = IEND, desired condition at end of data.
+                                    !!
+                                    !! ( see prologue to [[DPCHIC]] for details. )
+    integer,intent(in)     :: n     !! number of data points.  (assumes N>=2)
+    integer,intent(in)     :: incfd !! increment between successive values in D.
+                                    !! This argument is provided primarily for 2-D applications.
+    integer,intent(out)    :: ierr  !! error flag.
+                                    !!
+                                    !! * Normal return:
+                                    !!    * IERR = 0  (no errors).
+                                    !! * Warning errors:
+                                    !!    * IERR = 1  if IBEG<0 and D(1) had to be adjusted for
+                                    !!              monotonicity.
+                                    !!    * IERR = 2  if IEND<0 and D(1+(N-1)*INCFD) had to be
+                                    !!              adjusted for monotonicity.
+                                    !!    * IERR = 3  if both of the above are true.
+    real(wp),intent(in)    :: vc(2) !! array of length 2 specifying desired boundary
+                                    !! values.
+                                    !!
+                                    !! * VC(1) need be set only if IC(1) = 2 or 3 .
+                                    !! * VC(2) need be set only if IC(2) = 2 or 3 .
+    real(wp),intent(in)    :: x(*)  !! array of independent variable values.  (the
+                                    !! elements of X are assumed to be strictly increasing.)
+    real(wp),intent(in)    :: h(*)  !! array of interval lengths.
+    real(wp),intent(in)    :: slope(*)  !! array of data slopes.
+                                        !! If the data are (X(I),Y(I)), I=1(1)N, then these inputs are:
+                                        !!
+                                        !! * H(I) =  X(I+1)-X(I),
+                                        !! * SLOPE(I) = (Y(I+1)-Y(I))/H(I),  I=1(1)N-1.
+    real(wp),intent(inout) :: d(incfd,*) !! (input) real*8 array of derivative values at the data points.
+                                         !!  The value corresponding to X(I) must be stored in
+                                         !!  D(1+(I-1)*INCFD),  I=1(1)N.
+                                         !!
+                                         !! (output) the value of D at X(1) and/or X(N) is changed, if
+                                         !!  necessary, to produce the requested boundary conditions.
+                                         !!  no other entries in D are changed.
+
+    integer :: ibeg, iend, ierf, index, j, k
+    real(wp) :: stemp(3), xtemp(4)
+
+    ibeg = ic(1)
+    iend = ic(2)
+    ierr = 0
+
+    ! set to default boundary conditions if n is too small.
+
+    if ( abs(ibeg)>n )  ibeg = 0
+    if ( abs(iend)>n )  iend = 0
+
+    ! treat beginning boundary condition.
+
+    if (ibeg /= 0) then
+        k = abs(ibeg)
+        if (k == 1) then
+            ! boundary value provided.
+            d(1,1) = vc(1)
+        else if (k == 2) then
+            ! boundary second derivative provided.
+            d(1,1) = half*( (three*slope(1) - d(1,2)) - half*vc(1)*h(1) )
+        else if (k < 5) then
+            ! use k-point derivative formula.
+            ! pick up first k points, in reverse order.
+            do j = 1, k
+                index = k-j+1
+                ! index runs from k down to 1.
+                xtemp(j) = x(index)
+                if (j < k)  stemp(j) = slope(index-1)
+            end do
+            ! -----------------------------
+            d(1,1) = dpchdf (k, xtemp, stemp, ierf)
+            ! -----------------------------
+            if (ierf /= 0) then
+                ! *** this case should never occur ***
+                ierr = -1
+                call xermsg ('SLATEC', 'DPCHCE', 'ERROR RETURN FROM DPCHDF', ierr, 1)
+                return
+            end if
+        else
+            ! use 'not a knot' condition.
+            d(1,1) = ( three*(h(1)*slope(2) + h(2)*slope(1)) &
+                       - two*(h(1)+h(2))*d(1,2) - h(1)*d(1,3) ) / h(2)
+        endif
+
+        if (ibeg <= 0) then
+
+            ! check d(1,1) for compatibility with monotonicity.
+
+            if (slope(1) == zero) then
+                if (d(1,1) /= zero) then
+                    d(1,1) = zero
+                    ierr = ierr + 1
+                endif
+            else if ( dpchst(d(1,1),slope(1)) < zero) then
+                d(1,1) = zero
+                ierr = ierr + 1
+            else if ( abs(d(1,1)) > three*abs(slope(1)) ) then
+                d(1,1) = three*slope(1)
+                ierr = ierr + 1
+            endif
+
+        end if
+
+    end if
+
+    ! treat end boundary condition.
+
+    if (iend == 0) return
+    k = abs(iend)
+    if (k == 1) then
+        ! boundary value provided.
+        d(1,n) = vc(2)
+    else if (k == 2) then
+        ! boundary second derivative provided.
+        d(1,n) = half*( (three*slope(n-1) - d(1,n-1)) + half*vc(2)*h(n-1) )
+    else if (k < 5) then
+        ! use k-point derivative formula.
+        ! pick up last k points.
+        do j = 1, k
+            index = n-k+j
+            ! index runs from n+1-k up to n.
+            xtemp(j) = x(index)
+            if (j < k)  stemp(j) = slope(index)
+        end do
+        ! -----------------------------
+        d(1,n) = dpchdf (k, xtemp, stemp, ierf)
+        ! -----------------------------
+        if (ierf /= 0) then
+            ! *** this case should never occur ***
+            ierr = -1
+            call xermsg ('SLATEC', 'DPCHCE', 'ERROR RETURN FROM DPCHDF', ierr, 1)
+            return
+        end if
+    else
+        ! use 'not a knot' condition.
+        d(1,n) = ( three*(h(n-1)*slope(n-2) + h(n-2)*slope(n-1)) &
+                   - two*(h(n-1)+h(n-2))*d(1,n-1) - h(n-1)*d(1,n-2) ) / h(n-2)
+    endif
+
+    if (iend > 0)  return
+
+    ! check d(1,n) for compatibility with monotonicity.
+
+    if (slope(n-1) == zero) then
+        if (d(1,n) /= zero) then
+            d(1,n) = zero
+            ierr = ierr + 2
+        endif
+    else if ( dpchst(d(1,n),slope(n-1)) < zero) then
+        d(1,n) = zero
+        ierr = ierr + 2
+    else if ( abs(d(1,n)) > three*abs(slope(n-1)) ) then
+        d(1,n) = three*slope(n-1)
+        ierr = ierr + 2
+    endif
+
+    end subroutine dpchce
+!***************************************************************************
+
+!***************************************************************************
+!>
+!  Set interior derivatives for DPCHIC
+!
+!  Called by [[DPCHIC]] to set derivatives needed to determine a monotone
+!  piecewise cubic Hermite interpolant to the data.
+!
+!  Default boundary conditions are provided which are compatible
+!  with monotonicity.  If the data are only piecewise monotonic, the
+!  interpolant will have an extremum at each point where monotonicity
+!  switches direction.
+!
+!  To facilitate two-dimensional applications, includes an increment
+!  between successive values of the D-array.
+!
+!  The resulting piecewise cubic Hermite function should be identical
+!  (within roundoff error) to that produced by [[DPCHIM]].
+!
+!### Programming notes
+!  1. The function [[DPCHST]](ARG1,ARG2) is assumed to return zero if
+!     either argument is zero, +1 if they are of the same sign, and
+!     -1 if they are of opposite sign.
+!
+!@warning This routine does no validity-checking of arguments.
+
+    subroutine dpchci (n, h, slope, d, incfd)
+
+    integer,intent(in)   :: n           !! number of data points.
+                                        !! If N=2, simply does linear interpolation.
+    integer,intent(in)   :: incfd       !! increment between successive values in D.
+                                        !! This argument is provided primarily for 2-D applications.
+    real(wp),intent(in)  :: h(*)        !! array of interval lengths.
+    real(wp),intent(in)  :: slope(*)    !! array of data slopes.
+                                        !! If the data are (X(I),Y(I)), I=1(1)N, then these inputs are:
+                                        !!
+                                        !! * H(I) =  X(I+1)-X(I),
+                                        !! * SLOPE(I) = (Y(I+1)-Y(I))/H(I),  I=1(1)N-1.
+    real(wp),intent(out) :: d(incfd,*)  !! array of derivative values at data points.
+                                        !! If the data are monotonic, these values will determine a
+                                        !! a monotone cubic Hermite function.
+                                        !! The value corresponding to X(I) is stored in
+                                        !!      `D(1+(I-1)*INCFD),  I=1(1)N`.
+                                        !! No other entries in D are changed.
+
+    integer :: i, nless1
+    real(wp) :: del1, del2, dmax, dmin, drat1, drat2, hsum, hsumt3, w1, w2
+
+    nless1 = n - 1
+    del1 = slope(1)
+
+    if (nless1 <= 1)  then
+        ! special case n=2 -- use linear interpolation.
+
+        d(1,1) = del1
+        d(1,n) = del1
+
+    else
+        ! normal case  (n >= 3).
+
+        del2 = slope(2)
+
+        ! set d(1) via non-centered three-point formula, adjusted to be
+        ! shape-preserving.
+
+        hsum = h(1) + h(2)
+        w1 = (h(1) + hsum)/hsum
+        w2 = -h(1)/hsum
+        d(1,1) = w1*del1 + w2*del2
+        if ( dpchst(d(1,1),del1) <= zero) then
+            d(1,1) = zero
+        else if ( dpchst(del1,del2) < zero) then
+            ! need do this check only if monotonicity switches.
+            dmax = three*del1
+            if (abs(d(1,1)) > abs(dmax))  d(1,1) = dmax
+        endif
+
+        ! loop through interior points.
+
+        do i = 2, nless1
+
+            if (i /= 2) then
+                hsum = h(i-1) + h(i)
+                del1 = del2
+                del2 = slope(i)
+            end if
+
+            ! set d(i)=0 unless data are strictly monotonic.
+            d(1,i) = zero
+            if ( dpchst(del1,del2) > zero) then
+                ! use brodlie modification of butland formula.
+                hsumt3 = hsum+hsum+hsum
+                w1 = (hsum + h(i-1))/hsumt3
+                w2 = (hsum + h(i)  )/hsumt3
+                dmax = max( abs(del1), abs(del2) )
+                dmin = min( abs(del1), abs(del2) )
+                drat1 = del1/dmax
+                drat2 = del2/dmax
+                d(1,i) = dmin/(w1*drat1 + w2*drat2)
+            end if
+
+        end do
+
+        ! set d(n) via non-centered three-point formula, adjusted to be
+        ! shape-preserving.
+
+        w1 = -h(n-1)/hsum
+        w2 = (h(n-1) + hsum)/hsum
+        d(1,n) = w1*del1 + w2*del2
+        if ( dpchst(d(1,n),del2) <= zero) then
+            d(1,n) = zero
+        else if ( dpchst(del1,del2) < zero) then
+            ! need do this check only if monotonicity switches.
+            dmax = three*del2
+            if (abs(d(1,n)) > abs(dmax))  d(1,n) = dmax
+        endif
+
+    end if
+
+    end subroutine dpchci
+!***************************************************************************
+
+!***************************************************************************
+!>
+!  Check a cubic Hermite function for monotonicity
+!
+!  Checks the piecewise cubic Hermite function defined by  N,X,F,D
+!  for monotonicity.
+!
+!  To provide compatibility with [[DPCHIM]] and [[DPCHIC]], includes an
+!  increment between successive values of the F- and D-arrays.
+!
+!### Cautions
+!   This provides the same capability as old [[DPCHMC]], except that a
+!   new output value, -3, was added February 1989.  (Formerly, -3
+!   and +3 were lumped together in the single value 3.)  Codes that
+!   flag nonmonotonicity by "IF (ISMON==2)" need not be changed.
+!   Codes that check via "IF (ISMON>=3)" should change the test to
+!   "IF (IABS(ISMON)>=3)".  Codes that declare monotonicity via
+!   "IF (ISMON<=1)" should change to "IF (IABS(ISMON)<=1)".
+!
+!### References
+!  * F. N. Fritsch and R. E. Carlson, Monotone piecewise
+!    cubic interpolation, SIAM Journal on Numerical Analysis
+!    17, 2 (April 1980), pp. 238-246.
+!
+!### Programming notes
+!  An alternate organization would have separate loops for computing
+!  ISMON(i), i=1,...,NSEG, and for the computation of ISMON(N).  The
+!  first loop can be readily parallelized, since the NSEG calls to
+!  CHFCM are independent.  The second loop can be cut short if
+!  ISMON(N) is ever equal to 2, for it cannot be changed further.
+
+    subroutine dpchcm (n, x, f, d, incfd, skip, ismon, ierr)
+
+    integer,intent(in)    :: n          !! the number of data points.  (Error return if N<2 .)
+    real(wp),intent(in)   :: x(n)       !! array of independent variable values.  The
+                                        !! elements of X must be strictly increasing:
+                                        !!      X(I-1) < X(I),  I = 2(1)N.
+                                        !! (Error return if not.)
+    real(wp),intent(in)   :: f(incfd,n) !! array of function values.  F(1+(I-1)*INCFD) is
+                                        !! the value corresponding to X(I).
+    real(wp),intent(in)   :: d(incfd,n) !! array of derivative values.  D(1+(I-1)*INCFD) is
+                                        !! is the value corresponding to X(I).
+    integer,intent(in)    :: incfd      !! the increment between successive values in F and D.
+                                        !! (Error return if  INCFD<1 .)
+    logical,intent(inout) :: skip       !! logical variable which should be set to
+                                        !! .TRUE. if the user wishes to skip checks for validity of
+                                        !! preceding parameters, or to .FALSE. otherwise.
+                                        !! This will save time in case these checks have already
+                                        !! been performed.
+                                        !! SKIP will be set to .TRUE. on normal return.
+    integer,intent(out)   :: ismon(n)   !! array indicating on which intervals the
+                                        !! PCH function defined by  N, X, F, D  is monotonic.
+                                        !! For data interval [X(I),X(I+1)]:
+                                        !!
+                                        !! * ISMON(I) = -3  if function is probably decreasing;
+                                        !! * ISMON(I) = -1  if function is strictly decreasing;
+                                        !! * ISMON(I) =  0  if function is constant;
+                                        !! * ISMON(I) =  1  if function is strictly increasing;
+                                        !! * ISMON(I) =  2  if function is non-monotonic;
+                                        !! * ISMON(I) =  3  if function is probably increasing.
+                                        !!
+                                        !! If ABS(ISMON)=3, this means that the D-values are near
+                                        !! the boundary of the monotonicity region.  A small
+                                        !! increase produces non-monotonicity; decrease, strict
+                                        !! monotonicity.
+                                        !!
+                                        !! The above applies to I=1(1)N-1.  ISMON(N) indicates whether
+                                        !! the entire function is monotonic on [X(1),X(N)].
+    integer,intent(out)   :: ierr       !! error flag.
+                                        !!
+                                        !! * Normal return:
+                                        !!     * IERR = 0  (no errors).
+                                        !! * "Recoverable" errors:
+                                        !!     * IERR = -1  if N<2 .
+                                        !!     * IERR = -2  if INCFD<1 .
+                                        !!     * IERR = -3  if the X-array is not strictly increasing.
+                                        !!
+                                        !! (The ISMON-array has not been changed in any of these cases.)
+                                        !! NOTE:  The above errors are checked in the order listed,
+                                        !! and following arguments have **NOT** been validated.
+
+    integer :: i, nseg
+    real(wp) :: delta
+
+    ! validity-check arguments.
+    if (.not. skip) then
+        if ( n<2 ) then
+            ierr = -1
+            call xermsg ('slatec', 'dpchcm', 'number of data points less than two', ierr, 1)
+            return
+        end if
+        if ( incfd<1 ) then
+            ierr = -2
+            call xermsg ('slatec', 'dpchcm', 'increment less than one', ierr, 1)
+            return
+        end if
+        do i = 2, n
+            if ( x(i)<=x(i-1) ) then
+                ! x-array not strictly increasing.
+                ierr = -3
+                call xermsg ('slatec', 'dpchcm', 'x-array not strictly increasing', ierr, 1)
+                return
+            end if
+        end do
+        skip = .true.
+    end if
+
+    ! function definition is ok -- go on.
+
+    nseg = n - 1
+    do i = 1, nseg
+        delta = (f(1,i+1)-f(1,i))/(x(i+1)-x(i))
+        ! -------------------------------
+        ismon(i) = dchfcm (d(1,i), d(1,i+1), delta)
+        ! -------------------------------
+        if (i == 1) then
+            ismon(n) = ismon(1)
+        else
+            ! Need to figure out cumulative monotonicity from following
+            ! "multiplication table":
+            !
+            !          +        I S M O N (I)
+            !           +  -3  -1   0   1   3   2
+            !            +------------------------+
+            !     I   -3 I -3  -3  -3   2   2   2 I
+            !     S   -1 I -3  -1  -1   2   2   2 I
+            !     M    0 I -3  -1   0   1   3   2 I
+            !     O    1 I  2   2   1   1   3   2 I
+            !     N    3 I  2   2   3   3   3   2 I
+            !    (N)   2 I  2   2   2   2   2   2 I
+            !            +------------------------+
+            ! Note that the 2 row and column are out of order so as not
+            ! to obscure the symmetry in the rest of the table.
+            !
+            ! No change needed if equal or constant on this interval or
+            ! already declared nonmonotonic.
+            if ( (ismon(i)/=ismon(n)) .and. (ismon(i)/=0) .and. (ismon(n)/=2) ) then
+                if ( (ismon(i)==2) .or. (ismon(n)==0) ) then
+                    ismon(n) =  ismon(i)
+                else if (ismon(i)*ismon(n) < 0) then
+                    ! This interval has opposite sense from curve so far.
+                    ismon(n) = 2
+                else
+                    ! At this point, both are nonzero with same sign, and
+                    ! we have already eliminated case both +-1.
+                    ismon(n) = sign (3, ismon(n))
+                endif
+            endif
+        endif
+    end do
+
+    ierr = 0
+
+    end subroutine dpchcm
+!***************************************************************************
+
+!***************************************************************************
+!>
+!  DPCHIC Monotonicity Switch Derivative Setter
+!
+!  Called by  DPCHIC  to adjust the values of D in the vicinity of a
+!  switch in direction of monotonicity, to produce a more "visually
+!  pleasing" curve than that given by [[DPCHIM]].
+!
+!@warning This routine does no validity-checking of arguments.
+!
+!### Programming notes:
+!  1. The function  [[DPCHST]](ARG1,ARG2)  is assumed to return zero if
+!     either argument is zero, +1 if they are of the same sign, and
+!     -1 if they are of opposite sign.
+
+    subroutine dpchcs (switch, n, h, slope, d, incfd, ierr)
+
+    real(wp),intent(in)   :: switch      !! indicates the amount of control desired over
+                                         !! local excursions from data.
+    integer,intent(in)    :: n           !! number of data points.  (assumes N>2 .)
+    real(wp),intent(in)   :: h(*)        !! array of interval lengths.
+    real(wp),intent(in)   :: slope(*)    !! array of data slopes.
+                                         !! If the data are (X(I),Y(I)), I=1(1)N, then these inputs are:
+                                         !!
+                                         !! * H(I) =  X(I+1)-X(I),
+                                         !! * SLOPE(I) = (Y(I+1)-Y(I))/H(I),  I=1(1)N-1.
+    real(wp),intent(inout) :: d(incfd,*) !! (input) array of derivative values at the data points,
+                                         !! as determined by [[DPCHCI]].
+                                         !!
+                                         !! (output) derivatives in the vicinity of switches in direction
+                                         !! of monotonicity may be adjusted to produce a more "visually
+                                         !! pleasing" curve.
+                                         !! The value corresponding to X(I) is stored in
+                                         !! `D(1+(I-1)*INCFD),  I=1(1)N`
+                                         !! No other entries in D are changed.
+    integer,intent(inout) :: incfd       !! increment between successive values in D.
+                                         !! This argument is provided primarily for 2-D applications.
+    integer,intent(out)   :: ierr        !! error flag.  should be zero.
+                                         !! If negative, trouble in [[DPCHSW]].  (should never happen.)
+
+    integer :: i, indx, k, nless1
+    real(wp) :: del(3), dext, dfloc, dfmx, fact, slmax, wtave(2)
+
+    real(wp),parameter :: fudge = four
+
+    ierr = 0
+    nless1 = n - 1
+
+    ! loop over segments.
+    do i = 2 , nless1
+        if ( dpchst(slope(i-1),slope(i))<0 ) then
+            ! slope switches monotonicity at i-th point
+            ! do not change d if 'up-down-up'.
+            if ( i>2 ) then
+                if ( dpchst(slope(i-2),slope(i))>zero ) cycle
+            endif
+            if ( i<nless1 ) then
+                if ( dpchst(slope(i+1),slope(i-1))>zero ) cycle
+            endif
+            ! compute provisional value for d(1,i).
+            dext = dpchsd(slope(i-1),slope(i),h(i-1),h(i))
+            ! determine which interval contains the extremum.
+            if ( dpchst(dext,slope(i-1))<0 ) then
+                ! dext and slope(i-1) have opposite signs -- extremum is in (x(i-1),x(i)).
+                k = i - 1
+                ! set up to compute new values for d(1,i-1) and d(1,i).
+                wtave(2) = dext
+                if ( k>1 ) wtave(1) = dpchsd(slope(k-1),slope(k),h(k-1),h(k))
+            elseif ( dpchst(dext,slope(i-1))==0 ) then
+                cycle
+            else
+                ! dext and slope(i) have opposite signs -- extremum is in (x(i),x(i+1)).
+                k = i
+                ! set up to compute new values for d(1,i) and d(1,i+1).
+                wtave(1) = dext
+                if ( k<nless1 ) wtave(2) = dpchsd(slope(k),slope(k+1),h(k),h(k+1))
+            endif
+        elseif ( dpchst(slope(i-1),slope(i))==0 ) then
+            ! at least one of slope(i-1) and slope(i) is zero --
+            ! check for flat-topped peak
+            if ( i==nless1 ) cycle
+            if ( dpchst(slope(i-1),slope(i+1))>=zero ) cycle
+            ! we have flat-topped peak on (x(i),x(i+1)).
+            k = i
+            ! set up to compute new values for d(1,i) and d(1,i+1).
+            wtave(1) = dpchsd(slope(k-1),slope(k),h(k-1),h(k))
+            wtave(2) = dpchsd(slope(k),slope(k+1),h(k),h(k+1))
+        else
+            cycle
+        endif
+
+        ! at this point we have determined that there will be an extremum
+        ! on (x(k),x(k+1)), where k=i or i-1, and have set array wtave--
+        !    wtave(1) is a weighted average of slope(k-1) and slope(k),
+        !             if k>1
+        !    wtave(2) is a weighted average of slope(k) and slope(k+1),
+        !             if k<n-1
+
+        slmax = abs(slope(k))
+        if ( k>1 ) slmax = max(slmax,abs(slope(k-1)))
+        if ( k<nless1 ) slmax = max(slmax,abs(slope(k+1)))
+
+        if ( k>1 ) del(1) = slope(k-1)/slmax
+        del(2) = slope(k)/slmax
+        if ( k<nless1 ) del(3) = slope(k+1)/slmax
+
+        if ( (k>1) .and. (k<nless1) ) then
+            ! normal case -- extremum is not in a boundary interval.
+            fact = fudge*abs(del(3)*(del(1)-del(2))*(wtave(2)/slmax))
+            d(1,k) = d(1,k) + min(fact,one)*(wtave(1)-d(1,k))
+            fact = fudge*abs(del(1)*(del(3)-del(2))*(wtave(1)/slmax))
+            d(1,k+1) = d(1,k+1) + min(fact,one)*(wtave(2)-d(1,k+1))
+        else
+            ! special case k=1 (which can occur only if i=2) or
+            ! k=nless1 (which can occur only if i=nless1).
+            fact = fudge*abs(del(2))
+            d(1,i) = min(fact,one)*wtave(i-k+1)
+            ! note that i-k+1 = 1 if k=i  (=nless1),
+            ! i-k+1 = 2 if k=i-1(=1).
+        endif
+        ! adjust if necessary to limit excursions from data.
+        if ( switch>zero ) then
+            dfloc = h(k)*abs(slope(k))
+            if ( k>1 ) dfloc = max(dfloc,h(k-1)*abs(slope(k-1)))
+            if ( k<nless1 ) dfloc = max(dfloc,h(k+1)*abs(slope(k+1)))
+            dfmx = switch*dfloc
+            indx = i - k + 1
+            ! indx = 1 if k=i, 2 if k=i-1.
+            call dpchsw(dfmx,indx,d(1,k),d(1,k+1),h(k),slope(k),ierr)
+            if ( ierr/=0 ) return
+        endif
+        ! end of segment loop.
+    enddo
+
+    end subroutine dpchcs
+!***************************************************************************
+
+!***************************************************************************
+!>
+!  Computes divided differences for [[DPCHCE]] and [[DPCHSP]]
+!
+!  Uses a divided difference formulation to compute a K-point
+!  approximation to the derivative at X(K) based on the data
+!  in X and S.
+!
+!  Called by [[DPCHCE]] and [[DPCHSP]] to compute 3- and 4-point boundary
+!  derivative approximations.
+!
+!### References
+!  * Carl de Boor, A Practical Guide to Splines, Springer-Verlag,
+!    New York, 1978, pp. 10-16.
+
+    function dpchdf (k, x, s, ierr) result(deriv)
+
+    integer,intent(in)     :: k    !! is the order of the desired derivative approximation.
+                                   !! K must be at least 3 (error return if not).
+    real(wp),intent(in)    :: x(k) !! contains the K values of the independent variable.
+                                   !! X need not be ordered, but the values **MUST** be
+                                   !! distinct.  (Not checked here.)
+    real(wp),intent(inout) :: s(k) !! contains the associated slope values:
+                                   !! `S(I) = (F(I+1)-F(I))/(X(I+1)-X(I)), I=1(1)K-1`.
+                                   !! (Note that S need only be of length K-1.)
+                                   !! Will be destroyed on output.
+    integer,intent(out)    :: ierr !! will be set to -1 if K<2 .
+    real(wp) :: deriv  !! will be set to the desired derivative approximation if
+                       !! IERR=0 or to zero if IERR=-1.
+
+    integer :: i, j
+    real(wp) :: value
+
+    ! check for legal value of k.
+    if (k < 3) then
+        ierr = -1
+        call xermsg ('slatec', 'dpchdf', 'k less than three', ierr, 1)
+        deriv = zero
+    else
+
+        ! compute coefficients of interpolating polynomial.
+        do j = 2, k-1
+            do  i = 1, k-j
+                s(i) = (s(i+1)-s(i))/(x(i+j)-x(i))
+            end do
+        end do
+
+        ! evaluate derivative at x(k).
+        value = s(1)
+        do i = 2, k-1
+            value = s(i) + value*(x(k)-x(i))
+        end do
+
+        ! normal return.
+        ierr = 0
+        deriv = value
+
+    end if
+
+    end function dpchdf
+!***************************************************************************
+
+!***************************************************************************
+!>
 !
-!     A,B -- (input) endpoints of interval of integration.
-!
-!***SEE ALSO  DPCHIA
-!***ROUTINES CALLED  (NONE)
-!***REVISION HISTORY  (YYMMDD)
-!   820730  DATE WRITTEN
-!   820805  Converted to SLATEC library version.
-!   870707  Corrected subroutine name from DCHIV to DCHFIV.
-!   870813  Minor cosmetic changes.
-!   890411  1. Added SAVE statements (Vers. 3.2).
-!           2. Added SIX to real(wp) declaration.
-!   890411  REVISION DATE from Version 3.2
-!   891214  Prologue converted to Version 4.0 format.  (BAB)
-!   900315  CALLs to XERROR changed to CALLs to XERMSG.  (THJ)
-!   900328  Added TYPE section.  (WRB)
-!   910408  Updated AUTHOR section in prologue.  (WRB)
-!   930503  Corrected to set VALUE=0 when IERR/=0.  (FNF)
-!   930504  Eliminated IERR and changed name DCHFIV to DCHFIE.  (FNF)
-!***END PROLOGUE  DCHFIE
-!
-!  Programming notes:
-!  1. There is no error return from this routine because zero is
-!     indeed the mathematically correct answer when X1==X2 .
-!**End
-
-
-real(wp)  x1, x2, f1, f2, d1, d2, a, b
-
-real(wp)  dterm, fterm, h, phia1, phia2, &
-      phib1, phib2, psia1, psia2, psib1, psib2, ta1, ta2, &
-      tb1, tb2, ua1, ua2, ub1, ub2
-
-!  VALIDITY CHECK INPUT.
-
-if (x1 == x2)  then
-   dchfie = 0
-else
-   h = x2 - x1
-   ta1 = (a - x1) / h
-   ta2 = (x2 - a) / h
-   tb1 = (b - x1) / h
-   tb2 = (x2 - b) / h
-!
-   ua1 = ta1**3
-   phia1 = ua1 * (two - ta1)
-   psia1 = ua1 * (three*ta1 - four)
-   ua2 = ta2**3
-   phia2 =  ua2 * (two - ta2)
-   psia2 = -ua2 * (three*ta2 - four)
-!
-   ub1 = tb1**3
-   phib1 = ub1 * (two - tb1)
-   psib1 = ub1 * (three*tb1 - four)
-   ub2 = tb2**3
-   phib2 =  ub2 * (two - tb2)
-   psib2 = -ub2 * (three*tb2 - four)
-!
-   fterm =   f1*(phia2 - phib2) + f2*(phib1 - phia1)
-   dterm = ( d1*(psia2 - psib2) + d2*(psib1 - psia1) )*(h/six)
-!
-   dchfie = (half*h) * (fterm + dterm)
-endif
-!
-
-end function dchfie
-
-subroutine dpchbs (n, x, f, d, incfd, knotyp, nknots, t, bcoef, &
-   ndim, kord, ierr)
-
-!***PURPOSE  Piecewise Cubic Hermite to B-Spline converter.
-!***LIBRARY   SLATEC (PCHIP)
-!***CATEGORY  E3
-!***TYPE      real(wp) (PCHBS-S, DPCHBS-D)
-!***KEYWORDS  B-SPLINES, CONVERSION, CUBIC HERMITE INTERPOLATION,
-!             PIECEWISE CUBIC INTERPOLATION
-!***AUTHOR  Fritsch, F. N., (LLNL)
-!             Computing and Mathematics Research Division
-!             Lawrence Livermore National Laboratory
-!             P.O. Box 808  (L-316)
-!             Livermore, CA  94550
-!             FTS 532-4275, (510) 422-4275
-!***DESCRIPTION
-!
-! *Usage:
-!
-!        INTEGER  N, INCFD, KNOTYP, NKNOTS, NDIM, KORD, IERR
-!        PARAMETER  (INCFD = ...)
-!        real(wp)  X(nmax), F(INCFD,nmax), D(INCFD,nmax),
-!       *      T(2*nmax+4), BCOEF(2*nmax)
-!
-!        CALL DPCHBS (N, X, F, D, INCFD, KNOTYP, NKNOTS, T, BCOEF,
-!       *             NDIM, KORD, IERR)
-!
-! *Arguments:
-!
-!     N:IN  is the number of data points, N>=2 .  (not checked)
-!
-!     X:IN  is the real array of independent variable values.  The
-!           elements of X must be strictly increasing:
-!                X(I-1) < X(I),  I = 2(1)N.   (not checked)
-!           nmax, the dimension of X, must be >=N.
-!
-!     F:IN  is the real array of dependent variable values.
-!           F(1+(I-1)*INCFD) is the value corresponding to X(I).
-!           nmax, the second dimension of F, must be >=N.
-!
-!     D:IN  is the real array of derivative values at the data points.
-!           D(1+(I-1)*INCFD) is the value corresponding to X(I).
-!           nmax, the second dimension of D, must be >=N.
-!
-!     INCFD:IN  is the increment between successive values in F and D.
-!           This argument is provided primarily for 2-D applications.
-!           It may have the value 1 for one-dimensional applications,
-!           in which case F and D may be singly-subscripted arrays.
-!
-!     KNOTYP:IN  is a flag to control the knot sequence.
-!           The knot sequence T is normally computed from X by putting
-!           a double knot at each X and setting the end knot pairs
-!           according to the value of KNOTYP:
-!              KNOTYP = 0:  Quadruple knots at X(1) and X(N).  (default)
-!              KNOTYP = 1:  Replicate lengths of extreme subintervals:
-!                           T( 1 ) = T( 2 ) = X(1) - (X(2)-X(1))  ;
-!                           T(M+4) = T(M+3) = X(N) + (X(N)-X(N-1)).
-!              KNOTYP = 2:  Periodic placement of boundary knots:
-!                           T( 1 ) = T( 2 ) = X(1) - (X(N)-X(N-1));
-!                           T(M+4) = T(M+3) = X(N) + (X(2)-X(1))  .
-!              Here M=NDIM=2*N.
-!           If the input value of KNOTYP is negative, however, it is
-!           assumed that NKNOTS and T were set in a previous call.
-!           This option is provided for improved efficiency when used
-!           in a parametric setting.
-!
-!     NKNOTS:INOUT  is the number of knots.
-!           If KNOTYP>=0, then NKNOTS will be set to NDIM+4.
-!           If KNOTYP<0, then NKNOTS is an input variable, and an
-!              error return will be taken if it is not equal to NDIM+4.
-!
-!     T:INOUT  is the array of 2*N+4 knots for the B-representation.
-!           If KNOTYP>=0, T will be returned by DPCHBS with the
-!              interior double knots equal to the X-values and the
-!              boundary knots set as indicated above.
-!           If KNOTYP<0, it is assumed that T was set by a
-!              previous call to DPCHBS.  (This routine does **not**
-!              verify that T forms a legitimate knot sequence.)
-!
-!     BCOEF:OUT  is the array of 2*N B-spline coefficients.
-!
-!     NDIM:OUT  is the dimension of the B-spline space.  (Set to 2*N.)
-!
-!     KORD:OUT  is the order of the B-spline.  (Set to 4.)
-!
-!     IERR:OUT  is an error flag.
-!           Normal return:
-!              IERR = 0  (no errors).
-!           "Recoverable" errors:
-!              IERR = -4  if KNOTYP>2 .
-!              IERR = -5  if KNOTYP<0 and NKNOTS/=(2*N+4).
-!
-! *Description:
-!     DPCHBS computes the B-spline representation of the PCH function
-!     determined by N,X,F,D.  To be compatible with the rest of PCHIP,
-!     DPCHBS includes INCFD, the increment between successive values of
-!     the F- and D-arrays.
-!
-!     The output is the B-representation for the function:  NKNOTS, T,
-!     BCOEF, NDIM, KORD.
-!
-! *Caution:
-!     Since it is assumed that the input PCH function has been
-!     computed by one of the other routines in the package PCHIP,
-!     input arguments N, X, INCFD are **not** checked for validity.
-!
-! *Restrictions/assumptions:
-!     1. N>=2 .  (not checked)
-!     2. X(i)<X(i+1), i=1,...,N .  (not checked)
-!     3. INCFD>0 .  (not checked)
-!     4. KNOTYP<=2 .  (error return if not)
-!    *5. NKNOTS = NDIM+4 = 2*N+4 .  (error return if not)
-!    *6. T(2*k+1) = T(2*k) = X(k), k=1,...,N .  (not checked)
-!
-!       * Indicates this applies only if KNOTYP<0 .
-!
-! *Portability:
-!     Argument INCFD is used only to cause the compiler to generate
-!     efficient code for the subscript expressions (1+(I-1)*INCFD) .
-!     The normal usage, in which DPCHBS is called with one-dimensional
-!     arrays F and D, is probably non-Fortran 77, in the strict sense,
-!     but it works on all systems on which DPCHBS has been tested.
-!
-! *See Also:
-!     PCHIC, PCHIM, or PCHSP can be used to determine an interpolating
-!        PCH function from a set of data.
-!     The B-spline routine DBVALU can be used to evaluate the
-!        B-representation that is output by DPCHBS.
-!        (See BSPDOC for more information.)
-!
-!***REFERENCES  F. N. Fritsch, "Representations for parametric cubic
-!                 splines," Computer Aided Geometric Design 6 (1989),
-!                 pp.79-82.
-!***ROUTINES CALLED  DPCHKT, XERMSG
-!***REVISION HISTORY  (YYMMDD)
-!   870701  DATE WRITTEN
-!   900405  Converted Fortran to upper case.
-!   900405  Removed requirement that X be dimensioned N+1.
-!   900406  Modified to make PCHKT a subsidiary routine to simplify
-!           usage.  In the process, added argument INCFD to be com-
-!           patible with the rest of PCHIP.
-!   900410  Converted prologue to SLATEC 4.0 format.
-!   900410  Added calls to XERMSG and changed constant 3. to 3 to
-!           reduce single/double differences.
-!   900411  Added reference.
-!   900430  Produced real(wp) version.
-!   900501  Corrected declarations.
-!   930317  Minor cosmetic changes.  (FNF)
-!   930514  Corrected problems with dimensioning of arguments and
-!           clarified DESCRIPTION.  (FNF)
-!   930604  Removed  NKNOTS from DPCHKT call list.  (FNF)
-!***END PROLOGUE  DPCHBS
-!
-!*Internal Notes:
-!
-!**End
-
-
-integer  n, incfd, knotyp, nknots, ndim, kord, ierr
-real(wp)  x(*), f(incfd,*), d(incfd,*), t(*), bcoef(*)
-
-integer  k, kk
-real(wp)  dov3, hnew, hold
-character*8  libnam, subnam
-
-!  Initialize.
-ndim = 2*n
-kord = 4
-ierr = 0
-libnam = 'SLATEC'
-subnam = 'DPCHBS'
-!
-!  Check argument validity.  Set up knot sequence if OK.
-!
-if ( knotyp>2 )  then
-   ierr = -1
-   call xermsg (libnam, subnam, 'KNOTYP GREATER THAN 2', ierr, 1)
-   return
-endif
-if ( knotyp<0 )  then
-   if ( nknots/=ndim+4 )  then
-      ierr = -2
-      call xermsg (libnam, subnam, &
-                    'KNOTYP<0 AND NKNOTS/=(2*N+4)', ierr, 1)
-      return
-   endif
-else
-!          Set up knot sequence.
-   nknots = ndim + 4
-   call dpchkt (n, x, knotyp, t)
-endif
-!
-!  Compute B-spline coefficients.
-!
-hnew = t(3) - t(1)
-do 40  k = 1, n
-   kk = 2*k
-   hold = hnew
-!          The following requires mixed mode arithmetic.
-   dov3 = d(1,k)/3
-   bcoef(kk-1) = f(1,k) - hold*dov3
-!          The following assumes T(2*K+1) = X(K).
-   hnew = t(kk+3) - t(kk+1)
-   bcoef(kk) = f(1,k) + hnew*dov3
-40 continue
-!
-!  Terminate.
-!
-
-end subroutine dpchbs
-
-subroutine dpchce (ic, vc, n, x, h, slope, d, incfd, ierr)
-
-
-!***PURPOSE  Set boundary conditions for DPCHIC
-!***LIBRARY   SLATEC (PCHIP)
-!***TYPE      real(wp) (PCHCE-S, DPCHCE-D)
-!***AUTHOR  Fritsch, F. N., (LLNL)
-!***DESCRIPTION
-!
-!          DPCHCE:  DPCHIC End Derivative Setter.
-!
-!    Called by DPCHIC to set end derivatives as requested by the user.
-!    It must be called after interior derivative values have been set.
-!                      -----
-!
-!    To facilitate two-dimensional applications, includes an increment
-!    between successive values of the D-array.
-!
-! ----------------------------------------------------------------------
-!
-!  Calling sequence:
-!
-!        PARAMETER  (INCFD = ...)
-!        INTEGER  IC(2), N, IERR
-!        real(wp)  VC(2), X(N), H(N), SLOPE(N), D(INCFD,N)
-!
-!        CALL  DPCHCE (IC, VC, N, X, H, SLOPE, D, INCFD, IERR)
-!
-!   Parameters:
-!
-!     IC -- (input) integer array of length 2 specifying desired
-!           boundary conditions:
-!           IC(1) = IBEG, desired condition at beginning of data.
-!           IC(2) = IEND, desired condition at end of data.
-!           ( see prologue to DPCHIC for details. )
-!
-!     VC -- (input) real*8 array of length 2 specifying desired boundary
-!           values.  VC(1) need be set only if IC(1) = 2 or 3 .
-!                    VC(2) need be set only if IC(2) = 2 or 3 .
-!
-!     N -- (input) number of data points.  (assumes N>=2)
-!
-!     X -- (input) real*8 array of independent variable values.  (the
-!           elements of X are assumed to be strictly increasing.)
-!
-!     H -- (input) real*8 array of interval lengths.
-!     SLOPE -- (input) real*8 array of data slopes.
-!           If the data are (X(I),Y(I)), I=1(1)N, then these inputs are:
-!                  H(I) =  X(I+1)-X(I),
-!              SLOPE(I) = (Y(I+1)-Y(I))/H(I),  I=1(1)N-1.
-!
-!     D -- (input) real*8 array of derivative values at the data points.
-!           The value corresponding to X(I) must be stored in
-!                D(1+(I-1)*INCFD),  I=1(1)N.
-!          (output) the value of D at X(1) and/or X(N) is changed, if
-!           necessary, to produce the requested boundary conditions.
-!           no other entries in D are changed.
-!
-!     INCFD -- (input) increment between successive values in D.
-!           This argument is provided primarily for 2-D applications.
-!
-!     IERR -- (output) error flag.
-!           Normal return:
-!              IERR = 0  (no errors).
-!           Warning errors:
-!              IERR = 1  if IBEG<0 and D(1) had to be adjusted for
-!                        monotonicity.
-!              IERR = 2  if IEND<0 and D(1+(N-1)*INCFD) had to be
-!                        adjusted for monotonicity.
-!              IERR = 3  if both of the above are true.
-!
-!    -------
-!    WARNING:  This routine does no validity-checking of arguments.
-!    -------
-!***SEE ALSO  DPCHIC
-!***ROUTINES CALLED  DPCHDF, DPCHST, XERMSG
-!***REVISION HISTORY  (YYMMDD)
-!   820218  DATE WRITTEN
-!   820805  Converted to SLATEC library version.
-!   870707  Corrected XERROR calls for d.p. name(s).
-!   890206  Corrected XERROR calls.
-!   890411  Added SAVE statements (Vers. 3.2).
-!   890531  Changed all specific intrinsics to generic.  (WRB)
-!   890831  Modified array declarations.  (WRB)
-!   890831  REVISION DATE from Version 3.2
-!   891214  Prologue converted to Version 4.0 format.  (BAB)
-!   900315  CALLs to XERROR changed to CALLs to XERMSG.  (THJ)
-!   900328  Added TYPE section.  (WRB)
-!   910408  Updated AUTHOR section in prologue.  (WRB)
-!   930503  Improved purpose.  (FNF)
-!***END PROLOGUE  DPCHCE
-!
-!  Programming notes:
-!     1. The function DPCHST(ARG1,ARG2)  is assumed to return zero if
-!        either argument is zero, +1 if they are of the same sign, and
-!        -1 if they are of opposite sign.
-!     2. One could reduce the number of arguments and amount of local
-!        storage, at the expense of reduced code clarity, by passing in
-!        the array WK (rather than splitting it into H and SLOPE) and
-!        increasing its length enough to incorporate STEMP and XTEMP.
-!     3. The two monotonicity checks only use the sufficient conditions.
-!        Thus, it is possible (but unlikely) for a boundary condition to
-!        be changed, even though the original interpolant was monotonic.
-!        (At least the result is a continuous function of the data.)
-!**End
-
-
-integer  ic(2), n, incfd, ierr
-real(wp)  vc(2), x(*), h(*), slope(*), d(incfd,*)
-
-integer  ibeg, iend, ierf, index, j, k
-real(wp)  stemp(3), xtemp(4)
-
-ibeg = ic(1)
-iend = ic(2)
-ierr = 0
-!
-!  SET TO DEFAULT BOUNDARY CONDITIONS IF N IS TOO SMALL.
-!
-if ( abs(ibeg)>n )  ibeg = 0
-if ( abs(iend)>n )  iend = 0
-!
-!  TREAT BEGINNING BOUNDARY CONDITION.
-!
-if (ibeg == 0)  go to 2000
-k = abs(ibeg)
-if (k == 1)  then
-!        BOUNDARY VALUE PROVIDED.
-   d(1,1) = vc(1)
-else if (k == 2)  then
-!        BOUNDARY SECOND DERIVATIVE PROVIDED.
-   d(1,1) = half*( (three*slope(1) - d(1,2)) - half*vc(1)*h(1) )
-else if (k < 5)  then
-!        USE K-POINT DERIVATIVE FORMULA.
-!        PICK UP FIRST K POINTS, IN REVERSE ORDER.
-   do 10  j = 1, k
-      index = k-j+1
-!           INDEX RUNS FROM K DOWN TO 1.
-      xtemp(j) = x(index)
-      if (j < k)  stemp(j) = slope(index-1)
-10    continue
-!                 -----------------------------
-   d(1,1) = dpchdf (k, xtemp, stemp, ierf)
-!                 -----------------------------
-   if (ierf /= 0)  go to 5001
-else
-!        USE 'NOT A KNOT' CONDITION.
-   d(1,1) = ( three*(h(1)*slope(2) + h(2)*slope(1)) &
-             - two*(h(1)+h(2))*d(1,2) - h(1)*d(1,3) ) / h(2)
-endif
-!
-if (ibeg > 0)  go to 2000
-!
-!  CHECK D(1,1) FOR COMPATIBILITY WITH MONOTONICITY.
-!
-if (slope(1) == zero)  then
-   if (d(1,1) /= zero)  then
-      d(1,1) = zero
-      ierr = ierr + 1
-   endif
-else if ( dpchst(d(1,1),slope(1)) < zero)  then
-   d(1,1) = zero
-   ierr = ierr + 1
-else if ( abs(d(1,1)) > three*abs(slope(1)) )  then
-   d(1,1) = three*slope(1)
-   ierr = ierr + 1
-endif
-!
-!  TREAT END BOUNDARY CONDITION.
-!
-2000 continue
-if (iend == 0)  go to 5000
-k = abs(iend)
-if (k == 1)  then
-!        BOUNDARY VALUE PROVIDED.
-   d(1,n) = vc(2)
-else if (k == 2)  then
-!        BOUNDARY SECOND DERIVATIVE PROVIDED.
-   d(1,n) = half*( (three*slope(n-1) - d(1,n-1)) + &
-                                           half*vc(2)*h(n-1) )
-else if (k < 5)  then
-!        USE K-POINT DERIVATIVE FORMULA.
-!        PICK UP LAST K POINTS.
-   do 2010  j = 1, k
-      index = n-k+j
-!           INDEX RUNS FROM N+1-K UP TO N.
-      xtemp(j) = x(index)
-      if (j < k)  stemp(j) = slope(index)
-2010    continue
-!                 -----------------------------
-   d(1,n) = dpchdf (k, xtemp, stemp, ierf)
-!                 -----------------------------
-   if (ierf /= 0)  go to 5001
-else
-!        USE 'NOT A KNOT' CONDITION.
-   d(1,n) = ( three*(h(n-1)*slope(n-2) + h(n-2)*slope(n-1)) &
-             - two*(h(n-1)+h(n-2))*d(1,n-1) - h(n-1)*d(1,n-2) ) &
-                                                         / h(n-2)
-endif
-!
-if (iend > 0)  go to 5000
-!
-!  CHECK D(1,N) FOR COMPATIBILITY WITH MONOTONICITY.
-!
-if (slope(n-1) == zero)  then
-   if (d(1,n) /= zero)  then
-      d(1,n) = zero
-      ierr = ierr + 2
-   endif
-else if ( dpchst(d(1,n),slope(n-1)) < zero)  then
-   d(1,n) = zero
-   ierr = ierr + 2
-else if ( abs(d(1,n)) > three*abs(slope(n-1)) )  then
-   d(1,n) = three*slope(n-1)
-   ierr = ierr + 2
-endif
-!
-!  NORMAL RETURN.
-!
-5000 continue
-return
-!
-!  ERROR RETURN.
-!
-5001 continue
-!     ERROR RETURN FROM DPCHDF.
-!   *** THIS CASE SHOULD NEVER OCCUR ***
-ierr = -1
-call xermsg ('SLATEC', 'DPCHCE', 'ERROR RETURN FROM DPCHDF', &
-   ierr, 1)
-
-end subroutine dpchce
-
-subroutine dpchci (n, h, slope, d, incfd)
-
-
-!***PURPOSE  Set interior derivatives for DPCHIC
-!***LIBRARY   SLATEC (PCHIP)
-!***TYPE      real(wp) (PCHCI-S, DPCHCI-D)
-!***AUTHOR  Fritsch, F. N., (LLNL)
-!***DESCRIPTION
-!
-!          DPCHCI:  DPCHIC Initial Derivative Setter.
-!
-!    Called by DPCHIC to set derivatives needed to determine a monotone
-!    piecewise cubic Hermite interpolant to the data.
-!
-!    Default boundary conditions are provided which are compatible
-!    with monotonicity.  If the data are only piecewise monotonic, the
-!    interpolant will have an extremum at each point where monotonicity
-!    switches direction.
-!
-!    To facilitate two-dimensional applications, includes an increment
-!    between successive values of the D-array.
-!
-!    The resulting piecewise cubic Hermite function should be identical
-!    (within roundoff error) to that produced by DPCHIM.
-!
-! ----------------------------------------------------------------------
-!
-!  Calling sequence:
-!
-!        PARAMETER  (INCFD = ...)
-!        INTEGER  N
-!        real(wp)  H(N), SLOPE(N), D(INCFD,N)
-!
-!        CALL  DPCHCI (N, H, SLOPE, D, INCFD)
-!
-!   Parameters:
-!
-!     N -- (input) number of data points.
-!           If N=2, simply does linear interpolation.
-!
-!     H -- (input) real*8 array of interval lengths.
-!     SLOPE -- (input) real*8 array of data slopes.
-!           If the data are (X(I),Y(I)), I=1(1)N, then these inputs are:
-!                  H(I) =  X(I+1)-X(I),
-!              SLOPE(I) = (Y(I+1)-Y(I))/H(I),  I=1(1)N-1.
-!
-!     D -- (output) real*8 array of derivative values at data points.
-!           If the data are monotonic, these values will determine a
-!           a monotone cubic Hermite function.
-!           The value corresponding to X(I) is stored in
-!                D(1+(I-1)*INCFD),  I=1(1)N.
-!           No other entries in D are changed.
-!
-!     INCFD -- (input) increment between successive values in D.
-!           This argument is provided primarily for 2-D applications.
-!
-!    -------
-!    WARNING:  This routine does no validity-checking of arguments.
-!    -------
-!
-!***SEE ALSO  DPCHIC
-!***ROUTINES CALLED  DPCHST
-!***REVISION HISTORY  (YYMMDD)
-!   820218  DATE WRITTEN
-!   820601  Modified end conditions to be continuous functions of
-!           data when monotonicity switches in next interval.
-!   820602  1. Modified formulas so end conditions are less prone
-!             to over/underflow problems.
-!           2. Minor modification to HSUM calculation.
-!   820805  Converted to SLATEC library version.
-!   870813  Minor cosmetic changes.
-!   890411  Added SAVE statements (Vers. 3.2).
-!   890531  Changed all specific intrinsics to generic.  (WRB)
-!   890831  Modified array declarations.  (WRB)
-!   890831  REVISION DATE from Version 3.2
-!   891214  Prologue converted to Version 4.0 format.  (BAB)
-!   900328  Added TYPE section.  (WRB)
-!   910408  Updated AUTHOR section in prologue.  (WRB)
-!   930503  Improved purpose.  (FNF)
-!***END PROLOGUE  DPCHCI
-!
-!  Programming notes:
-!     1. The function  DPCHST(ARG1,ARG2)  is assumed to return zero if
-!        either argument is zero, +1 if they are of the same sign, and
-!        -1 if they are of opposite sign.
-!**End
-
-
-integer  n, incfd
-real(wp)  h(*), slope(*), d(incfd,*)
-
-integer  i, nless1
-real(wp)  del1, del2, dmax, dmin, drat1, drat2, hsum, &
-      hsumt3, w1, w2
-
-nless1 = n - 1
-del1 = slope(1)
-!
-!  SPECIAL CASE N=2 -- USE LINEAR INTERPOLATION.
-!
-if (nless1 > 1)  go to 10
-d(1,1) = del1
-d(1,n) = del1
-go to 5000
-!
-!  NORMAL CASE  (N >= 3).
-!
-10 continue
-del2 = slope(2)
-!
-!  SET D(1) VIA NON-CENTERED THREE-POINT FORMULA, ADJUSTED TO BE
-!     SHAPE-PRESERVING.
-!
-hsum = h(1) + h(2)
-w1 = (h(1) + hsum)/hsum
-w2 = -h(1)/hsum
-d(1,1) = w1*del1 + w2*del2
-if ( dpchst(d(1,1),del1) <= zero)  then
-   d(1,1) = zero
-else if ( dpchst(del1,del2) < zero)  then
-!        NEED DO THIS CHECK ONLY IF MONOTONICITY SWITCHES.
-   dmax = three*del1
-   if (abs(d(1,1)) > abs(dmax))  d(1,1) = dmax
-endif
-!
-!  LOOP THROUGH INTERIOR POINTS.
-!
-do 50  i = 2, nless1
-   if (i == 2)  go to 40
-!
-   hsum = h(i-1) + h(i)
-   del1 = del2
-   del2 = slope(i)
-40    continue
-!
-!        SET D(I)=0 UNLESS DATA ARE STRICTLY MONOTONIC.
-!
-   d(1,i) = zero
-   if ( dpchst(del1,del2) <= zero)  go to 50
-!
-!        USE BRODLIE MODIFICATION OF BUTLAND FORMULA.
-!
-   hsumt3 = hsum+hsum+hsum
-   w1 = (hsum + h(i-1))/hsumt3
-   w2 = (hsum + h(i)  )/hsumt3
-   dmax = max( abs(del1), abs(del2) )
-   dmin = min( abs(del1), abs(del2) )
-   drat1 = del1/dmax
-   drat2 = del2/dmax
-   d(1,i) = dmin/(w1*drat1 + w2*drat2)
-!
-50 continue
-!
-!  SET D(N) VIA NON-CENTERED THREE-POINT FORMULA, ADJUSTED TO BE
-!     SHAPE-PRESERVING.
-!
-w1 = -h(n-1)/hsum
-w2 = (h(n-1) + hsum)/hsum
-d(1,n) = w1*del1 + w2*del2
-if ( dpchst(d(1,n),del2) <= zero)  then
-   d(1,n) = zero
-else if ( dpchst(del1,del2) < zero)  then
-!        NEED DO THIS CHECK ONLY IF MONOTONICITY SWITCHES.
-   dmax = three*del2
-   if (abs(d(1,n)) > abs(dmax))  d(1,n) = dmax
-endif
-!
-!  NORMAL RETURN.
-!
-5000 continue
-
-end subroutine dpchci
-
-subroutine dpchcm (n, x, f, d, incfd, skip, ismon, ierr)
-
-!***PURPOSE  Check a cubic Hermite function for monotonicity.
-!***LIBRARY   SLATEC (PCHIP)
-!***CATEGORY  E3
-!***TYPE      real(wp) (PCHCM-S, DPCHCM-D)
-!***KEYWORDS  CUBIC HERMITE INTERPOLATION, MONOTONE INTERPOLATION,
-!             PCHIP, PIECEWISE CUBIC INTERPOLATION, UTILITY ROUTINE
-!***AUTHOR  Fritsch, F. N., (LLNL)
-!             Computing & Mathematics Research Division
-!             Lawrence Livermore National Laboratory
-!             P.O. Box 808  (L-316)
-!             Livermore, CA  94550
-!             FTS 532-4275, (510) 422-4275
-!***DESCRIPTION
-!
-! *Usage:
-!
-!        PARAMETER  (INCFD = ...)
-!        INTEGER  N, ISMON(N), IERR
-!        real(wp)  X(N), F(INCFD,N), D(INCFD,N)
-!        LOGICAL  SKIP
-!
-!        CALL  DPCHCM (N, X, F, D, INCFD, SKIP, ISMON, IERR)
-!
-! *Arguments:
-!
-!     N:IN  is the number of data points.  (Error return if N<2 .)
-!
-!     X:IN  is a real*8 array of independent variable values.  The
-!           elements of X must be strictly increasing:
-!                X(I-1) < X(I),  I = 2(1)N.
-!           (Error return if not.)
-!
-!     F:IN  is a real*8 array of function values.  F(1+(I-1)*INCFD) is
-!           the value corresponding to X(I).
-!
-!     D:IN  is a real*8 array of derivative values.  D(1+(I-1)*INCFD) is
-!           is the value corresponding to X(I).
-!
-!     INCFD:IN  is the increment between successive values in F and D.
-!           (Error return if  INCFD<1 .)
-!
-!     SKIP:INOUT  is a logical variable which should be set to
-!           .TRUE. if the user wishes to skip checks for validity of
-!           preceding parameters, or to .FALSE. otherwise.
-!           This will save time in case these checks have already
-!           been performed.
-!           SKIP will be set to .TRUE. on normal return.
-!
-!     ISMON:OUT  is an integer array indicating on which intervals the
-!           PCH function defined by  N, X, F, D  is monotonic.
-!           For data interval [X(I),X(I+1)],
-!             ISMON(I) = -3  if function is probably decreasing;
-!             ISMON(I) = -1  if function is strictly decreasing;
-!             ISMON(I) =  0  if function is constant;
-!             ISMON(I) =  1  if function is strictly increasing;
-!             ISMON(I) =  2  if function is non-monotonic;
-!             ISMON(I) =  3  if function is probably increasing.
-!                If ABS(ISMON)=3, this means that the D-values are near
-!                the boundary of the monotonicity region.  A small
-!                increase produces non-monotonicity; decrease, strict
-!                monotonicity.
-!           The above applies to I=1(1)N-1.  ISMON(N) indicates whether
-!              the entire function is monotonic on [X(1),X(N)].
-!
-!     IERR:OUT  is an error flag.
-!           Normal return:
-!              IERR = 0  (no errors).
-!           "Recoverable" errors:
-!              IERR = -1  if N<2 .
-!              IERR = -2  if INCFD<1 .
-!              IERR = -3  if the X-array is not strictly increasing.
-!          (The ISMON-array has not been changed in any of these cases.)
-!               NOTE:  The above errors are checked in the order listed,
-!                   and following arguments have **NOT** been validated.
-!
-! *Description:
-!
-!          DPCHCM:  Piecewise Cubic Hermite -- Check Monotonicity.
-!
-!     Checks the piecewise cubic Hermite function defined by  N,X,F,D
-!     for monotonicity.
-!
-!     To provide compatibility with DPCHIM and DPCHIC, includes an
-!     increment between successive values of the F- and D-arrays.
-!
-! *Cautions:
-!     This provides the same capability as old DPCHMC, except that a
-!     new output value, -3, was added February 1989.  (Formerly, -3
-!     and +3 were lumped together in the single value 3.)  Codes that
-!     flag nonmonotonicity by "IF (ISMON==2)" need not be changed.
-!     Codes that check via "IF (ISMON>=3)" should change the test to
-!     "IF (IABS(ISMON)>=3)".  Codes that declare monotonicity via
-!     "IF (ISMON<=1)" should change to "IF (IABS(ISMON)<=1)".
-!
-!***REFERENCES  F. N. Fritsch and R. E. Carlson, Monotone piecewise
-!                 cubic interpolation, SIAM Journal on Numerical Ana-
-!                 lysis 17, 2 (April 1980), pp. 238-246.
-!***ROUTINES CALLED  DCHFCM, XERMSG
-!***REVISION HISTORY  (YYMMDD)
-!   820518  DATE WRITTEN
-!   820804  Converted to SLATEC library version.
-!   831201  Reversed order of subscripts of F and D, so that the
-!           routine will work properly when INCFD>1 .  (Bug!)
-!   870707  Corrected XERROR calls for d.p. name(s).
-!   890206  Corrected XERROR calls.
-!   890209  Added possible ISMON value of -3 and modified code so
-!           that 1,3,-1 produces ISMON(N)=2, rather than 3.
-!   890306  Added caution about changed output.
-!   890407  Changed name from DPCHMC to DPCHCM, as requested at the
-!           March 1989 SLATEC CML meeting, and made a few other
-!           minor modifications necessitated by this change.
-!   890407  Converted to new SLATEC format.
-!   890407  Modified DESCRIPTION to LDOC format.
-!   900315  CALLs to XERROR changed to CALLs to XERMSG.  (THJ)
-!   920429  Revised format and order of references.  (WRB,FNF)
-!***END PROLOGUE  DPCHCM
-!
-! ----------------------------------------------------------------------
-!
-!  Programming notes:
-!
-!     An alternate organization would have separate loops for computing
-!     ISMON(i), i=1,...,NSEG, and for the computation of ISMON(N).  The
-!     first loop can be readily parallelized, since the NSEG calls to
-!     CHFCM are independent.  The second loop can be cut short if
-!     ISMON(N) is ever equal to 2, for it cannot be changed further.
-
-
-integer n, incfd, ismon(n), ierr
-real(wp)  x(n), f(incfd,n), d(incfd,n)
-logical  skip
-
-integer i, nseg
-real(wp)  delta
-
-!  VALIDITY-CHECK ARGUMENTS.
-
-if (skip)  go to 5
-!
-if ( n<2 )  go to 5001
-if ( incfd<1 )  go to 5002
-do 1  i = 2, n
-   if ( x(i)<=x(i-1) )  go to 5003
-1 continue
-skip = .true.
-!
-!  FUNCTION DEFINITION IS OK -- GO ON.
-!
-5 continue
-nseg = n - 1
-do 90  i = 1, nseg
-   delta = (f(1,i+1)-f(1,i))/(x(i+1)-x(i))
-!                   -------------------------------
-   ismon(i) = dchfcm (d(1,i), d(1,i+1), delta)
-!                   -------------------------------
-   if (i == 1)  then
-      ismon(n) = ismon(1)
-   else
-!           Need to figure out cumulative monotonicity from following
-!           "multiplication table":
-!
-!                    +        I S M O N (I)
-!                     +  -3  -1   0   1   3   2
-!                      +------------------------+
-!               I   -3 I -3  -3  -3   2   2   2 I
-!               S   -1 I -3  -1  -1   2   2   2 I
-!               M    0 I -3  -1   0   1   3   2 I
-!               O    1 I  2   2   1   1   3   2 I
-!               N    3 I  2   2   3   3   3   2 I
-!              (N)   2 I  2   2   2   2   2   2 I
-!                      +------------------------+
-!           Note that the 2 row and column are out of order so as not
-!           to obscure the symmetry in the rest of the table.
-!
-!           No change needed if equal or constant on this interval or
-!           already declared nonmonotonic.
-      if ( (ismon(i)/=ismon(n)) .and. (ismon(i)/=0) &
-                                  .and. (ismon(n)/=2) )  then
-         if ( (ismon(i)==2) .or. (ismon(n)==0) )  then
-            ismon(n) =  ismon(i)
-         else if (ismon(i)*ismon(n) < 0)  then
-!                 This interval has opposite sense from curve so far.
-            ismon(n) = 2
-         else
-!                 At this point, both are nonzero with same sign, and
-!                 we have already eliminated case both +-1.
-            ismon(n) = sign (3, ismon(n))
-         endif
-      endif
-   endif
-90 continue
-!
-!  NORMAL RETURN.
-!
-ierr = 0
-return
-!
-!  ERROR RETURNS.
-!
-5001 continue
-!     N<2 RETURN.
-ierr = -1
-call xermsg ('SLATEC', 'DPCHCM', &
-   'NUMBER OF DATA POINTS LESS THAN TWO', ierr, 1)
-return
-!
-5002 continue
-!     INCFD<1 RETURN.
-ierr = -2
-call xermsg ('SLATEC', 'DPCHCM', 'INCREMENT LESS THAN ONE', ierr, &
-   1)
-return
-!
-5003 continue
-!     X-ARRAY NOT STRICTLY INCREASING.
-ierr = -3
-call xermsg ('SLATEC', 'DPCHCM', &
-   'X-ARRAY NOT STRICTLY INCREASING', ierr, 1)
-
-end subroutine dpchcm
-
-subroutine dpchcs (switch, n, h, slope, d, incfd, ierr)
-
-
-!***PURPOSE  Adjusts derivative values for DPCHIC
-!***LIBRARY   SLATEC (PCHIP)
-!***TYPE      real(wp) (PCHCS-S, DPCHCS-D)
-!***AUTHOR  Fritsch, F. N., (LLNL)
-!***DESCRIPTION
-!
-!         DPCHCS:  DPCHIC Monotonicity Switch Derivative Setter.
-!
-!     Called by  DPCHIC  to adjust the values of D in the vicinity of a
-!     switch in direction of monotonicity, to produce a more "visually
-!     pleasing" curve than that given by  DPCHIM .
-!
-! ----------------------------------------------------------------------
-!
-!  Calling sequence:
-!
-!        PARAMETER  (INCFD = ...)
-!        INTEGER  N, IERR
-!        real(wp)  SWITCH, H(N), SLOPE(N), D(INCFD,N)
-!
-!        CALL  DPCHCS (SWITCH, N, H, SLOPE, D, INCFD, IERR)
-!
-!   Parameters:
-!
-!     SWITCH -- (input) indicates the amount of control desired over
-!           local excursions from data.
-!
-!     N -- (input) number of data points.  (assumes N>2 .)
-!
-!     H -- (input) real*8 array of interval lengths.
-!     SLOPE -- (input) real*8 array of data slopes.
-!           If the data are (X(I),Y(I)), I=1(1)N, then these inputs are:
-!                  H(I) =  X(I+1)-X(I),
-!              SLOPE(I) = (Y(I+1)-Y(I))/H(I),  I=1(1)N-1.
-!
-!     D -- (input) real*8 array of derivative values at the data points,
-!           as determined by DPCHCI.
-!          (output) derivatives in the vicinity of switches in direction
-!           of monotonicity may be adjusted to produce a more "visually
-!           pleasing" curve.
-!           The value corresponding to X(I) is stored in
-!                D(1+(I-1)*INCFD),  I=1(1)N.
-!           No other entries in D are changed.
-!
-!     INCFD -- (input) increment between successive values in D.
-!           This argument is provided primarily for 2-D applications.
-!
-!     IERR -- (output) error flag.  should be zero.
-!           If negative, trouble in DPCHSW.  (should never happen.)
-!
-!    -------
-!    WARNING:  This routine does no validity-checking of arguments.
-!    -------
-!
-!***SEE ALSO  DPCHIC
-!***ROUTINES CALLED  DPCHST, DPCHSW
-!***REVISION HISTORY  (YYMMDD)
-!   820218  DATE WRITTEN
-!   820617  Redesigned to (1) fix  problem with lack of continuity
-!           approaching a flat-topped peak (2) be cleaner and
-!           easier to verify.
-!           Eliminated subroutines PCHSA and PCHSX in the process.
-!   820622  1. Limited fact to not exceed one, so computed D is a
-!             convex combination of DPCHCI value and DPCHSD value.
-!           2. Changed fudge from 1 to 4 (based on experiments).
-!   820623  Moved PCHSD to an inline function (eliminating MSWTYP).
-!   820805  Converted to SLATEC library version.
-!   870707  Corrected conversion to real(wp).
-!   870813  Minor cosmetic changes.
-!   890411  Added SAVE statements (Vers. 3.2).
-!   890531  Changed all specific intrinsics to generic.  (WRB)
-!   890831  Modified array declarations.  (WRB)
-!   891006  Modified spacing in computation of DFLOC.  (WRB)
-!   891006  REVISION DATE from Version 3.2
-!   891214  Prologue converted to Version 4.0 format.  (BAB)
-!   900328  Added TYPE section.  (WRB)
-!   910408  Updated AUTHOR section in prologue.  (WRB)
-!   930503  Improved purpose.  (FNF)
-!***END PROLOGUE  DPCHCS
-!
-!  Programming notes:
-!     1. The function  DPCHST(ARG1,ARG2)  is assumed to return zero if
-!        either argument is zero, +1 if they are of the same sign, and
-!        -1 if they are of opposite sign.
-!**End
-
-
-integer  n, incfd, ierr
-real(wp)  switch, h(*), slope(*), d(incfd,*)
-
-integer  i, indx, k, nless1
-real(wp)  del(3), dext, dfloc, dfmx, fact, slmax, wtave(2)
-
-real(wp),parameter :: fudge = four
-
-ierr = 0
-nless1 = n - 1
-!
-!  LOOP OVER SEGMENTS.
-!
-do 900  i = 2, nless1
-   if ( dpchst(slope(i-1),slope(i)) )  100, 300, 900
-!             --------------------------
-!
-100    continue
-!
-!....... SLOPE SWITCHES MONOTONICITY AT I-TH POINT .....................
-!
-!           DO NOT CHANGE D IF 'UP-DOWN-UP'.
-      if (i > 2)  then
-         if ( dpchst(slope(i-2),slope(i)) > zero)  go to 900
-!                   --------------------------
-      endif
-      if (i < nless1)  then
-         if ( dpchst(slope(i+1),slope(i-1)) > zero)  go to 900
-!                   ----------------------------
-      endif
-!
-!   ....... COMPUTE PROVISIONAL VALUE FOR D(1,I).
-!
-      dext = dpchsd (slope(i-1), slope(i), h(i-1), h(i))
-!
-!   ....... DETERMINE WHICH INTERVAL CONTAINS THE EXTREMUM.
-!
-      if ( dpchst(dext, slope(i-1)) )  200, 900, 250
-!                -----------------------
-!
-200       continue
-!              DEXT AND SLOPE(I-1) HAVE OPPOSITE SIGNS --
-!                        EXTREMUM IS IN (X(I-1),X(I)).
-         k = i-1
-!              SET UP TO COMPUTE NEW VALUES FOR D(1,I-1) AND D(1,I).
-         wtave(2) = dext
-         if (k > 1) &
-            wtave(1) = dpchsd (slope(k-1), slope(k), h(k-1), h(k))
-         go to 400
-!
-250       continue
-!              DEXT AND SLOPE(I) HAVE OPPOSITE SIGNS --
-!                        EXTREMUM IS IN (X(I),X(I+1)).
-         k = i
-!              SET UP TO COMPUTE NEW VALUES FOR D(1,I) AND D(1,I+1).
-         wtave(1) = dext
-         if (k < nless1) &
-            wtave(2) = dpchsd (slope(k), slope(k+1), h(k), h(k+1))
-         go to 400
-!
-300    continue
-!
-!....... AT LEAST ONE OF SLOPE(I-1) AND SLOPE(I) IS ZERO --
-!                     CHECK FOR FLAT-TOPPED PEAK .......................
-!
-      if (i == nless1)  go to 900
-      if ( dpchst(slope(i-1), slope(i+1)) >= zero)  go to 900
-!                -----------------------------
-!
-!           WE HAVE FLAT-TOPPED PEAK ON (X(I),X(I+1)).
-      k = i
-!           SET UP TO COMPUTE NEW VALUES FOR D(1,I) AND D(1,I+1).
-      wtave(1) = dpchsd (slope(k-1), slope(k), h(k-1), h(k))
-      wtave(2) = dpchsd (slope(k), slope(k+1), h(k), h(k+1))
-!
-400    continue
-!
-!....... AT THIS POINT WE HAVE DETERMINED THAT THERE WILL BE AN EXTREMUM
-!        ON (X(K),X(K+1)), WHERE K=I OR I-1, AND HAVE SET ARRAY WTAVE--
-!           WTAVE(1) IS A WEIGHTED AVERAGE OF SLOPE(K-1) AND SLOPE(K),
-!                    IF K>1
-!           WTAVE(2) IS A WEIGHTED AVERAGE OF SLOPE(K) AND SLOPE(K+1),
-!                    IF K<N-1
-!
-   slmax = abs(slope(k))
-   if (k > 1)    slmax = max( slmax, abs(slope(k-1)) )
-   if (k<nless1) slmax = max( slmax, abs(slope(k+1)) )
-!
-   if (k > 1)  del(1) = slope(k-1) / slmax
-   del(2) = slope(k) / slmax
-   if (k<nless1)  del(3) = slope(k+1) / slmax
-!
-   if ((k>1) .and. (k<nless1))  then
-!           NORMAL CASE -- EXTREMUM IS NOT IN A BOUNDARY INTERVAL.
-      fact = fudge* abs(del(3)*(del(1)-del(2))*(wtave(2)/slmax))
-      d(1,k) = d(1,k) + min(fact,one)*(wtave(1) - d(1,k))
-      fact = fudge* abs(del(1)*(del(3)-del(2))*(wtave(1)/slmax))
-      d(1,k+1) = d(1,k+1) + min(fact,one)*(wtave(2) - d(1,k+1))
-   else
-!           SPECIAL CASE K=1 (WHICH CAN OCCUR ONLY IF I=2) OR
-!                        K=NLESS1 (WHICH CAN OCCUR ONLY IF I=NLESS1).
-      fact = fudge* abs(del(2))
-      d(1,i) = min(fact,one) * wtave(i-k+1)
-!              NOTE THAT I-K+1 = 1 IF K=I  (=NLESS1),
-!                        I-K+1 = 2 IF K=I-1(=1).
-   endif
-!
-!
-!....... ADJUST IF NECESSARY TO LIMIT EXCURSIONS FROM DATA.
-!
-   if (switch <= zero)  go to 900
-!
-   dfloc = h(k)*abs(slope(k))
-   if (k > 1)    dfloc = max( dfloc, h(k-1)*abs(slope(k-1)) )
-   if (k<nless1) dfloc = max( dfloc, h(k+1)*abs(slope(k+1)) )
-   dfmx = switch*dfloc
-   indx = i-k+1
-!        INDX = 1 IF K=I, 2 IF K=I-1.
-!        ---------------------------------------------------------------
-   call dpchsw(dfmx, indx, d(1,k), d(1,k+1), h(k), slope(k), ierr)
-!        ---------------------------------------------------------------
-   if (ierr /= 0)  return
-!
-!....... END OF SEGMENT LOOP.
-!
-900 continue
-!
-
-end subroutine dpchcs
-
-real(wp) function dpchdf (k, x, s, ierr)
-
-
-!***PURPOSE  Computes divided differences for DPCHCE and DPCHSP
-!***LIBRARY   SLATEC (PCHIP)
-!***TYPE      real(wp) (PCHDF-S, DPCHDF-D)
-!***AUTHOR  Fritsch, F. N., (LLNL)
-!***DESCRIPTION
-!
-!          DPCHDF:   DPCHIP Finite Difference Formula
-!
-!     Uses a divided difference formulation to compute a K-point approx-
-!     imation to the derivative at X(K) based on the data in X and S.
-!
-!     Called by  DPCHCE  and  DPCHSP  to compute 3- and 4-point boundary
-!     derivative approximations.
-!
-! ----------------------------------------------------------------------
-!
-!     On input:
-!        K      is the order of the desired derivative approximation.
-!               K must be at least 3 (error return if not).
-!        X      contains the K values of the independent variable.
-!               X need not be ordered, but the values **MUST** be
-!               distinct.  (Not checked here.)
-!        S      contains the associated slope values:
-!                  S(I) = (F(I+1)-F(I))/(X(I+1)-X(I)), I=1(1)K-1.
-!               (Note that S need only be of length K-1.)
-!
-!     On return:
-!        S      will be destroyed.
-!        IERR   will be set to -1 if K<2 .
-!        DPCHDF  will be set to the desired derivative approximation if
-!               IERR=0 or to zero if IERR=-1.
-!
-! ----------------------------------------------------------------------
-!
-!***SEE ALSO  DPCHCE, DPCHSP
-!***REFERENCES  Carl de Boor, A Practical Guide to Splines, Springer-
-!                 Verlag, New York, 1978, pp. 10-16.
-!***ROUTINES CALLED  XERMSG
-!***REVISION HISTORY  (YYMMDD)
-!   820503  DATE WRITTEN
-!   820805  Converted to SLATEC library version.
-!   870707  Corrected XERROR calls for d.p. name(s).
-!   870813  Minor cosmetic changes.
-!   890206  Corrected XERROR calls.
-!   890411  Added SAVE statements (Vers. 3.2).
-!   890411  REVISION DATE from Version 3.2
-!   891214  Prologue converted to Version 4.0 format.  (BAB)
-!   900315  CALLs to XERROR changed to CALLs to XERMSG.  (THJ)
-!   900328  Added TYPE section.  (WRB)
-!   910408  Updated AUTHOR and DATE WRITTEN sections in prologue.  (WRB)
-!   920429  Revised format and order of references.  (WRB,FNF)
-!   930503  Improved purpose.  (FNF)
-!***END PROLOGUE  DPCHDF
-!
-!**End
-
-
-integer  k, ierr
-real(wp)  x(k), s(k)
-
-integer  i, j
-real(wp)  value
-
-!  CHECK FOR LEGAL VALUE OF K.
-
-if (k < 3)  go to 5001
-!
-!  COMPUTE COEFFICIENTS OF INTERPOLATING POLYNOMIAL.
-!
-do 10  j = 2, k-1
-   do 9  i = 1, k-j
-      s(i) = (s(i+1)-s(i))/(x(i+j)-x(i))
-9    continue
-10 continue
-!
-!  EVALUATE DERIVATIVE AT X(K).
-!
-value = s(1)
-do 20  i = 2, k-1
-   value = s(i) + value*(x(k)-x(i))
-20 continue
-!
-!  NORMAL RETURN.
-!
-ierr = 0
-dpchdf = value
-return
-!
-!  ERROR RETURN.
-!
-5001 continue
-!     K<3 RETURN.
-ierr = -1
-call xermsg ('SLATEC', 'DPCHDF', 'K LESS THAN THREE', ierr, 1)
-dpchdf = zero
-
-end function dpchdf
-
-subroutine dpchfd (n, x, f, d, incfd, skip, ne, xe, fe, de, ierr)
 
 !***PURPOSE  Evaluate a piecewise cubic Hermite function and its first
 !            derivative at an array of points.  May be used by itself
@@ -1816,20 +1280,7 @@ subroutine dpchfd (n, x, f, d, incfd, skip, ne, xe, fe, de, ierr)
 !                         routine DCHFDV.  NB: this should never happen.
 !                         Notify the author **IMMEDIATELY** if it does.
 !
-!***REFERENCES  (NONE)
-!***ROUTINES CALLED  DCHFDV, XERMSG
-!***REVISION HISTORY  (YYMMDD)
-!   811020  DATE WRITTEN
-!   820803  Minor cosmetic changes for release 1.
-!   870707  Corrected XERROR calls for d.p. name(s).
-!   890206  Corrected XERROR calls.
-!   890531  Changed all specific intrinsics to generic.  (WRB)
-!   890831  Modified array declarations.  (WRB)
-!   891006  Cosmetic changes to prologue.  (WRB)
-!   891006  REVISION DATE from Version 3.2
-!   891214  Prologue converted to Version 4.0 format.  (BAB)
-!   900315  CALLs to XERROR changed to CALLs to XERMSG.  (THJ)
-!***END PROLOGUE  DPCHFD
+
 !  Programming notes:
 !
 !     2. Most of the coding between the call to DCHFDV and the end of
@@ -1847,6 +1298,7 @@ subroutine dpchfd (n, x, f, d, incfd, skip, ne, xe, fe, de, ierr)
 !        X(N-1), followed by points >X(N), the extrapolation points
 !        will be counted (at least) twice in the total returned in IERR.
 
+subroutine dpchfd (n, x, f, d, incfd, skip, ne, xe, fe, de, ierr)
 
 integer  n, incfd, ne, ierr
 real(wp)  x(*), f(incfd,*), d(incfd,*), xe(*), fe(*), &
@@ -1911,12 +1363,12 @@ ir = 2
    if (ierc < 0)  go to 5005
 !
    if (next(2) == 0)  go to 42
-!        IF (NEXT(2) > 0)  THEN
+!        IF (NEXT(2) > 0) then
 !           IN THE CURRENT SET OF XE-POINTS, THERE ARE NEXT(2) TO THE
 !           RIGHT OF X(IR).
 !
       if (ir < n)  go to 41
-!           IF (IR == N)  THEN
+!           IF (IR == N) then
 !              THESE ARE ACTUALLY EXTRAPOLATION POINTS.
          ierr = ierr + next(2)
          go to 42
@@ -1929,12 +1381,12 @@ ir = 2
 42    continue
 !
    if (next(1) == 0)  go to 49
-!        IF (NEXT(1) > 0)  THEN
+!        IF (NEXT(1) > 0) then
 !           IN THE CURRENT SET OF XE-POINTS, THERE ARE NEXT(1) TO THE
 !           LEFT OF X(IR-1).
 !
       if (ir > 2)  go to 43
-!           IF (IR == 2)  THEN
+!           IF (IR == 2) then
 !              THESE ARE ACTUALLY EXTRAPOLATION POINTS.
          ierr = ierr + next(1)
          go to 49
@@ -2022,6 +1474,7 @@ call xermsg ('SLATEC', 'DPCHFD', &
    'ERROR RETURN FROM DCHFDV -- FATAL', ierr, 2)
 
 end subroutine dpchfd
+!***************************************************************************
 
 subroutine dpchfe (n, x, f, d, incfd, skip, ne, xe, fe, ierr)
 
@@ -2117,20 +1570,7 @@ subroutine dpchfe (n, x, f, d, incfd, skip, ne, xe, fe, ierr)
 !               NOTE:  The above errors are checked in the order listed,
 !                   and following arguments have **NOT** been validated.
 !
-!***REFERENCES  (NONE)
-!***ROUTINES CALLED  DCHFEV, XERMSG
-!***REVISION HISTORY  (YYMMDD)
-!   811020  DATE WRITTEN
-!   820803  Minor cosmetic changes for release 1.
-!   870707  Corrected XERROR calls for d.p. name(s).
-!   890206  Corrected XERROR calls.
-!   890531  Changed all specific intrinsics to generic.  (WRB)
-!   890831  Modified array declarations.  (WRB)
-!   891006  Cosmetic changes to prologue.  (WRB)
-!   891006  REVISION DATE from Version 3.2
-!   891214  Prologue converted to Version 4.0 format.  (BAB)
-!   900315  CALLs to XERROR changed to CALLs to XERMSG.  (THJ)
-!***END PROLOGUE  DPCHFE
+
 !  Programming notes:
 !
 !     2. Most of the coding between the call to DCHFEV and the end of
@@ -2210,12 +1650,12 @@ ir = 2
    if (ierc < 0)  go to 5005
 !
    if (next(2) == 0)  go to 42
-!        IF (NEXT(2) > 0)  THEN
+!        IF (NEXT(2) > 0) then
 !           IN THE CURRENT SET OF XE-POINTS, THERE ARE NEXT(2) TO THE
 !           RIGHT OF X(IR).
 !
       if (ir < n)  go to 41
-!           IF (IR == N)  THEN
+!           IF (IR == N) then
 !              THESE ARE ACTUALLY EXTRAPOLATION POINTS.
          ierr = ierr + next(2)
          go to 42
@@ -2228,12 +1668,12 @@ ir = 2
 42    continue
 !
    if (next(1) == 0)  go to 49
-!        IF (NEXT(1) > 0)  THEN
+!        IF (NEXT(1) > 0) then
 !           IN THE CURRENT SET OF XE-POINTS, THERE ARE NEXT(1) TO THE
 !           LEFT OF X(IR-1).
 !
       if (ir > 2)  go to 43
-!           IF (IR == 2)  THEN
+!           IF (IR == 2) then
 !              THESE ARE ACTUALLY EXTRAPOLATION POINTS.
          ierr = ierr + next(1)
          go to 49
@@ -2410,31 +1850,11 @@ real(wp) function dpchia (n, x, f, d, incfd, skip, a, b, &
 !              IERR = -4  in case of an error return from DPCHID (which
 !                         should never occur).
 !
-!***REFERENCES  (NONE)
-!***ROUTINES CALLED  DCHFIE, DPCHID, XERMSG
-!***REVISION HISTORY  (YYMMDD)
-!   820730  DATE WRITTEN
-!   820804  Converted to SLATEC library version.
-!   870707  Corrected XERROR calls for d.p. name(s).
-!   870707  Corrected conversion to real(wp).
-!   870813  Minor cosmetic changes.
-!   890206  Corrected XERROR calls.
-!   890411  Added SAVE statements (Vers. 3.2).
-!   890531  Changed all specific intrinsics to generic.  (WRB)
-!   890703  Corrected category record.  (WRB)
-!   890831  Modified array declarations.  (WRB)
-!   891006  Cosmetic changes to prologue.  (WRB)
-!   891006  REVISION DATE from Version 3.2
-!   891214  Prologue converted to Version 4.0 format.  (BAB)
-!   900315  CALLs to XERROR changed to CALLs to XERMSG.  (THJ)
-!   930503  Corrected to set VALUE=0 when IERR<0.  (FNF)
-!   930504  Changed DCHFIV to DCHFIE.  (FNF)
-!***END PROLOGUE  DPCHIA
+
 !
 !  Programming notes:
 !  1. The error flag from DPCHID is tested, because a logic flaw
 !     could conceivably result in IERD=-4, which should be reported.
-!**End
 
 
 integer  n, incfd, ierr
@@ -2466,16 +1886,16 @@ if ( (b<x(1)) .or. (b>x(n)) )  ierr = ierr + 2
 !
 !  COMPUTE INTEGRAL VALUE.
 !
-if (a /= b)  then
+if (a /= b) then
    xa = min (a, b)
    xb = max (a, b)
-   if (xb <= x(2))  then
+   if (xb <= x(2)) then
 !           INTERVAL IS TO LEFT OF X(2), SO USE FIRST CUBIC.
 !                   ---------------------------------------
       value = dchfie (x(1),x(2), f(1,1),f(1,2), &
                                  d(1,1),d(1,2), a, b)
 !                   ---------------------------------------
-   else if (xa >= x(n-1))  then
+   else if (xa >= x(n-1)) then
 !           INTERVAL IS TO RIGHT OF X(N-1), SO USE LAST CUBIC.
 !                   ------------------------------------------
       value = dchfie(x(n-1),x(n), f(1,n-1),f(1,n), &
@@ -2500,7 +1920,7 @@ if (a /= b)  then
 !             IB IS SMALLEST INDEX SUCH THAT XB<X(IB+1) .
 !
 !     ......COMPUTE THE INTEGRAL.
-      if (ib < ia)  then
+      if (ib < ia) then
 !              THIS MEANS IB = IA-1 AND
 !                 (A,B) IS A SUBSET OF (X(IB),X(IA)).
 !                      -------------------------------------------
@@ -2512,15 +1932,15 @@ if (a /= b)  then
 !              FIRST COMPUTE INTEGRAL OVER (X(IA),X(IB)).
 !                (Case (IB == IA) is taken care of by initialization
 !                 of VALUE to ZERO.)
-         if (ib > ia)  then
+         if (ib > ia) then
 !                         ---------------------------------------------
             value = dpchid (n, x, f, d, incfd, skip, ia, ib, ierd)
 !                         ---------------------------------------------
             if (ierd < 0)  go to 5004
          endif
 !
-!              THEN ADD ON INTEGRAL OVER (XA,X(IA)).
-         if (xa < x(ia))  then
+!             then ADD ON INTEGRAL OVER (XA,X(IA)).
+         if (xa < x(ia)) then
             il = max(1, ia-1)
             ir = il + 1
 !                                 -------------------------------------
@@ -2529,8 +1949,8 @@ if (a /= b)  then
 !                                 -------------------------------------
          endif
 !
-!              THEN ADD ON INTEGRAL OVER (X(IB),XB).
-         if (xb > x(ib))  then
+!             then ADD ON INTEGRAL OVER (X(IB),XB).
+         if (xb > x(ib)) then
             ir = min (ib+1, n)
             il = ir - 1
 !                                 -------------------------------------
@@ -2770,23 +2190,7 @@ subroutine dpchic (ic, vc, switch, n, x, f, d, incfd, wk, nwk, &
 !               3. F. N. Fritsch and R. E. Carlson, Monotone piecewise
 !                 cubic interpolation, SIAM Journal on Numerical Ana-
 !                 lysis 17, 2 (April 1980), pp. 238-246.
-!***ROUTINES CALLED  DPCHCE, DPCHCI, DPCHCS, XERMSG
-!***REVISION HISTORY  (YYMMDD)
-!   820218  DATE WRITTEN
-!   820804  Converted to SLATEC library version.
-!   870707  Corrected XERROR calls for d.p. name(s).
-!   870813  Updated Reference 2.
-!   890206  Corrected XERROR calls.
-!   890411  Added SAVE statements (Vers. 3.2).
-!   890531  Changed all specific intrinsics to generic.  (WRB)
-!   890703  Corrected category record.  (WRB)
-!   890831  Modified array declarations.  (WRB)
-!   891006  Cosmetic changes to prologue.  (WRB)
-!   891006  REVISION DATE from Version 3.2
-!   891214  Prologue converted to Version 4.0 format.  (BAB)
-!   900315  CALLs to XERROR changed to CALLs to XERMSG.  (THJ)
-!   920429  Revised format and order of references.  (WRB,FNF)
-!***END PROLOGUE  DPCHIC
+
 
 integer  ic(2), n, incfd, nwk, ierr
 real(wp)  vc(2), switch, x(*), f(incfd,*), d(incfd,*), &
@@ -2990,31 +2394,13 @@ real(wp) function dpchid (n, x, f, d, incfd, skip, ia, ib, &
 !               NOTE:  The above errors are checked in the order listed,
 !                   and following arguments have **NOT** been validated.
 !
-!***REFERENCES  (NONE)
-!***ROUTINES CALLED  XERMSG
-!***REVISION HISTORY  (YYMMDD)
-!   820723  DATE WRITTEN
-!   820804  Converted to SLATEC library version.
-!   870707  Corrected XERROR calls for d.p. name(s).
-!   870813  Minor cosmetic changes.
-!   890206  Corrected XERROR calls.
-!   890411  Added SAVE statements (Vers. 3.2).
-!   890531  Changed all specific intrinsics to generic.  (WRB)
-!   890703  Corrected category record.  (WRB)
-!   890831  Modified array declarations.  (WRB)
-!   891006  Cosmetic changes to prologue.  (WRB)
-!   891006  REVISION DATE from Version 3.2
-!   891214  Prologue converted to Version 4.0 format.  (BAB)
-!   900315  CALLs to XERROR changed to CALLs to XERMSG.  (THJ)
-!   930504  Corrected to set VALUE=0 when IERR/=0.  (FNF)
-!***END PROLOGUE  DPCHID
+
 !
 !  Programming notes:
 !  1. This routine uses a special formula that is valid only for
 !     integrals whose limits coincide with data values.  This is
 !     mathematically equivalent to, but much more efficient than,
 !     calls to DCHFIE.
-!**End
 
 
 integer  n, incfd, ia, ib, ierr
@@ -3046,7 +2432,7 @@ ierr = 0
 !
 !  COMPUTE INTEGRAL VALUE.
 !
-if (ia /= ib)  then
+if (ia /= ib) then
    low = min(ia, ib)
    iup = max(ia, ib) - 1
    sum = zero
@@ -3196,30 +2582,7 @@ subroutine dpchim (n, x, f, d, incfd, ierr)
 !               2. F. N. Fritsch and R. E. Carlson, Monotone piecewise
 !                 cubic interpolation, SIAM Journal on Numerical Ana-
 !                 lysis 17, 2 (April 1980), pp. 238-246.
-!***ROUTINES CALLED  DPCHST, XERMSG
-!***REVISION HISTORY  (YYMMDD)
-!   811103  DATE WRITTEN
-!   820201  1. Introduced  DPCHST  to reduce possible over/under-
-!             flow problems.
-!           2. Rearranged derivative formula for same reason.
-!   820602  1. Modified end conditions to be continuous functions
-!             of data when monotonicity switches in next interval.
-!           2. Modified formulas so end conditions are less prone
-!             of over/underflow problems.
-!   820803  Minor cosmetic changes for release 1.
-!   870707  Corrected XERROR calls for d.p. name(s).
-!   870813  Updated Reference 1.
-!   890206  Corrected XERROR calls.
-!   890411  Added SAVE statements (Vers. 3.2).
-!   890531  Changed all specific intrinsics to generic.  (WRB)
-!   890703  Corrected category record.  (WRB)
-!   890831  Modified array declarations.  (WRB)
-!   891006  Cosmetic changes to prologue.  (WRB)
-!   891006  REVISION DATE from Version 3.2
-!   891214  Prologue converted to Version 4.0 format.  (BAB)
-!   900315  CALLs to XERROR changed to CALLs to XERMSG.  (THJ)
-!   920429  Revised format and order of references.  (WRB,FNF)
-!***END PROLOGUE  DPCHIM
+
 !  Programming notes:
 !
 !     1. The function  DPCHST(ARG1,ARG2)  is assumed to return zero if
@@ -3268,9 +2631,9 @@ hsum = h1 + h2
 w1 = (h1 + hsum)/hsum
 w2 = -h1/hsum
 d(1,1) = w1*del1 + w2*del2
-if ( dpchst(d(1,1),del1) <= zero)  then
+if ( dpchst(d(1,1),del1) <= zero) then
    d(1,1) = zero
-else if ( dpchst(del1,del2) < zero)  then
+else if ( dpchst(del1,del2) < zero) then
 !        NEED DO THIS CHECK ONLY IF MONOTONICITY SWITCHES.
    dmax = three*del1
    if (abs(d(1,1)) > abs(dmax))  d(1,1) = dmax
@@ -3326,9 +2689,9 @@ do 50  i = 2, nless1
 w1 = -h2/hsum
 w2 = (h2 + hsum)/hsum
 d(1,n) = w1*del1 + w2*del2
-if ( dpchst(d(1,n),del2) <= zero)  then
+if ( dpchst(d(1,n),del2) <= zero) then
    d(1,n) = zero
-else if ( dpchst(del1,del2) < zero)  then
+else if ( dpchst(del1,del2) < zero) then
 !        NEED DO THIS CHECK ONLY IF MONOTONICITY SWITCHES.
    dmax = three*del2
    if (abs(d(1,n)) > abs(dmax))  d(1,n) = dmax
@@ -3388,25 +2751,11 @@ subroutine dpchkt (n, x, knotyp, t)
 !     2. X(i)<X(i+1), i=1,...,N .  (not checked)
 !     3. 0<=KNOTYP<=2 .  (Acts like KNOTYP=0 for any other value.)
 !
-!***SEE ALSO  DPCHBS
-!***ROUTINES CALLED  (NONE)
-!***REVISION HISTORY  (YYMMDD)
-!   870701  DATE WRITTEN
-!   900405  Converted Fortran to upper case.
-!   900410  Converted prologue to SLATEC 4.0 format.
-!   900410  Minor cosmetic changes.
-!   900430  Produced real(wp) version.
-!   930514  Changed NKNOTS from an output to an input variable.  (FNF)
-!   930604  Removed unused variable NKNOTS from argument list.  (FNF)
-!***END PROLOGUE  DPCHKT
 !
 !*Internal Notes:
 !
 !  Since this is subsidiary to DPCHBS, which validates its input before
 !  calling, it is unnecessary for such validation to be done here.
-!
-!**End
-
 
 integer  n, knotyp
 real(wp)  x(*), t(*)
@@ -3432,11 +2781,11 @@ do 20  k = 1, n
 !
 hbeg = x(2) - x(1)
 hend = x(n) - x(n-1)
-if (knotyp==1 )  then
+if (knotyp==1 ) then
 !          Extrapolate.
    t(2) = x(1) - hbeg
    t(ndim+3) = x(n) + hend
-else if ( knotyp==2 )  then
+else if ( knotyp==2 ) then
 !          Periodic.
    t(2) = x(1) - hend
    t(ndim+3) = x(n) + hbeg
@@ -3579,21 +2928,6 @@ subroutine dpchsp (ic, vc, n, x, f, d, incfd, wk, nwk, ierr)
 !
 !***REFERENCES  Carl de Boor, A Practical Guide to Splines, Springer-
 !                 Verlag, New York, 1978, pp. 53-59.
-!***ROUTINES CALLED  DPCHDF, XERMSG
-!***REVISION HISTORY  (YYMMDD)
-!   820503  DATE WRITTEN
-!   820804  Converted to SLATEC library version.
-!   870707  Corrected XERROR calls for d.p. name(s).
-!   890206  Corrected XERROR calls.
-!   890411  Added SAVE statements (Vers. 3.2).
-!   890703  Corrected category record.  (WRB)
-!   890831  Modified array declarations.  (WRB)
-!   891006  Cosmetic changes to prologue.  (WRB)
-!   891006  REVISION DATE from Version 3.2
-!   891214  Prologue converted to Version 4.0 format.  (BAB)
-!   900315  CALLs to XERROR changed to CALLs to XERMSG.  (THJ)
-!   920429  Revised format and order of references.  (WRB,FNF)
-!***END PROLOGUE  DPCHSP
 
 integer  ic(2), n, incfd, nwk, ierr
 real(wp)  vc(2), x(*), f(incfd,*), d(incfd,*), wk(2,*)
@@ -3633,9 +2967,9 @@ if ( iend>n )  iend = 0
 !
 !  SET UP FOR BOUNDARY CONDITIONS.
 !
-if ( (ibeg==1).or.(ibeg==2) )  then
+if ( (ibeg==1).or.(ibeg==2) ) then
    d(1,1) = vc(1)
-else if (ibeg > 2)  then
+else if (ibeg > 2) then
 !        PICK UP FIRST IBEG POINTS, IN REVERSE ORDER.
    do 10  j = 1, ibeg
       index = ibeg-j+1
@@ -3650,9 +2984,9 @@ else if (ibeg > 2)  then
    ibeg = 1
 endif
 !
-if ( (iend==1).or.(iend==2) )  then
+if ( (iend==1).or.(iend==2) ) then
    d(1,n) = vc(2)
-else if (iend > 2)  then
+else if (iend > 2) then
 !        PICK UP LAST IEND POINTS.
    do 15  j = 1, iend
       index = n-iend+j
@@ -3677,8 +3011,8 @@ endif
 !  CONSTRUCT FIRST EQUATION FROM FIRST BOUNDARY CONDITION, OF THE FORM
 !             WK(2,1)*S(1) + WK(1,1)*S(2) = D(1,1)
 !
-if (ibeg == 0)  then
-   if (n == 2)  then
+if (ibeg == 0) then
+   if (n == 2) then
 !           NO CONDITION AT LEFT END AND N = 2.
       wk(2,1) = one
       wk(1,1) = one
@@ -3690,7 +3024,7 @@ if (ibeg == 0)  then
       d(1,1) =((wk(1,2) + two*wk(1,1))*wk(2,2)*wk(1,3) &
                         + wk(1,2)**2*wk(2,3)) / wk(1,1)
    endif
-else if (ibeg == 1)  then
+else if (ibeg == 1) then
 !        SLOPE PRESCRIBED AT LEFT END.
    wk(2,1) = one
    wk(1,1) = zero
@@ -3706,7 +3040,7 @@ endif
 !  EQUATION READS    WK(2,J)*S(J) + WK(1,J)*S(J+1) = D(1,J).
 !
 nm1 = n-1
-if (nm1 > 1)  then
+if (nm1 > 1) then
    do 20 j=2,nm1
       if (wk(2,j-1) == zero)  go to 5008
       g = -wk(1,j+1)/wk(2,j-1)
@@ -3724,12 +3058,12 @@ endif
 !     AT THIS POINT.
 if (iend == 1)  go to 30
 !
-if (iend == 0)  then
-   if (n==2 .and. ibeg==0)  then
+if (iend == 0) then
+   if (n==2 .and. ibeg==0) then
 !           NOT-A-KNOT AT RIGHT ENDPOINT AND AT LEFT ENDPOINT AND N = 2.
       d(1,2) = wk(2,2)
       go to 30
-   else if ((n==2) .or. (n==3 .and. ibeg==0))  then
+   else if ((n==2) .or. (n==3 .and. ibeg==0)) then
 !           EITHER (N=3 AND NOT-A-KNOT ALSO AT LEFT) OR (N=2 AND *NOT*
 !           NOT-A-KNOT AT LEFT END POINT).
       d(1,n) = two*wk(2,n)
@@ -3844,22 +3178,6 @@ end subroutine dpchsp
 !     The object is to do this without multiplying ARG1*ARG2, to avoid
 !     possible over/underflow problems.
 !
-!***SEE ALSO  DPCHCE, DPCHCI, DPCHCS, DPCHIM
-!***ROUTINES CALLED  (NONE)
-!***REVISION HISTORY  (YYMMDD)
-!   811103  DATE WRITTEN
-!   820805  Converted to SLATEC library version.
-!   870813  Minor cosmetic changes.
-!   890411  Added SAVE statements (Vers. 3.2).
-!   890531  Changed all specific intrinsics to generic.  (WRB)
-!   890531  REVISION DATE from Version 3.2
-!   891214  Prologue converted to Version 4.0 format.  (BAB)
-!   900328  Added TYPE section.  (WRB)
-!   910408  Updated AUTHOR and DATE WRITTEN sections in prologue.  (WRB)
-!   930503  Improved purpose.  (FNF)
-!***END PROLOGUE  DPCHST
-!
-!**End
 
 real(wp) function dpchst (arg1, arg2)
 
@@ -3921,28 +3239,6 @@ subroutine dpchsw (dfmax, iextrm, d1, d2, h, slope, ierr)
 !    WARNING:  This routine does no validity-checking of arguments.
 !    -------
 !
-!***SEE ALSO  DPCHCS
-!***ROUTINES CALLED  D1MACH, XERMSG
-!***REVISION HISTORY  (YYMMDD)
-!   820218  DATE WRITTEN
-!   820805  Converted to SLATEC library version.
-!   870707  Corrected XERROR calls for d.p. name(s).
-!   870707  Replaced DATA statement for SMALL with a use of D1MACH.
-!   870813  Minor cosmetic changes.
-!   890206  Corrected XERROR calls.
-!   890411  1. Added SAVE statements (Vers. 3.2).
-!           2. Added real(wp) declaration for D1MACH.
-!   890531  Changed all specific intrinsics to generic.  (WRB)
-!   890531  REVISION DATE from Version 3.2
-!   891214  Prologue converted to Version 4.0 format.  (BAB)
-!   900315  CALLs to XERROR changed to CALLs to XERMSG.  (THJ)
-!   900328  Added TYPE section.  (WRB)
-!   910408  Updated AUTHOR and DATE WRITTEN sections in prologue.  (WRB)
-!   920526  Eliminated possible divide by zero problem.  (FNF)
-!   930503  Improved purpose.  (FNF)
-!***END PROLOGUE  DPCHSW
-!
-!**End
 
 integer  iextrm, ierr
 real(wp)  dfmax, d1, d2, h, slope
@@ -3968,7 +3264,7 @@ real(wp),parameter :: small = fact*d1mach4 !! small should be a few orders of ma
 !
 !  DO MAIN CALCULATION.
 !
-if (d1 == zero)  then
+if (d1 == zero) then
 !
 !        SPECIAL CASE -- D1==ZERO .
 !
@@ -3986,7 +3282,7 @@ if (d1 == zero)  then
 !
 !          TEST FOR EXCEEDING LIMIT, AND ADJUST ACCORDINGLY.
    hphi = h * abs(phi)
-   if (hphi*abs(d2) > dfmax)  then
+   if (hphi*abs(d2) > dfmax) then
 !           AT THIS POINT, HPHI>0, SO DIVIDE IS OK.
       d2 = sign (dfmax/hphi, d2)
    endif
@@ -3994,7 +3290,7 @@ else
 !
    rho = slope/d1
    lambda = -d2/d1
-   if (d2 == zero)  then
+   if (d2 == zero) then
 !
 !           SPECIAL CASE -- D2==ZERO .
 !
@@ -4011,7 +3307,7 @@ else
       nu = one - lambda - two*rho
       sigma = one - rho
       cp = nu + sigma
-      if (abs(nu) > small)  then
+      if (abs(nu) > small) then
          radcal = (nu - (two*rho+one))*nu + sigma**2
          if (radcal < zero)  go to 5002
          that = (cp - sqrt(radcal)) / (three*nu)
@@ -4026,7 +3322,7 @@ else
 !
 !          TEST FOR EXCEEDING LIMIT, AND ADJUST ACCORDINGLY.
    hphi = h * abs(phi)
-   if (hphi*abs(d1) > dfmax)  then
+   if (hphi*abs(d1) > dfmax) then
 !           AT THIS POINT, HPHI>0, SO DIVIDE IS OK.
       d1 = sign (dfmax/hphi, d1)
       d2 = -lambda*d1
