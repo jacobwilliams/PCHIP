@@ -2798,13 +2798,17 @@
 ! The object is to do this without multiplying ARG1*ARG2, to avoid
 ! possible over/underflow problems.
 
-    real(wp) function dpchst (arg1, arg2)
+    pure function dpchst (arg1, arg2) result(s)
 
-    real(wp) :: arg1, arg2
+    real(wp),intent(in) :: arg1
+    real(wp),intent(in) :: arg2
+    real(wp) :: s
 
-    ! perform the test.
-    dpchst = sign(one,arg1) * sign(one,arg2)
-    if ((arg1==zero) .or. (arg2==zero)) dpchst = zero
+    if ((arg1==zero) .or. (arg2==zero)) then
+        s = zero
+    else
+        s = sign(one,arg1) * sign(one,arg2)
+    end if
 
     end function dpchst
 !***************************************************************************
