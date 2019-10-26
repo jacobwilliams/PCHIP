@@ -9,12 +9,13 @@
 
     module pchip_module
 
-    use, intrinsic :: iso_fortran_env, only: wp => real64
+    use, intrinsic :: iso_fortran_env, only: error_unit, wp => real64
 
     implicit none
 
     private
 
+    ! numeric constants:
     real(wp),parameter :: zero   = 0.0_wp
     real(wp),parameter :: half   = 0.5_wp
     real(wp),parameter :: one    = 1.0_wp
@@ -23,9 +24,9 @@
     real(wp),parameter :: four   = 4.0_wp
     real(wp),parameter :: six    = 6.0_wp
     real(wp),parameter :: ten    = 10.0_wp
+    real(wp),parameter :: d1mach4 = epsilon(one)  !! d1mach(4) -- the largest relative spacing
 
-    real(wp),parameter :: d1mach4 = epsilon(one)   !! d1mach(4) -- the largest relative spacing
-
+    ! public routines:
     public :: dpchim,dpchic,dpchsp
     public :: dchfev,dpchfe,dchfdv,dpchfd,dpchid,dpchia
     public :: dpchbs,dpchcm
@@ -55,7 +56,7 @@
 !  cubic with boundary derivative values D1,D2 and chord slope DELTA.
 !
 !### Cautions
-!  This is essentially the same as old DCHFMC, except that a
+!  This is essentially the same as old `DCHFMC`, except that a
 !  new output value, -3, was added February 1989.  (Formerly, -3
 !  and +3 were lumped together in the single value 3.)  Codes that
 !  flag nonmonotonicity by "IF (ISMON==2)" need not be changed.
@@ -145,7 +146,7 @@
 
     subroutine dchfdv (x1, x2, f1, f2, d1, d2, ne, xe, fe, de, next, ierr)
 
-    integer,intent(in)                :: ne !! number of evaluation points.  (Error return if NE<1 .)
+    integer,intent(in)                :: ne !! number of evaluation points.  (Error return if NE<1).
     real(wp),dimension(*),intent(in)  :: xe !! array of points at which the functions are to
                                             !! be evaluated.  If any of the XE are outside the interval
                                             !! [X1,X2], a warning error is returned in NEXT.
@@ -181,13 +182,13 @@
 
     if (ne < 1) then
         ierr = -1
-        call xermsg ('slatec', 'dchfdv', 'number of evaluation points less than one', ierr, 1)
+        call xermsg ('PCHIP', 'dchfdv', 'number of evaluation points less than one', ierr, 1)
         return
     end if
     h = x2 - x1
     if (h == zero) then
         ierr = -2
-        call xermsg ('slatec', 'dchfdv', 'interval endpoints equal', ierr, 1)
+        call xermsg ('PCHIP', 'dchfdv', 'interval endpoints equal', ierr, 1)
         return
     end if
 
@@ -224,7 +225,7 @@
 
 !***************************************************************************
 !>
-!  Cubic Hermite Function EValuator
+!  Cubic Hermite Function Evaluator
 !
 !  Evaluate a cubic polynomial given in Hermite form at an
 !  array of points.  While designed for use by [[DPCHFE]], it may
@@ -238,7 +239,7 @@
 
     subroutine dchfev (x1, x2, f1, f2, d1, d2, ne, xe, fe, next, ierr)
 
-    integer,intent(in)                :: ne     !! number of evaluation points.  (Error return if NE<1 .)
+    integer,intent(in)                :: ne     !! number of evaluation points.  (Error return if NE<1).
     integer,dimension(2),intent(out)  :: next   !! integer array indicating number of extrapolation points:
                                                 !!
                                                 !! * NEXT(1) = number of evaluation points to left of interval.
@@ -246,10 +247,10 @@
     integer,intent(out)               :: ierr   !! error flag.
                                                 !!
                                                 !! * Normal return:
-                                                !!   * IERR = 0  (no errors).
+                                                !!    * IERR = 0  (no errors).
                                                 !! * "Recoverable" errors (output arrays have not been changed):
-                                                !!   * IERR = -1  if NE<1 .
-                                                !!   * IERR = -2  if X1==X2 .
+                                                !!    * IERR = -1  if NE<1 .
+                                                !!    * IERR = -2  if X1==X2 .
     real(wp),intent(in)               :: x1     !! initial endpoint of interval of definition of cubic. (Error return if X1==X2.)
     real(wp),intent(in)               :: x2     !! final endpoint of interval of definition of cubic. (Error return if X1==X2.)
     real(wp),intent(in)               :: f1     !! value of function at X1.
@@ -268,13 +269,13 @@
     ! validity-check arguments.
     if (ne < 1) then
         ierr = -1
-        call xermsg ('slatec', 'dchfev', 'number of evaluation points less than one', ierr, 1)
+        call xermsg ('PCHIP', 'dchfev', 'number of evaluation points less than one', ierr, 1)
         return
     end if
     h = x2 - x1
     if (h == zero) then
         ierr = -2
-        call xermsg ('slatec', 'dchfev', 'interval endpoints equal', ierr, 1)
+        call xermsg ('PCHIP', 'dchfev', 'interval endpoints equal', ierr, 1)
         return
     end if
 
@@ -383,14 +384,14 @@
 !  input arguments N, X, INCFD are **not** checked for validity.
 !
 !### Restrictions/assumptions:
-!   1. N>=2 .  (not checked)
-!   2. X(i)<X(i+1), i=1,...,N .  (not checked)
-!   3. INCFD>0 .  (not checked)
-!   4. KNOTYP<=2 .  (error return if not)
-!  *5. NKNOTS = NDIM+4 = 2*N+4 .  (error return if not)
-!  *6. T(2*k+1) = T(2*k) = X(k), k=1,...,N .  (not checked)
+!  1. N>=2 .  (not checked)
+!  2. X(i)<X(i+1), i=1,...,N .  (not checked)
+!  3. INCFD>0 .  (not checked)
+!  4. KNOTYP<=2 .  (error return if not)
+!  5. NKNOTS = NDIM+4 = 2*N+4 .  (error return if not)
+!  6. T(2*k+1) = T(2*k) = X(k), k=1,...,N .  (not checked)
 !
-!  * Indicates this applies only if KNOTYP<0 .
+! 5 an 6 apply only if KNOTYP<0 .
 !
 !### Portability:
 !  Argument INCFD is used only to cause the compiler to generate
@@ -400,9 +401,9 @@
 !  but it works on all systems on which DPCHBS has been tested.
 !
 !### See Also
-!  * PCHIC, PCHIM, or PCHSP can be used to determine an interpolating
+!  * [[DPCHIC]], [[DPCHIM]], or [[DPCHSP]] can be used to determine an interpolating
 !    PCH function from a set of data.
-!  * The B-spline routine DBVALU can be used to evaluate the
+!  * The B-spline routine `DBVALU` can be used to evaluate the
 !    B-representation that is output by DPCHBS.
 !    (See BSPDOC for more information.)
 !
@@ -478,20 +479,20 @@
     kord = 4
     ierr = 0
 
-    ! Check argument validity.  Set up knot sequence if OK.
+    ! check argument validity.  set up knot sequence if ok.
     if ( knotyp>2 ) then
         ierr = -1
-        call xermsg ('SLATEC', 'DPCHBS', 'KNOTYP GREATER THAN 2', ierr, 1)
+        call xermsg ('PCHIP', 'dpchbs', 'knotyp greater than 2', ierr, 1)
         return
     endif
     if ( knotyp<0 ) then
         if ( nknots/=ndim+4 ) then
             ierr = -2
-            call xermsg ('SLATEC', 'DPCHBS', 'KNOTYP<0 AND NKNOTS/=(2*N+4)', ierr, 1)
+            call xermsg ('PCHIP', 'dpchbs', 'knotyp<0 and nknots/=(2*n+4)', ierr, 1)
             return
         endif
     else
-        ! Set up knot sequence.
+        ! set up knot sequence.
         nknots = ndim + 4
         call dpchkt (n, x, knotyp, t)
     endif
@@ -617,7 +618,7 @@
             if (ierf /= 0) then
                 ! *** this case should never occur ***
                 ierr = -1
-                call xermsg ('SLATEC', 'DPCHCE', 'ERROR RETURN FROM DPCHDF', ierr, 1)
+                call xermsg ('PCHIP', 'dpchce', 'error return from dpchdf', ierr, 1)
                 return
             end if
         else
@@ -672,7 +673,7 @@
         if (ierf /= 0) then
             ! *** this case should never occur ***
             ierr = -1
-            call xermsg ('SLATEC', 'DPCHCE', 'ERROR RETURN FROM DPCHDF', ierr, 1)
+            call xermsg ('PCHIP', 'dpchce', 'error return from dpchdf', ierr, 1)
             return
         end if
     else
@@ -855,7 +856,7 @@
 
     subroutine dpchcm (n, x, f, d, incfd, skip, ismon, ierr)
 
-    integer,intent(in)    :: n          !! the number of data points.  (Error return if N<2 .)
+    integer,intent(in)    :: n          !! the number of data points.  (Error return if N<2).
     real(wp),intent(in)   :: x(n)       !! array of independent variable values.  The
                                         !! elements of X must be strictly increasing:
                                         !!      X(I-1) < X(I),  I = 2(1)N.
@@ -865,7 +866,7 @@
     real(wp),intent(in)   :: d(incfd,n) !! array of derivative values.  D(1+(I-1)*INCFD) is
                                         !! is the value corresponding to X(I).
     integer,intent(in)    :: incfd      !! the increment between successive values in F and D.
-                                        !! (Error return if  INCFD<1 .)
+                                        !! (Error return if  INCFD<1).
     logical,intent(inout) :: skip       !! logical variable which should be set to
                                         !! .TRUE. if the user wishes to skip checks for validity of
                                         !! preceding parameters, or to .FALSE. otherwise.
@@ -910,19 +911,19 @@
     if (.not. skip) then
         if ( n<2 ) then
             ierr = -1
-            call xermsg ('slatec', 'dpchcm', 'number of data points less than two', ierr, 1)
+            call xermsg ('PCHIP', 'dpchcm', 'number of data points less than two', ierr, 1)
             return
         end if
         if ( incfd<1 ) then
             ierr = -2
-            call xermsg ('slatec', 'dpchcm', 'increment less than one', ierr, 1)
+            call xermsg ('PCHIP', 'dpchcm', 'increment less than one', ierr, 1)
             return
         end if
         do i = 2, n
             if ( x(i)<=x(i-1) ) then
                 ! x-array not strictly increasing.
                 ierr = -3
-                call xermsg ('slatec', 'dpchcm', 'x-array not strictly increasing', ierr, 1)
+                call xermsg ('PCHIP', 'dpchcm', 'x-array not strictly increasing', ierr, 1)
                 return
             end if
         end do
@@ -980,9 +981,9 @@
 
 !***************************************************************************
 !>
-!  DPCHIC Monotonicity Switch Derivative Setter
+!  Monotonicity Switch Derivative Setter
 !
-!  Called by  DPCHIC  to adjust the values of D in the vicinity of a
+!  Called by [[DPCHIC]] to adjust the values of D in the vicinity of a
 !  switch in direction of monotonicity, to produce a more "visually
 !  pleasing" curve than that given by [[DPCHIM]].
 !
@@ -997,7 +998,7 @@
 
     real(wp),intent(in)   :: switch      !! indicates the amount of control desired over
                                          !! local excursions from data.
-    integer,intent(in)    :: n           !! number of data points.  (assumes N>2 .)
+    integer,intent(in)    :: n           !! number of data points.  (assumes N>2).
     real(wp),intent(in)   :: h(*)        !! array of interval lengths.
     real(wp),intent(in)   :: slope(*)    !! array of data slopes.
                                          !! If the data are (X(I),Y(I)), I=1(1)N, then these inputs are:
@@ -1151,7 +1152,7 @@
     ! check for legal value of k.
     if (k < 3) then
         ierr = -1
-        call xermsg ('slatec', 'dpchdf', 'k less than three', ierr, 1)
+        call xermsg ('PCHIP', 'dpchdf', 'k less than three', ierr, 1)
         deriv = zero
     else
 
@@ -1213,10 +1214,10 @@
 
     subroutine dpchfd (n, x, f, d, incfd, skip, ne, xe, fe, de, ierr)
 
-    integer,intent(in)    :: n          !! number of data points.  (Error return if N<2 .)
+    integer,intent(in)    :: n          !! number of data points.  (Error return if N<2).
     integer,intent(in)    :: incfd      !! increment between successive values in F and D.
-                                        !! (Error return if INCFD<1 .)
-    integer,intent(in)    :: ne         !! number of evaluation points.  (Error return if NE<1 .)
+                                        !! (Error return if INCFD<1).
+    integer,intent(in)    :: ne         !! number of evaluation points.  (Error return if NE<1).
     integer,intent(out)   :: ierr       !! error flag.
                                         !!
                                         !! * Normal return:
@@ -1275,19 +1276,19 @@
     if (.not. skip) then
         if ( n<2 ) then
             ierr = -1
-            call xermsg ('slatec', 'dpchfd', 'number of data points less than two', ierr, 1)
+            call xermsg ('PCHIP', 'dpchfd', 'number of data points less than two', ierr, 1)
             return
         end if
         if ( incfd<1 ) then
             ierr = -2
-            call xermsg ('slatec', 'dpchfd', 'increment less than one', ierr, 1)
+            call xermsg ('PCHIP', 'dpchfd', 'increment less than one', ierr, 1)
             return
         end if
         do i = 2, n
             if ( x(i)<=x(i-1) ) then
                 ! x-array not strictly increasing.
                 ierr = -3
-                call xermsg ('slatec', 'dpchfd', 'x-array not strictly increasing', ierr, 1)
+                call xermsg ('PCHIP', 'dpchfd', 'x-array not strictly increasing', ierr, 1)
                 return
             end if
         end do
@@ -1297,7 +1298,7 @@
 
     if ( ne<1 ) then
         ierr = -4
-        call xermsg ('slatec', 'dpchfd', 'number of evaluation points less than one', ierr, 1)
+        call xermsg ('PCHIP', 'dpchfd', 'number of evaluation points less than one', ierr, 1)
         return
     end if
     ierr = 0
@@ -1405,7 +1406,7 @@
     ! error return from dchfdv.
     ! *** this case should never occur ***
     ierr = -5
-    call xermsg ('slatec', 'dpchfd', 'error return from dchfdv -- fatal', ierr, 2)
+    call xermsg ('PCHIP', 'dpchfd', 'error return from dchfdv -- fatal', ierr, 2)
 
     end subroutine dpchfd
 !***************************************************************************
@@ -1443,21 +1444,21 @@
 
     subroutine dpchfe (n, x, f, d, incfd, skip, ne, xe, fe, ierr)
 
-    integer,intent(in)    :: n          !! number of data points.  (Error return if N<2 .)
+    integer,intent(in)    :: n          !! number of data points.  (Error return if N<2).
     integer,intent(in)    :: incfd      !! increment between successive values in F and D.
-                                        !! (Error return if  INCFD<1 .)
-    integer,intent(in)    :: ne         !! number of evaluation points.  (Error return if NE<1 .)
+                                        !! (Error return if  INCFD<1).
+    integer,intent(in)    :: ne         !! number of evaluation points.  (Error return if NE<1).
     integer,intent(out)   :: ierr       !! error flag.
                                         !!
                                         !! * Normal return:
-                                        !!   * IERR = 0  (no errors).
+                                        !!    * IERR = 0  (no errors).
                                         !! * Warning error:
-                                        !!   * IERR>0  means that extrapolation was performed at IERR points.
+                                        !!    * IERR>0  means that extrapolation was performed at IERR points.
                                         !! * "Recoverable" errors:
-                                        !!   * IERR = -1  if N<2 .
-                                        !!   * IERR = -2  if INCFD<1 .
-                                        !!   * IERR = -3  if the X-array is not strictly increasing.
-                                        !!   * IERR = -4  if NE<1 .
+                                        !!    * IERR = -1  if N<2 .
+                                        !!    * IERR = -2  if INCFD<1 .
+                                        !!    * IERR = -3  if the X-array is not strictly increasing.
+                                        !!    * IERR = -4  if NE<1 .
                                         !!
                                         !! (The FE-array has not been changed in any of these cases.)
                                         !! NOTE: The above errors are checked in the order listed,
@@ -1498,19 +1499,19 @@
     if (.not. skip) then
         if ( n<2 ) then
             ierr = -1
-            call xermsg ('slatec', 'dpchfe', 'number of data points less than two', ierr, 1)
+            call xermsg ('PCHIP', 'dpchfe', 'number of data points less than two', ierr, 1)
             return
         end if
         if ( incfd<1 ) then
             ierr = -2
-            call xermsg ('slatec', 'dpchfe', 'increment less than one', ierr, 1)
+            call xermsg ('PCHIP', 'dpchfe', 'increment less than one', ierr, 1)
             return
         end if
         do i = 2, n
             if ( x(i)<=x(i-1) ) then
                 ! x-array not strictly increasing.
                 ierr = -3
-                call xermsg ('slatec', 'dpchfe', 'x-array not strictly increasing', ierr, 1)
+                call xermsg ('PCHIP', 'dpchfe', 'x-array not strictly increasing', ierr, 1)
                 return
             end if
         end do
@@ -1520,7 +1521,7 @@
 
     if ( ne<1 ) then
         ierr = -4
-        call xermsg ('slatec', 'dpchfe', 'number of evaluation points less than one', ierr, 1)
+        call xermsg ('PCHIP', 'dpchfe', 'number of evaluation points less than one', ierr, 1)
         return
     end if
 
@@ -1628,7 +1629,7 @@
     ! error return from dchfev.
     ! *** this case should never occur ***
     ierr = -5
-    call xermsg ('slatec', 'dpchfe', 'error return from dchfev -- fatal', ierr, 2)
+    call xermsg ('PCHIP', 'dpchfe', 'error return from dchfev -- fatal', ierr, 2)
 
     end subroutine dpchfe
 !***************************************************************************
@@ -1649,9 +1650,9 @@
 
     function dpchia (n, x, f, d, incfd, skip, a, b, ierr) result(value)
 
-    integer,intent(in)      :: n            !! number of data points.  (Error return if N<2 .)
+    integer,intent(in)      :: n            !! number of data points.  (Error return if N<2).
     integer,intent(in)      :: incfd        !! increment between successive values in F and D.
-                                            !! (Error return if  INCFD<1 .)
+                                            !! (Error return if  INCFD<1).
     integer,intent(inout)   :: ierr         !! error flag.
                                             !!
                                             !! * Normal return:
@@ -1704,18 +1705,18 @@
     if (.not. skip) then
         if ( n<2 ) then
             ierr = -1
-            call xermsg ('slatec', 'dpchia', 'number of data points less than two', ierr, 1)
+            call xermsg ('PCHIP', 'dpchia', 'number of data points less than two', ierr, 1)
             return
         end if
         if ( incfd<1 ) then
             ierr = -2
-            call xermsg ('slatec', 'dpchia', 'increment less than one', ierr, 1)
+            call xermsg ('PCHIP', 'dpchia', 'increment less than one', ierr, 1)
             return
         end if
         do i = 2, n
             if ( x(i)<=x(i-1) ) then
                 ierr = -3
-                call xermsg ('slatec', 'dpchia', 'x-array not strictly increasing', ierr, 1)
+                call xermsg ('PCHIP', 'dpchia', 'x-array not strictly increasing', ierr, 1)
                 return
             end if
         end do
@@ -1774,7 +1775,7 @@
                     if (ierd < 0) then
                         ! trouble in dpchid.  (should never occur.)
                         ierr = -4
-                        call xermsg ('slatec', 'dpchia', 'trouble in dpchid', ierr, 1)
+                        call xermsg ('PCHIP', 'dpchia', 'trouble in dpchid', ierr, 1)
                         return
                     end if
                 endif
@@ -1808,8 +1809,8 @@
 !>
 !  Piecewise Cubic Hermite Interpolation Coefficients.
 !
-!  Sets derivatives needed to determine a piecewise monotone piece-
-!  wise cubic interpolant to the data given in X and F satisfying the
+!  Sets derivatives needed to determine a piecewise monotone piecewise
+!  cubic interpolant to the data given in X and F satisfying the
 !  boundary conditions specified by IC and VC.
 !
 !  The treatment of points where monotonicity switches direction is
@@ -1841,6 +1842,8 @@
                                    !!  * IC(1) = IBEG, desired condition at beginning of data.
                                    !!  * IC(2) = IEND, desired condition at end of data.
                                    !!
+                                   !! Valid values for IBEG:
+                                   !!
                                    !!  * IBEG = 0  for the default boundary condition (the same as used by [[DPCHIM]]).
                                    !!  * If IBEG/=0, then its sign indicates whether the boundary
                                    !!            derivative is to be adjusted, if necessary, to be
@@ -1854,9 +1857,9 @@
                                    !!  * IBEG = 1  if first derivative at X(1) is given in VC(1).
                                    !!  * IBEG = 2  if second derivative at X(1) is given in VC(1).
                                    !!  * IBEG = 3  to use the 3-point difference formula for D(1).
-                                   !!              (Reverts to the default b.c. if N<3 .)
+                                   !!              (Reverts to the default b.c. if N<3).
                                    !!  * IBEG = 4  to use the 4-point difference formula for D(1).
-                                   !!              (Reverts to the default b.c. if N<4 .)
+                                   !!              (Reverts to the default b.c. if N<4).
                                    !!  * IBEG = 5  to set D(1) so that the second derivative is continuous
                                    !!              at X(2). (Reverts to the default b.c. if N<4.)
                                    !!              This option is somewhat analogous to the "not a knot"
@@ -1887,34 +1890,34 @@
                                    !!     This is **NOT** checked if IEND>0 .
                                    !!  3. If IEND<0 and D(1+(N-1)*INCFD) had to be changed to
                                    !!     achieve monotonicity, a warning error is returned.
-    integer,intent(in) :: n        !! number of data points.  (Error return if N<2 .)
+    integer,intent(in) :: n        !! number of data points.  (Error return if N<2).
     integer,intent(in) :: incfd    !! increment between successive values in F and D.
                                    !! This argument is provided primarily for 2-D applications.
-                                   !! (Error return if  INCFD<1 .)
-    integer,intent(in) :: nwk      !! length of work array. (Error return if  NWK<2*(N-1) .)
+                                   !! (Error return if  INCFD<1).
+    integer,intent(in) :: nwk      !! length of work array. (Error return if  NWK<2*(N-1)).
     integer,intent(out)  :: ierr   !! error flag.
                                    !!
-                                   !! Normal return:
+                                   !! * Normal return:
                                    !!
-                                   !! * IERR = 0  (no errors).
+                                   !!    * IERR = 0  (no errors).
                                    !!
-                                   !! Warning errors:
+                                   !! * Warning errors:
                                    !!
-                                   !! * IERR = 1  if IBEG<0 and D(1) had to be adjusted for
-                                   !!              monotonicity.
-                                   !! * IERR = 2  if IEND<0 and D(1+(N-1)*INCFD) had to be
-                                   !!              adjusted for monotonicity.
-                                   !! * IERR = 3  if both of the above are true.
+                                   !!    * IERR = 1  if IBEG<0 and D(1) had to be adjusted for
+                                   !!                monotonicity.
+                                   !!    * IERR = 2  if IEND<0 and D(1+(N-1)*INCFD) had to be
+                                   !!                adjusted for monotonicity.
+                                   !!    * IERR = 3  if both of the above are true.
                                    !!
-                                   !! "Recoverable" errors:
+                                   !! * "Recoverable" errors:
                                    !!
-                                   !! * IERR = -1  if N<2 .
-                                   !! * IERR = -2  if INCFD<1 .
-                                   !! * IERR = -3  if the X-array is not strictly increasing.
-                                   !! * IERR = -4  if ABS(IBEG)>5 .
-                                   !! * IERR = -5  if ABS(IEND)>5 .
-                                   !! * IERR = -6  if both of the above are true.
-                                   !! * IERR = -7  if NWK<2*(N-1) .
+                                   !!    * IERR = -1  if N<2 .
+                                   !!    * IERR = -2  if INCFD<1 .
+                                   !!    * IERR = -3  if the X-array is not strictly increasing.
+                                   !!    * IERR = -4  if ABS(IBEG)>5 .
+                                   !!    * IERR = -5  if ABS(IEND)>5 .
+                                   !!    * IERR = -6  if both of the above are true.
+                                   !!    * IERR = -7  if NWK<2*(N-1) .
                                    !!
                                    !! (The D-array has not been changed in any of these cases.)
                                    !! NOTE:  The above errors are checked in the order listed,
@@ -1965,28 +1968,30 @@
                                        !! No other entries in D are changed.
     real(wp),intent(inout) :: wk(nwk) !! array of working storage.  The user may
                                       !! wish to know that the returned values are:
-                                      !!    WK(I)     = H(I)     = X(I+1) - X(I) ;
-                                      !!    WK(N-1+I) = SLOPE(I) = (F(1,I+1) - F(1,I)) / H(I)
-                                      !! for  I = 1(1)N-1.
+                                      !!
+                                      !! * `WK(I)     = H(I)     = X(I+1) - X(I)` ;
+                                      !! * `WK(N-1+I) = SLOPE(I) = (F(1,I+1) - F(1,I)) / H(I)`
+                                      !!
+                                      !! for `I = 1(1)N-1`.
 
     integer :: i, ibeg, iend, nless1
 
     ! validity-check arguments.
     if ( n<2 ) then
         ierr = -1
-        call xermsg ('slatec', 'dpchic', 'number of data points less than two', ierr, 1)
+        call xermsg ('PCHIP', 'dpchic', 'number of data points less than two', ierr, 1)
         return
     end if
     if ( incfd<1 ) then
         ierr = -2
-        call xermsg ('slatec', 'dpchic', 'increment less than one', ierr, 1)
+        call xermsg ('PCHIP', 'dpchic', 'increment less than one', ierr, 1)
         return
     end if
     do i = 2, n
         if ( x(i)<=x(i-1) ) then
             ! x-array not strictly increasing.
             ierr = -3
-            call xermsg ('slatec', 'dpchic', 'x-array not strictly increasing', ierr, 1)
+            call xermsg ('PCHIP', 'dpchic', 'x-array not strictly increasing', ierr, 1)
             return
         end if
     end do
@@ -1999,7 +2004,7 @@
     if (ierr < 0) then
         ! ic out of range return.
         ierr = ierr - 3
-        call xermsg ('slatec', 'dpchic', 'ic out of range', ierr, 1)
+        call xermsg ('PCHIP', 'dpchic', 'ic out of range', ierr, 1)
         return
     end if
 
@@ -2008,7 +2013,7 @@
     nless1 = n - 1
     if ( nwk < 2*nless1 ) then
         ierr = -7
-        call xermsg ('slatec', 'dpchic', 'work array too small', ierr, 1)
+        call xermsg ('PCHIP', 'dpchic', 'work array too small', ierr, 1)
         return
     end if
 
@@ -2033,7 +2038,7 @@
             if (ierr /= 0) then
                 ! error return from dpchcs.
                 ierr = -8
-                call xermsg ('slatec', 'dpchic', 'error return from dpchcs', ierr, 1)
+                call xermsg ('PCHIP', 'dpchic', 'error return from dpchcs', ierr, 1)
                 return
             end if
 
@@ -2052,7 +2057,7 @@
             ! error return from dpchce.
             ! *** this case should never occur ***
             ierr = -9
-            call xermsg ('slatec', 'dpchic', 'error return from dpchce', ierr, 1)
+            call xermsg ('PCHIP', 'dpchic', 'error return from dpchce', ierr, 1)
         end if
 
     end if
@@ -2074,13 +2079,13 @@
 !  1. This routine uses a special formula that is valid only for
 !     integrals whose limits coincide with data values.  This is
 !     mathematically equivalent to, but much more efficient than,
-!     calls to DCHFIE.
+!     calls to [[DCHFIE]].
 
     function dpchid (n, x, f, d, incfd, skip, ia, ib, ierr) result(value)
 
-    integer,intent(in)    :: n          !! number of data points.  (Error return if N<2 .)
+    integer,intent(in)    :: n          !! number of data points.  (Error return if N<2).
     integer,intent(in)    :: incfd      !! increment between successive values in F and D.
-                                        !! (Error return if  INCFD<1 .)
+                                        !! (Error return if  INCFD<1).
     integer,intent(in)    :: ia         !! indices in X-array for the limits of integration.
                                         !! both must be in the range [1,N].  (Error return if not.)
                                         !! No restrictions on their relative values.
@@ -2125,19 +2130,19 @@
     if (.not. skip) then
         if ( n<2 ) then
             ierr = -1
-            call xermsg ('slatec', 'dpchid', 'number of data points less than two', ierr, 1)
+            call xermsg ('PCHIP', 'dpchid', 'number of data points less than two', ierr, 1)
             return
         end if
         if ( incfd<1 ) then
             ierr = -2
-            call xermsg ('slatec', 'dpchid', 'increment less than one', ierr,1)
+            call xermsg ('PCHIP', 'dpchid', 'increment less than one', ierr,1)
             return
         end if
         do i = 2, n
             if ( x(i)<=x(i-1) ) then
                 ! x-array not strictly increasing.
                 ierr = -3
-                call xermsg ('slatec', 'dpchid', 'x-array not strictly increasing', ierr, 1)
+                call xermsg ('PCHIP', 'dpchid', 'x-array not strictly increasing', ierr, 1)
                 return
             end if
         end do
@@ -2148,7 +2153,7 @@
     if ((ia<1) .or. (ia>n) .or. (ib<1) .or. (ib>n)) then
         ! ia or ib out of range return.
         ierr = -4
-        call xermsg ('slatec', 'dpchid', 'ia or ib out of range', ierr, 1)
+        call xermsg ('PCHIP', 'dpchid', 'ia or ib out of range', ierr, 1)
         return
     end if
 
@@ -2209,11 +2214,11 @@
 
     subroutine dpchim (n, x, f, d, incfd, ierr)
 
-    integer,intent(in)   :: n           !! number of data points.  (Error return if N<2 .)
+    integer,intent(in)   :: n           !! number of data points.  (Error return if N<2).
                                         !! If N=2, simply does linear interpolation.
     integer,intent(in)   :: incfd       !! increment between successive values in F and D.
                                         !! This argument is provided primarily for 2-D applications.
-                                        !! (Error return if  INCFD<1 .)
+                                        !! (Error return if  INCFD<1).
     integer,intent(out)  :: ierr        !! error flag.
                                         !!
                                         !! * Normal return:
@@ -2254,19 +2259,19 @@
     !  validity-check arguments.
     if ( n<2 ) then
         ierr = -1
-        call xermsg ('slatec', 'dpchim', 'number of data points less than two', ierr, 1)
+        call xermsg ('PCHIP', 'dpchim', 'number of data points less than two', ierr, 1)
         return
     end if
     if ( incfd<1 ) then
         ierr = -2
-        call xermsg ('slatec', 'dpchim', 'increment less than one', ierr, 1)
+        call xermsg ('PCHIP', 'dpchim', 'increment less than one', ierr, 1)
         return
     end if
     do i = 2, n
         if ( x(i)<=x(i-1) ) then
             ! x-array not strictly increasing.
             ierr = -3
-            call xermsg ('slatec', 'dpchim', 'x-array not strictly increasing', ierr, 1)
+            call xermsg ('PCHIP', 'dpchim', 'x-array not strictly increasing', ierr, 1)
         end if
     end do
 
@@ -2455,36 +2460,39 @@
                                         !! * IC(1) = IBEG, desired condition at beginning of data.
                                         !! * IC(2) = IEND, desired condition at end of data.
                                         !!
+                                        !! Valid values for IBEG:
+                                        !!
                                         !! * IBEG = 0  to set D(1) so that the third derivative is
                                         !!     continuous at X(2).  This is the "not a knot" condition
                                         !!     provided by de Boor's cubic spline routine CUBSPL.
-                                        !!     < This is the default boundary condition. >
+                                        !!     **This is the default boundary condition.**
                                         !! * IBEG = 1  if first derivative at X(1) is given in VC(1).
                                         !! * IBEG = 2  if second derivative at X(1) is given in VC(1).
                                         !! * IBEG = 3  to use the 3-point difference formula for D(1).
-                                        !!            (Reverts to the default b.c. if N<3 .)
+                                        !!            (Reverts to the default b.c. if N<3).
                                         !! * IBEG = 4  to use the 4-point difference formula for D(1).
-                                        !!            (Reverts to the default b.c. if N<4 .)
+                                        !!            (Reverts to the default b.c. if N<4).
+                                        !!
                                         !! NOTES:
                                         !!
-                                        !!  1. An error return is taken if IBEG is out of range.
-                                        !!  2. For the "natural" boundary condition, use IBEG=2 and
-                                        !!     VC(1)=0.
+                                        !! 1. An error return is taken if IBEG is out of range.
+                                        !! 2. For the "natural" boundary condition, use IBEG=2 and
+                                        !!    VC(1)=0.
                                         !!
-                                        !!  IEND may take on the same values as IBEG, but applied to
-                                        !!  derivative at X(N).  In case IEND = 1 or 2, the value is
-                                        !!  given in VC(2).
+                                        !! IEND may take on the same values as IBEG, but applied to
+                                        !! derivative at X(N).  In case IEND = 1 or 2, the value is
+                                        !! given in VC(2).
                                         !!
                                         !! NOTES:
                                         !!
                                         !!  1. An error return is taken if IEND is out of range.
                                         !!  2. For the "natural" boundary condition, use IEND=2 and
                                         !!     VC(2)=0.
-    integer,intent(in)     :: n         !! number of data points.  (Error return if N<2 .)
+    integer,intent(in)     :: n         !! number of data points.  (Error return if N<2).
     integer,intent(in)     :: incfd     !! increment between successive values in F and D.
                                         !! This argument is provided primarily for 2-D applications.
-                                        !! (Error return if  INCFD<1 .)
-    integer,intent(in)     :: nwk       !! length of work array. (Error return if NWK<2*N .)
+                                        !! (Error return if  INCFD<1).
+    integer,intent(in)     :: nwk       !! length of work array. (Error return if NWK<2*N).
     integer,intent(out)    :: ierr      !! error flag.
                                         !!
                                         !! * Normal return:
@@ -2533,19 +2541,19 @@
     !  validity-check arguments.
     if ( n<2 ) then
         ierr = -1
-        call xermsg ('slatec', 'dpchsp', 'number of data points less than two', ierr, 1)
+        call xermsg ('PCHIP', 'dpchsp', 'number of data points less than two', ierr, 1)
         return
     end if
     if ( incfd<1 ) then
         ierr = -2
-        call xermsg ('slatec', 'dpchsp', 'increment less than one', ierr, 1)
+        call xermsg ('PCHIP', 'dpchsp', 'increment less than one', ierr, 1)
         return
     end if
     do j = 2, n
         if ( x(j)<=x(j-1) ) then
             ! x-array not strictly increasing.
             ierr = -3
-            call xermsg ('slatec', 'dpchsp', 'x-array not strictly increasing', ierr, 1)
+            call xermsg ('PCHIP', 'dpchsp', 'x-array not strictly increasing', ierr, 1)
             return
         end if
     end do
@@ -2558,7 +2566,7 @@
     if ( ierr<0 ) then
         ! ic out of range return.
         ierr = ierr - 3
-        call xermsg ('slatec', 'dpchsp', 'ic out of range', ierr, 1)
+        call xermsg ('PCHIP', 'dpchsp', 'ic out of range', ierr, 1)
         return
     end if
 
@@ -2567,7 +2575,7 @@
     if ( nwk < 2*n ) then
         ! nwk too small return.
         ierr = -7
-        call xermsg ('slatec', 'dpchsp', 'work array too small', ierr, 1)
+        call xermsg ('PCHIP', 'dpchsp', 'work array too small', ierr, 1)
         return
     end if
 
@@ -2602,7 +2610,7 @@
                 ! error return from dpchdf.
                 ! *** this case should never occur ***
                 ierr = -9
-                call xermsg ('slatec', 'dpchsp', 'error return from dpchdf', ierr, 1)
+                call xermsg ('PCHIP', 'dpchsp', 'error return from dpchdf', ierr, 1)
         end if
         ibeg = 1
     endif
@@ -2624,7 +2632,7 @@
                 ! error return from dpchdf.
                 ! *** this case should never occur ***
                 ierr = -9
-                call xermsg ('slatec', 'dpchsp', 'error return from dpchdf', ierr, 1)
+                call xermsg ('PCHIP', 'dpchsp', 'error return from dpchdf', ierr, 1)
         end if
         iend = 1
     endif
@@ -2674,7 +2682,7 @@
                 ! *** theoretically, this can only occur if successive x-values   ***
                 ! *** are equal, which should already have been caught (ierr=-3). ***
                 ierr = -8
-                call xermsg ('slatec', 'dpchsp', 'singular linear system', ierr, 1)
+                call xermsg ('PCHIP', 'dpchsp', 'singular linear system', ierr, 1)
                 return
             end if
             g = -wk(1,j+1)/wk(2,j-1)
@@ -2708,7 +2716,7 @@
                     ! *** theoretically, this can only occur if successive x-values   ***
                     ! *** are equal, which should already have been caught (ierr=-3). ***
                     ierr = -8
-                    call xermsg ('slatec', 'dpchsp', 'singular linear system', ierr, 1)
+                    call xermsg ('PCHIP', 'dpchsp', 'singular linear system', ierr, 1)
                     return
                 end if
                 g = -one/wk(2,n-1)
@@ -2724,7 +2732,7 @@
                     ! *** theoretically, this can only occur if successive x-values   ***
                     ! *** are equal, which should already have been caught (ierr=-3). ***
                     ierr = -8
-                    call xermsg ('slatec', 'dpchsp', 'singular linear system', ierr, 1)
+                    call xermsg ('PCHIP', 'dpchsp', 'singular linear system', ierr, 1)
                     return
                 end if
                 g = -g/wk(2,n-1)
@@ -2739,7 +2747,7 @@
                 ! *** theoretically, this can only occur if successive x-values   ***
                 ! *** are equal, which should already have been caught (ierr=-3). ***
                 ierr = -8
-                call xermsg ('slatec', 'dpchsp', 'singular linear system', ierr, 1)
+                call xermsg ('PCHIP', 'dpchsp', 'singular linear system', ierr, 1)
                 return
             end if
             g = -one/wk(2,n-1)
@@ -2753,7 +2761,7 @@
                 ! *** theoretically, this can only occur if successive x-values   ***
                 ! *** are equal, which should already have been caught (ierr=-3). ***
                 ierr = -8
-                call xermsg ('slatec', 'dpchsp', 'singular linear system', ierr, 1)
+                call xermsg ('PCHIP', 'dpchsp', 'singular linear system', ierr, 1)
                 return
             end if
             d(1,n) = (g*d(1,n-1) + d(1,n))/wk(2,n)
@@ -2768,7 +2776,7 @@
                 ! *** theoretically, this can only occur if successive x-values   ***
                 ! *** are equal, which should already have been caught (ierr=-3). ***
                 ierr = -8
-                call xermsg ('slatec', 'dpchsp', 'singular linear system', ierr, 1)
+                call xermsg ('PCHIP', 'dpchsp', 'singular linear system', ierr, 1)
                 return
         end if
         d(1,j) = (d(1,j) - wk(1,j)*d(1,j+1))/wk(2,j)
@@ -2856,7 +2864,7 @@
         if (d2 == zero) then
             ! d1 and d2 both zero, or both nonzero and same sign.
             ierr = -1
-            call xermsg ('slatec', 'dpchsw', 'd1 and/or d2 invalid', ierr, 1)
+            call xermsg ('PCHIP', 'dpchsw', 'd1 and/or d2 invalid', ierr, 1)
             return
         end if
 
@@ -2898,7 +2906,7 @@
             if (lambda <= zero) then
                 ! d1 and d2 both zero, or both nonzero and same sign.
                 ierr = -1
-                call xermsg ('slatec', 'dpchsw', 'd1 and/or d2 invalid', ierr, 1)
+                call xermsg ('PCHIP', 'dpchsw', 'd1 and/or d2 invalid', ierr, 1)
                 return
             end if
 
@@ -2912,7 +2920,7 @@
                 if (radcal < zero) then
                     ! negative value of radical (should never occur).
                     ierr = -2
-                    call xermsg ('slatec', 'dpchsw', 'negative radical', ierr, 1)
+                    call xermsg ('PCHIP', 'dpchsw', 'negative radical', ierr, 1)
                 end if
                 that = (cp - sqrt(radcal)) / (three*nu)
             else
@@ -2937,6 +2945,29 @@
     ierr = 0
 
     end subroutine dpchsw
+!***************************************************************************
+
+!***************************************************************************
+!>
+!  Error reporter.
+!
+!  A very simplified version of the SLATEC routine.
+
+    subroutine xermsg(librar,subrou,messg,nerr,level)
+
+    implicit none
+
+    character(len=*),intent(in) :: librar !! name of the library
+    character(len=*),intent(in) :: subrou !! name of the routine that detected the error
+    character(len=*),intent(in) :: messg  !! text of the error or warning message
+    integer,intent(in)          :: nerr   !! error code
+    integer,intent(in)          :: level  !! value in the range 0 to 2 that indicates the
+                                          !! level (severity) of the error.
+
+    write(error_unit, '(A,I2,A)') 'Error ',nerr,' in '//trim(librar)//&
+                                  ' : '//trim(subrou)//' : '//trim(messg)
+
+    end subroutine xermsg
 !***************************************************************************
 
 !*******************************************************************************************************

@@ -1,6 +1,6 @@
 
 
-PCHIP, a Fortran package for piecewise cubic Hermite interpolation of data.
+PCHIP, a Fortran package for piecewise cubic Hermite interpolation of data. This is a modern Fortran update of the code in the SLATEC library.
 
 ### Description
 
@@ -74,18 +74,14 @@ To interpolate along the line X = X(I), call PCHxx with
 
 ### Original Author
 
- * Fritsch, F. N., (LLNL)
-   Lawrence Livermore National Laboratory
-   P.O. Box 808  (L-316)
-   Livermore, CA  94550
-   FTS 532-4275, (510) 422-4275
+ * F. N. Fritsch, Lawrence Livermore National Laboratory
 
 ### References
 
- 1. Carl de Boor, A Practical Guide to Splines, Springer-Verlag, New York, 1978 (esp. Chapter IV, pp.49-62).
- 2. F. N. Fritsch, Piecewise Cubic Hermite Interpolation Package, Report UCRL-87285, Lawrence Livermore National   Laboratory, July 1982.  [Poster presented at the SIAM 30th Anniversary Meeting, 19-23 July 1982.]
- 3. F. N. Fritsch and J. Butland, A method for constructing local monotone piecewise cubic interpolants, SIAM Journal on Scientific and Statistical Computing 5, 2 (June 1984), pp. 300-304.
- 4. F. N. Fritsch and R. E. Carlson, Monotone piecewise cubic interpolation, SIAM Journal on Numerical Analysis 17, 2 (April 1980), pp. 238-246.
- 5. F. N. Fritsch, "Representations for parametric cubic splines," Computer Aided Geometric Design 6 (1989), pp.79-82.
+ 1. Carl de Boor, "A Practical Guide to Splines", Springer-Verlag, New York, 1978 (esp. Chapter IV, pp.49-62).
+ 2. F. N. Fritsch, "Piecewise Cubic Hermite Interpolation Package", Report UCRL-87285, Lawrence Livermore National   Laboratory, July 1982.  [Poster presented at the SIAM 30th Anniversary Meeting, 19-23 July 1982.]
+ 3. F. N. Fritsch and J. Butland, "A method for constructing local monotone piecewise cubic interpolants", SIAM Journal on Scientific and Statistical Computing 5, 2 (June 1984), pp. 300-304.
+ 4. F. N. Fritsch and R. E. Carlson, "Monotone piecewise cubic interpolation", SIAM Journal on Numerical Analysis 17, 2 (April 1980), pp. 238-246.
+ 5. F. N. Fritsch, "Representations for parametric cubic splines", Computer Aided Geometric Design 6 (1989), pp.79-82.
 
 
