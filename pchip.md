@@ -1,4 +1,4 @@
-project: bspline-fortran
+project: PCHIP
 project_dir: ./src
 output_dir: ./doc
 media_dir: ./media
