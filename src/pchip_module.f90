@@ -13,6 +13,8 @@
 
     implicit none
 
+    private
+
     real(wp),parameter :: zero   = 0.0_wp
     real(wp),parameter :: half   = 0.5_wp
     real(wp),parameter :: one    = 1.0_wp
@@ -23,6 +25,10 @@
     real(wp),parameter :: ten    = 10.0_wp
 
     real(wp),parameter :: d1mach4 = epsilon(one)   !! d1mach(4) -- the largest relative spacing
+
+    public :: dpchim,dpchic,dpchsp
+    public :: dchfev,dpchfe,dchfdv,dpchfd,dpchid,dpchia
+    public :: dpchbs,dpchcm
 
     contains
 !*******************************************************************************************************
