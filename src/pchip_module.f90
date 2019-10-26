@@ -318,7 +318,7 @@
 !@note There is no error return from this routine because zero is
 !      indeed the mathematically correct answer when X1==X2 .
 
-    real(wp) function dchfie (x1, x2, f1, f2, d1, d2, a, b)
+    pure function dchfie (x1, x2, f1, f2, d1, d2, a, b) result(integral)
 
     real(wp),intent(in) :: x1 !! endpoints if interval of definition of cubic
     real(wp),intent(in) :: x2 !! endpoints if interval of definition of cubic
@@ -328,6 +328,7 @@
     real(wp),intent(in) :: d2 !! derivative values at the ends of the interval
     real(wp),intent(in) :: a  !! endpoints of interval of integration
     real(wp),intent(in) :: b  !! endpoints of interval of integration
+    real(wp) :: integral
 
     real(wp) :: dterm, fterm, h, phia1, phia2, &
                 phib1, phib2, psia1, psia2, psib1, psib2, &
@@ -335,7 +336,7 @@
 
     ! validity check input.
     if (x1 == x2) then
-        dchfie = zero
+        integral = zero
     else
         h = x2 - x1
         ta1 = (a - x1) / h
@@ -360,7 +361,7 @@
         fterm =   f1*(phia2 - phib2) + f2*(phib1 - phia1)
         dterm = ( d1*(psia2 - psib2) + d2*(psib1 - psia1) )*(h/six)
 
-        dchfie = (half*h) * (fterm + dterm)
+        integral = (half*h) * (fterm + dterm)
     endif
 
     end function dchfie
@@ -834,7 +835,7 @@
 !  increment between successive values of the F- and D-arrays.
 !
 !### Cautions
-!   This provides the same capability as old [[DPCHMC]], except that a
+!   This provides the same capability as old `DPCHMC`, except that a
 !   new output value, -3, was added February 1989.  (Formerly, -3
 !   and +3 were lumped together in the single value 3.)  Codes that
 !   flag nonmonotonicity by "IF (ISMON==2)" need not be changed.

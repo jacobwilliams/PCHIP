@@ -12,7 +12,7 @@ docmark_alt:
 docmark: !
 display: public
 source: true
-graph: true
+graph: false
 
 ### Brief description
 
