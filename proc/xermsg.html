@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+   
+   <meta name="description" content="PCHIP -- Piecewise Cubic Hermite Interpolation Package">
+    
+    <meta name="author" content="Jacob Williams" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>xermsg &ndash; PCHIP</title>
+
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/local.css" rel="stylesheet">
+    
+    <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
+    
+    
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <script src="../js/jquery-2.1.3.min.js"></script>
+    <script src="../js/svg-pan-zoom.min.js"></script>
+
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../index.html">PCHIP </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+        
+            <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
+              <a href="#" class="dropdown-toggle"
+              data-toggle="dropdown" role="button"
+              aria-haspopup="true"
+     aria-expanded="false">Contents <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          
+              
+            <li><a href="../sourcefile/pchip_module.f90.html">Source File</a></li>
+        
+        
+        
+            <li><a href="../lists/modules.html">Modules</a></li>
+        
+            
+                                
+            <li><a href="../lists/procedures.html">Procedures</a></li>
+        
+               
+               
+        
+        
+            </ul>
+        
+            </li>
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../sourcefile/pchip_module.f90.html">Source File</a></li>
+
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
+
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
+
+                             
+
+
+
+          </ul>
+        
+        <form action="../search.html" class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+        </div>
+<!--
+        <button type="submit" class="btn btn-default">Submit</button>
+-->
+        </form>
+        
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+    
+  
+  <div class="row">
+    <h1>xermsg
+      <small>Subroutine</small>
+    
+    </h1>
+    
+<div class="row">
+  <div class="col-lg-12">
+<div class="well well-sm">
+  <ul class="list-inline" style="margin-bottom:0px;display:inline">
+     
+     
+     
+     
+     
+    
+    
+     <li><i class="fa fa-list-ol"></i>
+       <a data-toggle="tooltip"
+    data-placement="bottom" data-html="true"
+    title=" 0.7% of total for procedures.">9 statements</a>
+     </li> 
+     
+     
+     
+    <li><i class="fa fa-code"></i><a href="../src/pchip_module.f90"> Source File</a></li>
+     
+     
+  </ul>
+  <ol class="breadcrumb in-well text-right">
+  
+    
+     <li><a href='../sourcefile/pchip_module.f90.html'>pchip_module.f90</a></li>
+    
+     <li><a href='../module/pchip_module.html'>pchip_module</a></li>
+    
+  
+     <li class="active">xermsg</li>
+  </ol>
+</div>
+</div>
+</div>
+<script>
+  $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+  })
+</script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+    
+<div id="sidebar">
+  
+<h3>Contents</h3>
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+  <div class="list-group">
+    <a class="list-group-item" href="../proc/xermsg.html#src">xermsg</a>
+  </div>
+</div>
+
+
+
+</div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>
+private subroutine xermsg(librar, subrou, messg, nerr, level)
+    
+    
+   
+</h2>
+    
+  
+
+
+    
+    <p>Error reporter.</p>
+<p>A very simplified version of the SLATEC routine.</p>
+    
+
+    <h3>Arguments</h3>
+    
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-librar"></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>librar</strong></td><td><p>name of the library</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-subrou"></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>subrou</strong></td><td><p>name of the routine that detected the error</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-messg"></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>messg</strong></td><td><p>text of the error or warning message</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-nerr"></span>integer,</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>nerr</strong></td><td><p>error code</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-level"></span>integer,</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>level</strong></td><td><p>value in the range 0 to 2 that indicates the
+ level (severity) of the error.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+    
+    
+    
+    <br>
+    
+    
+     
+    <div class="panel panel-default">
+      <div class="panel-heading">
+  <h3 class="panel-title">Called by</h3>
+      </div>
+      <div class="panel-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~xermsg~~CalledByGraph Pages: 1 -->
+<svg id="procxermsgCalledByGraph" width="333pt" height="539pt"
+ viewBox="0.00 0.00 333.00 539.07" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~xermsg~~CalledByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 535.07)">
+<title>proc~~xermsg~~CalledByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-535.07 329,-535.07 329,4 -4,4"/>
+<!-- proc~xermsg -->
+<g id="proc~~xermsg~~CalledByGraph_node1" class="node">
+<title>proc~xermsg</title>
+<polygon fill="none" stroke="black" points="325,-284 271,-284 271,-260 325,-260 325,-284"/>
+<text text-anchor="middle" x="298" y="-269.6" font-family="Helvetica,sans-Serif" font-size="10.50">xermsg</text>
+</g>
+<!-- proc~dpchia -->
+<g id="proc~~xermsg~~CalledByGraph_node2" class="node">
+<title>proc~dpchia</title>
+<g id="a_proc~~xermsg~~CalledByGraph_node2"><a xlink:href=".././proc/dpchia.html" xlink:title="dpchia">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="144,-528 90,-528 90,-504 144,-504 144,-528"/>
+<text text-anchor="middle" x="117" y="-513.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dpchia</text>
+</a>
+</g>
+</g>
+<!-- proc~dpchia&#45;&gt;proc~xermsg -->
+<g id="proc~~xermsg~~CalledByGraph_edge1" class="edge">
+<title>proc~dpchia&#45;&gt;proc~xermsg</title>
+<path fill="none" stroke="#000000" d="M144.2,-524.74C170.06,-531.58 209.35,-536.96 235,-517 270.47,-489.39 288.88,-349.04 294.81,-294.1"/>
+<polygon fill="#000000" stroke="#000000" points="298.31,-294.33 295.86,-284.02 291.35,-293.61 298.31,-294.33"/>
+</g>
+<!-- proc~dpchid -->
+<g id="proc~~xermsg~~CalledByGraph_node13" class="node">
+<title>proc~dpchid</title>
+<g id="a_proc~~xermsg~~CalledByGraph_node13"><a xlink:href=".././proc/dpchid.html" xlink:title="dpchid">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="234.5,-508 180.5,-508 180.5,-484 234.5,-484 234.5,-508"/>
+<text text-anchor="middle" x="207.5" y="-493.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dpchid</text>
+</a>
+</g>
+</g>
+<!-- proc~dpchia&#45;&gt;proc~dpchid -->
+<g id="proc~~xermsg~~CalledByGraph_edge20" class="edge">
+<title>proc~dpchia&#45;&gt;proc~dpchid</title>
+<path fill="none" stroke="#000000" d="M144.07,-510.11C152.28,-508.25 161.5,-506.17 170.28,-504.18"/>
+<polygon fill="#000000" stroke="#000000" points="171.32,-507.54 180.31,-501.92 169.78,-500.71 171.32,-507.54"/>
+</g>
+<!-- proc~dpchbs -->
+<g id="proc~~xermsg~~CalledByGraph_node3" class="node">
+<title>proc~dpchbs</title>
+<g id="a_proc~~xermsg~~CalledByGraph_node3"><a xlink:href=".././proc/dpchbs.html" xlink:title="dpchbs">
+<polygon fill="#d9534f" stroke="#d9534f" points="234.5,-466 180.5,-466 180.5,-442 234.5,-442 234.5,-466"/>
+<text text-anchor="middle" x="207.5" y="-451.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dpchbs</text>
+</a>
+</g>
+</g>
+<!-- proc~dpchbs&#45;&gt;proc~xermsg -->
+<g id="proc~~xermsg~~CalledByGraph_edge2" class="edge">
+<title>proc~dpchbs&#45;&gt;proc~xermsg</title>
+<path fill="none" stroke="#000000" d="M223.15,-441.74C227.37,-437.69 231.72,-432.94 235,-428 263.86,-384.58 282.66,-325.66 291.37,-294.11"/>
+<polygon fill="#000000" stroke="#000000" points="294.83,-294.72 294.03,-284.16 288.07,-292.92 294.83,-294.72"/>
+</g>
+<!-- proc~dpchfd -->
+<g id="proc~~xermsg~~CalledByGraph_node4" class="node">
+<title>proc~dpchfd</title>
+<g id="a_proc~~xermsg~~CalledByGraph_node4"><a xlink:href=".././proc/dpchfd.html" xlink:title="dpchfd">
+<polygon fill="#d9534f" stroke="#d9534f" points="144,-406 90,-406 90,-382 144,-382 144,-406"/>
+<text text-anchor="middle" x="117" y="-391.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dpchfd</text>
+</a>
+</g>
+</g>
+<!-- proc~dpchfd&#45;&gt;proc~xermsg -->
+<g id="proc~~xermsg~~CalledByGraph_edge3" class="edge">
+<title>proc~dpchfd&#45;&gt;proc~xermsg</title>
+<path fill="none" stroke="#000000" d="M144.3,-401.73C169.51,-407.5 207.67,-411.83 235,-395 270.75,-372.99 286.63,-323.31 293.07,-294.28"/>
+<polygon fill="#000000" stroke="#000000" points="296.55,-294.75 295.1,-284.26 289.69,-293.36 296.55,-294.75"/>
+</g>
+<!-- proc~dchfdv -->
+<g id="proc~~xermsg~~CalledByGraph_node14" class="node">
+<title>proc~dchfdv</title>
+<g id="a_proc~~xermsg~~CalledByGraph_node14"><a xlink:href=".././proc/dchfdv.html" xlink:title="dchfdv">
+<polygon fill="#d9534f" stroke="#d9534f" points="234.5,-386 180.5,-386 180.5,-362 234.5,-362 234.5,-386"/>
+<text text-anchor="middle" x="207.5" y="-371.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dchfdv</text>
+</a>
+</g>
+</g>
+<!-- proc~dpchfd&#45;&gt;proc~dchfdv -->
+<g id="proc~~xermsg~~CalledByGraph_edge21" class="edge">
+<title>proc~dpchfd&#45;&gt;proc~dchfdv</title>
+<path fill="none" stroke="#000000" d="M144.07,-388.11C152.28,-386.25 161.5,-384.17 170.28,-382.18"/>
+<polygon fill="#000000" stroke="#000000" points="171.32,-385.54 180.31,-379.92 169.78,-378.71 171.32,-385.54"/>
+</g>
+<!-- proc~dpchdf -->
+<g id="proc~~xermsg~~CalledByGraph_node5" class="node">
+<title>proc~dpchdf</title>
+<g id="a_proc~~xermsg~~CalledByGraph_node5"><a xlink:href=".././proc/dpchdf.html" xlink:title="dpchdf">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="234.5,-264 180.5,-264 180.5,-240 234.5,-240 234.5,-264"/>
+<text text-anchor="middle" x="207.5" y="-249.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dpchdf</text>
+</a>
+</g>
+</g>
+<!-- proc~dpchdf&#45;&gt;proc~xermsg -->
+<g id="proc~~xermsg~~CalledByGraph_edge4" class="edge">
+<title>proc~dpchdf&#45;&gt;proc~xermsg</title>
+<path fill="none" stroke="#000000" d="M234.57,-257.89C242.78,-259.75 252,-261.83 260.78,-263.82"/>
+<polygon fill="#000000" stroke="#000000" points="260.28,-267.29 270.81,-266.08 261.82,-260.46 260.28,-267.29"/>
+</g>
+<!-- proc~dpchsw -->
+<g id="proc~~xermsg~~CalledByGraph_node6" class="node">
+<title>proc~dpchsw</title>
+<g id="a_proc~~xermsg~~CalledByGraph_node6"><a xlink:href=".././proc/dpchsw.html" xlink:title="dpchsw">
+<polygon fill="#d9534f" stroke="#d9534f" points="234.5,-344 180.5,-344 180.5,-320 234.5,-320 234.5,-344"/>
+<text text-anchor="middle" x="207.5" y="-329.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dpchsw</text>
+</a>
+</g>
+</g>
+<!-- proc~dpchsw&#45;&gt;proc~xermsg -->
+<g id="proc~~xermsg~~CalledByGraph_edge5" class="edge">
+<title>proc~dpchsw&#45;&gt;proc~xermsg</title>
+<path fill="none" stroke="#000000" d="M226.41,-319.86C239.12,-311.24 256.4,-299.52 270.68,-289.84"/>
+<polygon fill="#000000" stroke="#000000" points="272.8,-292.63 279.12,-284.12 268.88,-286.84 272.8,-292.63"/>
+</g>
+<!-- proc~dpchim -->
+<g id="proc~~xermsg~~CalledByGraph_node7" class="node">
+<title>proc~dpchim</title>
+<g id="a_proc~~xermsg~~CalledByGraph_node7"><a xlink:href=".././proc/dpchim.html" xlink:title="dpchim">
+<polygon fill="#d9534f" stroke="#d9534f" points="234.5,-146 180.5,-146 180.5,-122 234.5,-122 234.5,-146"/>
+<text text-anchor="middle" x="207.5" y="-131.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dpchim</text>
+</a>
+</g>
+</g>
+<!-- proc~dpchim&#45;&gt;proc~xermsg -->
+<g id="proc~~xermsg~~CalledByGraph_edge6" class="edge">
+<title>proc~dpchim&#45;&gt;proc~xermsg</title>
+<path fill="none" stroke="#000000" d="M222.23,-146C226.59,-150.19 231.25,-155.08 235,-160 257.15,-189.12 276.45,-227.11 287.41,-250.51"/>
+<polygon fill="#000000" stroke="#000000" points="284.35,-252.24 291.71,-259.87 290.71,-249.32 284.35,-252.24"/>
+</g>
+<!-- proc~dchfev -->
+<g id="proc~~xermsg~~CalledByGraph_node8" class="node">
+<title>proc~dchfev</title>
+<g id="a_proc~~xermsg~~CalledByGraph_node8"><a xlink:href=".././proc/dchfev.html" xlink:title="dchfev">
+<polygon fill="#d9534f" stroke="#d9534f" points="234.5,-66 180.5,-66 180.5,-42 234.5,-42 234.5,-66"/>
+<text text-anchor="middle" x="207.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dchfev</text>
+</a>
+</g>
+</g>
+<!-- proc~dchfev&#45;&gt;proc~xermsg -->
+<g id="proc~~xermsg~~CalledByGraph_edge7" class="edge">
+<title>proc~dchfev&#45;&gt;proc~xermsg</title>
+<path fill="none" stroke="#000000" d="M223.35,-66.13C227.58,-70.18 231.88,-74.96 235,-80 269.38,-135.62 286.59,-212.23 293.39,-249.63"/>
+<polygon fill="#000000" stroke="#000000" points="290.01,-250.66 295.17,-259.91 296.91,-249.46 290.01,-250.66"/>
+</g>
+<!-- proc~dpchfe -->
+<g id="proc~~xermsg~~CalledByGraph_node9" class="node">
+<title>proc~dpchfe</title>
+<g id="a_proc~~xermsg~~CalledByGraph_node9"><a xlink:href=".././proc/dpchfe.html" xlink:title="dpchfe">
+<polygon fill="#d9534f" stroke="#d9534f" points="144,-86 90,-86 90,-62 144,-62 144,-86"/>
+<text text-anchor="middle" x="117" y="-71.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dpchfe</text>
+</a>
+</g>
+</g>
+<!-- proc~dpchfe&#45;&gt;proc~xermsg -->
+<g id="proc~~xermsg~~CalledByGraph_edge8" class="edge">
+<title>proc~dpchfe&#45;&gt;proc~xermsg</title>
+<path fill="none" stroke="#000000" d="M144.06,-76.31C170.19,-79.94 210.02,-89.24 235,-113 274.32,-150.4 289.12,-215.69 294.35,-249.8"/>
+<polygon fill="#000000" stroke="#000000" points="290.88,-250.29 295.73,-259.71 297.82,-249.32 290.88,-250.29"/>
+</g>
+<!-- proc~dpchfe&#45;&gt;proc~dchfev -->
+<g id="proc~~xermsg~~CalledByGraph_edge18" class="edge">
+<title>proc~dpchfe&#45;&gt;proc~dchfev</title>
+<path fill="none" stroke="#000000" d="M144.07,-68.11C152.28,-66.25 161.5,-64.17 170.28,-62.18"/>
+<polygon fill="#000000" stroke="#000000" points="171.32,-65.54 180.31,-59.92 169.78,-58.71 171.32,-65.54"/>
+</g>
+<!-- proc~dpchsp -->
+<g id="proc~~xermsg~~CalledByGraph_node10" class="node">
+<title>proc~dpchsp</title>
+<g id="a_proc~~xermsg~~CalledByGraph_node10"><a xlink:href=".././proc/dpchsp.html" xlink:title="dpchsp">
+<polygon fill="#d9534f" stroke="#d9534f" points="144,-290 90,-290 90,-266 144,-266 144,-290"/>
+<text text-anchor="middle" x="117" y="-275.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dpchsp</text>
+</a>
+</g>
+</g>
+<!-- proc~dpchsp&#45;&gt;proc~xermsg -->
+<g id="proc~~xermsg~~CalledByGraph_edge9" class="edge">
+<title>proc~dpchsp&#45;&gt;proc~xermsg</title>
+<path fill="none" stroke="#000000" d="M144.03,-277.13C174.78,-276.1 226.14,-274.38 260.77,-273.21"/>
+<polygon fill="#000000" stroke="#000000" points="261.06,-276.71 270.94,-272.87 260.83,-269.71 261.06,-276.71"/>
+</g>
+<!-- proc~dpchsp&#45;&gt;proc~dpchdf -->
+<g id="proc~~xermsg~~CalledByGraph_edge16" class="edge">
+<title>proc~dpchsp&#45;&gt;proc~dpchdf</title>
+<path fill="none" stroke="#000000" d="M144.07,-270.34C152.37,-267.9 161.7,-265.16 170.57,-262.56"/>
+<polygon fill="#000000" stroke="#000000" points="171.7,-265.87 180.31,-259.7 169.73,-259.16 171.7,-265.87"/>
+</g>
+<!-- proc~dpchic -->
+<g id="proc~~xermsg~~CalledByGraph_node11" class="node">
+<title>proc~dpchic</title>
+<g id="a_proc~~xermsg~~CalledByGraph_node11"><a xlink:href=".././proc/dpchic.html" xlink:title="dpchic">
+<polygon fill="#d9534f" stroke="#d9534f" points="54,-243 0,-243 0,-219 54,-219 54,-243"/>
+<text text-anchor="middle" x="27" y="-228.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dpchic</text>
+</a>
+</g>
+</g>
+<!-- proc~dpchic&#45;&gt;proc~xermsg -->
+<g id="proc~~xermsg~~CalledByGraph_edge10" class="edge">
+<title>proc~dpchic&#45;&gt;proc~xermsg</title>
+<path fill="none" stroke="#000000" d="M54.06,-220.06C64.96,-216.04 77.89,-212 90,-210 153.74,-199.5 175.59,-194.63 235,-220 252.01,-227.26 267.91,-240.8 279.36,-252.25"/>
+<polygon fill="#000000" stroke="#000000" points="277.08,-254.93 286.53,-259.73 282.14,-250.09 277.08,-254.93"/>
+</g>
+<!-- proc~dpchce -->
+<g id="proc~~xermsg~~CalledByGraph_node12" class="node">
+<title>proc~dpchce</title>
+<g id="a_proc~~xermsg~~CalledByGraph_node12"><a xlink:href=".././proc/dpchce.html" xlink:title="dpchce">
+<polygon fill="#d9534f" stroke="#d9534f" points="144,-243 90,-243 90,-219 144,-219 144,-243"/>
+<text text-anchor="middle" x="117" y="-228.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dpchce</text>
+</a>
+</g>
+</g>
+<!-- proc~dpchic&#45;&gt;proc~dpchce -->
+<g id="proc~~xermsg~~CalledByGraph_edge19" class="edge">
+<title>proc~dpchic&#45;&gt;proc~dpchce</title>
+<path fill="none" stroke="#000000" d="M54.4,-231C62.39,-231 71.31,-231 79.82,-231"/>
+<polygon fill="#000000" stroke="#000000" points="79.92,-234.5 89.92,-231 79.92,-227.5 79.92,-234.5"/>
+</g>
+<!-- proc~dpchcs -->
+<g id="proc~~xermsg~~CalledByGraph_node16" class="node">
+<title>proc~dpchcs</title>
+<g id="a_proc~~xermsg~~CalledByGraph_node16"><a xlink:href=".././proc/dpchcs.html" xlink:title="dpchcs">
+<polygon fill="#d9534f" stroke="#d9534f" points="144,-340 90,-340 90,-316 144,-316 144,-340"/>
+<text text-anchor="middle" x="117" y="-325.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dpchcs</text>
+</a>
+</g>
+</g>
+<!-- proc~dpchic&#45;&gt;proc~dpchcs -->
+<g id="proc~~xermsg~~CalledByGraph_edge22" class="edge">
+<title>proc~dpchic&#45;&gt;proc~dpchcs</title>
+<path fill="none" stroke="#000000" d="M39.15,-243.29C54.02,-259.68 80.54,-288.92 98.2,-308.38"/>
+<polygon fill="#000000" stroke="#000000" points="95.63,-310.76 104.95,-315.81 100.82,-306.06 95.63,-310.76"/>
+</g>
+<!-- proc~dpchce&#45;&gt;proc~xermsg -->
+<g id="proc~~xermsg~~CalledByGraph_edge11" class="edge">
+<title>proc~dpchce&#45;&gt;proc~xermsg</title>
+<path fill="none" stroke="#000000" d="M144.19,-226.77C168.32,-223.85 204.85,-221.93 235,-231 249.97,-235.5 264.65,-244.92 275.97,-253.6"/>
+<polygon fill="#000000" stroke="#000000" points="273.93,-256.45 283.92,-260 278.32,-251 273.93,-256.45"/>
+</g>
+<!-- proc~dpchce&#45;&gt;proc~dpchdf -->
+<g id="proc~~xermsg~~CalledByGraph_edge15" class="edge">
+<title>proc~dpchce&#45;&gt;proc~dpchdf</title>
+<path fill="none" stroke="#000000" d="M144.07,-237.19C152.37,-239.16 161.7,-241.37 170.57,-243.47"/>
+<polygon fill="#000000" stroke="#000000" points="169.77,-246.88 180.31,-245.78 171.38,-240.07 169.77,-246.88"/>
+</g>
+<!-- proc~dpchid&#45;&gt;proc~xermsg -->
+<g id="proc~~xermsg~~CalledByGraph_edge12" class="edge">
+<title>proc~dpchid&#45;&gt;proc~xermsg</title>
+<path fill="none" stroke="#000000" d="M226.75,-483.99C229.83,-481.33 232.75,-478.3 235,-475 274.39,-417.24 289.45,-333.6 294.61,-294.16"/>
+<polygon fill="#000000" stroke="#000000" points="298.1,-294.4 295.83,-284.06 291.15,-293.56 298.1,-294.4"/>
+</g>
+<!-- proc~dchfdv&#45;&gt;proc~xermsg -->
+<g id="proc~~xermsg~~CalledByGraph_edge13" class="edge">
+<title>proc~dchfdv&#45;&gt;proc~xermsg</title>
+<path fill="none" stroke="#000000" d="M225.02,-361.95C228.46,-359.16 231.95,-356.1 235,-353 253.44,-334.25 271.35,-310 283.14,-292.93"/>
+<polygon fill="#000000" stroke="#000000" points="286.3,-294.51 289.02,-284.28 280.51,-290.58 286.3,-294.51"/>
+</g>
+<!-- proc~dpchcm -->
+<g id="proc~~xermsg~~CalledByGraph_node15" class="node">
+<title>proc~dpchcm</title>
+<g id="a_proc~~xermsg~~CalledByGraph_node15"><a xlink:href=".././proc/dpchcm.html" xlink:title="dpchcm">
+<polygon fill="#d9534f" stroke="#d9534f" points="235,-24 180,-24 180,0 235,0 235,-24"/>
+<text text-anchor="middle" x="207.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dpchcm</text>
+</a>
+</g>
+</g>
+<!-- proc~dpchcm&#45;&gt;proc~xermsg -->
+<g id="proc~~xermsg~~CalledByGraph_edge14" class="edge">
+<title>proc~dpchcm&#45;&gt;proc~xermsg</title>
+<path fill="none" stroke="#000000" d="M227.13,-24.17C230.1,-26.79 232.89,-29.75 235,-33 280.72,-103.2 292.77,-205.51 295.91,-249.99"/>
+<polygon fill="#000000" stroke="#000000" points="292.42,-250.23 296.53,-259.99 299.4,-249.8 292.42,-250.23"/>
+</g>
+<!-- proc~dpchcs&#45;&gt;proc~dpchsw -->
+<g id="proc~~xermsg~~CalledByGraph_edge17" class="edge">
+<title>proc~dpchcs&#45;&gt;proc~dpchsw</title>
+<path fill="none" stroke="#000000" d="M144.07,-329.18C152.28,-329.55 161.5,-329.97 170.28,-330.36"/>
+<polygon fill="#000000" stroke="#000000" points="170.16,-333.86 180.31,-330.82 170.47,-326.87 170.16,-333.86"/>
+</g>
+</g>
+</svg>
+</div><div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div><div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog"><div class="modal-dialog modal-lg" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title" id="-graph-help-label">Graph Key</h4></div><div class="modal-body">
+    <p>Nodes of different colours represent the following: </p>
+    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="597pt" height="32pt"
+ viewBox="0.00 0.00 596.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 592.5,-28 592.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node4" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="388.5,-24 243.5,-24 243.5,0 388.5,0 388.5,-24"/>
+<text text-anchor="middle" x="316" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="465,-24 407,-24 407,0 465,0 465,-24"/>
+<text text-anchor="middle" x="436" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="588.5,-24 483.5,-24 483.5,0 588.5,0 588.5,-24"/>
+<text text-anchor="middle" x="536" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+    
+    <p>Solid arrows point from a procedure to one which it calls. Dashed 
+    arrows point from an interface to procedures which implement that interface.
+    This could include the module procedures in a generic interface or the
+    implementation in a submodule of an interface in a parent module.
+    </p>
+    </div></div></div></div>
+      </div>
+    </div>
+     
+    <br>
+
+    <section class="visible-xs visible-sm hidden-md">
+      
+<h3>Contents</h3>
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+  <div class="list-group">
+    <a class="list-group-item" href="../proc/xermsg.html#src">xermsg</a>
+  </div>
+</div>
+
+
+
+    </section>
+    <br class="visible-xs visible-sm hidden-md">
+
+    
+
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+
+    
+    
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="highlight"><pre><span></span>    <span class="k">subroutine </span><span class="n">xermsg</span><span class="p">(</span><span class="n">librar</span><span class="p">,</span><span class="n">subrou</span><span class="p">,</span><span class="n">messg</span><span class="p">,</span><span class="n">nerr</span><span class="p">,</span><span class="n">level</span><span class="p">)</span>
+
+    <span class="k">implicit none</span>
+
+<span class="k">    </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">librar</span> <span class="c">!! name of the library</span>
+    <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">subrou</span> <span class="c">!! name of the routine that detected the error</span>
+    <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">messg</span>  <span class="c">!! text of the error or warning message</span>
+    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>          <span class="kd">::</span> <span class="n">nerr</span>   <span class="c">!! error code</span>
+    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>          <span class="kd">::</span> <span class="n">level</span>  <span class="c">!! value in the range 0 to 2 that indicates the</span>
+                                          <span class="c">!! level (severity) of the error.</span>
+
+    <span class="k">write</span><span class="p">(</span><span class="n">error_unit</span><span class="p">,</span> <span class="s1">&#39;(A,I2,A)&#39;</span><span class="p">)</span> <span class="s1">&#39;Error &#39;</span><span class="p">,</span><span class="n">nerr</span><span class="p">,</span><span class="s1">&#39; in &#39;</span><span class="o">//</span><span class="nb">trim</span><span class="p">(</span><span class="n">librar</span><span class="p">)</span><span class="o">//</span><span class="p">&amp;</span>
+                                  <span class="s1">&#39; : &#39;</span><span class="o">//</span><span class="nb">trim</span><span class="p">(</span><span class="n">subrou</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39; : &#39;</span><span class="o">//</span><span class="nb">trim</span><span class="p">(</span><span class="n">messg</span><span class="p">)</span>
+
+    <span class="k">end subroutine </span><span class="n">xermsg</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    
+    </div>
+  </div>
+
+
+    <hr>    
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+      <div class="row">
+        <div class="col-xs-6 col-md-6"><p>PCHIP was developed by Jacob Williams<br>&copy; 2021 
+                                          </p>
+        </div>
+        <div class="col-xs-6 col-md-6">
+          <p class="text-right">
+            Documentation generated by 
+            <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            
+            
+          </p>
+        </div>
+      </div>
+      <br>
+      </div> <!-- /container -->    
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+<!--
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+-->
+    <script src="../js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../js/ie10-viewport-bug-workaround.js"></script>
+
+    <!-- MathJax JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
+        jax: ['input/TeX','input/MathML','output/HTML-CSS'],
+        extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
+      });
+    </script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+    <script src="../tipuesearch/tipuesearch_content.js"></script>
+    <script src="../tipuesearch/tipuesearch_set.js"></script>
+    <script src="../tipuesearch/tipuesearch.js"></script>
+    
+    
+  </body>
+</html>
