@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+   
+   <meta name="description" content="PCHIP -- Piecewise Cubic Hermite Interpolation Package">
+    
+    <meta name="author" content="Jacob Williams" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>dpchim &ndash; PCHIP</title>
+
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/local.css" rel="stylesheet">
+    
+    <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
+    
+    
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <script src="../js/jquery-2.1.3.min.js"></script>
+    <script src="../js/svg-pan-zoom.min.js"></script>
+
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../index.html">PCHIP </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+        
+            <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
+              <a href="#" class="dropdown-toggle"
+              data-toggle="dropdown" role="button"
+              aria-haspopup="true"
+     aria-expanded="false">Contents <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          
+              
+            <li><a href="../sourcefile/pchip_module.f90.html">Source File</a></li>
+        
+        
+        
+            <li><a href="../lists/modules.html">Modules</a></li>
+        
+            
+                                
+            <li><a href="../lists/procedures.html">Procedures</a></li>
+        
+               
+               
+        
+        
+            </ul>
+        
+            </li>
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../sourcefile/pchip_module.f90.html">Source File</a></li>
+
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
+
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
+
+                             
+
+
+
+          </ul>
+        
+        <form action="../search.html" class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+        </div>
+<!--
+        <button type="submit" class="btn btn-default">Submit</button>
+-->
+        </form>
+        
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+    
+  
+  <div class="row">
+    <h1>dpchim
+      <small>Subroutine</small>
+    
+    </h1>
+    
+<div class="row">
+  <div class="col-lg-12">
+<div class="well well-sm">
+  <ul class="list-inline" style="margin-bottom:0px;display:inline">
+     
+     
+     
+     
+     
+    
+    
+     <li><i class="fa fa-list-ol"></i>
+       <a data-toggle="tooltip"
+    data-placement="bottom" data-html="true"
+    title="10.5% of total for procedures.">86 statements</a>
+     </li> 
+     
+     
+     
+    <li><i class="fa fa-code"></i><a href="../src/pchip_module.f90"> Source File</a></li>
+     
+     
+  </ul>
+  <ol class="breadcrumb in-well text-right">
+  
+    
+     <li><a href='../sourcefile/pchip_module.f90.html'>pchip_module.f90</a></li>
+    
+     <li><a href='../module/pchip_module.html'>pchip_module</a></li>
+    
+  
+     <li class="active">dpchim</li>
+  </ol>
+</div>
+</div>
+</div>
+<script>
+  $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+  })
+</script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+    
+<div id="sidebar">
+  
+<h3>Contents</h3>
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+  <div class="list-group">
+    <a class="list-group-item" href="../proc/dpchim.html#src">dpchim</a>
+  </div>
+</div>
+
+
+
+</div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>
+public subroutine dpchim(n, x, f, d, incfd, ierr)
+    
+    
+   
+</h2>
+    
+  
+
+
+    
+    <p>Piecewise Cubic Hermite Interpolation to Monotone data.</p>
+<p>Sets derivatives needed to determine a monotone piecewise cubic
+  Hermite interpolant to the data given in X and F.</p>
+<p>Default boundary conditions are provided which are compatible
+  with monotonicity.  (See <a href="../proc/dpchic.html">dpchic</a> if user control of boundary conditions
+  is desired.)</p>
+<p>If the data are only piecewise monotonic, the interpolant will
+  have an extremum at each point where monotonicity switches direction.
+  (See <a href="../proc/dpchic.html">dpchic</a> if user control is desired in such cases.)</p>
+<p>To facilitate two-dimensional applications, includes an increment
+  between successive values of the F- and D-arrays.</p>
+<p>The resulting piecewise cubic Hermite function may be evaluated
+  by <a href="../proc/dpchfe.html">dpchfe</a> or <a href="../proc/dpchfd.html">dpchfd</a>.</p>
+<h3>References</h3>
+<ol>
+<li>F. N. Fritsch and J. Butland, A method for constructing
+     local monotone piecewise cubic interpolants, SIAM
+     Journal on Scientific and Statistical Computing 5, 2
+     (June 1984), pp. 300-304.</li>
+<li>F. N. Fritsch and R. E. Carlson, Monotone piecewise
+     cubic interpolation, SIAM Journal on Numerical Analysis 17,
+     2 (April 1980), pp. 238-246.</li>
+</ol>
+<h3>Programming notes</h3>
+<ol>
+<li>The function <a href="ARG1,ARG2">[DPCHST]</a> is assumed to return zero if
+     either argument is zero, +1 if they are of the same sign, and
+     -1 if they are of opposite sign.</li>
+</ol>
+    
+
+    <h3>Arguments</h3>
+    
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-n~8"></span>integer,</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong></td><td><p>number of data points.  (Error return if N&lt;2).
+ If N=2, simply does linear interpolation.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-x~8"></span>real(kind=wp),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>x</strong>(*)</td><td><p>array of independent variable values.  The
+ elements of X must be strictly increasing:
+ <code>X(I-1) &lt; X(I),  I = 2(1)N</code>.
+ (Error return if not.)</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-f~8"></span>real(kind=wp),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>f</strong>(incfd,*)</td><td><p>array of dependent variable values to be
+ interpolated.  F(1+(I-1)*INCFD) is value corresponding to
+ X(I).  DPCHIM is designed for monotonic data, but it will
+ work for any F-array.  It will force extrema at points where
+ monotonicity switches direction.  If some other treatment of
+ switch points is desired, <a href="../proc/dpchic.html">dpchic</a> should be used instead.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-d~8"></span>real(kind=wp),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>d</strong>(incfd,*)</td><td><p>array of derivative values at the data
+ points.  If the data are monotonic, these values will
+ determine a monotone cubic Hermite function.
+ The value corresponding to X(I) is stored in
+ <code>D(1+(I-1)*INCFD),  I=1(1)N</code>.
+ No other entries in D are changed.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-incfd~8"></span>integer,</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>incfd</strong></td><td><p>increment between successive values in F and D.
+ This argument is provided primarily for 2-D applications.
+ (Error return if  INCFD&lt;1).</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-ierr~10"></span>integer,</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>ierr</strong></td><td><p>error flag.</p>
+<ul>
+<li>
+<p>Normal return:</p>
+<ul>
+<li>IERR = 0  (no errors).</li>
+</ul>
+</li>
+<li>
+<p>Warning error:</p>
+<ul>
+<li>IERR&gt;0  means that IERR switches in the direction
+  of monotonicity were detected.</li>
+</ul>
+</li>
+<li>
+<p>"Recoverable" errors (The D-array has not been changed in any of these cases.):</p>
+<ul>
+<li>IERR = -1  if N&lt;2 .</li>
+<li>IERR = -2  if INCFD&lt;1 .</li>
+<li>IERR = -3  if the X-array is not strictly increasing.</li>
+</ul>
+</li>
+</ul>
+<p>NOTE: The above errors are checked in the order listed,
+ and following arguments have <strong>NOT</strong> been validated.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+    
+    
+    
+    
+     
+    <br>
+
+    <section class="visible-xs visible-sm hidden-md">
+      
+<h3>Contents</h3>
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+  <div class="list-group">
+    <a class="list-group-item" href="../proc/dpchim.html#src">dpchim</a>
+  </div>
+</div>
+
+
+
+    </section>
+    <br class="visible-xs visible-sm hidden-md">
+
+    
+
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+
+    
+    
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="highlight"><pre><span></span>    <span class="k">subroutine </span><span class="n">dpchim</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">incfd</span><span class="p">,</span> <span class="n">ierr</span><span class="p">)</span>
+
+    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>   <span class="kd">::</span> <span class="n">n</span>           <span class="c">!! number of data points.  (Error return if N&lt;2).</span>
+                                        <span class="c">!! If N=2, simply does linear interpolation.</span>
+    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>   <span class="kd">::</span> <span class="n">incfd</span>       <span class="c">!! increment between successive values in F and D.</span>
+                                        <span class="c">!! This argument is provided primarily for 2-D applications.</span>
+                                        <span class="c">!! (Error return if  INCFD&lt;1).</span>
+    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">ierr</span>        <span class="c">!! error flag.</span>
+                                        <span class="c">!!</span>
+                                        <span class="c">!! * Normal return:</span>
+                                        <span class="c">!!    * IERR = 0  (no errors).</span>
+                                        <span class="c">!!</span>
+                                        <span class="c">!! * Warning error:</span>
+                                        <span class="c">!!    * IERR&gt;0  means that IERR switches in the direction</span>
+                                        <span class="c">!!      of monotonicity were detected.</span>
+                                        <span class="c">!!</span>
+                                        <span class="c">!! * &quot;Recoverable&quot; errors (The D-array has not been changed in any of these cases.):</span>
+                                        <span class="c">!!    * IERR = -1  if N&lt;2 .</span>
+                                        <span class="c">!!    * IERR = -2  if INCFD&lt;1 .</span>
+                                        <span class="c">!!    * IERR = -3  if the X-array is not strictly increasing.</span>
+                                        <span class="c">!!</span>
+                                        <span class="c">!! NOTE: The above errors are checked in the order listed,</span>
+                                        <span class="c">!! and following arguments have **NOT** been validated.</span>
+    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">x</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>        <span class="c">!! array of independent variable values.  The</span>
+                                        <span class="c">!! elements of X must be strictly increasing:</span>
+                                        <span class="c">!! `X(I-1) &lt; X(I),  I = 2(1)N`.</span>
+                                        <span class="c">!! (Error return if not.)</span>
+    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">f</span><span class="p">(</span><span class="n">incfd</span><span class="p">,</span><span class="o">*</span><span class="p">)</span>  <span class="c">!! array of dependent variable values to be</span>
+                                        <span class="c">!! interpolated.  F(1+(I-1)*INCFD) is value corresponding to</span>
+                                        <span class="c">!! X(I).  DPCHIM is designed for monotonic data, but it will</span>
+                                        <span class="c">!! work for any F-array.  It will force extrema at points where</span>
+                                        <span class="c">!! monotonicity switches direction.  If some other treatment of</span>
+                                        <span class="c">!! switch points is desired, [[DPCHIC]] should be used instead.</span>
+    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="n">d</span><span class="p">(</span><span class="n">incfd</span><span class="p">,</span><span class="o">*</span><span class="p">)</span>  <span class="c">!! array of derivative values at the data</span>
+                                        <span class="c">!! points.  If the data are monotonic, these values will</span>
+                                        <span class="c">!! determine a monotone cubic Hermite function.</span>
+                                        <span class="c">!! The value corresponding to X(I) is stored in</span>
+                                        <span class="c">!! `D(1+(I-1)*INCFD),  I=1(1)N`.</span>
+                                        <span class="c">!! No other entries in D are changed.</span>
+
+    <span class="kt">integer</span> <span class="kd">::</span> <span class="n">i</span><span class="p">,</span> <span class="n">nless1</span>
+    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">del1</span><span class="p">,</span> <span class="n">del2</span><span class="p">,</span> <span class="nb">dmax</span><span class="p">,</span> <span class="nb">dmin</span><span class="p">,</span> <span class="n">drat1</span><span class="p">,</span> <span class="n">drat2</span><span class="p">,</span> <span class="n">dsave</span><span class="p">,</span> <span class="p">&amp;</span>
+                <span class="n">h1</span><span class="p">,</span> <span class="n">h2</span><span class="p">,</span> <span class="n">hsum</span><span class="p">,</span> <span class="n">hsumt3</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">tmp</span>
+
+    <span class="c">!  validity-check arguments.</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">n</span><span class="o">&lt;</span><span class="mi">2</span> <span class="p">)</span> <span class="k">then</span>
+<span class="k">        </span><span class="n">ierr</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">call </span><span class="n">xermsg</span> <span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span> <span class="s1">&#39;dpchim&#39;</span><span class="p">,</span> <span class="s1">&#39;number of data points less than two&#39;</span><span class="p">,</span> <span class="n">ierr</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span>
+<span class="k">    end if</span>
+<span class="k">    if</span> <span class="p">(</span> <span class="n">incfd</span><span class="o">&lt;</span><span class="mi">1</span> <span class="p">)</span> <span class="k">then</span>
+<span class="k">        </span><span class="n">ierr</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span>
+        <span class="k">call </span><span class="n">xermsg</span> <span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span> <span class="s1">&#39;dpchim&#39;</span><span class="p">,</span> <span class="s1">&#39;increment less than one&#39;</span><span class="p">,</span> <span class="n">ierr</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span>
+<span class="k">    end if</span>
+<span class="k">    do </span><span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">x</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">&lt;=</span><span class="n">x</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">)</span> <span class="k">then</span>
+            <span class="c">! x-array not strictly increasing.</span>
+            <span class="n">ierr</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span>
+            <span class="k">call </span><span class="n">xermsg</span> <span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span> <span class="s1">&#39;dpchim&#39;</span><span class="p">,</span> <span class="s1">&#39;x-array not strictly increasing&#39;</span><span class="p">,</span> <span class="n">ierr</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">end if</span>
+<span class="k">    end do</span>
+
+    <span class="c">! function definition is ok, go on.</span>
+    <span class="n">ierr</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">nless1</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">h1</span> <span class="o">=</span> <span class="n">x</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">x</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">del1</span> <span class="o">=</span> <span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span><span class="o">/</span><span class="n">h1</span>
+    <span class="n">dsave</span> <span class="o">=</span> <span class="n">del1</span>
+
+    <span class="c">! special case n=2 -- use linear interpolation.</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">nless1</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span> <span class="k">then</span>
+<span class="k">        </span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">del1</span>
+        <span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span> <span class="o">=</span> <span class="n">del1</span>
+        <span class="k">return</span>
+<span class="k">    end if</span>
+
+    <span class="c">!  normal case  (n &gt;= 3).</span>
+    <span class="n">h2</span> <span class="o">=</span> <span class="n">x</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">-</span> <span class="n">x</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">del2</span> <span class="o">=</span> <span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="o">-</span> <span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span><span class="o">/</span><span class="n">h2</span>
+
+    <span class="c">! set d(1) via non-centered three-point formula, adjusted to be</span>
+    <span class="c">! shape-preserving.</span>
+
+    <span class="n">hsum</span> <span class="o">=</span> <span class="n">h1</span> <span class="o">+</span> <span class="n">h2</span>
+    <span class="n">w1</span> <span class="o">=</span> <span class="p">(</span><span class="n">h1</span> <span class="o">+</span> <span class="n">hsum</span><span class="p">)</span><span class="o">/</span><span class="n">hsum</span>
+    <span class="n">w2</span> <span class="o">=</span> <span class="o">-</span><span class="n">h1</span><span class="o">/</span><span class="n">hsum</span>
+    <span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">w1</span><span class="o">*</span><span class="n">del1</span> <span class="o">+</span> <span class="n">w2</span><span class="o">*</span><span class="n">del2</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">dpchst</span><span class="p">(</span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">del1</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">zero</span><span class="p">)</span> <span class="k">then</span>
+<span class="k">        </span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">zero</span>
+    <span class="k">else if</span> <span class="p">(</span> <span class="n">dpchst</span><span class="p">(</span><span class="n">del1</span><span class="p">,</span><span class="n">del2</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">zero</span><span class="p">)</span> <span class="k">then</span>
+        <span class="c">! need do this check only if monotonicity switches.</span>
+        <span class="nb">dmax</span> <span class="o">=</span> <span class="n">three</span><span class="o">*</span><span class="n">del1</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="o">&gt;</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">dmax</span><span class="p">))</span>  <span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="nb">dmax</span>
+<span class="nb">    </span><span class="k">endif</span>
+
+    <span class="c">! loop through interior points.</span>
+    <span class="k">do </span><span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">nless1</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">/=</span> <span class="mi">2</span><span class="p">)</span> <span class="k">then</span>
+<span class="k">            </span><span class="n">h1</span> <span class="o">=</span> <span class="n">h2</span>
+            <span class="n">h2</span> <span class="o">=</span> <span class="n">x</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">x</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">hsum</span> <span class="o">=</span> <span class="n">h1</span> <span class="o">+</span> <span class="n">h2</span>
+            <span class="n">del1</span> <span class="o">=</span> <span class="n">del2</span>
+            <span class="n">del2</span> <span class="o">=</span> <span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">i</span><span class="p">))</span><span class="o">/</span><span class="n">h2</span>
+        <span class="k">end if</span>
+
+        <span class="c">! set d(i)=0 unless data are strictly monotonic.</span>
+
+        <span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="n">zero</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="n">dpchst</span><span class="p">(</span><span class="n">del1</span><span class="p">,</span><span class="n">del2</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">tmp</span> <span class="o">&lt;</span> <span class="n">zero</span><span class="p">)</span> <span class="k">then</span>
+<span class="k">            </span><span class="n">ierr</span> <span class="o">=</span> <span class="n">ierr</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">dsave</span> <span class="o">=</span> <span class="n">del2</span>
+        <span class="n">elseif</span> <span class="p">(</span><span class="n">tmp</span> <span class="o">==</span> <span class="n">zero</span><span class="p">)</span> <span class="k">then</span>
+            <span class="c">! count number of changes in direction of monotonicity.</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">del2</span> <span class="o">/=</span> <span class="n">zero</span><span class="p">)</span> <span class="k">then</span>
+<span class="k">                if</span> <span class="p">(</span> <span class="n">dpchst</span><span class="p">(</span><span class="n">dsave</span><span class="p">,</span><span class="n">del2</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">zero</span><span class="p">)</span> <span class="n">ierr</span> <span class="o">=</span> <span class="n">ierr</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="n">dsave</span> <span class="o">=</span> <span class="n">del2</span>
+            <span class="k">end if</span>
+<span class="k">        else</span>
+            <span class="c">! use brodlie modification of butland formula.</span>
+            <span class="n">hsumt3</span> <span class="o">=</span> <span class="n">hsum</span><span class="o">+</span><span class="n">hsum</span><span class="o">+</span><span class="n">hsum</span>
+            <span class="n">w1</span> <span class="o">=</span> <span class="p">(</span><span class="n">hsum</span> <span class="o">+</span> <span class="n">h1</span><span class="p">)</span><span class="o">/</span><span class="n">hsumt3</span>
+            <span class="n">w2</span> <span class="o">=</span> <span class="p">(</span><span class="n">hsum</span> <span class="o">+</span> <span class="n">h2</span><span class="p">)</span><span class="o">/</span><span class="n">hsumt3</span>
+            <span class="nb">dmax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span> <span class="nb">abs</span><span class="p">(</span><span class="n">del1</span><span class="p">),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">del2</span><span class="p">)</span> <span class="p">)</span>
+            <span class="nb">dmin</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span> <span class="nb">abs</span><span class="p">(</span><span class="n">del1</span><span class="p">),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">del2</span><span class="p">)</span> <span class="p">)</span>
+            <span class="n">drat1</span> <span class="o">=</span> <span class="n">del1</span><span class="o">/</span><span class="nb">dmax</span>
+<span class="nb">            </span><span class="n">drat2</span> <span class="o">=</span> <span class="n">del2</span><span class="o">/</span><span class="nb">dmax</span>
+<span class="nb">            </span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="nb">dmin</span><span class="o">/</span><span class="p">(</span><span class="n">w1</span><span class="o">*</span><span class="n">drat1</span> <span class="o">+</span> <span class="n">w2</span><span class="o">*</span><span class="n">drat2</span><span class="p">)</span>
+        <span class="k">end if</span>
+
+<span class="k">    end do</span>
+
+    <span class="c">! set d(n) via non-centered three-point formula, adjusted to be</span>
+    <span class="c">! shape-preserving.</span>
+
+    <span class="n">w1</span> <span class="o">=</span> <span class="o">-</span><span class="n">h2</span><span class="o">/</span><span class="n">hsum</span>
+    <span class="n">w2</span> <span class="o">=</span> <span class="p">(</span><span class="n">h2</span> <span class="o">+</span> <span class="n">hsum</span><span class="p">)</span><span class="o">/</span><span class="n">hsum</span>
+    <span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span> <span class="o">=</span> <span class="n">w1</span><span class="o">*</span><span class="n">del1</span> <span class="o">+</span> <span class="n">w2</span><span class="o">*</span><span class="n">del2</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">dpchst</span><span class="p">(</span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">),</span><span class="n">del2</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">zero</span><span class="p">)</span> <span class="k">then</span>
+<span class="k">        </span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span> <span class="o">=</span> <span class="n">zero</span>
+    <span class="k">else if</span> <span class="p">(</span> <span class="n">dpchst</span><span class="p">(</span><span class="n">del1</span><span class="p">,</span><span class="n">del2</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">zero</span><span class="p">)</span> <span class="k">then</span>
+        <span class="c">! need do this check only if monotonicity switches.</span>
+        <span class="nb">dmax</span> <span class="o">=</span> <span class="n">three</span><span class="o">*</span><span class="n">del2</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">))</span> <span class="o">&gt;</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">dmax</span><span class="p">))</span>  <span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span> <span class="o">=</span> <span class="nb">dmax</span>
+<span class="nb">    </span><span class="k">endif</span>
+
+<span class="k">    end subroutine </span><span class="n">dpchim</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    
+    </div>
+  </div>
+
+
+    <hr>    
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+      <div class="row">
+        <div class="col-xs-6 col-md-6"><p>PCHIP was developed by Jacob Williams<br>&copy; 2021 
+                                          </p>
+        </div>
+        <div class="col-xs-6 col-md-6">
+          <p class="text-right">
+            Documentation generated by 
+            <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            
+            
+          </p>
+        </div>
+      </div>
+      <br>
+      </div> <!-- /container -->    
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+<!--
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+-->
+    <script src="../js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../js/ie10-viewport-bug-workaround.js"></script>
+
+    <!-- MathJax JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
+        jax: ['input/TeX','input/MathML','output/HTML-CSS'],
+        extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
+      });
+    </script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+    <script src="../tipuesearch/tipuesearch_content.js"></script>
+    <script src="../tipuesearch/tipuesearch_set.js"></script>
+    <script src="../tipuesearch/tipuesearch.js"></script>
+    
+    
+  </body>
+</html>
