@@ -2,6 +2,14 @@
 
 PCHIP, a Fortran package for piecewise cubic Hermite interpolation of data. This is a modern Fortran update of the code in the [SLATEC](http://www.netlib.org/slatec/pchip/) library.
 
+### Status
+
+![Build Status](https://github.com/jacobwilliams/pchip/actions/workflows/CI.yml/badge.svg)
+
+### Documentation
+
+The latest API documentation can be found [here](https://jacobwilliams.github.io/PCHIP/). This was generated from the source code using [FORD](https://github.com/Fortran-FOSS-Programmers/ford).
+
 ### Description
 
 This document describes the contents of PCHIP, which is a Fortran package for piecewise cubic Hermite interpolation of data. It features software to produce a monotone and "visually pleasing" interpolant to monotone data.  As is demonstrated in Reference 4, such an interpolant may be more reasonable than a cubic spline if the data contains both "steep" and "flat" sections.  Interpolation of cumulative probability distribution functions is another application.  (See References 2-4 for examples.)
