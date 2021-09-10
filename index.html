@@ -130,14 +130,84 @@
         <div class="col-md-8">
 		  
           <h1>PCHIP</h1>
-          <h3>Brief description</h3>
-<p>Piecewise Cubic Hermite Interpolation Package</p>
-<h3>License</h3>
-<p>The PCHIP source code and related files and documentation are distributed under a permissive free software <a href="https://github.com/jacobwilliams/PCHIP/blob/master/LICENSE.txt">license</a> (BSD-style).</p>
+          <h1><img alt="pchip-logo" src="media/logo.png"></h1>
+<p>PCHIP, a Fortran package for piecewise cubic Hermite interpolation of data. This is a modern Fortran update of the code in the <a href="http://www.netlib.org/slatec/pchip/">SLATEC</a> library.</p>
+<h3>Status</h3>
+<p><img alt="Build Status" src="https://github.com/jacobwilliams/pchip/actions/workflows/CI.yml/badge.svg"></p>
+<h3>Documentation</h3>
+<p>The latest API documentation can be found <a href="https://jacobwilliams.github.io/PCHIP/">here</a>. This was generated from the source code using <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>.</p>
+<h3>Description</h3>
+<p>This document describes the contents of PCHIP, which is a Fortran package for piecewise cubic Hermite interpolation of data. It features software to produce a monotone and "visually pleasing" interpolant to monotone data.  As is demonstrated in Reference 4, such an interpolant may be more reasonable than a cubic spline if the data contains both "steep" and "flat" sections.  Interpolation of cumulative probability distribution functions is another application.  (See References 2-4 for examples.)</p>
+<p>All piecewise cubic functions in PCHIP are represented in cubic Hermite form; that is, f(x) is determined by its values F(I) and derivatives D(I) at the breakpoints X(I), I=1(1)N. Throughout the package a PCH function is represented by the five variables  N, X, F, D, INCFD:</p>
+<ul>
+<li>N     - number of data points;</li>
+<li>X     - abscissa values for the data points;</li>
+<li>F     - ordinates (function values) for the data points;</li>
+<li>D     - slopes (derivative values) at the data points;</li>
+<li>INCFD - increment between successive elements in the F- and D-arrays (more on this later).</li>
+</ul>
+<p>These appear together and in the same order in all calls.</p>
+<h3>Routines</h3>
+<p>The contents of the package are as follows:</p>
+<ol>
+<li>
+<p>Determine Derivative Values.</p>
+<p>NOTE:  These routines provide alternate ways of determining D if these values are not already known.</p>
+<ul>
+<li><code>DPCHIM</code> -- Piecewise Cubic Hermite Interpolation to Monotone data. Used if the data are monotonic or if the user wants to guarantee that the interpolant stays within the limits of the data.  (See Reference 3.</li>
+<li><code>DPCHIC</code> -- Piecewise Cubic Hermite Interpolation Coefficients. Used if neither of the above conditions holds, or if the user wishes control over boundary derivatives. Will generally reproduce monotonicity on subintervals over which the data are monotonic.</li>
+<li><code>DPCHSP</code> -- Piecewise Cubic Hermite Spline. Produces a cubic spline interpolator in cubic Hermite form.  Provided primarily for easy comparison of the spline with other piecewise cubic interpolants.  (A modified version of de Boor's CUBSPL, Reference 1.)</li>
+</ul>
+</li>
+<li>
+<p>Evaluate, Differentiate, or Integrate Resulting PCH Function.</p>
+<p>NOTE:  If derivative values are available from some other source, these routines can be used without calling any of the previous routines.</p>
+<ul>
+<li><code>DCHFEV</code> -- Cubic Hermite Function EValuator. Evaluates a single cubic Hermite function at an array of points.  Used when the interval is known, as in graphing applications.  Called by PCHFE.</li>
+<li><code>DPCHFE</code> -- Piecewise Cubic Hermite Function Evaluator. Used when the interval is unknown or the evaluation array spans more than one data interval.</li>
+<li><code>DCHFDV</code> -- Cubic Hermite Function and Derivative Evaluator. Evaluates a single cubic Hermite function and its first derivative at an array of points.  Used when the interval is known, as in graphing applications. Called by PCHFD.</li>
+<li><code>DPCHFD</code> -- Piecewise Cubic Hermite Function and Derivative Evaluator. Used when the interval is unknown or the evaluation array spans more than one data interval.</li>
+<li><code>DPCHID</code> -- Piecewise Cubic Hermite Integrator, Data Limits. Computes the definite integral of a piecewise cubic Hermite function when the integration limits are data points.</li>
+<li><code>DPCHIA</code> -- Piecewise Cubic Hermite Integrator, Arbitrary Limits. Computes the definite integral of a piecewise cubic Hermite function over an arbitrary finite interval.</li>
+</ul>
+</li>
+<li>
+<p>Utility routines.</p>
+<ul>
+<li><code>DPCHBS</code> -- Piecewise Cubic Hermite to B-Spline converter. Converts a PCH function to B-representation, so that it can be used with other elements of the B-spline package (see <code>BSPDOC</code>).</li>
+<li><code>DPCHCM</code> -- Piecewise Cubic Hermite, Check Monotonicity of. Checks the monotonicity of an arbitrary PCH function. Might be used with PCHSP to build a polyalgorithm for piecewise C-2 interpolation.</li>
+</ul>
+</li>
+</ol>
+<h3>Notes</h3>
+<p>INCFD, the increment between successive elements in the F- and D-arrays is included in the representation of a PCH function in this package to facilitate two-dimensional applications.  For "normal" usage INCFD=1, and F and D are one-dimensional arrays. one would call PCHxx (where "xx" is "IM", "IC", or "SP") with</p>
+<p><code>N, X, F, D, 1</code></p>
+<p>Suppose, however, that one has data on a rectangular mesh,</p>
+<p><code>F2D(I,J) = value at (X(I), Y(J)),  I=1(1)NX, J=1(1)NY</code></p>
+<p>Assume the following dimensions:</p>
+<p><code>REAL(wp)  X(NXMAX), Y(NYMAX)</code>
+<code>REAL(wp)  F2D(NXMAX,NYMAX), FX(NXMAX,NYMAX), FY(NXMAX,NYMAX)</code></p>
+<p>where  <code>2&lt;=NX&lt;=NXMAX AND 2&lt;=NY&lt;=NYMAX</code>.  To interpolate in X along the line  Y = Y(J), call PCHxx with</p>
+<p><code>NX, X, F2D(1,J), FX(1,J), 1</code></p>
+<p>To interpolate along the line X = X(I), call PCHxx with</p>
+<p><code>NY, Y, F2D(I,1), FY(I,1), NXMAX</code></p>
+<p>(This example assumes the usual columnwise storage of 2-D arrays in Fortran.)</p>
 <h3>Keywords</h3>
 <ul>
 <li>cubic hermite interpolation, documentation, monotone interpolation, pchip, piecewise cubic interpolation</li>
 </ul>
+<h3>Original Author</h3>
+<ul>
+<li>F. N. Fritsch, Lawrence Livermore National Laboratory</li>
+</ul>
+<h3>References</h3>
+<ol>
+<li>Carl de Boor, "A Practical Guide to Splines", Springer-Verlag, New York, 1978 (esp. Chapter IV, pp.49-62).</li>
+<li>F. N. Fritsch, "Piecewise Cubic Hermite Interpolation Package", Report UCRL-87285, Lawrence Livermore National   Laboratory, July 1982.  [Poster presented at the SIAM 30th Anniversary Meeting, 19-23 July 1982.]</li>
+<li>F. N. Fritsch and J. Butland, "A method for constructing local monotone piecewise cubic interpolants", SIAM Journal on Scientific and Statistical Computing 5, 2 (June 1984), pp. 300-304.</li>
+<li>F. N. Fritsch and R. E. Carlson, "Monotone piecewise cubic interpolation", SIAM Journal on Numerical Analysis 17, 2 (April 1980), pp. 238-246.</li>
+<li>F. N. Fritsch, "Representations for parametric cubic splines", Computer Aided Geometric Design 6 (1989), pp.79-82.</li>
+</ol>
         </div>
 		  
         <div class="col-md-4">
