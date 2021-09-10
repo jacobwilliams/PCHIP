@@ -15,14 +15,4 @@ display: public
 source: true
 graph: true
 
-### Brief description
-
-Piecewise Cubic Hermite Interpolation Package
-
-### License
-
-The PCHIP source code and related files and documentation are distributed under a permissive free software [license](https://github.com/jacobwilliams/PCHIP/blob/master/LICENSE.txt) (BSD-style).
-
-### Keywords
-
-* cubic hermite interpolation, documentation, monotone interpolation, pchip, piecewise cubic interpolation
+{!README.md!}

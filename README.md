@@ -1,4 +1,5 @@
-
+![pchip-logo](media/logo.png)
+============
 
 PCHIP, a Fortran package for piecewise cubic Hermite interpolation of data. This is a modern Fortran update of the code in the [SLATEC](http://www.netlib.org/slatec/pchip/) library.
 
