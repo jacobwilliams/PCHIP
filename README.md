@@ -5,7 +5,31 @@ PCHIP, a Fortran package for piecewise cubic Hermite interpolation of data. This
 
 ### Status
 
-![Build Status](https://github.com/jacobwilliams/pchip/actions/workflows/CI.yml/badge.svg)
+[![GitHub release](https://img.shields.io/github/release/jacobwilliams/pchip.svg)](https://github.com/jacobwilliams/pchip/releases/latest)
+[![Build Status](https://github.com/jacobwilliams/pchip/actions/workflows/CI.yml/badge.svg)](https://github.com/jacobwilliams/pchip/actions)
+[![codecov](https://codecov.io/gh/jacobwilliams/pchip/branch/master/graph/badge.svg)](https://codecov.io/gh/jacobwilliams/pchip)
+[![last-commit](https://img.shields.io/github/last-commit/jacobwilliams/pchip)](https://github.com/jacobwilliams/pchip/commits/master)
+
+### Building pchip
+
+The library can be built with the [Fortran Package Manager](https://github.com/fortran-lang/fpm) using the provided `fpm.toml` file like so:
+
+```bash
+fpm build --release
+```
+
+To use PCHIP within your FPM project, add the following to your `fpm.toml` file:
+
+```toml
+[dependencies]
+pchip = { git="https://github.com/jacobwilliams/pchip.git" }
+```
+
+or, to use a specific version:
+```toml
+[dependencies]
+pchip = { git="https://github.com/jacobwilliams/pchip.git", tag = "1.0.0"  }
+```
 
 ### Documentation
 
