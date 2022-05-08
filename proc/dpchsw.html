@@ -4,9 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-   
    <meta name="description" content="PCHIP -- Piecewise Cubic Hermite Interpolation Package">
-    
     <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="../favicon.png">
 
@@ -16,10 +14,7 @@
     <link href="../css/pygments.css" rel="stylesheet">
     <link href="../css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/local.css" rel="stylesheet">
-    
     <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
-    
-    
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -48,50 +43,23 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-        
             <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
               <a href="#" class="dropdown-toggle"
               data-toggle="dropdown" role="button"
               aria-haspopup="true"
      aria-expanded="false">Contents <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          
-              
             <li><a href="../sourcefile/pchip_module.f90.html">Source File</a></li>
-        
-        
-        
             <li><a href="../lists/modules.html">Modules</a></li>
-        
-            
-                                
             <li><a href="../lists/procedures.html">Procedures</a></li>
-        
-               
-               
-        
-        
+              
             </ul>
         
             </li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../sourcefile/pchip_module.f90.html">Source File</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
-
-                             
-
-
-
-          </ul>
-        
+                                       </ul>
         <form action="../search.html" class="navbar-form navbar-right" role="search">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
@@ -100,51 +68,29 @@
         <button type="submit" class="btn btn-default">Submit</button>
 -->
         </form>
-        
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
     <div class="container">
-    
-  
   <div class="row">
     <h1>dpchsw
       <small>Subroutine</small>
-    
     </h1>
-    
-<div class="row">
+    <div class="row">
   <div class="col-lg-12">
 <div class="well well-sm">
   <ul class="list-inline" style="margin-bottom:0px;display:inline">
-     
-     
-     
-     
-     
-    
-    
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
     title=" 6.0% of total for procedures.">75 statements</a>
      </li> 
-     
-     
-     
     <li><i class="fa fa-code"></i><a href="../src/pchip_module.f90"> Source File</a></li>
-     
-     
   </ul>
   <ol class="breadcrumb in-well text-right">
-  
-    
      <li><a href='../sourcefile/pchip_module.f90.html'>pchip_module.f90</a></li>
-    
      <li><a href='../module/pchip_module.html'>pchip_module</a></li>
-    
-  
      <li class="active">dpchsw</li>
   </ol>
 </div>
@@ -160,32 +106,9 @@
   
   <div class="row">
     <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
-    
-<div id="sidebar">
-  
-<h3>Contents</h3>
+    <div id="sidebar">
+  <h3>Contents</h3>
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
   <div class="list-group">
@@ -193,171 +116,84 @@
   </div>
 </div>
 
-
-
 </div>
 
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2>
-private subroutine dpchsw(dfmax, iextrm, d1, d2, h, slope, ierr)
+    <h2>private subroutine dpchsw(dfmax, iextrm, d1, d2, h, slope, ierr)</h2>
     
-    
-   
-</h2>
-    
-  
 
-
-    
     <p>Switch Excursion Limiter.</p>
 <p>Called by <a href="../proc/dpchcs.html">dpchcs</a> to adjust D1 and D2 if necessary to insure that
   the extremum on this interval is not further than DFMAX from the
   extreme data value.</p>
 <p></p><div class="alert alert-warning" role="alert"><h4>Warning</h4><p>This routine does no validity-checking of arguments.</p></div>
-    
 
     <h3>Arguments</h3>
-    
-      
-<table class="table table-striped varlist">
-<thead><tr><th>Type</th>
-<th>Intent</th><th>Optional</th>
-<th>Attributes</th><th></th><th>Name</th><th></th></thead>
-
-
-
+      <table class="table table-striped varlist">
+<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
 <tbody>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-dfmax"></span>real(kind=wp),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>dfmax</strong></td><td><p>maximum allowed difference between F(IEXTRM) and
- the cubic determined by derivative values D1,D2.  (assumes
- DFMAX&gt;0.)</p></td>
-  
+the cubic determined by derivative values D1,D2.  (assumes
+DFMAX&gt;0.)</p></td>
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-iextrm"></span>integer,</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>iextrm</strong></td><td><p>index of the extreme data value.  (assumes
- IEXTRM = 1 or 2 .  Any value /=1 is treated as 2.)</p></td>
-  
+IEXTRM = 1 or 2 .  Any value /=1 is treated as 2.)</p></td>
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-d1~5"></span>real(kind=wp),</td>
-  <td>intent(inout)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(inout)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>d1</strong></td><td><p>derivative values at the ends of the interval.
- (Assumes D1*D2 &lt;= 0.)
- (output) may be modified if necessary to meet the restriction
- imposed by DFMAX.</p></td>
-  
+(Assumes D1*D2 &lt;= 0.)
+(output) may be modified if necessary to meet the restriction
+imposed by DFMAX.</p></td>
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-d2~5"></span>real(kind=wp),</td>
-  <td>intent(inout)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(inout)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>d2</strong></td><td><p>derivative values at the ends of the interval.
- (Assumes D1*D2 &lt;= 0.)
- (output) may be modified if necessary to meet the restriction
- imposed by DFMAX.</p></td>
-  
+(Assumes D1*D2 &lt;= 0.)
+(output) may be modified if necessary to meet the restriction
+imposed by DFMAX.</p></td>
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-h~4"></span>real(kind=wp),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>h</strong></td><td><p>interval length.  (Assumes  H&gt;0.)</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-slope~4"></span>real(kind=wp),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>slope</strong></td><td><p>data slope on the interval.</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-ierr~15"></span>integer,</td>
-  <td>intent(out)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(out)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>ierr</strong></td><td><p>error flag.  should be zero.</p>
 <ul>
 <li>If IERR=-1, assumption on D1 and D2 is not satisfied.</li>
 <li>If IERR=-2, quadratic equation locating extremum has
-   negative discriminant (should never occur).</li>
+  negative discriminant (should never occur).</li>
 </ul></td>
-  
 </tr>
-
 </tbody>
 </table>
 
-    
-    
-    
     <br>
-    
-    
     <div class="panel panel-default">
       <div class="panel-heading">
   <h3 class="panel-title">Calls</h3>
@@ -458,8 +294,6 @@ private subroutine dpchsw(dfmax, iextrm, d1, d2, h, slope, ierr)
     </div></div></div></div>
       </div>
     </div>
-     
-     
     <div class="panel panel-default">
       <div class="panel-heading">
   <h3 class="panel-title">Called by</h3>
@@ -575,34 +409,11 @@ private subroutine dpchsw(dfmax, iextrm, d1, d2, h, slope, ierr)
     </div></div></div></div>
       </div>
     </div>
-     
     <br>
 
     <section class="visible-xs visible-sm hidden-md">
-      
-<h3>Contents</h3>
+      <h3>Contents</h3>
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
   <div class="list-group">
@@ -610,181 +421,166 @@ private subroutine dpchsw(dfmax, iextrm, d1, d2, h, slope, ierr)
   </div>
 </div>
 
-
-
     </section>
     <br class="visible-xs visible-sm hidden-md">
 
-    
 
-    
-    
-    
     
     
 
     
     
-    
-    
-    
 
 
-    
-    
     
     <section>
     <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span>    <span class="k">subroutine </span><span class="n">dpchsw</span> <span class="p">(</span><span class="n">dfmax</span><span class="p">,</span> <span class="n">iextrm</span><span class="p">,</span> <span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">slope</span><span class="p">,</span> <span class="n">ierr</span><span class="p">)</span>
+    <div class="highlight"><pre><span></span><span class="w">    </span><span class="k">subroutine </span><span class="n">dpchsw</span><span class="w"> </span><span class="p">(</span><span class="n">dfmax</span><span class="p">,</span><span class="w"> </span><span class="n">iextrm</span><span class="p">,</span><span class="w"> </span><span class="n">d1</span><span class="p">,</span><span class="w"> </span><span class="n">d2</span><span class="p">,</span><span class="w"> </span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="n">slope</span><span class="p">,</span><span class="w"> </span><span class="n">ierr</span><span class="p">)</span><span class="w"></span>
 
-    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">iextrm</span>       <span class="c">!! index of the extreme data value.  (assumes</span>
-                                        <span class="c">!! IEXTRM = 1 or 2 .  Any value /=1 is treated as 2.)</span>
-    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="n">ierr</span>         <span class="c">!! error flag.  should be zero.</span>
-                                        <span class="c">!!</span>
-                                        <span class="c">!! * If IERR=-1, assumption on D1 and D2 is not satisfied.</span>
-                                        <span class="c">!! * If IERR=-2, quadratic equation locating extremum has</span>
-                                        <span class="c">!!   negative discriminant (should never occur).</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">dfmax</span>        <span class="c">!! maximum allowed difference between F(IEXTRM) and</span>
-                                        <span class="c">!! the cubic determined by derivative values D1,D2.  (assumes</span>
-                                        <span class="c">!! DFMAX&gt;0.)</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">d1</span>        <span class="c">!! derivative values at the ends of the interval.</span>
-                                        <span class="c">!! (Assumes D1*D2 &lt;= 0.)</span>
-                                        <span class="c">!! (output) may be modified if necessary to meet the restriction</span>
-                                        <span class="c">!! imposed by DFMAX.</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">d2</span>        <span class="c">!! derivative values at the ends of the interval.</span>
-                                        <span class="c">!! (Assumes D1*D2 &lt;= 0.)</span>
-                                        <span class="c">!! (output) may be modified if necessary to meet the restriction</span>
-                                        <span class="c">!! imposed by DFMAX.</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">h</span>            <span class="c">!! interval length.  (Assumes  H&gt;0.)</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">slope</span>        <span class="c">!! data slope on the interval.</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">iextrm</span><span class="w">       </span><span class="c">!! index of the extreme data value.  (assumes</span>
+<span class="w">                                        </span><span class="c">!! IEXTRM = 1 or 2 .  Any value /=1 is treated as 2.)</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">ierr</span><span class="w">         </span><span class="c">!! error flag.  should be zero.</span>
+<span class="w">                                        </span><span class="c">!!</span>
+<span class="w">                                        </span><span class="c">!! * If IERR=-1, assumption on D1 and D2 is not satisfied.</span>
+<span class="w">                                        </span><span class="c">!! * If IERR=-2, quadratic equation locating extremum has</span>
+<span class="w">                                        </span><span class="c">!!   negative discriminant (should never occur).</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dfmax</span><span class="w">        </span><span class="c">!! maximum allowed difference between F(IEXTRM) and</span>
+<span class="w">                                        </span><span class="c">!! the cubic determined by derivative values D1,D2.  (assumes</span>
+<span class="w">                                        </span><span class="c">!! DFMAX&gt;0.)</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">d1</span><span class="w">        </span><span class="c">!! derivative values at the ends of the interval.</span>
+<span class="w">                                        </span><span class="c">!! (Assumes D1*D2 &lt;= 0.)</span>
+<span class="w">                                        </span><span class="c">!! (output) may be modified if necessary to meet the restriction</span>
+<span class="w">                                        </span><span class="c">!! imposed by DFMAX.</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">d2</span><span class="w">        </span><span class="c">!! derivative values at the ends of the interval.</span>
+<span class="w">                                        </span><span class="c">!! (Assumes D1*D2 &lt;= 0.)</span>
+<span class="w">                                        </span><span class="c">!! (output) may be modified if necessary to meet the restriction</span>
+<span class="w">                                        </span><span class="c">!! imposed by DFMAX.</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">h</span><span class="w">            </span><span class="c">!! interval length.  (Assumes  H&gt;0.)</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">slope</span><span class="w">        </span><span class="c">!! data slope on the interval.</span>
 
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">cp</span><span class="p">,</span> <span class="n">hphi</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">radcal</span><span class="p">,</span> <span class="n">sigma</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">lambda</span>  <span class="c">!! the ratio of d2 to d1.</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">phi</span>     <span class="c">!! phi is the normalized value of p(x)-f1 at x = xhat = x-hat(rho),</span>
-                        <span class="c">!! where  that = (xhat - x1)/h .</span>
-                        <span class="c">!! that is, p(xhat)-f1 = d*h*phi,  where d=d1 or d2.</span>
-                        <span class="c">!! similarly,  p(xhat)-f2 = d*h*(phi-rho) .</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">rho</span>     <span class="c">!! the ratio of the data slope to the derivative being tested.</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">that</span>    <span class="c">!! that = t-hat(rho) is the normalized location of the extremum.</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">cp</span><span class="p">,</span><span class="w"> </span><span class="n">hphi</span><span class="p">,</span><span class="w"> </span><span class="n">nu</span><span class="p">,</span><span class="w"> </span><span class="n">radcal</span><span class="p">,</span><span class="w"> </span><span class="n">sigma</span><span class="w"></span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">lambda</span><span class="w">  </span><span class="c">!! the ratio of d2 to d1.</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">phi</span><span class="w">     </span><span class="c">!! phi is the normalized value of p(x)-f1 at x = xhat = x-hat(rho),</span>
+<span class="w">                        </span><span class="c">!! where  that = (xhat - x1)/h .</span>
+<span class="w">                        </span><span class="c">!! that is, p(xhat)-f1 = d*h*phi,  where d=d1 or d2.</span>
+<span class="w">                        </span><span class="c">!! similarly,  p(xhat)-f2 = d*h*(phi-rho) .</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">rho</span><span class="w">     </span><span class="c">!! the ratio of the data slope to the derivative being tested.</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">that</span><span class="w">    </span><span class="c">!! that = t-hat(rho) is the normalized location of the extremum.</span>
 
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">parameter</span> <span class="kd">::</span> <span class="n">fact</span> <span class="o">=</span> <span class="mi">10</span><span class="mf">0.0_wp</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">parameter</span> <span class="kd">::</span> <span class="n">third</span> <span class="o">=</span> <span class="n">one</span><span class="o">/</span><span class="n">three</span> <span class="o">-</span> <span class="n">d1mach4</span>  <span class="c">!! third should be slightly less than 1/3 (original code had 0.33333)</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">parameter</span> <span class="kd">::</span> <span class="n">small</span> <span class="o">=</span> <span class="n">fact</span><span class="o">*</span><span class="n">d1mach4</span> <span class="c">!! small should be a few orders of magnitude greater than macheps.</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">fact</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="mf">0.0_wp</span><span class="w"></span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">third</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">one</span><span class="o">/</span><span class="n">three</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">d1mach4</span><span class="w">  </span><span class="c">!! third should be slightly less than 1/3 (original code had 0.33333)</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">small</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fact</span><span class="o">*</span><span class="n">d1mach4</span><span class="w"> </span><span class="c">!! small should be a few orders of magnitude greater than macheps.</span>
 
-    <span class="c">!  do main calculation.</span>
+<span class="w">    </span><span class="c">!  do main calculation.</span>
 
-    <span class="k">if</span> <span class="p">(</span><span class="n">d1</span> <span class="o">==</span> <span class="n">zero</span><span class="p">)</span> <span class="k">then</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">d1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">zero</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
 
-        <span class="c">! special case -- d1==zero .</span>
-        <span class="c">! if d2 is also zero, this routine should not have been called.</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">d2</span> <span class="o">==</span> <span class="n">zero</span><span class="p">)</span> <span class="k">then</span>
-            <span class="c">! d1 and d2 both zero, or both nonzero and same sign.</span>
-            <span class="n">ierr</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-            <span class="k">call </span><span class="n">xermsg</span> <span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span> <span class="s1">&#39;dpchsw&#39;</span><span class="p">,</span> <span class="s1">&#39;d1 and/or d2 invalid&#39;</span><span class="p">,</span> <span class="n">ierr</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-            <span class="k">return</span>
+<span class="w">        </span><span class="c">! special case -- d1==zero .</span>
+<span class="w">        </span><span class="c">! if d2 is also zero, this routine should not have been called.</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">d2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">zero</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
+<span class="w">            </span><span class="c">! d1 and d2 both zero, or both nonzero and same sign.</span>
+<span class="w">            </span><span class="n">ierr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="w"></span>
+<span class="w">            </span><span class="k">call </span><span class="n">xermsg</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;dpchsw&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;d1 and/or d2 invalid&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">ierr</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="k">return</span>
 <span class="k">        end if</span>
 
-<span class="k">        </span><span class="n">rho</span> <span class="o">=</span> <span class="n">slope</span><span class="o">/</span><span class="n">d2</span>
-        <span class="c">! extremum is outside interval when rho &gt;= 1/3 .</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">rho</span> <span class="o">&gt;=</span> <span class="n">third</span><span class="p">)</span> <span class="k">then</span>
-<span class="k">            </span><span class="n">ierr</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">return</span>
+<span class="k">        </span><span class="n">rho</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">slope</span><span class="o">/</span><span class="n">d2</span><span class="w"></span>
+<span class="w">        </span><span class="c">! extremum is outside interval when rho &gt;= 1/3 .</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rho</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">third</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            </span><span class="n">ierr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="w">            </span><span class="k">return</span>
 <span class="k">        end if</span>
-<span class="k">        </span><span class="n">that</span> <span class="o">=</span> <span class="p">(</span><span class="n">two</span><span class="o">*</span><span class="p">(</span><span class="n">three</span><span class="o">*</span><span class="n">rho</span><span class="o">-</span><span class="n">one</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">three</span><span class="o">*</span><span class="p">(</span><span class="n">two</span><span class="o">*</span><span class="n">rho</span><span class="o">-</span><span class="n">one</span><span class="p">))</span>
-        <span class="n">phi</span> <span class="o">=</span> <span class="n">that</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">((</span><span class="n">three</span><span class="o">*</span><span class="n">rho</span><span class="o">-</span><span class="n">one</span><span class="p">)</span><span class="o">/</span><span class="n">three</span><span class="p">)</span>
+<span class="k">        </span><span class="n">that</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">two</span><span class="o">*</span><span class="p">(</span><span class="n">three</span><span class="o">*</span><span class="n">rho</span><span class="o">-</span><span class="n">one</span><span class="p">))</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">three</span><span class="o">*</span><span class="p">(</span><span class="n">two</span><span class="o">*</span><span class="n">rho</span><span class="o">-</span><span class="n">one</span><span class="p">))</span><span class="w"></span>
+<span class="w">        </span><span class="n">phi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">that</span><span class="o">**</span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">((</span><span class="n">three</span><span class="o">*</span><span class="n">rho</span><span class="o">-</span><span class="n">one</span><span class="p">)</span><span class="o">/</span><span class="n">three</span><span class="p">)</span><span class="w"></span>
 
-        <span class="c">! convert to distance from f2 if iextrm/=1 .</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">iextrm</span> <span class="o">/=</span> <span class="mi">1</span><span class="p">)</span> <span class="n">phi</span> <span class="o">=</span> <span class="n">phi</span> <span class="o">-</span> <span class="n">rho</span>
+<span class="w">        </span><span class="c">! convert to distance from f2 if iextrm/=1 .</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">iextrm</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">phi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phi</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">rho</span><span class="w"></span>
 
-        <span class="c">! test for exceeding limit, and adjust accordingly.</span>
-        <span class="n">hphi</span> <span class="o">=</span> <span class="n">h</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">hphi</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="n">d2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">dfmax</span><span class="p">)</span> <span class="k">then</span>
-            <span class="c">! at this point, hphi&gt;0, so divide is ok.</span>
-            <span class="n">d2</span> <span class="o">=</span> <span class="nb">sign</span> <span class="p">(</span><span class="n">dfmax</span><span class="o">/</span><span class="n">hphi</span><span class="p">,</span> <span class="n">d2</span><span class="p">)</span>
-        <span class="k">endif</span>
+<span class="w">        </span><span class="c">! test for exceeding limit, and adjust accordingly.</span>
+<span class="w">        </span><span class="n">hphi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">hphi</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="n">d2</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">dfmax</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
+<span class="w">            </span><span class="c">! at this point, hphi&gt;0, so divide is ok.</span>
+<span class="w">            </span><span class="n">d2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">sign</span><span class="w"> </span><span class="p">(</span><span class="n">dfmax</span><span class="o">/</span><span class="n">hphi</span><span class="p">,</span><span class="w"> </span><span class="n">d2</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">endif</span>
 
 <span class="k">    else</span>
 
-<span class="k">        </span><span class="n">rho</span> <span class="o">=</span> <span class="n">slope</span><span class="o">/</span><span class="n">d1</span>
-        <span class="n">lambda</span> <span class="o">=</span> <span class="o">-</span><span class="n">d2</span><span class="o">/</span><span class="n">d1</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">d2</span> <span class="o">==</span> <span class="n">zero</span><span class="p">)</span> <span class="k">then</span>
-            <span class="c">! special case -- d2==zero .</span>
-            <span class="c">! extremum is outside interval when rho &gt;= 1/3 .</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">rho</span> <span class="o">&gt;=</span> <span class="n">third</span><span class="p">)</span> <span class="k">then</span>
-<span class="k">                </span><span class="n">ierr</span> <span class="o">=</span> <span class="mi">0</span>
-                <span class="k">return</span>
+<span class="k">        </span><span class="n">rho</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">slope</span><span class="o">/</span><span class="n">d1</span><span class="w"></span>
+<span class="w">        </span><span class="n">lambda</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="n">d2</span><span class="o">/</span><span class="n">d1</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">d2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">zero</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
+<span class="w">            </span><span class="c">! special case -- d2==zero .</span>
+<span class="w">            </span><span class="c">! extremum is outside interval when rho &gt;= 1/3 .</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rho</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">third</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">                </span><span class="n">ierr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="w">                </span><span class="k">return</span>
 <span class="k">            end if</span>
-<span class="k">            </span><span class="n">cp</span> <span class="o">=</span> <span class="n">two</span> <span class="o">-</span> <span class="n">three</span><span class="o">*</span><span class="n">rho</span>
-            <span class="n">nu</span> <span class="o">=</span> <span class="n">one</span> <span class="o">-</span> <span class="n">two</span><span class="o">*</span><span class="n">rho</span>
-            <span class="n">that</span> <span class="o">=</span> <span class="n">one</span> <span class="o">/</span> <span class="p">(</span><span class="n">three</span><span class="o">*</span><span class="n">nu</span><span class="p">)</span>
+<span class="k">            </span><span class="n">cp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">two</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">three</span><span class="o">*</span><span class="n">rho</span><span class="w"></span>
+<span class="w">            </span><span class="n">nu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">one</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">two</span><span class="o">*</span><span class="n">rho</span><span class="w"></span>
+<span class="w">            </span><span class="n">that</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">one</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">three</span><span class="o">*</span><span class="n">nu</span><span class="p">)</span><span class="w"></span>
 
-        <span class="k">else</span>
-<span class="k">            if</span> <span class="p">(</span><span class="n">lambda</span> <span class="o">&lt;=</span> <span class="n">zero</span><span class="p">)</span> <span class="k">then</span>
-                <span class="c">! d1 and d2 both zero, or both nonzero and same sign.</span>
-                <span class="n">ierr</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-                <span class="k">call </span><span class="n">xermsg</span> <span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span> <span class="s1">&#39;dpchsw&#39;</span><span class="p">,</span> <span class="s1">&#39;d1 and/or d2 invalid&#39;</span><span class="p">,</span> <span class="n">ierr</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-                <span class="k">return</span>
-<span class="k">            end if</span>
+<span class="w">        </span><span class="k">else</span>
+<span class="k">            if</span><span class="w"> </span><span class="p">(</span><span class="n">lambda</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">zero</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
+<span class="w">                </span><span class="c">! d1 and d2 both zero, or both nonzero and same sign.</span>
+<span class="w">                </span><span class="n">ierr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="w"></span>
+<span class="w">                </span><span class="k">call </span><span class="n">xermsg</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;dpchsw&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;d1 and/or d2 invalid&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">ierr</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">                </span><span class="k">return</span>
+<span class="k">            end if</span><span class="w"></span>
 
-            <span class="c">! normal case -- d1 and d2 both nonzero, opposite signs.</span>
+<span class="w">            </span><span class="c">! normal case -- d1 and d2 both nonzero, opposite signs.</span>
 
-            <span class="n">nu</span> <span class="o">=</span> <span class="n">one</span> <span class="o">-</span> <span class="n">lambda</span> <span class="o">-</span> <span class="n">two</span><span class="o">*</span><span class="n">rho</span>
-            <span class="n">sigma</span> <span class="o">=</span> <span class="n">one</span> <span class="o">-</span> <span class="n">rho</span>
-            <span class="n">cp</span> <span class="o">=</span> <span class="n">nu</span> <span class="o">+</span> <span class="n">sigma</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">nu</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">small</span><span class="p">)</span> <span class="k">then</span>
-<span class="k">                </span><span class="n">radcal</span> <span class="o">=</span> <span class="p">(</span><span class="n">nu</span> <span class="o">-</span> <span class="p">(</span><span class="n">two</span><span class="o">*</span><span class="n">rho</span><span class="o">+</span><span class="n">one</span><span class="p">))</span><span class="o">*</span><span class="n">nu</span> <span class="o">+</span> <span class="n">sigma</span><span class="o">**</span><span class="mi">2</span>
-                <span class="k">if</span> <span class="p">(</span><span class="n">radcal</span> <span class="o">&lt;</span> <span class="n">zero</span><span class="p">)</span> <span class="k">then</span>
-                    <span class="c">! negative value of radical (should never occur).</span>
-                    <span class="n">ierr</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span>
-                    <span class="k">call </span><span class="n">xermsg</span> <span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span> <span class="s1">&#39;dpchsw&#39;</span><span class="p">,</span> <span class="s1">&#39;negative radical&#39;</span><span class="p">,</span> <span class="n">ierr</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-                <span class="k">end if</span>
-<span class="k">                </span><span class="n">that</span> <span class="o">=</span> <span class="p">(</span><span class="n">cp</span> <span class="o">-</span> <span class="nb">sqrt</span><span class="p">(</span><span class="n">radcal</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">three</span><span class="o">*</span><span class="n">nu</span><span class="p">)</span>
-            <span class="k">else</span>
-<span class="k">                </span><span class="n">that</span> <span class="o">=</span> <span class="n">one</span><span class="o">/</span><span class="p">(</span><span class="n">two</span><span class="o">*</span><span class="n">sigma</span><span class="p">)</span>
-            <span class="k">endif</span>
+<span class="w">            </span><span class="n">nu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">one</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">lambda</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">two</span><span class="o">*</span><span class="n">rho</span><span class="w"></span>
+<span class="w">            </span><span class="n">sigma</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">one</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">rho</span><span class="w"></span>
+<span class="w">            </span><span class="n">cp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nu</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">sigma</span><span class="w"></span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">nu</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">small</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">                </span><span class="n">radcal</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">nu</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="n">two</span><span class="o">*</span><span class="n">rho</span><span class="o">+</span><span class="n">one</span><span class="p">))</span><span class="o">*</span><span class="n">nu</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">sigma</span><span class="o">**</span><span class="mi">2</span><span class="w"></span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">radcal</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">zero</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
+<span class="w">                    </span><span class="c">! negative value of radical (should never occur).</span>
+<span class="w">                    </span><span class="n">ierr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">2</span><span class="w"></span>
+<span class="w">                    </span><span class="k">call </span><span class="n">xermsg</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;dpchsw&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;negative radical&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">ierr</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">                </span><span class="k">end if</span>
+<span class="k">                </span><span class="n">that</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">cp</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">sqrt</span><span class="p">(</span><span class="n">radcal</span><span class="p">))</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">three</span><span class="o">*</span><span class="n">nu</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="k">else</span>
+<span class="k">                </span><span class="n">that</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">one</span><span class="o">/</span><span class="p">(</span><span class="n">two</span><span class="o">*</span><span class="n">sigma</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="k">endif</span>
 <span class="k">        endif</span>
-<span class="k">        </span><span class="n">phi</span> <span class="o">=</span> <span class="n">that</span><span class="o">*</span><span class="p">((</span><span class="n">nu</span><span class="o">*</span><span class="n">that</span> <span class="o">-</span> <span class="n">cp</span><span class="p">)</span><span class="o">*</span><span class="n">that</span> <span class="o">+</span> <span class="n">one</span><span class="p">)</span>
+<span class="k">        </span><span class="n">phi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">that</span><span class="o">*</span><span class="p">((</span><span class="n">nu</span><span class="o">*</span><span class="n">that</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">cp</span><span class="p">)</span><span class="o">*</span><span class="n">that</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">one</span><span class="p">)</span><span class="w"></span>
 
-        <span class="c">! convert to distance from f2 if iextrm/=1 .</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">iextrm</span> <span class="o">/=</span> <span class="mi">1</span><span class="p">)</span> <span class="n">phi</span> <span class="o">=</span> <span class="n">phi</span> <span class="o">-</span> <span class="n">rho</span>
+<span class="w">        </span><span class="c">! convert to distance from f2 if iextrm/=1 .</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">iextrm</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">phi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phi</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">rho</span><span class="w"></span>
 
-        <span class="c">! test for exceeding limit, and adjust accordingly.</span>
-        <span class="n">hphi</span> <span class="o">=</span> <span class="n">h</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">hphi</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">dfmax</span><span class="p">)</span> <span class="k">then</span>
-            <span class="c">! at this point, hphi&gt;0, so divide is ok.</span>
-            <span class="n">d1</span> <span class="o">=</span> <span class="nb">sign</span> <span class="p">(</span><span class="n">dfmax</span><span class="o">/</span><span class="n">hphi</span><span class="p">,</span> <span class="n">d1</span><span class="p">)</span>
-            <span class="n">d2</span> <span class="o">=</span> <span class="o">-</span><span class="n">lambda</span><span class="o">*</span><span class="n">d1</span>
-        <span class="k">endif</span>
+<span class="w">        </span><span class="c">! test for exceeding limit, and adjust accordingly.</span>
+<span class="w">        </span><span class="n">hphi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">hphi</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">dfmax</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
+<span class="w">            </span><span class="c">! at this point, hphi&gt;0, so divide is ok.</span>
+<span class="w">            </span><span class="n">d1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">sign</span><span class="w"> </span><span class="p">(</span><span class="n">dfmax</span><span class="o">/</span><span class="n">hphi</span><span class="p">,</span><span class="w"> </span><span class="n">d1</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="n">d2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="n">lambda</span><span class="o">*</span><span class="n">d1</span><span class="w"></span>
+<span class="w">        </span><span class="k">endif</span>
 
 <span class="k">    endif</span>
 
-<span class="k">    </span><span class="n">ierr</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">    </span><span class="n">ierr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
 
-    <span class="k">end subroutine </span><span class="n">dpchsw</span>
+<span class="w">    </span><span class="k">end subroutine </span><span class="n">dpchsw</span><span class="w"></span>
 </pre></div>
 
     </section>
     <br>
     
-    
     </div>
   </div>
-
 
     <hr>    
     </div> <!-- /container -->
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-6"><p>PCHIP was developed by Jacob Williams<br>&copy; 2021 
-                                          </p>
+        <div class="col-xs-6 col-md-6"><p>PCHIP was developed by Jacob Williams<br>&copy; 2022 
+</p>
         </div>
         <div class="col-xs-6 col-md-6">
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
-            
-            
           </p>
         </div>
       </div>
@@ -812,14 +608,11 @@ private subroutine dpchsw(dfmax, iextrm, d1, d2, h, slope, ierr)
         extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
       });
     </script>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
     
     <script src="../tipuesearch/tipuesearch_content.js"></script>
     <script src="../tipuesearch/tipuesearch_set.js"></script>
     <script src="../tipuesearch/tipuesearch.js"></script>
-    
     
   </body>
 </html>

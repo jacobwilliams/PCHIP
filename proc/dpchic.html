@@ -4,9 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-   
    <meta name="description" content="PCHIP -- Piecewise Cubic Hermite Interpolation Package">
-    
     <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="../favicon.png">
 
@@ -16,10 +14,7 @@
     <link href="../css/pygments.css" rel="stylesheet">
     <link href="../css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/local.css" rel="stylesheet">
-    
     <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
-    
-    
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -48,50 +43,23 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-        
             <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
               <a href="#" class="dropdown-toggle"
               data-toggle="dropdown" role="button"
               aria-haspopup="true"
      aria-expanded="false">Contents <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          
-              
             <li><a href="../sourcefile/pchip_module.f90.html">Source File</a></li>
-        
-        
-        
             <li><a href="../lists/modules.html">Modules</a></li>
-        
-            
-                                
             <li><a href="../lists/procedures.html">Procedures</a></li>
-        
-               
-               
-        
-        
+              
             </ul>
         
             </li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../sourcefile/pchip_module.f90.html">Source File</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
-
-                             
-
-
-
-          </ul>
-        
+                                       </ul>
         <form action="../search.html" class="navbar-form navbar-right" role="search">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
@@ -100,51 +68,29 @@
         <button type="submit" class="btn btn-default">Submit</button>
 -->
         </form>
-        
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
     <div class="container">
-    
-  
   <div class="row">
     <h1>dpchic
       <small>Subroutine</small>
-    
     </h1>
-    
-<div class="row">
+    <div class="row">
   <div class="col-lg-12">
 <div class="well well-sm">
   <ul class="list-inline" style="margin-bottom:0px;display:inline">
-     
-     
-     
-     
-     
-    
-    
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
     title=" 5.7% of total for procedures.">72 statements</a>
      </li> 
-     
-     
-     
     <li><i class="fa fa-code"></i><a href="../src/pchip_module.f90"> Source File</a></li>
-     
-     
   </ul>
   <ol class="breadcrumb in-well text-right">
-  
-    
      <li><a href='../sourcefile/pchip_module.f90.html'>pchip_module.f90</a></li>
-    
      <li><a href='../module/pchip_module.html'>pchip_module</a></li>
-    
-  
      <li class="active">dpchic</li>
   </ol>
 </div>
@@ -160,32 +106,9 @@
   
   <div class="row">
     <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
-    
-<div id="sidebar">
-  
-<h3>Contents</h3>
+    <div id="sidebar">
+  <h3>Contents</h3>
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
   <div class="list-group">
@@ -193,24 +116,14 @@
   </div>
 </div>
 
-
-
 </div>
 
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2>
-public subroutine dpchic(ic, vc, switch, n, x, f, d, incfd, wk, nwk, ierr)
+    <h2>public subroutine dpchic(ic, vc, switch, n, x, f, d, incfd, wk, nwk, ierr)</h2>
     
-    
-   
-</h2>
-    
-  
 
-
-    
     <p>Piecewise Cubic Hermite Interpolation Coefficients.</p>
 <p>Sets derivatives needed to determine a piecewise monotone piecewise
   cubic interpolant to the data given in X and F satisfying the
@@ -235,31 +148,15 @@ public subroutine dpchic(ic, vc, switch, n, x, f, d, incfd, wk, nwk, ierr)
      cubic interpolation, SIAM Journal on Numerical Analysis
      17, 2 (April 1980), pp. 238-246.</li>
 </ol>
-    
 
     <h3>Arguments</h3>
-    
-      
-<table class="table table-striped varlist">
-<thead><tr><th>Type</th>
-<th>Intent</th><th>Optional</th>
-<th>Attributes</th><th></th><th>Name</th><th></th></thead>
-
-
-
+      <table class="table table-striped varlist">
+<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
 <tbody>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-ic~2"></span>integer,</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>ic</strong>(2)</td><td><p>array of length 2 specifying desired boundary conditions:</p>
 <ul>
 <li>IC(1) = IBEG, desired condition at beginning of data.</li>
@@ -270,8 +167,8 @@ public subroutine dpchic(ic, vc, switch, n, x, f, d, incfd, wk, nwk, ierr)
 <li>IBEG = 0  for the default boundary condition (the same as used by <a href="../proc/dpchim.html">dpchim</a>).</li>
 <li>
 <p>If IBEG/=0, then its sign indicates whether the boundary
-            derivative is to be adjusted, if necessary, to be
-            compatible with monotonicity:</p>
+           derivative is to be adjusted, if necessary, to be
+           compatible with monotonicity:</p>
 <ul>
 <li>IBEG&gt;0  if no adjustment is to be performed.</li>
 <li>IBEG&lt;0  if the derivative is to be adjusted for monotonicity.</li>
@@ -283,255 +180,169 @@ public subroutine dpchic(ic, vc, switch, n, x, f, d, incfd, wk, nwk, ierr)
 <li>IBEG = 1  if first derivative at X(1) is given in VC(1).</li>
 <li>IBEG = 2  if second derivative at X(1) is given in VC(1).</li>
 <li>IBEG = 3  to use the 3-point difference formula for D(1).
-              (Reverts to the default b.c. if N&lt;3).</li>
+             (Reverts to the default b.c. if N&lt;3).</li>
 <li>IBEG = 4  to use the 4-point difference formula for D(1).
-              (Reverts to the default b.c. if N&lt;4).</li>
+             (Reverts to the default b.c. if N&lt;4).</li>
 <li>IBEG = 5  to set D(1) so that the second derivative is continuous
-              at X(2). (Reverts to the default b.c. if N&lt;4.)
-              This option is somewhat analogous to the "not a knot"
-              boundary condition provided by DPCHSP.</li>
+             at X(2). (Reverts to the default b.c. if N&lt;4.)
+             This option is somewhat analogous to the "not a knot"
+             boundary condition provided by DPCHSP.</li>
 </ul>
 <p>NOTES (IBEG):</p>
 <ol>
 <li>An error return is taken if ABS(IBEG)&gt;5 .</li>
 <li>Only in case  IBEG&lt;=0  is it guaranteed that the
-     interpolant will be monotonic in the first interval.
-     If the returned value of D(1) lies between zero and
-     3<em>SLOPE(1), the interpolant will be monotonic.  This
-     is </em><em>NOT</em>* checked if IBEG&gt;0 .</li>
+    interpolant will be monotonic in the first interval.
+    If the returned value of D(1) lies between zero and
+    3<em>SLOPE(1), the interpolant will be monotonic.  This
+    is </em><em>NOT</em>* checked if IBEG&gt;0 .</li>
 <li>If IBEG&lt;0 and D(1) had to be changed to achieve mono-
-     tonicity, a warning error is returned.</li>
+    tonicity, a warning error is returned.</li>
 </ol>
 <p>IEND may take on the same values as IBEG, but applied to
- derivative at X(N).  In case IEND = 1 or 2, the value is
- given in VC(2).</p>
+derivative at X(N).  In case IEND = 1 or 2, the value is
+given in VC(2).</p>
 <p>NOTES (IEND):</p>
 <ol>
 <li>An error return is taken if ABS(IEND)&gt;5 .</li>
 <li>Only in case  IEND&lt;=0  is it guaranteed that the
-     interpolant will be monotonic in the last interval.
-     If the returned value of D(1+(N-1)<em>INCFD) lies between
-     zero and 3</em>SLOPE(N-1), the interpolant will be monotonic.
-     This is <strong>NOT</strong> checked if IEND&gt;0 .</li>
+    interpolant will be monotonic in the last interval.
+    If the returned value of D(1+(N-1)<em>INCFD) lies between
+    zero and 3</em>SLOPE(N-1), the interpolant will be monotonic.
+    This is <strong>NOT</strong> checked if IEND&gt;0 .</li>
 <li>If IEND&lt;0 and D(1+(N-1)*INCFD) had to be changed to
-     achieve monotonicity, a warning error is returned.</li>
+    achieve monotonicity, a warning error is returned.</li>
 </ol></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-vc~2"></span>real(kind=wp),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>vc</strong>(2)</td><td><p>array of length 2 specifying desired boundary
- values, as indicated above.</p>
+values, as indicated above.</p>
 <ul>
 <li>VC(1) need be set only if IC(1) = 1 or 2 .</li>
 <li>VC(2) need be set only if IC(2) = 1 or 2 .</li>
 </ul></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-switch~2"></span>real(kind=wp),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>switch</strong></td><td><p>indicates desired treatment of points where
- direction of monotonicity switches:
- Set SWITCH to zero if interpolant is required to be mono-
- tonic in each interval, regardless of monotonicity of data.</p>
+direction of monotonicity switches:
+Set SWITCH to zero if interpolant is required to be mono-
+tonic in each interval, regardless of monotonicity of data.</p>
 <p>NOTES:</p>
 <ol>
 <li>This will cause D to be set to zero at all switch
-    points, thus forcing extrema there.</li>
+   points, thus forcing extrema there.</li>
 <li>The result of using this option with the default boun-
-    dary conditions will be identical to using DPCHIM, but
-    will generally cost more compute time.
-    This option is provided only to facilitate comparison
-    of different switch and/or boundary conditions.</li>
+   dary conditions will be identical to using DPCHIM, but
+   will generally cost more compute time.
+   This option is provided only to facilitate comparison
+   of different switch and/or boundary conditions.</li>
 </ol>
 <p>Set SWITCH nonzero to use a formula based on the 3-point
- difference formula in the vicinity of switch points.</p>
+difference formula in the vicinity of switch points.</p>
 <p>If SWITCH is positive, the interpolant on each interval
- containing an extremum is controlled to not deviate from
- the data by more than SWITCH*DFLOC, where DFLOC is the
- maximum of the change of F on this interval and its two
- immediate neighbors.</p>
+containing an extremum is controlled to not deviate from
+the data by more than SWITCH*DFLOC, where DFLOC is the
+maximum of the change of F on this interval and its two
+immediate neighbors.</p>
 <p>If SWITCH is negative, no such control is to be imposed.</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-n~10"></span>integer,</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>n</strong></td><td><p>number of data points.  (Error return if N&lt;2).</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-x~9"></span>real(kind=wp),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>x</strong>(*)</td><td><p>array of independent variable values.  The
- elements of X must be strictly increasing:
-      X(I-1) &lt; X(I),  I = 2(1)N.
- (Error return if not.)</p></td>
-  
+elements of X must be strictly increasing:
+     X(I-1) &lt; X(I),  I = 2(1)N.
+(Error return if not.)</p></td>
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-f~7"></span>real(kind=wp),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>f</strong>(incfd,*)</td><td><p>array of dependent variable values to be
- interpolated.  F(1+(I-1)*INCFD) is value corresponding to
- X(I).</p></td>
-  
+interpolated.  F(1+(I-1)*INCFD) is value corresponding to
+X(I).</p></td>
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-d~10"></span>real(kind=wp),</td>
-  <td>intent(out)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(out)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>d</strong>(incfd,*)</td><td><p>array of derivative values at the data
- points.  These values will determine a monotone cubic
- Hermite function on each subinterval on which the data
- are monotonic, except possibly adjacent to switches in
- monotonicity. The value corresponding to X(I) is stored in
-      D(1+(I-1)*INCFD),  I=1(1)N.
- No other entries in D are changed.</p></td>
-  
+points.  These values will determine a monotone cubic
+Hermite function on each subinterval on which the data
+are monotonic, except possibly adjacent to switches in
+monotonicity. The value corresponding to X(I) is stored in
+     D(1+(I-1)*INCFD),  I=1(1)N.
+No other entries in D are changed.</p></td>
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-incfd~10"></span>integer,</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>incfd</strong></td><td><p>increment between successive values in F and D.
- This argument is provided primarily for 2-D applications.
- (Error return if  INCFD&lt;1).</p></td>
-  
+This argument is provided primarily for 2-D applications.
+(Error return if  INCFD&lt;1).</p></td>
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-wk"></span>real(kind=wp),</td>
-  <td>intent(inout)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(inout)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>wk</strong>(nwk)</td><td><p>array of working storage.  The user may
- wish to know that the returned values are:</p>
+wish to know that the returned values are:</p>
 <ul>
 <li><code>WK(I)     = H(I)     = X(I+1) - X(I)</code> ;</li>
 <li><code>WK(N-1+I) = SLOPE(I) = (F(1,I+1) - F(1,I)) / H(I)</code></li>
 </ul>
 <p>for <code>I = 1(1)N-1</code>.</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-nwk"></span>integer,</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>nwk</strong></td><td><p>length of work array. (Error return if  NWK&lt;2*(N-1)).</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-ierr~12"></span>integer,</td>
-  <td>intent(out)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(out)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>ierr</strong></td><td><p>error flag.</p>
 <ul>
 <li>
 <p>Normal return:</p>
-<ul>
-<li>IERR = 0  (no errors).</li>
-</ul>
+</li>
+<li>
+<p>IERR = 0  (no errors).</p>
 </li>
 <li>
 <p>Warning errors:</p>
-<ul>
-<li>IERR = 1  if IBEG&lt;0 and D(1) had to be adjusted for
-            monotonicity.</li>
+</li>
+<li>
+<p>IERR = 1  if IBEG&lt;0 and D(1) had to be adjusted for
+               monotonicity.</p>
+</li>
 <li>IERR = 2  if IEND&lt;0 and D(1+(N-1)*INCFD) had to be
-            adjusted for monotonicity.</li>
-<li>IERR = 3  if both of the above are true.</li>
-</ul>
+               adjusted for monotonicity.</li>
+<li>
+<p>IERR = 3  if both of the above are true.</p>
 </li>
 <li>
 <p>"Recoverable" errors:</p>
-<ul>
-<li>IERR = -1  if N&lt;2 .</li>
+</li>
+<li>
+<p>IERR = -1  if N&lt;2 .</p>
+</li>
 <li>IERR = -2  if INCFD&lt;1 .</li>
 <li>IERR = -3  if the X-array is not strictly increasing.</li>
 <li>IERR = -4  if ABS(IBEG)&gt;5 .</li>
@@ -539,23 +350,14 @@ public subroutine dpchic(ic, vc, switch, n, x, f, d, incfd, wk, nwk, ierr)
 <li>IERR = -6  if both of the above are true.</li>
 <li>IERR = -7  if NWK&lt;2*(N-1) .</li>
 </ul>
-</li>
-</ul>
 <p>(The D-array has not been changed in any of these cases.)
- NOTE:  The above errors are checked in the order listed,
- and following arguments have <strong>NOT</strong> been validated.</p></td>
-  
+NOTE:  The above errors are checked in the order listed,
+and following arguments have <strong>NOT</strong> been validated.</p></td>
 </tr>
-
 </tbody>
 </table>
 
-    
-    
-    
     <br>
-    
-    
     <div class="panel panel-default">
       <div class="panel-heading">
   <h3 class="panel-title">Calls</h3>
@@ -578,35 +380,35 @@ public subroutine dpchic(ic, vc, switch, n, x, f, d, incfd, wk, nwk, ierr)
 <polygon fill="none" stroke="black" points="54,-126 0,-126 0,-102 54,-102 54,-126"/>
 <text text-anchor="middle" x="27" y="-111.6" font-family="Helvetica,sans-Serif" font-size="10.50">dpchic</text>
 </g>
-<!-- proc~xermsg -->
+<!-- proc~dpchce -->
 <g id="proc~~dpchic~~CallsGraph_node2" class="node">
+<title>proc~dpchce</title>
+<g id="a_proc~~dpchic~~CallsGraph_node2"><a xlink:href=".././proc/dpchce.html" xlink:title="dpchce">
+<polygon fill="#d9534f" stroke="#d9534f" points="144,-63 90,-63 90,-39 144,-39 144,-63"/>
+<text text-anchor="middle" x="117" y="-48.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dpchce</text>
+</a>
+</g>
+</g>
+<!-- proc~dpchic&#45;&gt;proc~dpchce -->
+<g id="proc~~dpchic~~CallsGraph_edge1" class="edge">
+<title>proc~dpchic&#45;&gt;proc~dpchce</title>
+<path fill="none" stroke="#000000" d="M44.97,-101.85C57.99,-92.53 76.18,-79.51 90.89,-68.98"/>
+<polygon fill="#000000" stroke="#000000" points="92.99,-71.78 99.08,-63.11 88.92,-66.09 92.99,-71.78"/>
+</g>
+<!-- proc~xermsg -->
+<g id="proc~~dpchic~~CallsGraph_node3" class="node">
 <title>proc~xermsg</title>
-<g id="a_proc~~dpchic~~CallsGraph_node2"><a xlink:href=".././proc/xermsg.html" xlink:title="xermsg">
+<g id="a_proc~~dpchic~~CallsGraph_node3"><a xlink:href=".././proc/xermsg.html" xlink:title="xermsg">
 <polygon fill="#d9534f" stroke="#d9534f" points="324,-126 270,-126 270,-102 324,-102 324,-126"/>
 <text text-anchor="middle" x="297" y="-111.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">xermsg</text>
 </a>
 </g>
 </g>
 <!-- proc~dpchic&#45;&gt;proc~xermsg -->
-<g id="proc~~dpchic~~CallsGraph_edge1" class="edge">
+<g id="proc~~dpchic~~CallsGraph_edge3" class="edge">
 <title>proc~dpchic&#45;&gt;proc~xermsg</title>
 <path fill="none" stroke="#000000" d="M43.2,-126.24C69.28,-146.28 125.05,-185.07 180,-197 203.45,-202.09 212.54,-207.75 234,-197 259.45,-184.25 277.13,-155.54 286.92,-135.48"/>
 <polygon fill="#000000" stroke="#000000" points="290.2,-136.72 291.2,-126.17 283.84,-133.79 290.2,-136.72"/>
-</g>
-<!-- proc~dpchcs -->
-<g id="proc~~dpchic~~CallsGraph_node3" class="node">
-<title>proc~dpchcs</title>
-<g id="a_proc~~dpchic~~CallsGraph_node3"><a xlink:href=".././proc/dpchcs.html" xlink:title="dpchcs">
-<polygon fill="#d9534f" stroke="#d9534f" points="144,-147 90,-147 90,-123 144,-123 144,-147"/>
-<text text-anchor="middle" x="117" y="-132.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dpchcs</text>
-</a>
-</g>
-</g>
-<!-- proc~dpchic&#45;&gt;proc~dpchcs -->
-<g id="proc~~dpchic~~CallsGraph_edge2" class="edge">
-<title>proc~dpchic&#45;&gt;proc~dpchcs</title>
-<path fill="none" stroke="#000000" d="M54.4,-120.3C62.48,-122.23 71.51,-124.38 80.1,-126.43"/>
-<polygon fill="#000000" stroke="#000000" points="79.38,-129.86 89.92,-128.78 81,-123.05 79.38,-129.86"/>
 </g>
 <!-- proc~dpchci -->
 <g id="proc~~dpchic~~CallsGraph_node4" class="node">
@@ -618,79 +420,28 @@ public subroutine dpchic(ic, vc, switch, n, x, f, d, incfd, wk, nwk, ierr)
 </g>
 </g>
 <!-- proc~dpchic&#45;&gt;proc~dpchci -->
-<g id="proc~~dpchic~~CallsGraph_edge3" class="edge">
+<g id="proc~~dpchic~~CallsGraph_edge4" class="edge">
 <title>proc~dpchic&#45;&gt;proc~dpchci</title>
 <path fill="none" stroke="#000000" d="M54.4,-107.7C62.48,-105.77 71.51,-103.62 80.1,-101.57"/>
 <polygon fill="#000000" stroke="#000000" points="81,-104.95 89.92,-99.22 79.38,-98.14 81,-104.95"/>
 </g>
-<!-- proc~dpchce -->
+<!-- proc~dpchcs -->
 <g id="proc~~dpchic~~CallsGraph_node5" class="node">
-<title>proc~dpchce</title>
-<g id="a_proc~~dpchic~~CallsGraph_node5"><a xlink:href=".././proc/dpchce.html" xlink:title="dpchce">
-<polygon fill="#d9534f" stroke="#d9534f" points="144,-63 90,-63 90,-39 144,-39 144,-63"/>
-<text text-anchor="middle" x="117" y="-48.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dpchce</text>
+<title>proc~dpchcs</title>
+<g id="a_proc~~dpchic~~CallsGraph_node5"><a xlink:href=".././proc/dpchcs.html" xlink:title="dpchcs">
+<polygon fill="#d9534f" stroke="#d9534f" points="144,-147 90,-147 90,-123 144,-123 144,-147"/>
+<text text-anchor="middle" x="117" y="-132.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dpchcs</text>
 </a>
 </g>
 </g>
-<!-- proc~dpchic&#45;&gt;proc~dpchce -->
-<g id="proc~~dpchic~~CallsGraph_edge4" class="edge">
-<title>proc~dpchic&#45;&gt;proc~dpchce</title>
-<path fill="none" stroke="#000000" d="M44.97,-101.85C57.99,-92.53 76.18,-79.51 90.89,-68.98"/>
-<polygon fill="#000000" stroke="#000000" points="92.99,-71.78 99.08,-63.11 88.92,-66.09 92.99,-71.78"/>
-</g>
-<!-- proc~dpchsw -->
-<g id="proc~~dpchic~~CallsGraph_node6" class="node">
-<title>proc~dpchsw</title>
-<g id="a_proc~~dpchic~~CallsGraph_node6"><a xlink:href=".././proc/dpchsw.html" xlink:title="dpchsw">
-<polygon fill="#d9534f" stroke="#d9534f" points="234,-188 180,-188 180,-164 234,-164 234,-188"/>
-<text text-anchor="middle" x="207" y="-173.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dpchsw</text>
-</a>
-</g>
-</g>
-<!-- proc~dpchcs&#45;&gt;proc~dpchsw -->
-<g id="proc~~dpchic~~CallsGraph_edge5" class="edge">
-<title>proc~dpchcs&#45;&gt;proc~dpchsw</title>
-<path fill="none" stroke="#000000" d="M143.93,-147.08C152.36,-151.01 161.86,-155.43 170.84,-159.62"/>
-<polygon fill="#000000" stroke="#000000" points="169.41,-162.81 179.95,-163.87 172.37,-156.47 169.41,-162.81"/>
-</g>
-<!-- proc~dpchsd -->
-<g id="proc~~dpchic~~CallsGraph_node8" class="node">
-<title>proc~dpchsd</title>
-<g id="a_proc~~dpchic~~CallsGraph_node8"><a xlink:href=".././proc/dpchsd.html" xlink:title="dpchsd">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="234,-146 180,-146 180,-122 234,-122 234,-146"/>
-<text text-anchor="middle" x="207" y="-131.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dpchsd</text>
-</a>
-</g>
-</g>
-<!-- proc~dpchcs&#45;&gt;proc~dpchsd -->
-<g id="proc~~dpchic~~CallsGraph_edge6" class="edge">
-<title>proc~dpchcs&#45;&gt;proc~dpchsd</title>
-<path fill="none" stroke="#000000" d="M144.4,-134.7C152.39,-134.61 161.31,-134.51 169.82,-134.41"/>
-<polygon fill="#000000" stroke="#000000" points="169.96,-137.91 179.92,-134.3 169.88,-130.91 169.96,-137.91"/>
-</g>
-<!-- proc~dpchst -->
-<g id="proc~~dpchic~~CallsGraph_node9" class="node">
-<title>proc~dpchst</title>
-<g id="a_proc~~dpchic~~CallsGraph_node9"><a xlink:href=".././proc/dpchst.html" xlink:title="dpchst">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="234,-104 180,-104 180,-80 234,-80 234,-104"/>
-<text text-anchor="middle" x="207" y="-89.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dpchst</text>
-</a>
-</g>
-</g>
-<!-- proc~dpchcs&#45;&gt;proc~dpchst -->
-<g id="proc~~dpchic~~CallsGraph_edge7" class="edge">
-<title>proc~dpchcs&#45;&gt;proc~dpchst</title>
-<path fill="none" stroke="#000000" d="M142.98,-122.79C152.07,-118.35 162.5,-113.26 172.22,-108.51"/>
-<polygon fill="#000000" stroke="#000000" points="173.81,-111.62 181.26,-104.09 170.74,-105.33 173.81,-111.62"/>
-</g>
-<!-- proc~dpchci&#45;&gt;proc~dpchst -->
-<g id="proc~~dpchic~~CallsGraph_edge8" class="edge">
-<title>proc~dpchci&#45;&gt;proc~dpchst</title>
-<path fill="none" stroke="#000000" d="M144.4,-92.7C152.39,-92.61 161.31,-92.51 169.82,-92.41"/>
-<polygon fill="#000000" stroke="#000000" points="169.96,-95.91 179.92,-92.3 169.88,-88.91 169.96,-95.91"/>
+<!-- proc~dpchic&#45;&gt;proc~dpchcs -->
+<g id="proc~~dpchic~~CallsGraph_edge2" class="edge">
+<title>proc~dpchic&#45;&gt;proc~dpchcs</title>
+<path fill="none" stroke="#000000" d="M54.4,-120.3C62.48,-122.23 71.51,-124.38 80.1,-126.43"/>
+<polygon fill="#000000" stroke="#000000" points="79.38,-129.86 89.92,-128.78 81,-123.05 79.38,-129.86"/>
 </g>
 <!-- proc~dpchce&#45;&gt;proc~xermsg -->
-<g id="proc~~dpchic~~CallsGraph_edge10" class="edge">
+<g id="proc~~dpchic~~CallsGraph_edge6" class="edge">
 <title>proc~dpchce&#45;&gt;proc~xermsg</title>
 <path fill="none" stroke="#000000" d="M144.23,-52.28C168.34,-54.2 204.69,-59 234,-71 248.49,-76.93 262.97,-86.7 274.28,-95.43"/>
 <polygon fill="#000000" stroke="#000000" points="272.27,-98.3 282.27,-101.82 276.65,-92.84 272.27,-98.3"/>
@@ -705,28 +456,79 @@ public subroutine dpchic(ic, vc, switch, n, x, f, d, incfd, wk, nwk, ierr)
 </g>
 </g>
 <!-- proc~dpchce&#45;&gt;proc~dpchdf -->
-<g id="proc~~dpchic~~CallsGraph_edge9" class="edge">
+<g id="proc~~dpchic~~CallsGraph_edge5" class="edge">
 <title>proc~dpchce&#45;&gt;proc~dpchdf</title>
 <path fill="none" stroke="#000000" d="M144.4,-39.3C152.66,-35.64 161.9,-31.54 170.66,-27.66"/>
 <polygon fill="#000000" stroke="#000000" points="172.19,-30.81 179.92,-23.56 169.36,-24.41 172.19,-30.81"/>
 </g>
+<!-- proc~dpchst -->
+<g id="proc~~dpchic~~CallsGraph_node9" class="node">
+<title>proc~dpchst</title>
+<g id="a_proc~~dpchic~~CallsGraph_node9"><a xlink:href=".././proc/dpchst.html" xlink:title="dpchst">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="234,-104 180,-104 180,-80 234,-80 234,-104"/>
+<text text-anchor="middle" x="207" y="-89.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dpchst</text>
+</a>
+</g>
+</g>
 <!-- proc~dpchce&#45;&gt;proc~dpchst -->
-<g id="proc~~dpchic~~CallsGraph_edge11" class="edge">
+<g id="proc~~dpchic~~CallsGraph_edge7" class="edge">
 <title>proc~dpchce&#45;&gt;proc~dpchst</title>
 <path fill="none" stroke="#000000" d="M143.93,-63.08C152.36,-67.01 161.86,-71.43 170.84,-75.62"/>
 <polygon fill="#000000" stroke="#000000" points="169.41,-78.81 179.95,-79.87 172.37,-72.47 169.41,-78.81"/>
 </g>
-<!-- proc~dpchsw&#45;&gt;proc~xermsg -->
-<g id="proc~~dpchic~~CallsGraph_edge12" class="edge">
-<title>proc~dpchsw&#45;&gt;proc~xermsg</title>
-<path fill="none" stroke="#000000" d="M225.39,-163.75C238.24,-154.69 255.96,-142.21 270.43,-132.01"/>
-<polygon fill="#000000" stroke="#000000" points="272.79,-134.63 278.95,-126.01 268.76,-128.91 272.79,-134.63"/>
+<!-- proc~dpchci&#45;&gt;proc~dpchst -->
+<g id="proc~~dpchic~~CallsGraph_edge8" class="edge">
+<title>proc~dpchci&#45;&gt;proc~dpchst</title>
+<path fill="none" stroke="#000000" d="M144.4,-92.7C152.39,-92.61 161.31,-92.51 169.82,-92.41"/>
+<polygon fill="#000000" stroke="#000000" points="169.96,-95.91 179.92,-92.3 169.88,-88.91 169.96,-95.91"/>
+</g>
+<!-- proc~dpchsd -->
+<g id="proc~~dpchic~~CallsGraph_node6" class="node">
+<title>proc~dpchsd</title>
+<g id="a_proc~~dpchic~~CallsGraph_node6"><a xlink:href=".././proc/dpchsd.html" xlink:title="dpchsd">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="234,-146 180,-146 180,-122 234,-122 234,-146"/>
+<text text-anchor="middle" x="207" y="-131.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dpchsd</text>
+</a>
+</g>
+</g>
+<!-- proc~dpchcs&#45;&gt;proc~dpchsd -->
+<g id="proc~~dpchic~~CallsGraph_edge9" class="edge">
+<title>proc~dpchcs&#45;&gt;proc~dpchsd</title>
+<path fill="none" stroke="#000000" d="M144.4,-134.7C152.39,-134.61 161.31,-134.51 169.82,-134.41"/>
+<polygon fill="#000000" stroke="#000000" points="169.96,-137.91 179.92,-134.3 169.88,-130.91 169.96,-137.91"/>
+</g>
+<!-- proc~dpchsw -->
+<g id="proc~~dpchic~~CallsGraph_node8" class="node">
+<title>proc~dpchsw</title>
+<g id="a_proc~~dpchic~~CallsGraph_node8"><a xlink:href=".././proc/dpchsw.html" xlink:title="dpchsw">
+<polygon fill="#d9534f" stroke="#d9534f" points="234,-188 180,-188 180,-164 234,-164 234,-188"/>
+<text text-anchor="middle" x="207" y="-173.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dpchsw</text>
+</a>
+</g>
+</g>
+<!-- proc~dpchcs&#45;&gt;proc~dpchsw -->
+<g id="proc~~dpchic~~CallsGraph_edge10" class="edge">
+<title>proc~dpchcs&#45;&gt;proc~dpchsw</title>
+<path fill="none" stroke="#000000" d="M143.93,-147.08C152.36,-151.01 161.86,-155.43 170.84,-159.62"/>
+<polygon fill="#000000" stroke="#000000" points="169.41,-162.81 179.95,-163.87 172.37,-156.47 169.41,-162.81"/>
+</g>
+<!-- proc~dpchcs&#45;&gt;proc~dpchst -->
+<g id="proc~~dpchic~~CallsGraph_edge11" class="edge">
+<title>proc~dpchcs&#45;&gt;proc~dpchst</title>
+<path fill="none" stroke="#000000" d="M142.98,-122.79C152.07,-118.35 162.5,-113.26 172.22,-108.51"/>
+<polygon fill="#000000" stroke="#000000" points="173.81,-111.62 181.26,-104.09 170.74,-105.33 173.81,-111.62"/>
 </g>
 <!-- proc~dpchdf&#45;&gt;proc~xermsg -->
-<g id="proc~~dpchic~~CallsGraph_edge13" class="edge">
+<g id="proc~~dpchic~~CallsGraph_edge12" class="edge">
 <title>proc~dpchdf&#45;&gt;proc~xermsg</title>
 <path fill="none" stroke="#000000" d="M220.69,-24.18C225.01,-28.46 229.81,-33.36 234,-38 250.57,-56.33 268.28,-78.31 280.51,-93.9"/>
 <polygon fill="#000000" stroke="#000000" points="277.79,-96.1 286.7,-101.84 283.31,-91.8 277.79,-96.1"/>
+</g>
+<!-- proc~dpchsw&#45;&gt;proc~xermsg -->
+<g id="proc~~dpchic~~CallsGraph_edge13" class="edge">
+<title>proc~dpchsw&#45;&gt;proc~xermsg</title>
+<path fill="none" stroke="#000000" d="M225.39,-163.75C238.24,-154.69 255.96,-142.21 270.43,-132.01"/>
+<polygon fill="#000000" stroke="#000000" points="272.79,-134.63 278.95,-126.01 268.76,-128.91 272.79,-134.63"/>
 </g>
 </g>
 </svg>
@@ -791,35 +593,11 @@ public subroutine dpchic(ic, vc, switch, n, x, f, d, incfd, wk, nwk, ierr)
     </div></div></div></div>
       </div>
     </div>
-     
-     
     <br>
 
     <section class="visible-xs visible-sm hidden-md">
-      
-<h3>Contents</h3>
+      <h3>Contents</h3>
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
   <div class="list-group">
@@ -827,283 +605,268 @@ public subroutine dpchic(ic, vc, switch, n, x, f, d, incfd, wk, nwk, ierr)
   </div>
 </div>
 
-
-
     </section>
     <br class="visible-xs visible-sm hidden-md">
 
-    
 
-    
-    
-    
     
     
 
     
     
-    
-    
-    
 
 
-    
-    
     
     <section>
     <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span>    <span class="k">subroutine </span><span class="n">dpchic</span> <span class="p">(</span><span class="n">ic</span><span class="p">,</span> <span class="n">vc</span><span class="p">,</span> <span class="n">switch</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">incfd</span><span class="p">,</span> <span class="n">wk</span><span class="p">,</span> <span class="n">nwk</span><span class="p">,</span> <span class="n">ierr</span><span class="p">)</span>
+    <div class="highlight"><pre><span></span><span class="w">    </span><span class="k">subroutine </span><span class="n">dpchic</span><span class="w"> </span><span class="p">(</span><span class="n">ic</span><span class="p">,</span><span class="w"> </span><span class="n">vc</span><span class="p">,</span><span class="w"> </span><span class="n">switch</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">,</span><span class="w"> </span><span class="n">incfd</span><span class="p">,</span><span class="w"> </span><span class="n">wk</span><span class="p">,</span><span class="w"> </span><span class="n">nwk</span><span class="p">,</span><span class="w"> </span><span class="n">ierr</span><span class="p">)</span><span class="w"></span>
 
-    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">ic</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>   <span class="c">!! array of length 2 specifying desired boundary conditions:</span>
-                                   <span class="c">!!</span>
-                                   <span class="c">!!  * IC(1) = IBEG, desired condition at beginning of data.</span>
-                                   <span class="c">!!  * IC(2) = IEND, desired condition at end of data.</span>
-                                   <span class="c">!!</span>
-                                   <span class="c">!! Valid values for IBEG:</span>
-                                   <span class="c">!!</span>
-                                   <span class="c">!!  * IBEG = 0  for the default boundary condition (the same as used by [[DPCHIM]]).</span>
-                                   <span class="c">!!  * If IBEG/=0, then its sign indicates whether the boundary</span>
-                                   <span class="c">!!            derivative is to be adjusted, if necessary, to be</span>
-                                   <span class="c">!!            compatible with monotonicity:</span>
-                                   <span class="c">!!</span>
-                                   <span class="c">!!     * IBEG&gt;0  if no adjustment is to be performed.</span>
-                                   <span class="c">!!     * IBEG&lt;0  if the derivative is to be adjusted for monotonicity.</span>
-                                   <span class="c">!!</span>
-                                   <span class="c">!!  Allowable values for the magnitude of IBEG are:</span>
-                                   <span class="c">!!</span>
-                                   <span class="c">!!  * IBEG = 1  if first derivative at X(1) is given in VC(1).</span>
-                                   <span class="c">!!  * IBEG = 2  if second derivative at X(1) is given in VC(1).</span>
-                                   <span class="c">!!  * IBEG = 3  to use the 3-point difference formula for D(1).</span>
-                                   <span class="c">!!              (Reverts to the default b.c. if N&lt;3).</span>
-                                   <span class="c">!!  * IBEG = 4  to use the 4-point difference formula for D(1).</span>
-                                   <span class="c">!!              (Reverts to the default b.c. if N&lt;4).</span>
-                                   <span class="c">!!  * IBEG = 5  to set D(1) so that the second derivative is continuous</span>
-                                   <span class="c">!!              at X(2). (Reverts to the default b.c. if N&lt;4.)</span>
-                                   <span class="c">!!              This option is somewhat analogous to the &quot;not a knot&quot;</span>
-                                   <span class="c">!!              boundary condition provided by DPCHSP.</span>
-                                   <span class="c">!!</span>
-                                   <span class="c">!! NOTES (IBEG):</span>
-                                   <span class="c">!!</span>
-                                   <span class="c">!!  1. An error return is taken if ABS(IBEG)&gt;5 .</span>
-                                   <span class="c">!!  2. Only in case  IBEG&lt;=0  is it guaranteed that the</span>
-                                   <span class="c">!!     interpolant will be monotonic in the first interval.</span>
-                                   <span class="c">!!     If the returned value of D(1) lies between zero and</span>
-                                   <span class="c">!!     3*SLOPE(1), the interpolant will be monotonic.  This</span>
-                                   <span class="c">!!     is **NOT** checked if IBEG&gt;0 .</span>
-                                   <span class="c">!!  3. If IBEG&lt;0 and D(1) had to be changed to achieve mono-</span>
-                                   <span class="c">!!     tonicity, a warning error is returned.</span>
-                                   <span class="c">!!</span>
-                                   <span class="c">!! IEND may take on the same values as IBEG, but applied to</span>
-                                   <span class="c">!! derivative at X(N).  In case IEND = 1 or 2, the value is</span>
-                                   <span class="c">!! given in VC(2).</span>
-                                   <span class="c">!!</span>
-                                   <span class="c">!! NOTES (IEND):</span>
-                                   <span class="c">!!</span>
-                                   <span class="c">!!  1. An error return is taken if ABS(IEND)&gt;5 .</span>
-                                   <span class="c">!!  2. Only in case  IEND&lt;=0  is it guaranteed that the</span>
-                                   <span class="c">!!     interpolant will be monotonic in the last interval.</span>
-                                   <span class="c">!!     If the returned value of D(1+(N-1)*INCFD) lies between</span>
-                                   <span class="c">!!     zero and 3*SLOPE(N-1), the interpolant will be monotonic.</span>
-                                   <span class="c">!!     This is **NOT** checked if IEND&gt;0 .</span>
-                                   <span class="c">!!  3. If IEND&lt;0 and D(1+(N-1)*INCFD) had to be changed to</span>
-                                   <span class="c">!!     achieve monotonicity, a warning error is returned.</span>
-    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">n</span>        <span class="c">!! number of data points.  (Error return if N&lt;2).</span>
-    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">incfd</span>    <span class="c">!! increment between successive values in F and D.</span>
-                                   <span class="c">!! This argument is provided primarily for 2-D applications.</span>
-                                   <span class="c">!! (Error return if  INCFD&lt;1).</span>
-    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">nwk</span>      <span class="c">!! length of work array. (Error return if  NWK&lt;2*(N-1)).</span>
-    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">ierr</span>   <span class="c">!! error flag.</span>
-                                   <span class="c">!!</span>
-                                   <span class="c">!! * Normal return:</span>
-                                   <span class="c">!!</span>
-                                   <span class="c">!!    * IERR = 0  (no errors).</span>
-                                   <span class="c">!!</span>
-                                   <span class="c">!! * Warning errors:</span>
-                                   <span class="c">!!</span>
-                                   <span class="c">!!    * IERR = 1  if IBEG&lt;0 and D(1) had to be adjusted for</span>
-                                   <span class="c">!!                monotonicity.</span>
-                                   <span class="c">!!    * IERR = 2  if IEND&lt;0 and D(1+(N-1)*INCFD) had to be</span>
-                                   <span class="c">!!                adjusted for monotonicity.</span>
-                                   <span class="c">!!    * IERR = 3  if both of the above are true.</span>
-                                   <span class="c">!!</span>
-                                   <span class="c">!! * &quot;Recoverable&quot; errors:</span>
-                                   <span class="c">!!</span>
-                                   <span class="c">!!    * IERR = -1  if N&lt;2 .</span>
-                                   <span class="c">!!    * IERR = -2  if INCFD&lt;1 .</span>
-                                   <span class="c">!!    * IERR = -3  if the X-array is not strictly increasing.</span>
-                                   <span class="c">!!    * IERR = -4  if ABS(IBEG)&gt;5 .</span>
-                                   <span class="c">!!    * IERR = -5  if ABS(IEND)&gt;5 .</span>
-                                   <span class="c">!!    * IERR = -6  if both of the above are true.</span>
-                                   <span class="c">!!    * IERR = -7  if NWK&lt;2*(N-1) .</span>
-                                   <span class="c">!!</span>
-                                   <span class="c">!! (The D-array has not been changed in any of these cases.)</span>
-                                   <span class="c">!! NOTE:  The above errors are checked in the order listed,</span>
-                                   <span class="c">!! and following arguments have **NOT** been validated.</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">vc</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>    <span class="c">!! array of length 2 specifying desired boundary</span>
-                                    <span class="c">!! values, as indicated above.</span>
-                                    <span class="c">!!</span>
-                                    <span class="c">!! * VC(1) need be set only if IC(1) = 1 or 2 .</span>
-                                    <span class="c">!! * VC(2) need be set only if IC(2) = 1 or 2 .</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">switch</span>   <span class="c">!! indicates desired treatment of points where</span>
-                                    <span class="c">!! direction of monotonicity switches:</span>
-                                    <span class="c">!! Set SWITCH to zero if interpolant is required to be mono-</span>
-                                    <span class="c">!! tonic in each interval, regardless of monotonicity of data.</span>
-                                    <span class="c">!!</span>
-                                    <span class="c">!! NOTES:</span>
-                                    <span class="c">!!</span>
-                                    <span class="c">!! 1. This will cause D to be set to zero at all switch</span>
-                                    <span class="c">!!    points, thus forcing extrema there.</span>
-                                    <span class="c">!! 2. The result of using this option with the default boun-</span>
-                                    <span class="c">!!    dary conditions will be identical to using DPCHIM, but</span>
-                                    <span class="c">!!    will generally cost more compute time.</span>
-                                    <span class="c">!!    This option is provided only to facilitate comparison</span>
-                                    <span class="c">!!    of different switch and/or boundary conditions.</span>
-                                    <span class="c">!!</span>
-                                    <span class="c">!! Set SWITCH nonzero to use a formula based on the 3-point</span>
-                                    <span class="c">!! difference formula in the vicinity of switch points.</span>
-                                    <span class="c">!!</span>
-                                    <span class="c">!! If SWITCH is positive, the interpolant on each interval</span>
-                                    <span class="c">!! containing an extremum is controlled to not deviate from</span>
-                                    <span class="c">!! the data by more than SWITCH*DFLOC, where DFLOC is the</span>
-                                    <span class="c">!! maximum of the change of F on this interval and its two</span>
-                                    <span class="c">!! immediate neighbors.</span>
-                                    <span class="c">!!</span>
-                                    <span class="c">!! If SWITCH is negative, no such control is to be imposed.</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">x</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>     <span class="c">!! array of independent variable values.  The</span>
-                                    <span class="c">!! elements of X must be strictly increasing:</span>
-                                    <span class="c">!!      X(I-1) &lt; X(I),  I = 2(1)N.</span>
-                                    <span class="c">!! (Error return if not.)</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">f</span><span class="p">(</span><span class="n">incfd</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="c">!! array of dependent variable values to be</span>
-                                      <span class="c">!! interpolated.  F(1+(I-1)*INCFD) is value corresponding to</span>
-                                      <span class="c">!! X(I).</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="n">d</span><span class="p">(</span><span class="n">incfd</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="c">!! array of derivative values at the data</span>
-                                       <span class="c">!! points.  These values will determine a monotone cubic</span>
-                                       <span class="c">!! Hermite function on each subinterval on which the data</span>
-                                       <span class="c">!! are monotonic, except possibly adjacent to switches in</span>
-                                       <span class="c">!! monotonicity. The value corresponding to X(I) is stored in</span>
-                                       <span class="c">!!      D(1+(I-1)*INCFD),  I=1(1)N.</span>
-                                       <span class="c">!! No other entries in D are changed.</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">wk</span><span class="p">(</span><span class="n">nwk</span><span class="p">)</span> <span class="c">!! array of working storage.  The user may</span>
-                                      <span class="c">!! wish to know that the returned values are:</span>
-                                      <span class="c">!!</span>
-                                      <span class="c">!! * `WK(I)     = H(I)     = X(I+1) - X(I)` ;</span>
-                                      <span class="c">!! * `WK(N-1+I) = SLOPE(I) = (F(1,I+1) - F(1,I)) / H(I)`</span>
-                                      <span class="c">!!</span>
-                                      <span class="c">!! for `I = 1(1)N-1`.</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">ic</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w">   </span><span class="c">!! array of length 2 specifying desired boundary conditions:</span>
+<span class="w">                                   </span><span class="c">!!</span>
+<span class="w">                                   </span><span class="c">!!  * IC(1) = IBEG, desired condition at beginning of data.</span>
+<span class="w">                                   </span><span class="c">!!  * IC(2) = IEND, desired condition at end of data.</span>
+<span class="w">                                   </span><span class="c">!!</span>
+<span class="w">                                   </span><span class="c">!! Valid values for IBEG:</span>
+<span class="w">                                   </span><span class="c">!!</span>
+<span class="w">                                   </span><span class="c">!!  * IBEG = 0  for the default boundary condition (the same as used by [[DPCHIM]]).</span>
+<span class="w">                                   </span><span class="c">!!  * If IBEG/=0, then its sign indicates whether the boundary</span>
+<span class="w">                                   </span><span class="c">!!            derivative is to be adjusted, if necessary, to be</span>
+<span class="w">                                   </span><span class="c">!!            compatible with monotonicity:</span>
+<span class="w">                                   </span><span class="c">!!</span>
+<span class="w">                                   </span><span class="c">!!     * IBEG&gt;0  if no adjustment is to be performed.</span>
+<span class="w">                                   </span><span class="c">!!     * IBEG&lt;0  if the derivative is to be adjusted for monotonicity.</span>
+<span class="w">                                   </span><span class="c">!!</span>
+<span class="w">                                   </span><span class="c">!!  Allowable values for the magnitude of IBEG are:</span>
+<span class="w">                                   </span><span class="c">!!</span>
+<span class="w">                                   </span><span class="c">!!  * IBEG = 1  if first derivative at X(1) is given in VC(1).</span>
+<span class="w">                                   </span><span class="c">!!  * IBEG = 2  if second derivative at X(1) is given in VC(1).</span>
+<span class="w">                                   </span><span class="c">!!  * IBEG = 3  to use the 3-point difference formula for D(1).</span>
+<span class="w">                                   </span><span class="c">!!              (Reverts to the default b.c. if N&lt;3).</span>
+<span class="w">                                   </span><span class="c">!!  * IBEG = 4  to use the 4-point difference formula for D(1).</span>
+<span class="w">                                   </span><span class="c">!!              (Reverts to the default b.c. if N&lt;4).</span>
+<span class="w">                                   </span><span class="c">!!  * IBEG = 5  to set D(1) so that the second derivative is continuous</span>
+<span class="w">                                   </span><span class="c">!!              at X(2). (Reverts to the default b.c. if N&lt;4.)</span>
+<span class="w">                                   </span><span class="c">!!              This option is somewhat analogous to the &quot;not a knot&quot;</span>
+<span class="w">                                   </span><span class="c">!!              boundary condition provided by DPCHSP.</span>
+<span class="w">                                   </span><span class="c">!!</span>
+<span class="w">                                   </span><span class="c">!! NOTES (IBEG):</span>
+<span class="w">                                   </span><span class="c">!!</span>
+<span class="w">                                   </span><span class="c">!!  1. An error return is taken if ABS(IBEG)&gt;5 .</span>
+<span class="w">                                   </span><span class="c">!!  2. Only in case  IBEG&lt;=0  is it guaranteed that the</span>
+<span class="w">                                   </span><span class="c">!!     interpolant will be monotonic in the first interval.</span>
+<span class="w">                                   </span><span class="c">!!     If the returned value of D(1) lies between zero and</span>
+<span class="w">                                   </span><span class="c">!!     3*SLOPE(1), the interpolant will be monotonic.  This</span>
+<span class="w">                                   </span><span class="c">!!     is **NOT** checked if IBEG&gt;0 .</span>
+<span class="w">                                   </span><span class="c">!!  3. If IBEG&lt;0 and D(1) had to be changed to achieve mono-</span>
+<span class="w">                                   </span><span class="c">!!     tonicity, a warning error is returned.</span>
+<span class="w">                                   </span><span class="c">!!</span>
+<span class="w">                                   </span><span class="c">!! IEND may take on the same values as IBEG, but applied to</span>
+<span class="w">                                   </span><span class="c">!! derivative at X(N).  In case IEND = 1 or 2, the value is</span>
+<span class="w">                                   </span><span class="c">!! given in VC(2).</span>
+<span class="w">                                   </span><span class="c">!!</span>
+<span class="w">                                   </span><span class="c">!! NOTES (IEND):</span>
+<span class="w">                                   </span><span class="c">!!</span>
+<span class="w">                                   </span><span class="c">!!  1. An error return is taken if ABS(IEND)&gt;5 .</span>
+<span class="w">                                   </span><span class="c">!!  2. Only in case  IEND&lt;=0  is it guaranteed that the</span>
+<span class="w">                                   </span><span class="c">!!     interpolant will be monotonic in the last interval.</span>
+<span class="w">                                   </span><span class="c">!!     If the returned value of D(1+(N-1)*INCFD) lies between</span>
+<span class="w">                                   </span><span class="c">!!     zero and 3*SLOPE(N-1), the interpolant will be monotonic.</span>
+<span class="w">                                   </span><span class="c">!!     This is **NOT** checked if IEND&gt;0 .</span>
+<span class="w">                                   </span><span class="c">!!  3. If IEND&lt;0 and D(1+(N-1)*INCFD) had to be changed to</span>
+<span class="w">                                   </span><span class="c">!!     achieve monotonicity, a warning error is returned.</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">n</span><span class="w">        </span><span class="c">!! number of data points.  (Error return if N&lt;2).</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">incfd</span><span class="w">    </span><span class="c">!! increment between successive values in F and D.</span>
+<span class="w">                                   </span><span class="c">!! This argument is provided primarily for 2-D applications.</span>
+<span class="w">                                   </span><span class="c">!! (Error return if  INCFD&lt;1).</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">nwk</span><span class="w">      </span><span class="c">!! length of work array. (Error return if  NWK&lt;2*(N-1)).</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">ierr</span><span class="w">   </span><span class="c">!! error flag.</span>
+<span class="w">                                   </span><span class="c">!!</span>
+<span class="w">                                   </span><span class="c">!! * Normal return:</span>
+<span class="w">                                   </span><span class="c">!!</span>
+<span class="w">                                   </span><span class="c">!!    * IERR = 0  (no errors).</span>
+<span class="w">                                   </span><span class="c">!!</span>
+<span class="w">                                   </span><span class="c">!! * Warning errors:</span>
+<span class="w">                                   </span><span class="c">!!</span>
+<span class="w">                                   </span><span class="c">!!    * IERR = 1  if IBEG&lt;0 and D(1) had to be adjusted for</span>
+<span class="w">                                   </span><span class="c">!!                monotonicity.</span>
+<span class="w">                                   </span><span class="c">!!    * IERR = 2  if IEND&lt;0 and D(1+(N-1)*INCFD) had to be</span>
+<span class="w">                                   </span><span class="c">!!                adjusted for monotonicity.</span>
+<span class="w">                                   </span><span class="c">!!    * IERR = 3  if both of the above are true.</span>
+<span class="w">                                   </span><span class="c">!!</span>
+<span class="w">                                   </span><span class="c">!! * &quot;Recoverable&quot; errors:</span>
+<span class="w">                                   </span><span class="c">!!</span>
+<span class="w">                                   </span><span class="c">!!    * IERR = -1  if N&lt;2 .</span>
+<span class="w">                                   </span><span class="c">!!    * IERR = -2  if INCFD&lt;1 .</span>
+<span class="w">                                   </span><span class="c">!!    * IERR = -3  if the X-array is not strictly increasing.</span>
+<span class="w">                                   </span><span class="c">!!    * IERR = -4  if ABS(IBEG)&gt;5 .</span>
+<span class="w">                                   </span><span class="c">!!    * IERR = -5  if ABS(IEND)&gt;5 .</span>
+<span class="w">                                   </span><span class="c">!!    * IERR = -6  if both of the above are true.</span>
+<span class="w">                                   </span><span class="c">!!    * IERR = -7  if NWK&lt;2*(N-1) .</span>
+<span class="w">                                   </span><span class="c">!!</span>
+<span class="w">                                   </span><span class="c">!! (The D-array has not been changed in any of these cases.)</span>
+<span class="w">                                   </span><span class="c">!! NOTE:  The above errors are checked in the order listed,</span>
+<span class="w">                                   </span><span class="c">!! and following arguments have **NOT** been validated.</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">vc</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w">    </span><span class="c">!! array of length 2 specifying desired boundary</span>
+<span class="w">                                    </span><span class="c">!! values, as indicated above.</span>
+<span class="w">                                    </span><span class="c">!!</span>
+<span class="w">                                    </span><span class="c">!! * VC(1) need be set only if IC(1) = 1 or 2 .</span>
+<span class="w">                                    </span><span class="c">!! * VC(2) need be set only if IC(2) = 1 or 2 .</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">switch</span><span class="w">   </span><span class="c">!! indicates desired treatment of points where</span>
+<span class="w">                                    </span><span class="c">!! direction of monotonicity switches:</span>
+<span class="w">                                    </span><span class="c">!! Set SWITCH to zero if interpolant is required to be mono-</span>
+<span class="w">                                    </span><span class="c">!! tonic in each interval, regardless of monotonicity of data.</span>
+<span class="w">                                    </span><span class="c">!!</span>
+<span class="w">                                    </span><span class="c">!! NOTES:</span>
+<span class="w">                                    </span><span class="c">!!</span>
+<span class="w">                                    </span><span class="c">!! 1. This will cause D to be set to zero at all switch</span>
+<span class="w">                                    </span><span class="c">!!    points, thus forcing extrema there.</span>
+<span class="w">                                    </span><span class="c">!! 2. The result of using this option with the default boun-</span>
+<span class="w">                                    </span><span class="c">!!    dary conditions will be identical to using DPCHIM, but</span>
+<span class="w">                                    </span><span class="c">!!    will generally cost more compute time.</span>
+<span class="w">                                    </span><span class="c">!!    This option is provided only to facilitate comparison</span>
+<span class="w">                                    </span><span class="c">!!    of different switch and/or boundary conditions.</span>
+<span class="w">                                    </span><span class="c">!!</span>
+<span class="w">                                    </span><span class="c">!! Set SWITCH nonzero to use a formula based on the 3-point</span>
+<span class="w">                                    </span><span class="c">!! difference formula in the vicinity of switch points.</span>
+<span class="w">                                    </span><span class="c">!!</span>
+<span class="w">                                    </span><span class="c">!! If SWITCH is positive, the interpolant on each interval</span>
+<span class="w">                                    </span><span class="c">!! containing an extremum is controlled to not deviate from</span>
+<span class="w">                                    </span><span class="c">!! the data by more than SWITCH*DFLOC, where DFLOC is the</span>
+<span class="w">                                    </span><span class="c">!! maximum of the change of F on this interval and its two</span>
+<span class="w">                                    </span><span class="c">!! immediate neighbors.</span>
+<span class="w">                                    </span><span class="c">!!</span>
+<span class="w">                                    </span><span class="c">!! If SWITCH is negative, no such control is to be imposed.</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">     </span><span class="c">!! array of independent variable values.  The</span>
+<span class="w">                                    </span><span class="c">!! elements of X must be strictly increasing:</span>
+<span class="w">                                    </span><span class="c">!!      X(I-1) &lt; X(I),  I = 2(1)N.</span>
+<span class="w">                                    </span><span class="c">!! (Error return if not.)</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">f</span><span class="p">(</span><span class="n">incfd</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="c">!! array of dependent variable values to be</span>
+<span class="w">                                      </span><span class="c">!! interpolated.  F(1+(I-1)*INCFD) is value corresponding to</span>
+<span class="w">                                      </span><span class="c">!! X(I).</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">d</span><span class="p">(</span><span class="n">incfd</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="c">!! array of derivative values at the data</span>
+<span class="w">                                       </span><span class="c">!! points.  These values will determine a monotone cubic</span>
+<span class="w">                                       </span><span class="c">!! Hermite function on each subinterval on which the data</span>
+<span class="w">                                       </span><span class="c">!! are monotonic, except possibly adjacent to switches in</span>
+<span class="w">                                       </span><span class="c">!! monotonicity. The value corresponding to X(I) is stored in</span>
+<span class="w">                                       </span><span class="c">!!      D(1+(I-1)*INCFD),  I=1(1)N.</span>
+<span class="w">                                       </span><span class="c">!! No other entries in D are changed.</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">wk</span><span class="p">(</span><span class="n">nwk</span><span class="p">)</span><span class="w"> </span><span class="c">!! array of working storage.  The user may</span>
+<span class="w">                                      </span><span class="c">!! wish to know that the returned values are:</span>
+<span class="w">                                      </span><span class="c">!!</span>
+<span class="w">                                      </span><span class="c">!! * `WK(I)     = H(I)     = X(I+1) - X(I)` ;</span>
+<span class="w">                                      </span><span class="c">!! * `WK(N-1+I) = SLOPE(I) = (F(1,I+1) - F(1,I)) / H(I)`</span>
+<span class="w">                                      </span><span class="c">!!</span>
+<span class="w">                                      </span><span class="c">!! for `I = 1(1)N-1`.</span>
 
-    <span class="kt">integer</span> <span class="kd">::</span> <span class="n">i</span><span class="p">,</span> <span class="n">ibeg</span><span class="p">,</span> <span class="n">iend</span><span class="p">,</span> <span class="n">nless1</span>
+<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">ibeg</span><span class="p">,</span><span class="w"> </span><span class="n">iend</span><span class="p">,</span><span class="w"> </span><span class="n">nless1</span><span class="w"></span>
 
-    <span class="c">! validity-check arguments.</span>
-    <span class="k">if</span> <span class="p">(</span> <span class="n">n</span><span class="o">&lt;</span><span class="mi">2</span> <span class="p">)</span> <span class="k">then</span>
-<span class="k">        </span><span class="n">ierr</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-        <span class="k">call </span><span class="n">xermsg</span> <span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span> <span class="s1">&#39;dpchic&#39;</span><span class="p">,</span> <span class="s1">&#39;number of data points less than two&#39;</span><span class="p">,</span> <span class="n">ierr</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="k">return</span>
+<span class="w">    </span><span class="c">! validity-check arguments.</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">n</span><span class="o">&lt;</span><span class="mi">2</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        </span><span class="n">ierr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="w"></span>
+<span class="w">        </span><span class="k">call </span><span class="n">xermsg</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;dpchic&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;number of data points less than two&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">ierr</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span>
 <span class="k">    end if</span>
-<span class="k">    if</span> <span class="p">(</span> <span class="n">incfd</span><span class="o">&lt;</span><span class="mi">1</span> <span class="p">)</span> <span class="k">then</span>
-<span class="k">        </span><span class="n">ierr</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span>
-        <span class="k">call </span><span class="n">xermsg</span> <span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span> <span class="s1">&#39;dpchic&#39;</span><span class="p">,</span> <span class="s1">&#39;increment less than one&#39;</span><span class="p">,</span> <span class="n">ierr</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="k">return</span>
+<span class="k">    if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">incfd</span><span class="o">&lt;</span><span class="mi">1</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        </span><span class="n">ierr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">2</span><span class="w"></span>
+<span class="w">        </span><span class="k">call </span><span class="n">xermsg</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;dpchic&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;increment less than one&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">ierr</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span>
 <span class="k">    end if</span>
-<span class="k">    do </span><span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n</span>
-        <span class="k">if</span> <span class="p">(</span> <span class="n">x</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">&lt;=</span><span class="n">x</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">)</span> <span class="k">then</span>
-            <span class="c">! x-array not strictly increasing.</span>
-            <span class="n">ierr</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span>
-            <span class="k">call </span><span class="n">xermsg</span> <span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span> <span class="s1">&#39;dpchic&#39;</span><span class="p">,</span> <span class="s1">&#39;x-array not strictly increasing&#39;</span><span class="p">,</span> <span class="n">ierr</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-            <span class="k">return</span>
+<span class="k">    do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">&lt;=</span><span class="n">x</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
+<span class="w">            </span><span class="c">! x-array not strictly increasing.</span>
+<span class="w">            </span><span class="n">ierr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">3</span><span class="w"></span>
+<span class="w">            </span><span class="k">call </span><span class="n">xermsg</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;dpchic&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;x-array not strictly increasing&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">ierr</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="k">return</span>
 <span class="k">        end if</span>
 <span class="k">    end do</span>
 
-<span class="k">    </span><span class="n">ibeg</span> <span class="o">=</span> <span class="n">ic</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">iend</span> <span class="o">=</span> <span class="n">ic</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-    <span class="n">ierr</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">ibeg</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">)</span>  <span class="n">ierr</span> <span class="o">=</span> <span class="n">ierr</span> <span class="o">-</span> <span class="mi">1</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">iend</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">)</span>  <span class="n">ierr</span> <span class="o">=</span> <span class="n">ierr</span> <span class="o">-</span> <span class="mi">2</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">ierr</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
-        <span class="c">! ic out of range return.</span>
-        <span class="n">ierr</span> <span class="o">=</span> <span class="n">ierr</span> <span class="o">-</span> <span class="mi">3</span>
-        <span class="k">call </span><span class="n">xermsg</span> <span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span> <span class="s1">&#39;dpchic&#39;</span><span class="p">,</span> <span class="s1">&#39;ic out of range&#39;</span><span class="p">,</span> <span class="n">ierr</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="k">return</span>
-<span class="k">    end if</span>
+<span class="k">    </span><span class="n">ibeg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ic</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">iend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ic</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">ierr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">ibeg</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w">  </span><span class="n">ierr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ierr</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">iend</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w">  </span><span class="n">ierr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ierr</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ierr</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
+<span class="w">        </span><span class="c">! ic out of range return.</span>
+<span class="w">        </span><span class="n">ierr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ierr</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">3</span><span class="w"></span>
+<span class="w">        </span><span class="k">call </span><span class="n">xermsg</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;dpchic&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;ic out of range&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">ierr</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span>
+<span class="k">    end if</span><span class="w"></span>
 
-    <span class="c">!  function definition is ok -- go on.</span>
+<span class="w">    </span><span class="c">!  function definition is ok -- go on.</span>
 
-    <span class="n">nless1</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span>
-    <span class="k">if</span> <span class="p">(</span> <span class="n">nwk</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="o">*</span><span class="n">nless1</span> <span class="p">)</span> <span class="k">then</span>
-<span class="k">        </span><span class="n">ierr</span> <span class="o">=</span> <span class="o">-</span><span class="mi">7</span>
-        <span class="k">call </span><span class="n">xermsg</span> <span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span> <span class="s1">&#39;dpchic&#39;</span><span class="p">,</span> <span class="s1">&#39;work array too small&#39;</span><span class="p">,</span> <span class="n">ierr</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="k">return</span>
-<span class="k">    end if</span>
+<span class="w">    </span><span class="n">nless1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">nwk</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">nless1</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        </span><span class="n">ierr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">7</span><span class="w"></span>
+<span class="w">        </span><span class="k">call </span><span class="n">xermsg</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;dpchic&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;work array too small&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">ierr</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span>
+<span class="k">    end if</span><span class="w"></span>
 
-    <span class="c">! set up h and slope arrays.</span>
-    <span class="k">do </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nless1</span>
-        <span class="n">wk</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="n">x</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">x</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-        <span class="n">wk</span><span class="p">(</span><span class="n">nless1</span><span class="o">+</span><span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">i</span><span class="p">))</span> <span class="o">/</span> <span class="n">wk</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-    <span class="k">end do</span>
+<span class="w">    </span><span class="c">! set up h and slope arrays.</span>
+<span class="w">    </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">nless1</span><span class="w"></span>
+<span class="w">        </span><span class="n">wk</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">wk</span><span class="p">(</span><span class="n">nless1</span><span class="o">+</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">i</span><span class="p">))</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">wk</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">end do</span><span class="w"></span>
 
-    <span class="c">! special case n=2 -- use linear interpolation.</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">nless1</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="k">then</span>
-        <span class="c">! normal case  (n &gt;= 3) .</span>
+<span class="w">    </span><span class="c">! special case n=2 -- use linear interpolation.</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nless1</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
+<span class="w">        </span><span class="c">! normal case  (n &gt;= 3) .</span>
 
-        <span class="c">! set interior derivatives and default end conditions.</span>
-        <span class="k">call </span><span class="n">dpchci</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">wk</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">wk</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">d</span><span class="p">,</span> <span class="n">incfd</span><span class="p">)</span>
+<span class="w">        </span><span class="c">! set interior derivatives and default end conditions.</span>
+<span class="w">        </span><span class="k">call </span><span class="n">dpchci</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">wk</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="n">wk</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="w"> </span><span class="n">d</span><span class="p">,</span><span class="w"> </span><span class="n">incfd</span><span class="p">)</span><span class="w"></span>
 
-        <span class="c">! set derivatives at points where monotonicity switches direction.</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">switch</span> <span class="o">/=</span> <span class="n">zero</span><span class="p">)</span> <span class="k">then</span>
+<span class="w">        </span><span class="c">! set derivatives at points where monotonicity switches direction.</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">switch</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="n">zero</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
 
-<span class="k">            call </span><span class="n">dpchcs</span> <span class="p">(</span><span class="n">switch</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">wk</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">wk</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">d</span><span class="p">,</span> <span class="n">incfd</span><span class="p">,</span> <span class="n">ierr</span><span class="p">)</span>
+<span class="k">            call </span><span class="n">dpchcs</span><span class="w"> </span><span class="p">(</span><span class="n">switch</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">wk</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="n">wk</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="w"> </span><span class="n">d</span><span class="p">,</span><span class="w"> </span><span class="n">incfd</span><span class="p">,</span><span class="w"> </span><span class="n">ierr</span><span class="p">)</span><span class="w"></span>
 
-            <span class="k">if</span> <span class="p">(</span><span class="n">ierr</span> <span class="o">/=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
-                <span class="c">! error return from dpchcs.</span>
-                <span class="n">ierr</span> <span class="o">=</span> <span class="o">-</span><span class="mi">8</span>
-                <span class="k">call </span><span class="n">xermsg</span> <span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span> <span class="s1">&#39;dpchic&#39;</span><span class="p">,</span> <span class="s1">&#39;error return from dpchcs&#39;</span><span class="p">,</span> <span class="n">ierr</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-                <span class="k">return</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ierr</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
+<span class="w">                </span><span class="c">! error return from dpchcs.</span>
+<span class="w">                </span><span class="n">ierr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">8</span><span class="w"></span>
+<span class="w">                </span><span class="k">call </span><span class="n">xermsg</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;dpchic&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;error return from dpchcs&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">ierr</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">                </span><span class="k">return</span>
 <span class="k">            end if</span>
 
 <span class="k">        end if</span>
 <span class="k">    else</span>
-<span class="k">        </span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">wk</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-        <span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span> <span class="o">=</span> <span class="n">wk</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-    <span class="k">end if</span>
+<span class="k">        </span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">wk</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">wk</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">end if</span><span class="w"></span>
 
-    <span class="c">! set end conditions.</span>
-    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span><span class="n">ibeg</span><span class="o">/=</span><span class="mi">0</span><span class="p">)</span> <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="p">(</span><span class="n">iend</span><span class="o">/=</span><span class="mi">0</span><span class="p">)</span> <span class="p">)</span> <span class="k">then</span>
+<span class="w">    </span><span class="c">! set end conditions.</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="n">ibeg</span><span class="o">/=</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="p">(</span><span class="n">iend</span><span class="o">/=</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
 
-<span class="k">        call </span><span class="n">dpchce</span> <span class="p">(</span><span class="n">ic</span><span class="p">,</span> <span class="n">vc</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">wk</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">wk</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">d</span><span class="p">,</span> <span class="n">incfd</span><span class="p">,</span> <span class="n">ierr</span><span class="p">)</span>
+<span class="k">        call </span><span class="n">dpchce</span><span class="w"> </span><span class="p">(</span><span class="n">ic</span><span class="p">,</span><span class="w"> </span><span class="n">vc</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">wk</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="n">wk</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="w"> </span><span class="n">d</span><span class="p">,</span><span class="w"> </span><span class="n">incfd</span><span class="p">,</span><span class="w"> </span><span class="n">ierr</span><span class="p">)</span><span class="w"></span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="n">ierr</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
-            <span class="c">! error return from dpchce.</span>
-            <span class="c">! *** this case should never occur ***</span>
-            <span class="n">ierr</span> <span class="o">=</span> <span class="o">-</span><span class="mi">9</span>
-            <span class="k">call </span><span class="n">xermsg</span> <span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span> <span class="s1">&#39;dpchic&#39;</span><span class="p">,</span> <span class="s1">&#39;error return from dpchce&#39;</span><span class="p">,</span> <span class="n">ierr</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="k">end if</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ierr</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
+<span class="w">            </span><span class="c">! error return from dpchce.</span>
+<span class="w">            </span><span class="c">! *** this case should never occur ***</span>
+<span class="w">            </span><span class="n">ierr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">9</span><span class="w"></span>
+<span class="w">            </span><span class="k">call </span><span class="n">xermsg</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;dpchic&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;error return from dpchce&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">ierr</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">end if</span>
 
 <span class="k">    end if</span>
 
-<span class="k">    end subroutine </span><span class="n">dpchic</span>
+<span class="k">    end subroutine </span><span class="n">dpchic</span><span class="w"></span>
 </pre></div>
 
     </section>
     <br>
     
-    
     </div>
   </div>
-
 
     <hr>    
     </div> <!-- /container -->
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-6"><p>PCHIP was developed by Jacob Williams<br>&copy; 2021 
-                                          </p>
+        <div class="col-xs-6 col-md-6"><p>PCHIP was developed by Jacob Williams<br>&copy; 2022 
+</p>
         </div>
         <div class="col-xs-6 col-md-6">
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
-            
-            
           </p>
         </div>
       </div>
@@ -1131,14 +894,11 @@ public subroutine dpchic(ic, vc, switch, n, x, f, d, incfd, wk, nwk, ierr)
         extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
       });
     </script>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
     
     <script src="../tipuesearch/tipuesearch_content.js"></script>
     <script src="../tipuesearch/tipuesearch_set.js"></script>
     <script src="../tipuesearch/tipuesearch.js"></script>
-    
     
   </body>
 </html>

@@ -4,9 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-   
    <meta name="description" content="PCHIP -- Piecewise Cubic Hermite Interpolation Package">
-    
     <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="../favicon.png">
 
@@ -16,10 +14,7 @@
     <link href="../css/pygments.css" rel="stylesheet">
     <link href="../css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/local.css" rel="stylesheet">
-    
     <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
-    
-    
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -48,50 +43,23 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-        
             <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
               <a href="#" class="dropdown-toggle"
               data-toggle="dropdown" role="button"
               aria-haspopup="true"
      aria-expanded="false">Contents <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          
-              
             <li><a href="../sourcefile/pchip_module.f90.html">Source File</a></li>
-        
-        
-        
             <li><a href="../lists/modules.html">Modules</a></li>
-        
-            
-                                
             <li><a href="../lists/procedures.html">Procedures</a></li>
-        
-               
-               
-        
-        
+              
             </ul>
         
             </li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../sourcefile/pchip_module.f90.html">Source File</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
-
-                             
-
-
-
-          </ul>
-        
+                                       </ul>
         <form action="../search.html" class="navbar-form navbar-right" role="search">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
@@ -100,51 +68,29 @@
         <button type="submit" class="btn btn-default">Submit</button>
 -->
         </form>
-        
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
     <div class="container">
-    
-  
   <div class="row">
     <h1>dpchce
       <small>Subroutine</small>
-    
     </h1>
-    
-<div class="row">
+    <div class="row">
   <div class="col-lg-12">
 <div class="well well-sm">
   <ul class="list-inline" style="margin-bottom:0px;display:inline">
-     
-     
-     
-     
-     
-    
-    
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
     title=" 7.0% of total for procedures.">88 statements</a>
      </li> 
-     
-     
-     
     <li><i class="fa fa-code"></i><a href="../src/pchip_module.f90"> Source File</a></li>
-     
-     
   </ul>
   <ol class="breadcrumb in-well text-right">
-  
-    
      <li><a href='../sourcefile/pchip_module.f90.html'>pchip_module.f90</a></li>
-    
      <li><a href='../module/pchip_module.html'>pchip_module</a></li>
-    
-  
      <li class="active">dpchce</li>
   </ol>
 </div>
@@ -160,32 +106,9 @@
   
   <div class="row">
     <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
-    
-<div id="sidebar">
-  
-<h3>Contents</h3>
+    <div id="sidebar">
+  <h3>Contents</h3>
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
   <div class="list-group">
@@ -193,24 +116,14 @@
   </div>
 </div>
 
-
-
 </div>
 
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2>
-private subroutine dpchce(ic, vc, n, x, h, slope, d, incfd, ierr)
+    <h2>private subroutine dpchce(ic, vc, n, x, h, slope, d, incfd, ierr)</h2>
     
-    
-   
-</h2>
-    
-  
 
-
-    
     <p>Set boundary conditions for <a href="../proc/dpchic.html">dpchic</a></p>
 <p>Called by <a href="../proc/dpchic.html">dpchic</a> to set end derivatives as requested by the user.
   It must be called after interior derivative values have been set.</p>
@@ -231,201 +144,102 @@ private subroutine dpchce(ic, vc, n, x, h, slope, d, incfd, ierr)
      (At least the result is a continuous function of the data.)</li>
 </ol>
 <p></p><div class="alert alert-warning" role="alert"><h4>Warning</h4><p>This routine does no validity-checking of arguments.</p></div>
-    
 
     <h3>Arguments</h3>
-    
-      
-<table class="table table-striped varlist">
-<thead><tr><th>Type</th>
-<th>Intent</th><th>Optional</th>
-<th>Attributes</th><th></th><th>Name</th><th></th></thead>
-
-
-
+      <table class="table table-striped varlist">
+<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
 <tbody>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-ic"></span>integer,</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>ic</strong>(2)</td><td><p>array of length 2 specifying desired
- boundary conditions:</p>
+boundary conditions:</p>
 <ul>
 <li>IC(1) = IBEG, desired condition at beginning of data.</li>
 <li>IC(2) = IEND, desired condition at end of data.</li>
 </ul>
 <p>( see prologue to <a href="../proc/dpchic.html">dpchic</a> for details. )</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-vc"></span>real(kind=wp),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>vc</strong>(2)</td><td><p>array of length 2 specifying desired boundary
- values.</p>
+values.</p>
 <ul>
 <li>VC(1) need be set only if IC(1) = 2 or 3 .</li>
 <li>VC(2) need be set only if IC(2) = 2 or 3 .</li>
 </ul></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-n~4"></span>integer,</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>n</strong></td><td><p>number of data points.  (assumes N&gt;=2)</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-x~5"></span>real(kind=wp),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>x</strong>(*)</td><td><p>array of independent variable values.  (the
- elements of X are assumed to be strictly increasing.)</p></td>
-  
+elements of X are assumed to be strictly increasing.)</p></td>
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-h"></span>real(kind=wp),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>h</strong>(*)</td><td><p>array of interval lengths.</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-slope"></span>real(kind=wp),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>slope</strong>(*)</td><td><p>array of data slopes.
- If the data are (X(I),Y(I)), I=1(1)N, then these inputs are:</p>
+If the data are (X(I),Y(I)), I=1(1)N, then these inputs are:</p>
 <ul>
 <li>H(I) =  X(I+1)-X(I),</li>
 <li>SLOPE(I) = (Y(I+1)-Y(I))/H(I),  I=1(1)N-1.</li>
 </ul></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-d~4"></span>real(kind=wp),</td>
-  <td>intent(inout)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(inout)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>d</strong>(incfd,*)</td><td><p>(input) real<em>8 array of derivative values at the data points.
-  The value corresponding to X(I) must be stored in
-  D(1+(I-1)</em>INCFD),  I=1(1)N.</p>
+ The value corresponding to X(I) must be stored in
+ D(1+(I-1)</em>INCFD),  I=1(1)N.</p>
 <p>(output) the value of D at X(1) and/or X(N) is changed, if
-  necessary, to produce the requested boundary conditions.
-  no other entries in D are changed.</p></td>
-  
+ necessary, to produce the requested boundary conditions.
+ no other entries in D are changed.</p></td>
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-incfd~4"></span>integer,</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>incfd</strong></td><td><p>increment between successive values in D.
- This argument is provided primarily for 2-D applications.</p></td>
-  
+This argument is provided primarily for 2-D applications.</p></td>
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-ierr~7"></span>integer,</td>
-  <td>intent(out)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(out)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>ierr</strong></td><td><p>error flag.</p>
 <ul>
-<li>Normal return:<ul>
+<li>Normal return:</li>
 <li>IERR = 0  (no errors).</li>
-</ul>
-</li>
-<li>Warning errors:<ul>
+<li>Warning errors:</li>
 <li>IERR = 1  if IBEG&lt;0 and D(1) had to be adjusted for
-          monotonicity.</li>
+             monotonicity.</li>
 <li>IERR = 2  if IEND&lt;0 and D(1+(N-1)*INCFD) had to be
-          adjusted for monotonicity.</li>
+             adjusted for monotonicity.</li>
 <li>IERR = 3  if both of the above are true.</li>
-</ul>
-</li>
 </ul></td>
-  
 </tr>
-
 </tbody>
 </table>
 
-    
-    
-    
     <br>
-    
-    
     <div class="panel panel-default">
       <div class="panel-heading">
   <h3 class="panel-title">Calls</h3>
@@ -562,8 +376,6 @@ private subroutine dpchce(ic, vc, n, x, h, slope, d, incfd, ierr)
     </div></div></div></div>
       </div>
     </div>
-     
-     
     <div class="panel panel-default">
       <div class="panel-heading">
   <h3 class="panel-title">Called by</h3>
@@ -664,34 +476,11 @@ private subroutine dpchce(ic, vc, n, x, h, slope, d, incfd, ierr)
     </div></div></div></div>
       </div>
     </div>
-     
     <br>
 
     <section class="visible-xs visible-sm hidden-md">
-      
-<h3>Contents</h3>
+      <h3>Contents</h3>
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
   <div class="list-group">
@@ -699,217 +488,202 @@ private subroutine dpchce(ic, vc, n, x, h, slope, d, incfd, ierr)
   </div>
 </div>
 
-
-
     </section>
     <br class="visible-xs visible-sm hidden-md">
 
-    
 
-    
-    
-    
     
     
 
     
     
-    
-    
-    
 
 
-    
-    
     
     <section>
     <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span>    <span class="k">subroutine </span><span class="n">dpchce</span> <span class="p">(</span><span class="n">ic</span><span class="p">,</span> <span class="n">vc</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">slope</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">incfd</span><span class="p">,</span> <span class="n">ierr</span><span class="p">)</span>
+    <div class="highlight"><pre><span></span><span class="w">    </span><span class="k">subroutine </span><span class="n">dpchce</span><span class="w"> </span><span class="p">(</span><span class="n">ic</span><span class="p">,</span><span class="w"> </span><span class="n">vc</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="n">slope</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">,</span><span class="w"> </span><span class="n">incfd</span><span class="p">,</span><span class="w"> </span><span class="n">ierr</span><span class="p">)</span><span class="w"></span>
 
-    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">ic</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>    <span class="c">!! array of length 2 specifying desired</span>
-                                    <span class="c">!! boundary conditions:</span>
-                                    <span class="c">!!</span>
-                                    <span class="c">!! * IC(1) = IBEG, desired condition at beginning of data.</span>
-                                    <span class="c">!! * IC(2) = IEND, desired condition at end of data.</span>
-                                    <span class="c">!!</span>
-                                    <span class="c">!! ( see prologue to [[DPCHIC]] for details. )</span>
-    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>     <span class="kd">::</span> <span class="n">n</span>     <span class="c">!! number of data points.  (assumes N&gt;=2)</span>
-    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>     <span class="kd">::</span> <span class="n">incfd</span> <span class="c">!! increment between successive values in D.</span>
-                                    <span class="c">!! This argument is provided primarily for 2-D applications.</span>
-    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>    <span class="kd">::</span> <span class="n">ierr</span>  <span class="c">!! error flag.</span>
-                                    <span class="c">!!</span>
-                                    <span class="c">!! * Normal return:</span>
-                                    <span class="c">!!    * IERR = 0  (no errors).</span>
-                                    <span class="c">!! * Warning errors:</span>
-                                    <span class="c">!!    * IERR = 1  if IBEG&lt;0 and D(1) had to be adjusted for</span>
-                                    <span class="c">!!              monotonicity.</span>
-                                    <span class="c">!!    * IERR = 2  if IEND&lt;0 and D(1+(N-1)*INCFD) had to be</span>
-                                    <span class="c">!!              adjusted for monotonicity.</span>
-                                    <span class="c">!!    * IERR = 3  if both of the above are true.</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>    <span class="kd">::</span> <span class="n">vc</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c">!! array of length 2 specifying desired boundary</span>
-                                    <span class="c">!! values.</span>
-                                    <span class="c">!!</span>
-                                    <span class="c">!! * VC(1) need be set only if IC(1) = 2 or 3 .</span>
-                                    <span class="c">!! * VC(2) need be set only if IC(2) = 2 or 3 .</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>    <span class="kd">::</span> <span class="n">x</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>  <span class="c">!! array of independent variable values.  (the</span>
-                                    <span class="c">!! elements of X are assumed to be strictly increasing.)</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>    <span class="kd">::</span> <span class="n">h</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>  <span class="c">!! array of interval lengths.</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>    <span class="kd">::</span> <span class="n">slope</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>  <span class="c">!! array of data slopes.</span>
-                                        <span class="c">!! If the data are (X(I),Y(I)), I=1(1)N, then these inputs are:</span>
-                                        <span class="c">!!</span>
-                                        <span class="c">!! * H(I) =  X(I+1)-X(I),</span>
-                                        <span class="c">!! * SLOPE(I) = (Y(I+1)-Y(I))/H(I),  I=1(1)N-1.</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">d</span><span class="p">(</span><span class="n">incfd</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="c">!! (input) real*8 array of derivative values at the data points.</span>
-                                         <span class="c">!!  The value corresponding to X(I) must be stored in</span>
-                                         <span class="c">!!  D(1+(I-1)*INCFD),  I=1(1)N.</span>
-                                         <span class="c">!!</span>
-                                         <span class="c">!! (output) the value of D at X(1) and/or X(N) is changed, if</span>
-                                         <span class="c">!!  necessary, to produce the requested boundary conditions.</span>
-                                         <span class="c">!!  no other entries in D are changed.</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">ic</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w">    </span><span class="c">!! array of length 2 specifying desired</span>
+<span class="w">                                    </span><span class="c">!! boundary conditions:</span>
+<span class="w">                                    </span><span class="c">!!</span>
+<span class="w">                                    </span><span class="c">!! * IC(1) = IBEG, desired condition at beginning of data.</span>
+<span class="w">                                    </span><span class="c">!! * IC(2) = IEND, desired condition at end of data.</span>
+<span class="w">                                    </span><span class="c">!!</span>
+<span class="w">                                    </span><span class="c">!! ( see prologue to [[DPCHIC]] for details. )</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">n</span><span class="w">     </span><span class="c">!! number of data points.  (assumes N&gt;=2)</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">incfd</span><span class="w"> </span><span class="c">!! increment between successive values in D.</span>
+<span class="w">                                    </span><span class="c">!! This argument is provided primarily for 2-D applications.</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">ierr</span><span class="w">  </span><span class="c">!! error flag.</span>
+<span class="w">                                    </span><span class="c">!!</span>
+<span class="w">                                    </span><span class="c">!! * Normal return:</span>
+<span class="w">                                    </span><span class="c">!!    * IERR = 0  (no errors).</span>
+<span class="w">                                    </span><span class="c">!! * Warning errors:</span>
+<span class="w">                                    </span><span class="c">!!    * IERR = 1  if IBEG&lt;0 and D(1) had to be adjusted for</span>
+<span class="w">                                    </span><span class="c">!!              monotonicity.</span>
+<span class="w">                                    </span><span class="c">!!    * IERR = 2  if IEND&lt;0 and D(1+(N-1)*INCFD) had to be</span>
+<span class="w">                                    </span><span class="c">!!              adjusted for monotonicity.</span>
+<span class="w">                                    </span><span class="c">!!    * IERR = 3  if both of the above are true.</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">vc</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="c">!! array of length 2 specifying desired boundary</span>
+<span class="w">                                    </span><span class="c">!! values.</span>
+<span class="w">                                    </span><span class="c">!!</span>
+<span class="w">                                    </span><span class="c">!! * VC(1) need be set only if IC(1) = 2 or 3 .</span>
+<span class="w">                                    </span><span class="c">!! * VC(2) need be set only if IC(2) = 2 or 3 .</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">  </span><span class="c">!! array of independent variable values.  (the</span>
+<span class="w">                                    </span><span class="c">!! elements of X are assumed to be strictly increasing.)</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">h</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">  </span><span class="c">!! array of interval lengths.</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">slope</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">  </span><span class="c">!! array of data slopes.</span>
+<span class="w">                                        </span><span class="c">!! If the data are (X(I),Y(I)), I=1(1)N, then these inputs are:</span>
+<span class="w">                                        </span><span class="c">!!</span>
+<span class="w">                                        </span><span class="c">!! * H(I) =  X(I+1)-X(I),</span>
+<span class="w">                                        </span><span class="c">!! * SLOPE(I) = (Y(I+1)-Y(I))/H(I),  I=1(1)N-1.</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">d</span><span class="p">(</span><span class="n">incfd</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="c">!! (input) real*8 array of derivative values at the data points.</span>
+<span class="w">                                         </span><span class="c">!!  The value corresponding to X(I) must be stored in</span>
+<span class="w">                                         </span><span class="c">!!  D(1+(I-1)*INCFD),  I=1(1)N.</span>
+<span class="w">                                         </span><span class="c">!!</span>
+<span class="w">                                         </span><span class="c">!! (output) the value of D at X(1) and/or X(N) is changed, if</span>
+<span class="w">                                         </span><span class="c">!!  necessary, to produce the requested boundary conditions.</span>
+<span class="w">                                         </span><span class="c">!!  no other entries in D are changed.</span>
 
-    <span class="kt">integer</span> <span class="kd">::</span> <span class="n">ibeg</span><span class="p">,</span> <span class="n">iend</span><span class="p">,</span> <span class="n">ierf</span><span class="p">,</span> <span class="nb">index</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">stemp</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">xtemp</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">ibeg</span><span class="p">,</span><span class="w"> </span><span class="n">iend</span><span class="p">,</span><span class="w"> </span><span class="n">ierf</span><span class="p">,</span><span class="w"> </span><span class="nb">index</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="w"></span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">stemp</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span><span class="w"> </span><span class="n">xtemp</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="w"></span>
 
-    <span class="n">ibeg</span> <span class="o">=</span> <span class="n">ic</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">iend</span> <span class="o">=</span> <span class="n">ic</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-    <span class="n">ierr</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="w">    </span><span class="n">ibeg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ic</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">iend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ic</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">ierr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
 
-    <span class="c">! set to default boundary conditions if n is too small.</span>
+<span class="w">    </span><span class="c">! set to default boundary conditions if n is too small.</span>
 
-    <span class="k">if</span> <span class="p">(</span> <span class="nb">abs</span><span class="p">(</span><span class="n">ibeg</span><span class="p">)</span><span class="o">&gt;</span><span class="n">n</span> <span class="p">)</span>  <span class="n">ibeg</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">if</span> <span class="p">(</span> <span class="nb">abs</span><span class="p">(</span><span class="n">iend</span><span class="p">)</span><span class="o">&gt;</span><span class="n">n</span> <span class="p">)</span>  <span class="n">iend</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">ibeg</span><span class="p">)</span><span class="o">&gt;</span><span class="n">n</span><span class="w"> </span><span class="p">)</span><span class="w">  </span><span class="n">ibeg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">iend</span><span class="p">)</span><span class="o">&gt;</span><span class="n">n</span><span class="w"> </span><span class="p">)</span><span class="w">  </span><span class="n">iend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
 
-    <span class="c">! treat beginning boundary condition.</span>
+<span class="w">    </span><span class="c">! treat beginning boundary condition.</span>
 
-    <span class="k">if</span> <span class="p">(</span><span class="n">ibeg</span> <span class="o">/=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
-<span class="k">        </span><span class="n">k</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">ibeg</span><span class="p">)</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">k</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="k">then</span>
-            <span class="c">! boundary value provided.</span>
-            <span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">vc</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="k">else if</span> <span class="p">(</span><span class="n">k</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="k">then</span>
-            <span class="c">! boundary second derivative provided.</span>
-            <span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">half</span><span class="o">*</span><span class="p">(</span> <span class="p">(</span><span class="n">three</span><span class="o">*</span><span class="n">slope</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span> <span class="o">-</span> <span class="n">half</span><span class="o">*</span><span class="n">vc</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">h</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">)</span>
-        <span class="k">else if</span> <span class="p">(</span><span class="n">k</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">)</span> <span class="k">then</span>
-            <span class="c">! use k-point derivative formula.</span>
-            <span class="c">! pick up first k points, in reverse order.</span>
-            <span class="k">do </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">k</span>
-                <span class="nb">index</span> <span class="o">=</span> <span class="n">k</span><span class="o">-</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span>
-                <span class="c">! index runs from k down to 1.</span>
-                <span class="n">xtemp</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">=</span> <span class="n">x</span><span class="p">(</span><span class="nb">index</span><span class="p">)</span>
-                <span class="k">if</span> <span class="p">(</span><span class="n">j</span> <span class="o">&lt;</span> <span class="n">k</span><span class="p">)</span>  <span class="n">stemp</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">=</span> <span class="n">slope</span><span class="p">(</span><span class="nb">index</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-            <span class="k">end do</span>
-            <span class="c">! -----------------------------</span>
-            <span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">dpchdf</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">xtemp</span><span class="p">,</span> <span class="n">stemp</span><span class="p">,</span> <span class="n">ierf</span><span class="p">)</span>
-            <span class="c">! -----------------------------</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">ierf</span> <span class="o">/=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
-                <span class="c">! *** this case should never occur ***</span>
-                <span class="n">ierr</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-                <span class="k">call </span><span class="n">xermsg</span> <span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span> <span class="s1">&#39;dpchce&#39;</span><span class="p">,</span> <span class="s1">&#39;error return from dpchdf&#39;</span><span class="p">,</span> <span class="n">ierr</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-                <span class="k">return</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ibeg</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">ibeg</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
+<span class="w">            </span><span class="c">! boundary value provided.</span>
+<span class="w">            </span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vc</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">else if</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
+<span class="w">            </span><span class="c">! boundary second derivative provided.</span>
+<span class="w">            </span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">half</span><span class="o">*</span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="n">three</span><span class="o">*</span><span class="n">slope</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">half</span><span class="o">*</span><span class="n">vc</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">h</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">else if</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
+<span class="w">            </span><span class="c">! use k-point derivative formula.</span>
+<span class="w">            </span><span class="c">! pick up first k points, in reverse order.</span>
+<span class="w">            </span><span class="k">do </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="w"></span>
+<span class="w">                </span><span class="nb">index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">k</span><span class="o">-</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="w"></span>
+<span class="w">                </span><span class="c">! index runs from k down to 1.</span>
+<span class="w">                </span><span class="n">xtemp</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="nb">index</span><span class="p">)</span><span class="w"></span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w">  </span><span class="n">stemp</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">slope</span><span class="p">(</span><span class="nb">index</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="k">end do</span><span class="w"></span>
+<span class="w">            </span><span class="c">! -----------------------------</span>
+<span class="w">            </span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dpchdf</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">xtemp</span><span class="p">,</span><span class="w"> </span><span class="n">stemp</span><span class="p">,</span><span class="w"> </span><span class="n">ierf</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="c">! -----------------------------</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ierf</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
+<span class="w">                </span><span class="c">! *** this case should never occur ***</span>
+<span class="w">                </span><span class="n">ierr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="w"></span>
+<span class="w">                </span><span class="k">call </span><span class="n">xermsg</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;dpchce&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;error return from dpchdf&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">ierr</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">                </span><span class="k">return</span>
 <span class="k">            end if</span>
-<span class="k">        else</span>
-            <span class="c">! use &#39;not a knot&#39; condition.</span>
-            <span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span> <span class="n">three</span><span class="o">*</span><span class="p">(</span><span class="n">h</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">slope</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">h</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">slope</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> <span class="p">&amp;</span>
-                       <span class="o">-</span> <span class="n">two</span><span class="o">*</span><span class="p">(</span><span class="n">h</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">h</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">*</span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">h</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">)</span> <span class="o">/</span> <span class="n">h</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-        <span class="k">endif</span>
+<span class="k">        else</span><span class="w"></span>
+<span class="w">            </span><span class="c">! use &#39;not a knot&#39; condition.</span>
+<span class="w">            </span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">three</span><span class="o">*</span><span class="p">(</span><span class="n">h</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">slope</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">h</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">slope</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                       </span><span class="o">-</span><span class="w"> </span><span class="n">two</span><span class="o">*</span><span class="p">(</span><span class="n">h</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">h</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">*</span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">h</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">h</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">endif</span>
 
-<span class="k">        if</span> <span class="p">(</span><span class="n">ibeg</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
+<span class="k">        if</span><span class="w"> </span><span class="p">(</span><span class="n">ibeg</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
 
-            <span class="c">! check d(1,1) for compatibility with monotonicity.</span>
+<span class="w">            </span><span class="c">! check d(1,1) for compatibility with monotonicity.</span>
 
-            <span class="k">if</span> <span class="p">(</span><span class="n">slope</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">zero</span><span class="p">)</span> <span class="k">then</span>
-<span class="k">                if</span> <span class="p">(</span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">/=</span> <span class="n">zero</span><span class="p">)</span> <span class="k">then</span>
-<span class="k">                    </span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">zero</span>
-                    <span class="n">ierr</span> <span class="o">=</span> <span class="n">ierr</span> <span class="o">+</span> <span class="mi">1</span>
-                <span class="k">endif</span>
-<span class="k">            else if</span> <span class="p">(</span> <span class="n">dpchst</span><span class="p">(</span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">slope</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">zero</span><span class="p">)</span> <span class="k">then</span>
-<span class="k">                </span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">zero</span>
-                <span class="n">ierr</span> <span class="o">=</span> <span class="n">ierr</span> <span class="o">+</span> <span class="mi">1</span>
-            <span class="k">else if</span> <span class="p">(</span> <span class="nb">abs</span><span class="p">(</span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="o">&gt;</span> <span class="n">three</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="n">slope</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> <span class="p">)</span> <span class="k">then</span>
-<span class="k">                </span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">three</span><span class="o">*</span><span class="n">slope</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-                <span class="n">ierr</span> <span class="o">=</span> <span class="n">ierr</span> <span class="o">+</span> <span class="mi">1</span>
-            <span class="k">endif</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">slope</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">zero</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">                if</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="n">zero</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">                    </span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zero</span><span class="w"></span>
+<span class="w">                    </span><span class="n">ierr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ierr</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">                </span><span class="k">endif</span>
+<span class="k">            else if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">dpchst</span><span class="p">(</span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">slope</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">zero</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">                </span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zero</span><span class="w"></span>
+<span class="w">                </span><span class="n">ierr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ierr</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">            </span><span class="k">else if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">three</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="n">slope</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">                </span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">three</span><span class="o">*</span><span class="n">slope</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">                </span><span class="n">ierr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ierr</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">            </span><span class="k">endif</span>
 
 <span class="k">        end if</span>
 
-<span class="k">    end if</span>
+<span class="k">    end if</span><span class="w"></span>
 
-    <span class="c">! treat end boundary condition.</span>
+<span class="w">    </span><span class="c">! treat end boundary condition.</span>
 
-    <span class="k">if</span> <span class="p">(</span><span class="n">iend</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span>
-<span class="k">    </span><span class="n">k</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">iend</span><span class="p">)</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">k</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="k">then</span>
-        <span class="c">! boundary value provided.</span>
-        <span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span> <span class="o">=</span> <span class="n">vc</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-    <span class="k">else if</span> <span class="p">(</span><span class="n">k</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="k">then</span>
-        <span class="c">! boundary second derivative provided.</span>
-        <span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span> <span class="o">=</span> <span class="n">half</span><span class="o">*</span><span class="p">(</span> <span class="p">(</span><span class="n">three</span><span class="o">*</span><span class="n">slope</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="n">half</span><span class="o">*</span><span class="n">vc</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">h</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">)</span>
-    <span class="k">else if</span> <span class="p">(</span><span class="n">k</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">)</span> <span class="k">then</span>
-        <span class="c">! use k-point derivative formula.</span>
-        <span class="c">! pick up last k points.</span>
-        <span class="k">do </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">k</span>
-            <span class="nb">index</span> <span class="o">=</span> <span class="n">n</span><span class="o">-</span><span class="n">k</span><span class="o">+</span><span class="n">j</span>
-            <span class="c">! index runs from n+1-k up to n.</span>
-            <span class="n">xtemp</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">=</span> <span class="n">x</span><span class="p">(</span><span class="nb">index</span><span class="p">)</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">j</span> <span class="o">&lt;</span> <span class="n">k</span><span class="p">)</span>  <span class="n">stemp</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">=</span> <span class="n">slope</span><span class="p">(</span><span class="nb">index</span><span class="p">)</span>
-        <span class="k">end do</span>
-        <span class="c">! -----------------------------</span>
-        <span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span> <span class="o">=</span> <span class="n">dpchdf</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">xtemp</span><span class="p">,</span> <span class="n">stemp</span><span class="p">,</span> <span class="n">ierf</span><span class="p">)</span>
-        <span class="c">! -----------------------------</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">ierf</span> <span class="o">/=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
-            <span class="c">! *** this case should never occur ***</span>
-            <span class="n">ierr</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-            <span class="k">call </span><span class="n">xermsg</span> <span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span> <span class="s1">&#39;dpchce&#39;</span><span class="p">,</span> <span class="s1">&#39;error return from dpchdf&#39;</span><span class="p">,</span> <span class="n">ierr</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-            <span class="k">return</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">iend</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">return</span>
+<span class="k">    </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">iend</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
+<span class="w">        </span><span class="c">! boundary value provided.</span>
+<span class="w">        </span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vc</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">else if</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
+<span class="w">        </span><span class="c">! boundary second derivative provided.</span>
+<span class="w">        </span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">half</span><span class="o">*</span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="n">three</span><span class="o">*</span><span class="n">slope</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">half</span><span class="o">*</span><span class="n">vc</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">h</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">else if</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
+<span class="w">        </span><span class="c">! use k-point derivative formula.</span>
+<span class="w">        </span><span class="c">! pick up last k points.</span>
+<span class="w">        </span><span class="k">do </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="w"></span>
+<span class="w">            </span><span class="nb">index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="o">-</span><span class="n">k</span><span class="o">+</span><span class="n">j</span><span class="w"></span>
+<span class="w">            </span><span class="c">! index runs from n+1-k up to n.</span>
+<span class="w">            </span><span class="n">xtemp</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="nb">index</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w">  </span><span class="n">stemp</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">slope</span><span class="p">(</span><span class="nb">index</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">end do</span><span class="w"></span>
+<span class="w">        </span><span class="c">! -----------------------------</span>
+<span class="w">        </span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dpchdf</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">xtemp</span><span class="p">,</span><span class="w"> </span><span class="n">stemp</span><span class="p">,</span><span class="w"> </span><span class="n">ierf</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="c">! -----------------------------</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ierf</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
+<span class="w">            </span><span class="c">! *** this case should never occur ***</span>
+<span class="w">            </span><span class="n">ierr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="w"></span>
+<span class="w">            </span><span class="k">call </span><span class="n">xermsg</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;dpchce&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;error return from dpchdf&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">ierr</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="k">return</span>
 <span class="k">        end if</span>
-<span class="k">    else</span>
-        <span class="c">! use &#39;not a knot&#39; condition.</span>
-        <span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span> <span class="n">three</span><span class="o">*</span><span class="p">(</span><span class="n">h</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">slope</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">h</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">slope</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="p">&amp;</span>
-                   <span class="o">-</span> <span class="n">two</span><span class="o">*</span><span class="p">(</span><span class="n">h</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">h</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">))</span><span class="o">*</span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">h</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span> <span class="p">)</span> <span class="o">/</span> <span class="n">h</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
-    <span class="k">endif</span>
+<span class="k">    else</span><span class="w"></span>
+<span class="w">        </span><span class="c">! use &#39;not a knot&#39; condition.</span>
+<span class="w">        </span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">three</span><span class="o">*</span><span class="p">(</span><span class="n">h</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">slope</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">h</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">slope</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                   </span><span class="o">-</span><span class="w"> </span><span class="n">two</span><span class="o">*</span><span class="p">(</span><span class="n">h</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">h</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">))</span><span class="o">*</span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">h</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">h</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">endif</span>
 
-<span class="k">    if</span> <span class="p">(</span><span class="n">iend</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>  <span class="k">return</span>
+<span class="k">    if</span><span class="w"> </span><span class="p">(</span><span class="n">iend</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w">  </span><span class="k">return</span><span class="w"></span>
 
-    <span class="c">! check d(1,n) for compatibility with monotonicity.</span>
+<span class="w">    </span><span class="c">! check d(1,n) for compatibility with monotonicity.</span>
 
-    <span class="k">if</span> <span class="p">(</span><span class="n">slope</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">zero</span><span class="p">)</span> <span class="k">then</span>
-<span class="k">        if</span> <span class="p">(</span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span> <span class="o">/=</span> <span class="n">zero</span><span class="p">)</span> <span class="k">then</span>
-<span class="k">            </span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span> <span class="o">=</span> <span class="n">zero</span>
-            <span class="n">ierr</span> <span class="o">=</span> <span class="n">ierr</span> <span class="o">+</span> <span class="mi">2</span>
-        <span class="k">endif</span>
-<span class="k">    else if</span> <span class="p">(</span> <span class="n">dpchst</span><span class="p">(</span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">),</span><span class="n">slope</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">zero</span><span class="p">)</span> <span class="k">then</span>
-<span class="k">        </span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span> <span class="o">=</span> <span class="n">zero</span>
-        <span class="n">ierr</span> <span class="o">=</span> <span class="n">ierr</span> <span class="o">+</span> <span class="mi">2</span>
-    <span class="k">else if</span> <span class="p">(</span> <span class="nb">abs</span><span class="p">(</span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">))</span> <span class="o">&gt;</span> <span class="n">three</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="n">slope</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="p">)</span> <span class="k">then</span>
-<span class="k">        </span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span> <span class="o">=</span> <span class="n">three</span><span class="o">*</span><span class="n">slope</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">ierr</span> <span class="o">=</span> <span class="n">ierr</span> <span class="o">+</span> <span class="mi">2</span>
-    <span class="k">endif</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">slope</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">zero</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        if</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="n">zero</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            </span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zero</span><span class="w"></span>
+<span class="w">            </span><span class="n">ierr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ierr</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="w"></span>
+<span class="w">        </span><span class="k">endif</span>
+<span class="k">    else if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">dpchst</span><span class="p">(</span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">),</span><span class="n">slope</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">zero</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        </span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zero</span><span class="w"></span>
+<span class="w">        </span><span class="n">ierr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ierr</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="w"></span>
+<span class="w">    </span><span class="k">else if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">))</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">three</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="n">slope</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        </span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">three</span><span class="o">*</span><span class="n">slope</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">ierr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ierr</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="w"></span>
+<span class="w">    </span><span class="k">endif</span>
 
-<span class="k">    end subroutine </span><span class="n">dpchce</span>
+<span class="k">    end subroutine </span><span class="n">dpchce</span><span class="w"></span>
 </pre></div>
 
     </section>
     <br>
     
-    
     </div>
   </div>
-
 
     <hr>    
     </div> <!-- /container -->
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-6"><p>PCHIP was developed by Jacob Williams<br>&copy; 2021 
-                                          </p>
+        <div class="col-xs-6 col-md-6"><p>PCHIP was developed by Jacob Williams<br>&copy; 2022 
+</p>
         </div>
         <div class="col-xs-6 col-md-6">
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
-            
-            
           </p>
         </div>
       </div>
@@ -937,14 +711,11 @@ private subroutine dpchce(ic, vc, n, x, h, slope, d, incfd, ierr)
         extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
       });
     </script>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
     
     <script src="../tipuesearch/tipuesearch_content.js"></script>
     <script src="../tipuesearch/tipuesearch_set.js"></script>
     <script src="../tipuesearch/tipuesearch.js"></script>
-    
     
   </body>
 </html>

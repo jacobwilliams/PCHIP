@@ -4,9 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-   
    <meta name="description" content="PCHIP -- Piecewise Cubic Hermite Interpolation Package">
-    
     <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="../favicon.png">
 
@@ -16,10 +14,7 @@
     <link href="../css/pygments.css" rel="stylesheet">
     <link href="../css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/local.css" rel="stylesheet">
-    
     <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
-    
-    
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -48,50 +43,23 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-        
             <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
               <a href="#" class="dropdown-toggle"
               data-toggle="dropdown" role="button"
               aria-haspopup="true"
      aria-expanded="false">Contents <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          
-              
             <li><a href="../sourcefile/pchip_module.f90.html">Source File</a></li>
-        
-        
-        
             <li><a href="../lists/modules.html">Modules</a></li>
-        
-            
-                                
             <li><a href="../lists/procedures.html">Procedures</a></li>
-        
-               
-               
-        
-        
+              
             </ul>
         
             </li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../sourcefile/pchip_module.f90.html">Source File</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
-
-                             
-
-
-
-          </ul>
-        
+                                       </ul>
         <form action="../search.html" class="navbar-form navbar-right" role="search">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
@@ -100,51 +68,29 @@
         <button type="submit" class="btn btn-default">Submit</button>
 -->
         </form>
-        
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
     <div class="container">
-    
-  
   <div class="row">
     <h1>dpchfe
       <small>Subroutine</small>
-    
     </h1>
-    
-<div class="row">
+    <div class="row">
   <div class="col-lg-12">
 <div class="well well-sm">
   <ul class="list-inline" style="margin-bottom:0px;display:inline">
-     
-     
-     
-     
-     
-    
-    
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
     title=" 7.2% of total for procedures.">90 statements</a>
      </li> 
-     
-     
-     
     <li><i class="fa fa-code"></i><a href="../src/pchip_module.f90"> Source File</a></li>
-     
-     
   </ul>
   <ol class="breadcrumb in-well text-right">
-  
-    
      <li><a href='../sourcefile/pchip_module.f90.html'>pchip_module.f90</a></li>
-    
      <li><a href='../module/pchip_module.html'>pchip_module</a></li>
-    
-  
      <li class="active">dpchfe</li>
   </ol>
 </div>
@@ -160,32 +106,9 @@
   
   <div class="row">
     <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
-    
-<div id="sidebar">
-  
-<h3>Contents</h3>
+    <div id="sidebar">
+  <h3>Contents</h3>
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
   <div class="list-group">
@@ -193,24 +116,14 @@
   </div>
 </div>
 
-
-
 </div>
 
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2>
-public subroutine dpchfe(n, x, f, d, incfd, skip, ne, xe, fe, ierr)
+    <h2>public subroutine dpchfe(n, x, f, d, incfd, skip, ne, xe, fe, ierr)</h2>
     
-    
-   
-</h2>
-    
-  
 
-
-    
     <p>Piecewise Cubic Hermite Function Evaluator</p>
 <p>Evaluate a piecewise cubic Hermite function at an array of
   points.  May be used by itself for Hermite interpolation,
@@ -240,222 +153,112 @@ public subroutine dpchfe(n, x, f, d, incfd, skip, ne, xe, fe, ierr)
      will be counted (at least) twice in the total returned in IERR.</p>
 </li>
 </ol>
-    
 
     <h3>Arguments</h3>
-    
-      
-<table class="table table-striped varlist">
-<thead><tr><th>Type</th>
-<th>Intent</th><th>Optional</th>
-<th>Attributes</th><th></th><th>Name</th><th></th></thead>
-
-
-
+      <table class="table table-striped varlist">
+<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
 <tbody>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-n~9"></span>integer,</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>n</strong></td><td><p>number of data points.  (Error return if N&lt;2).</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-x~8"></span>real(kind=wp),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>x</strong>(*)</td><td><p>array of independent variable values.  The
- elements of X must be strictly increasing:
- X(I-1) &lt; X(I),  I = 2(1)N.
- (Error return if not.)</p></td>
-  
+elements of X must be strictly increasing:
+X(I-1) &lt; X(I),  I = 2(1)N.
+(Error return if not.)</p></td>
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-f~6"></span>real(kind=wp),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>f</strong>(incfd,*)</td><td><p>array of function values.  F(1+(I-1)*INCFD) is
- the value corresponding to X(I).</p></td>
-  
+the value corresponding to X(I).</p></td>
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-d~9"></span>real(kind=wp),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>d</strong>(incfd,*)</td><td><p>array of derivative values.  D(1+(I-1)*INCFD)
- is the value corresponding to X(I).</p></td>
-  
+is the value corresponding to X(I).</p></td>
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-incfd~9"></span>integer,</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>incfd</strong></td><td><p>increment between successive values in F and D.
- (Error return if  INCFD&lt;1).</p></td>
-  
+(Error return if  INCFD&lt;1).</p></td>
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-skip~5"></span>logical,</td>
-  <td>intent(inout)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(inout)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>skip</strong></td><td><p>logical variable which should be set to
- .TRUE. if the user wishes to skip checks for validity of
- preceding parameters, or to .FALSE. otherwise.
- This will save time in case these checks have already
- been performed (say, in <a href="../proc/dpchim.html">dpchim</a> or <a href="../proc/dpchic.html">dpchic</a>).
- SKIP will be set to .TRUE. on normal return.</p></td>
-  
+.TRUE. if the user wishes to skip checks for validity of
+preceding parameters, or to .FALSE. otherwise.
+This will save time in case these checks have already
+been performed (say, in <a href="../proc/dpchim.html">dpchim</a> or <a href="../proc/dpchic.html">dpchic</a>).
+SKIP will be set to .TRUE. on normal return.</p></td>
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-ne~4"></span>integer,</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>ne</strong></td><td><p>number of evaluation points.  (Error return if NE&lt;1).</p></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-xe~4"></span>real(kind=wp),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>xe</strong>(*)</td><td><p>array of points at which the function is to
- be evaluated.</p>
+be evaluated.</p>
 <p>NOTES:</p>
 <ol>
 <li>The evaluation will be most efficient if the elements
-     of XE are increasing relative to X;
-     that is,   <code>XE(J) &gt;= X(I)</code>
-     implies    <code>XE(K) &gt;= X(I)</code>,  all <code>K&gt;=J</code>.</li>
+    of XE are increasing relative to X;
+    that is,   <code>XE(J) &gt;= X(I)</code>
+    implies    <code>XE(K) &gt;= X(I)</code>,  all <code>K&gt;=J</code>.</li>
 <li>If any of the XE are outside the interval <code>[X(1),X(N)]</code>,
-     values are extrapolated from the nearest extreme cubic,
-     and a warning error is returned.</li>
+    values are extrapolated from the nearest extreme cubic,
+    and a warning error is returned.</li>
 </ol></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-fe~4"></span>real(kind=wp),</td>
-  <td>intent(out)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(out)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>fe</strong>(*)</td><td><p>array of values of the cubic Hermite
- function defined by  N, X, F, D  at the points XE.</p></td>
-  
+function defined by  N, X, F, D  at the points XE.</p></td>
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" id="variable-ierr~11"></span>integer,</td>
-  <td>intent(out)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(out)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>ierr</strong></td><td><p>error flag.</p>
 <ul>
-<li>Normal return:<ul>
+<li>Normal return:</li>
 <li>IERR = 0  (no errors).</li>
-</ul>
-</li>
-<li>Warning error:<ul>
+<li>Warning error:</li>
 <li>IERR&gt;0  means that extrapolation was performed at IERR points.</li>
-</ul>
-</li>
-<li>"Recoverable" errors:<ul>
+<li>"Recoverable" errors:</li>
 <li>IERR = -1  if N&lt;2 .</li>
 <li>IERR = -2  if INCFD&lt;1 .</li>
 <li>IERR = -3  if the X-array is not strictly increasing.</li>
 <li>IERR = -4  if NE&lt;1 .</li>
 </ul>
-</li>
-</ul>
 <p>(The FE-array has not been changed in any of these cases.)
- NOTE: The above errors are checked in the order listed,
- and following arguments have <strong>NOT</strong> been validated.</p></td>
-  
+NOTE: The above errors are checked in the order listed,
+and following arguments have <strong>NOT</strong> been validated.</p></td>
 </tr>
-
 </tbody>
 </table>
 
-    
-    
-    
     <br>
-    
-    
     <div class="panel panel-default">
       <div class="panel-heading">
   <h3 class="panel-title">Calls</h3>
@@ -475,44 +278,44 @@ public subroutine dpchfe(n, x, f, d, incfd, skip, ne, xe, fe, ierr)
 <!-- proc~dpchfe -->
 <g id="proc~~dpchfe~~CallsGraph_node1" class="node">
 <title>proc~dpchfe</title>
-<polygon fill="none" stroke="black" points="54,-44 0,-44 0,-20 54,-20 54,-44"/>
-<text text-anchor="middle" x="27" y="-29.6" font-family="Helvetica,sans-Serif" font-size="10.50">dpchfe</text>
-</g>
-<!-- proc~xermsg -->
-<g id="proc~~dpchfe~~CallsGraph_node2" class="node">
-<title>proc~xermsg</title>
-<g id="a_proc~~dpchfe~~CallsGraph_node2"><a xlink:href=".././proc/xermsg.html" xlink:title="xermsg">
-<polygon fill="#d9534f" stroke="#d9534f" points="234,-44 180,-44 180,-20 234,-20 234,-44"/>
-<text text-anchor="middle" x="207" y="-29.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">xermsg</text>
-</a>
-</g>
-</g>
-<!-- proc~dpchfe&#45;&gt;proc~xermsg -->
-<g id="proc~~dpchfe~~CallsGraph_edge1" class="edge">
-<title>proc~dpchfe&#45;&gt;proc~xermsg</title>
-<path fill="none" stroke="#000000" d="M54.24,-32.52C65.28,-32.71 78.27,-32.91 90,-33 114,-33.19 120,-33.19 144,-33 152.25,-32.93 161.12,-32.82 169.49,-32.69"/>
-<polygon fill="#000000" stroke="#000000" points="169.81,-36.18 179.76,-32.52 169.7,-29.18 169.81,-36.18"/>
+<polygon fill="none" stroke="black" points="54,-24 0,-24 0,0 54,0 54,-24"/>
+<text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">dpchfe</text>
 </g>
 <!-- proc~dchfev -->
-<g id="proc~~dpchfe~~CallsGraph_node3" class="node">
+<g id="proc~~dpchfe~~CallsGraph_node2" class="node">
 <title>proc~dchfev</title>
-<g id="a_proc~~dpchfe~~CallsGraph_node3"><a xlink:href=".././proc/dchfev.html" xlink:title="dchfev">
-<polygon fill="#d9534f" stroke="#d9534f" points="144,-24 90,-24 90,0 144,0 144,-24"/>
-<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dchfev</text>
+<g id="a_proc~~dpchfe~~CallsGraph_node2"><a xlink:href=".././proc/dchfev.html" xlink:title="dchfev">
+<polygon fill="#d9534f" stroke="#d9534f" points="144,-44 90,-44 90,-20 144,-20 144,-44"/>
+<text text-anchor="middle" x="117" y="-29.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dchfev</text>
 </a>
 </g>
 </g>
 <!-- proc~dpchfe&#45;&gt;proc~dchfev -->
-<g id="proc~~dpchfe~~CallsGraph_edge2" class="edge">
+<g id="proc~~dpchfe~~CallsGraph_edge1" class="edge">
 <title>proc~dpchfe&#45;&gt;proc~dchfev</title>
-<path fill="none" stroke="#000000" d="M54.4,-26C62.48,-24.16 71.51,-22.11 80.1,-20.16"/>
-<polygon fill="#000000" stroke="#000000" points="80.94,-23.56 89.92,-17.93 79.39,-16.73 80.94,-23.56"/>
+<path fill="none" stroke="#000000" d="M54.4,-18C62.48,-19.84 71.51,-21.89 80.1,-23.84"/>
+<polygon fill="#000000" stroke="#000000" points="79.39,-27.27 89.92,-26.07 80.94,-20.44 79.39,-27.27"/>
+</g>
+<!-- proc~xermsg -->
+<g id="proc~~dpchfe~~CallsGraph_node3" class="node">
+<title>proc~xermsg</title>
+<g id="a_proc~~dpchfe~~CallsGraph_node3"><a xlink:href=".././proc/xermsg.html" xlink:title="xermsg">
+<polygon fill="#d9534f" stroke="#d9534f" points="234,-24 180,-24 180,0 234,0 234,-24"/>
+<text text-anchor="middle" x="207" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">xermsg</text>
+</a>
+</g>
+</g>
+<!-- proc~dpchfe&#45;&gt;proc~xermsg -->
+<g id="proc~~dpchfe~~CallsGraph_edge2" class="edge">
+<title>proc~dpchfe&#45;&gt;proc~xermsg</title>
+<path fill="none" stroke="#000000" d="M54.24,-11.48C65.28,-11.29 78.27,-11.09 90,-11 114,-10.81 120,-10.81 144,-11 152.25,-11.07 161.12,-11.18 169.49,-11.31"/>
+<polygon fill="#000000" stroke="#000000" points="169.7,-14.82 179.76,-11.48 169.81,-7.82 169.7,-14.82"/>
 </g>
 <!-- proc~dchfev&#45;&gt;proc~xermsg -->
 <g id="proc~~dpchfe~~CallsGraph_edge3" class="edge">
 <title>proc~dchfev&#45;&gt;proc~xermsg</title>
-<path fill="none" stroke="#000000" d="M144.4,-18C152.48,-19.84 161.51,-21.89 170.1,-23.84"/>
-<polygon fill="#000000" stroke="#000000" points="169.39,-27.27 179.92,-26.07 170.94,-20.44 169.39,-27.27"/>
+<path fill="none" stroke="#000000" d="M144.4,-26C152.48,-24.16 161.51,-22.11 170.1,-20.16"/>
+<polygon fill="#000000" stroke="#000000" points="170.94,-23.56 179.92,-17.93 169.39,-16.73 170.94,-23.56"/>
 </g>
 </g>
 </svg>
@@ -577,35 +380,11 @@ public subroutine dpchfe(n, x, f, d, incfd, skip, ne, xe, fe, ierr)
     </div></div></div></div>
       </div>
     </div>
-     
-     
     <br>
 
     <section class="visible-xs visible-sm hidden-md">
-      
-<h3>Contents</h3>
+      <h3>Contents</h3>
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
   <div class="list-group">
@@ -613,245 +392,230 @@ public subroutine dpchfe(n, x, f, d, incfd, skip, ne, xe, fe, ierr)
   </div>
 </div>
 
-
-
     </section>
     <br class="visible-xs visible-sm hidden-md">
 
-    
 
-    
-    
-    
     
     
 
     
     
-    
-    
-    
 
 
-    
-    
     
     <section>
     <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span>    <span class="k">subroutine </span><span class="n">dpchfe</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">incfd</span><span class="p">,</span> <span class="n">skip</span><span class="p">,</span> <span class="n">ne</span><span class="p">,</span> <span class="n">xe</span><span class="p">,</span> <span class="n">fe</span><span class="p">,</span> <span class="n">ierr</span><span class="p">)</span>
+    <div class="highlight"><pre><span></span><span class="w">    </span><span class="k">subroutine </span><span class="n">dpchfe</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">,</span><span class="w"> </span><span class="n">incfd</span><span class="p">,</span><span class="w"> </span><span class="n">skip</span><span class="p">,</span><span class="w"> </span><span class="n">ne</span><span class="p">,</span><span class="w"> </span><span class="n">xe</span><span class="p">,</span><span class="w"> </span><span class="n">fe</span><span class="p">,</span><span class="w"> </span><span class="n">ierr</span><span class="p">)</span><span class="w"></span>
 
-    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>    <span class="kd">::</span> <span class="n">n</span>          <span class="c">!! number of data points.  (Error return if N&lt;2).</span>
-    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>    <span class="kd">::</span> <span class="n">incfd</span>      <span class="c">!! increment between successive values in F and D.</span>
-                                        <span class="c">!! (Error return if  INCFD&lt;1).</span>
-    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>    <span class="kd">::</span> <span class="n">ne</span>         <span class="c">!! number of evaluation points.  (Error return if NE&lt;1).</span>
-    <span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>   <span class="kd">::</span> <span class="n">ierr</span>       <span class="c">!! error flag.</span>
-                                        <span class="c">!!</span>
-                                        <span class="c">!! * Normal return:</span>
-                                        <span class="c">!!    * IERR = 0  (no errors).</span>
-                                        <span class="c">!! * Warning error:</span>
-                                        <span class="c">!!    * IERR&gt;0  means that extrapolation was performed at IERR points.</span>
-                                        <span class="c">!! * &quot;Recoverable&quot; errors:</span>
-                                        <span class="c">!!    * IERR = -1  if N&lt;2 .</span>
-                                        <span class="c">!!    * IERR = -2  if INCFD&lt;1 .</span>
-                                        <span class="c">!!    * IERR = -3  if the X-array is not strictly increasing.</span>
-                                        <span class="c">!!    * IERR = -4  if NE&lt;1 .</span>
-                                        <span class="c">!!</span>
-                                        <span class="c">!! (The FE-array has not been changed in any of these cases.)</span>
-                                        <span class="c">!! NOTE: The above errors are checked in the order listed,</span>
-                                        <span class="c">!! and following arguments have **NOT** been validated.</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>   <span class="kd">::</span> <span class="n">x</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>       <span class="c">!! array of independent variable values.  The</span>
-                                        <span class="c">!! elements of X must be strictly increasing:</span>
-                                        <span class="c">!! X(I-1) &lt; X(I),  I = 2(1)N.</span>
-                                        <span class="c">!! (Error return if not.)</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>   <span class="kd">::</span> <span class="n">f</span><span class="p">(</span><span class="n">incfd</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="c">!! array of function values.  F(1+(I-1)*INCFD) is</span>
-                                        <span class="c">!! the value corresponding to X(I).</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>   <span class="kd">::</span> <span class="n">d</span><span class="p">(</span><span class="n">incfd</span><span class="p">,</span><span class="o">*</span><span class="p">)</span> <span class="c">!! array of derivative values.  D(1+(I-1)*INCFD)</span>
-                                        <span class="c">!! is the value corresponding to X(I).</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>   <span class="kd">::</span> <span class="n">xe</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>      <span class="c">!! array of points at which the function is to</span>
-                                        <span class="c">!! be evaluated.</span>
-                                        <span class="c">!!</span>
-                                        <span class="c">!! NOTES:</span>
-                                        <span class="c">!!</span>
-                                        <span class="c">!!  1. The evaluation will be most efficient if the elements</span>
-                                        <span class="c">!!     of XE are increasing relative to X;</span>
-                                        <span class="c">!!     that is,   `XE(J) &gt;= X(I)`</span>
-                                        <span class="c">!!     implies    `XE(K) &gt;= X(I)`,  all `K&gt;=J`.</span>
-                                        <span class="c">!!  2. If any of the XE are outside the interval `[X(1),X(N)]`,</span>
-                                        <span class="c">!!     values are extrapolated from the nearest extreme cubic,</span>
-                                        <span class="c">!!     and a warning error is returned.</span>
-    <span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">fe</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>      <span class="c">!! array of values of the cubic Hermite</span>
-                                        <span class="c">!! function defined by  N, X, F, D  at the points XE.</span>
-    <span class="kt">logical</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">skip</span>       <span class="c">!! logical variable which should be set to</span>
-                                        <span class="c">!! .TRUE. if the user wishes to skip checks for validity of</span>
-                                        <span class="c">!! preceding parameters, or to .FALSE. otherwise.</span>
-                                        <span class="c">!! This will save time in case these checks have already</span>
-                                        <span class="c">!! been performed (say, in [[DPCHIM]] or [[DPCHIC]]).</span>
-                                        <span class="c">!! SKIP will be set to .TRUE. on normal return.</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">n</span><span class="w">          </span><span class="c">!! number of data points.  (Error return if N&lt;2).</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">incfd</span><span class="w">      </span><span class="c">!! increment between successive values in F and D.</span>
+<span class="w">                                        </span><span class="c">!! (Error return if  INCFD&lt;1).</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">ne</span><span class="w">         </span><span class="c">!! number of evaluation points.  (Error return if NE&lt;1).</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">ierr</span><span class="w">       </span><span class="c">!! error flag.</span>
+<span class="w">                                        </span><span class="c">!!</span>
+<span class="w">                                        </span><span class="c">!! * Normal return:</span>
+<span class="w">                                        </span><span class="c">!!    * IERR = 0  (no errors).</span>
+<span class="w">                                        </span><span class="c">!! * Warning error:</span>
+<span class="w">                                        </span><span class="c">!!    * IERR&gt;0  means that extrapolation was performed at IERR points.</span>
+<span class="w">                                        </span><span class="c">!! * &quot;Recoverable&quot; errors:</span>
+<span class="w">                                        </span><span class="c">!!    * IERR = -1  if N&lt;2 .</span>
+<span class="w">                                        </span><span class="c">!!    * IERR = -2  if INCFD&lt;1 .</span>
+<span class="w">                                        </span><span class="c">!!    * IERR = -3  if the X-array is not strictly increasing.</span>
+<span class="w">                                        </span><span class="c">!!    * IERR = -4  if NE&lt;1 .</span>
+<span class="w">                                        </span><span class="c">!!</span>
+<span class="w">                                        </span><span class="c">!! (The FE-array has not been changed in any of these cases.)</span>
+<span class="w">                                        </span><span class="c">!! NOTE: The above errors are checked in the order listed,</span>
+<span class="w">                                        </span><span class="c">!! and following arguments have **NOT** been validated.</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">       </span><span class="c">!! array of independent variable values.  The</span>
+<span class="w">                                        </span><span class="c">!! elements of X must be strictly increasing:</span>
+<span class="w">                                        </span><span class="c">!! X(I-1) &lt; X(I),  I = 2(1)N.</span>
+<span class="w">                                        </span><span class="c">!! (Error return if not.)</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">f</span><span class="p">(</span><span class="n">incfd</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="c">!! array of function values.  F(1+(I-1)*INCFD) is</span>
+<span class="w">                                        </span><span class="c">!! the value corresponding to X(I).</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">d</span><span class="p">(</span><span class="n">incfd</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="c">!! array of derivative values.  D(1+(I-1)*INCFD)</span>
+<span class="w">                                        </span><span class="c">!! is the value corresponding to X(I).</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">xe</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">      </span><span class="c">!! array of points at which the function is to</span>
+<span class="w">                                        </span><span class="c">!! be evaluated.</span>
+<span class="w">                                        </span><span class="c">!!</span>
+<span class="w">                                        </span><span class="c">!! NOTES:</span>
+<span class="w">                                        </span><span class="c">!!</span>
+<span class="w">                                        </span><span class="c">!!  1. The evaluation will be most efficient if the elements</span>
+<span class="w">                                        </span><span class="c">!!     of XE are increasing relative to X;</span>
+<span class="w">                                        </span><span class="c">!!     that is,   `XE(J) &gt;= X(I)`</span>
+<span class="w">                                        </span><span class="c">!!     implies    `XE(K) &gt;= X(I)`,  all `K&gt;=J`.</span>
+<span class="w">                                        </span><span class="c">!!  2. If any of the XE are outside the interval `[X(1),X(N)]`,</span>
+<span class="w">                                        </span><span class="c">!!     values are extrapolated from the nearest extreme cubic,</span>
+<span class="w">                                        </span><span class="c">!!     and a warning error is returned.</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">fe</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">      </span><span class="c">!! array of values of the cubic Hermite</span>
+<span class="w">                                        </span><span class="c">!! function defined by  N, X, F, D  at the points XE.</span>
+<span class="w">    </span><span class="kt">logical</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">skip</span><span class="w">       </span><span class="c">!! logical variable which should be set to</span>
+<span class="w">                                        </span><span class="c">!! .TRUE. if the user wishes to skip checks for validity of</span>
+<span class="w">                                        </span><span class="c">!! preceding parameters, or to .FALSE. otherwise.</span>
+<span class="w">                                        </span><span class="c">!! This will save time in case these checks have already</span>
+<span class="w">                                        </span><span class="c">!! been performed (say, in [[DPCHIM]] or [[DPCHIC]]).</span>
+<span class="w">                                        </span><span class="c">!! SKIP will be set to .TRUE. on normal return.</span>
 
-    <span class="kt">integer</span> <span class="kd">::</span> <span class="n">i</span><span class="p">,</span> <span class="n">ierc</span><span class="p">,</span> <span class="n">ir</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">jfirst</span><span class="p">,</span> <span class="n">next</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">nj</span>
-    <span class="kt">logical</span> <span class="kd">::</span> <span class="n">error</span><span class="p">,</span> <span class="n">located</span>
+<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">ierc</span><span class="p">,</span><span class="w"> </span><span class="n">ir</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">jfirst</span><span class="p">,</span><span class="w"> </span><span class="n">next</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="n">nj</span><span class="w"></span>
+<span class="w">    </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">error</span><span class="p">,</span><span class="w"> </span><span class="n">located</span><span class="w"></span>
 
-    <span class="c">! validity-check arguments.</span>
-    <span class="k">if</span> <span class="p">(.</span><span class="nb">not</span><span class="p">.</span> <span class="n">skip</span><span class="p">)</span> <span class="k">then</span>
-<span class="k">        if</span> <span class="p">(</span> <span class="n">n</span><span class="o">&lt;</span><span class="mi">2</span> <span class="p">)</span> <span class="k">then</span>
-<span class="k">            </span><span class="n">ierr</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-            <span class="k">call </span><span class="n">xermsg</span> <span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span> <span class="s1">&#39;dpchfe&#39;</span><span class="p">,</span> <span class="s1">&#39;number of data points less than two&#39;</span><span class="p">,</span> <span class="n">ierr</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-            <span class="k">return</span>
+<span class="w">    </span><span class="c">! validity-check arguments.</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">skip</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">n</span><span class="o">&lt;</span><span class="mi">2</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            </span><span class="n">ierr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="w"></span>
+<span class="w">            </span><span class="k">call </span><span class="n">xermsg</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;dpchfe&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;number of data points less than two&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">ierr</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="k">return</span>
 <span class="k">        end if</span>
-<span class="k">        if</span> <span class="p">(</span> <span class="n">incfd</span><span class="o">&lt;</span><span class="mi">1</span> <span class="p">)</span> <span class="k">then</span>
-<span class="k">            </span><span class="n">ierr</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span>
-            <span class="k">call </span><span class="n">xermsg</span> <span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span> <span class="s1">&#39;dpchfe&#39;</span><span class="p">,</span> <span class="s1">&#39;increment less than one&#39;</span><span class="p">,</span> <span class="n">ierr</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-            <span class="k">return</span>
+<span class="k">        if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">incfd</span><span class="o">&lt;</span><span class="mi">1</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            </span><span class="n">ierr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">2</span><span class="w"></span>
+<span class="w">            </span><span class="k">call </span><span class="n">xermsg</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;dpchfe&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;increment less than one&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">ierr</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="k">return</span>
 <span class="k">        end if</span>
-<span class="k">        do </span><span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n</span>
-            <span class="k">if</span> <span class="p">(</span> <span class="n">x</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">&lt;=</span><span class="n">x</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">)</span> <span class="k">then</span>
-                <span class="c">! x-array not strictly increasing.</span>
-                <span class="n">ierr</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span>
-                <span class="k">call </span><span class="n">xermsg</span> <span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span> <span class="s1">&#39;dpchfe&#39;</span><span class="p">,</span> <span class="s1">&#39;x-array not strictly increasing&#39;</span><span class="p">,</span> <span class="n">ierr</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-                <span class="k">return</span>
+<span class="k">        do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="w"></span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">&lt;=</span><span class="n">x</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
+<span class="w">                </span><span class="c">! x-array not strictly increasing.</span>
+<span class="w">                </span><span class="n">ierr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">3</span><span class="w"></span>
+<span class="w">                </span><span class="k">call </span><span class="n">xermsg</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;dpchfe&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;x-array not strictly increasing&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">ierr</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">                </span><span class="k">return</span>
 <span class="k">            end if</span>
 <span class="k">        end do</span>
+<span class="k">    end if</span><span class="w"></span>
+
+<span class="w">    </span><span class="c">! function definition is ok, go on.</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">ne</span><span class="o">&lt;</span><span class="mi">1</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        </span><span class="n">ierr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">4</span><span class="w"></span>
+<span class="w">        </span><span class="k">call </span><span class="n">xermsg</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;dpchfe&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;number of evaluation points less than one&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">ierr</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span>
 <span class="k">    end if</span>
 
-    <span class="c">! function definition is ok, go on.</span>
+<span class="k">    </span><span class="n">ierr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="w">    </span><span class="n">skip</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span><span class="w"></span>
 
-    <span class="k">if</span> <span class="p">(</span> <span class="n">ne</span><span class="o">&lt;</span><span class="mi">1</span> <span class="p">)</span> <span class="k">then</span>
-<span class="k">        </span><span class="n">ierr</span> <span class="o">=</span> <span class="o">-</span><span class="mi">4</span>
-        <span class="k">call </span><span class="n">xermsg</span> <span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span> <span class="s1">&#39;dpchfe&#39;</span><span class="p">,</span> <span class="s1">&#39;number of evaluation points less than one&#39;</span><span class="p">,</span> <span class="n">ierr</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="k">return</span>
-<span class="k">    end if</span>
+<span class="w">    </span><span class="c">! loop over intervals.   ( interval index is  il = ir-1 . )</span>
+<span class="w">    </span><span class="c">!                        ( interval is x(il)&lt;=x&lt;x(ir)   . )</span>
+<span class="w">    </span><span class="n">jfirst</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">    </span><span class="n">ir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w"></span>
 
-<span class="k">    </span><span class="n">ierr</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">skip</span> <span class="o">=</span> <span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">    </span><span class="k">do</span><span class="w"></span>
 
-    <span class="c">! loop over intervals.   ( interval index is  il = ir-1 . )</span>
-    <span class="c">!                        ( interval is x(il)&lt;=x&lt;x(ir)   . )</span>
-    <span class="n">jfirst</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">ir</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="w">        </span><span class="c">! skip out of loop if have processed all evaluation points.</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">jfirst</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">ne</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"></span>
 
-    <span class="k">do</span>
-
-        <span class="c">! skip out of loop if have processed all evaluation points.</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">jfirst</span> <span class="o">&gt;</span> <span class="n">ne</span><span class="p">)</span> <span class="k">return</span>
-
-        <span class="c">! locate all points in interval.</span>
-        <span class="n">located</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
-        <span class="k">do </span><span class="n">j</span> <span class="o">=</span> <span class="n">jfirst</span><span class="p">,</span> <span class="n">ne</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">xe</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">x</span><span class="p">(</span><span class="n">ir</span><span class="p">))</span> <span class="k">then</span>
-<span class="k">                </span><span class="n">located</span> <span class="o">=</span> <span class="p">.</span><span class="n">true</span><span class="p">.</span>
-                <span class="k">exit</span>
+<span class="w">        </span><span class="c">! locate all points in interval.</span>
+<span class="w">        </span><span class="n">located</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span><span class="w"></span>
+<span class="w">        </span><span class="k">do </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">jfirst</span><span class="p">,</span><span class="w"> </span><span class="n">ne</span><span class="w"></span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">xe</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="n">ir</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">                </span><span class="n">located</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span><span class="w"></span>
+<span class="w">                </span><span class="k">exit</span>
 <span class="k">            end if</span>
 <span class="k">        end do</span>
-<span class="k">        if</span> <span class="p">(</span><span class="n">located</span><span class="p">)</span> <span class="k">then</span>
-            <span class="c">! have located first point beyond interval.</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">ir</span> <span class="o">==</span> <span class="n">n</span><span class="p">)</span>  <span class="n">j</span> <span class="o">=</span> <span class="n">ne</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="k">else</span>
-<span class="k">            </span><span class="n">j</span> <span class="o">=</span> <span class="n">ne</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="k">end if</span>
+<span class="k">        if</span><span class="w"> </span><span class="p">(</span><span class="n">located</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
+<span class="w">            </span><span class="c">! have located first point beyond interval.</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ir</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w">  </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ne</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">        </span><span class="k">else</span>
+<span class="k">            </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ne</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">        </span><span class="k">end if</span>
 
-<span class="k">        </span><span class="n">nj</span> <span class="o">=</span> <span class="n">j</span> <span class="o">-</span> <span class="n">jfirst</span>
+<span class="k">        </span><span class="n">nj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">jfirst</span><span class="w"></span>
 
-        <span class="c">! skip evaluation if no points in interval.</span>
+<span class="w">        </span><span class="c">! skip evaluation if no points in interval.</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="n">nj</span> <span class="o">/=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nj</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
 
-            <span class="c">! evaluate cubic at xe(i),  i = jfirst (1) j-1 .</span>
+<span class="w">            </span><span class="c">! evaluate cubic at xe(i),  i = jfirst (1) j-1 .</span>
 
-            <span class="k">call </span><span class="n">dchfev</span> <span class="p">(</span><span class="n">x</span><span class="p">(</span><span class="n">ir</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="n">x</span><span class="p">(</span><span class="n">ir</span><span class="p">),</span> <span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">ir</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">ir</span><span class="p">),</span> <span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">ir</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">ir</span><span class="p">),</span> <span class="p">&amp;</span>
-                         <span class="n">nj</span><span class="p">,</span> <span class="n">xe</span><span class="p">(</span><span class="n">jfirst</span><span class="p">),</span> <span class="n">fe</span><span class="p">(</span><span class="n">jfirst</span><span class="p">),</span> <span class="n">next</span><span class="p">,</span> <span class="n">ierc</span><span class="p">)</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">ierc</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="k">exit</span>
+<span class="w">            </span><span class="k">call </span><span class="n">dchfev</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="p">(</span><span class="n">ir</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="n">x</span><span class="p">(</span><span class="n">ir</span><span class="p">),</span><span class="w"> </span><span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">ir</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">ir</span><span class="p">),</span><span class="w"> </span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">ir</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="n">d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">ir</span><span class="p">),</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                         </span><span class="n">nj</span><span class="p">,</span><span class="w"> </span><span class="n">xe</span><span class="p">(</span><span class="n">jfirst</span><span class="p">),</span><span class="w"> </span><span class="n">fe</span><span class="p">(</span><span class="n">jfirst</span><span class="p">),</span><span class="w"> </span><span class="n">next</span><span class="p">,</span><span class="w"> </span><span class="n">ierc</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ierc</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">exit</span>
 
-<span class="k">            if</span> <span class="p">(</span><span class="n">next</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">/=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
-                <span class="c">! if (next(2) &gt; 0) then</span>
-                <span class="c">! in the current set of xe-points, there are next(2) to the</span>
-                <span class="c">! right of x(ir).</span>
-                <span class="k">if</span> <span class="p">(</span><span class="n">ir</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">)</span> <span class="k">exit</span>
-                <span class="c">! if (ir == n) then</span>
-                <span class="c">! these are actually extrapolation points.</span>
-                <span class="n">ierr</span> <span class="o">=</span> <span class="n">ierr</span> <span class="o">+</span> <span class="n">next</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-            <span class="k">end if</span>
+<span class="k">            if</span><span class="w"> </span><span class="p">(</span><span class="n">next</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
+<span class="w">                </span><span class="c">! if (next(2) &gt; 0) then</span>
+<span class="w">                </span><span class="c">! in the current set of xe-points, there are next(2) to the</span>
+<span class="w">                </span><span class="c">! right of x(ir).</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ir</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="k">exit</span><span class="w"></span>
+<span class="w">                </span><span class="c">! if (ir == n) then</span>
+<span class="w">                </span><span class="c">! these are actually extrapolation points.</span>
+<span class="w">                </span><span class="n">ierr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ierr</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">next</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="k">end if</span>
 
-<span class="k">            if</span> <span class="p">(</span><span class="n">next</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">/=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
-                <span class="c">! if (next(1) &gt; 0) then</span>
-                <span class="c">! in the current set of xe-points, there are next(1) to the</span>
-                <span class="c">! left of x(ir-1).</span>
+<span class="k">            if</span><span class="w"> </span><span class="p">(</span><span class="n">next</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
+<span class="w">                </span><span class="c">! if (next(1) &gt; 0) then</span>
+<span class="w">                </span><span class="c">! in the current set of xe-points, there are next(1) to the</span>
+<span class="w">                </span><span class="c">! left of x(ir-1).</span>
 
-                <span class="k">if</span> <span class="p">(</span><span class="n">ir</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">)</span> <span class="k">then</span>
-                    <span class="c">! if (ir == 2) then</span>
-                    <span class="c">! these are actually extrapolation points.</span>
-                    <span class="n">ierr</span> <span class="o">=</span> <span class="n">ierr</span> <span class="o">+</span> <span class="n">next</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-                <span class="k">else</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ir</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
+<span class="w">                    </span><span class="c">! if (ir == 2) then</span>
+<span class="w">                    </span><span class="c">! these are actually extrapolation points.</span>
+<span class="w">                    </span><span class="n">ierr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ierr</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">next</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">                </span><span class="k">else</span><span class="w"></span>
 
-                    <span class="c">! xe is not ordered relative to x, so must adjust</span>
-                    <span class="c">! evaluation interval.</span>
+<span class="w">                    </span><span class="c">! xe is not ordered relative to x, so must adjust</span>
+<span class="w">                    </span><span class="c">! evaluation interval.</span>
 
-                    <span class="c">! first, locate first point to left of x(ir-1).</span>
-                    <span class="n">error</span> <span class="o">=</span> <span class="p">.</span><span class="n">true</span><span class="p">.</span>
-                    <span class="k">do </span><span class="n">i</span> <span class="o">=</span> <span class="n">jfirst</span><span class="p">,</span> <span class="n">j</span><span class="o">-</span><span class="mi">1</span>
-                        <span class="k">if</span> <span class="p">(</span><span class="n">xe</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">x</span><span class="p">(</span><span class="n">ir</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="k">then</span>
-<span class="k">                            </span><span class="n">error</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
-                            <span class="k">exit</span>
+<span class="w">                    </span><span class="c">! first, locate first point to left of x(ir-1).</span>
+<span class="w">                    </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span><span class="w"></span>
+<span class="w">                    </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">jfirst</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="w"></span>
+<span class="w">                        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">xe</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="n">ir</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">                            </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span><span class="w"></span>
+<span class="w">                            </span><span class="k">exit</span>
 <span class="k">                        end if</span>
-<span class="k">                    end do</span>
-                    <span class="c">! note-- cannot drop through here unless there is an error in dchfev.</span>
-                    <span class="k">if</span> <span class="p">(</span><span class="n">error</span><span class="p">)</span> <span class="k">exit</span>
+<span class="k">                    end do</span><span class="w"></span>
+<span class="w">                    </span><span class="c">! note-- cannot drop through here unless there is an error in dchfev.</span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="w"> </span><span class="k">exit</span><span class="w"></span>
 
-                    <span class="c">! reset j.  (this will be the new jfirst.)</span>
-                    <span class="n">j</span> <span class="o">=</span> <span class="n">i</span>
+<span class="w">                    </span><span class="c">! reset j.  (this will be the new jfirst.)</span>
+<span class="w">                    </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"></span>
 
-                    <span class="c">! now find out how far to back up in the x-array.</span>
-                    <span class="k">do </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ir</span><span class="o">-</span><span class="mi">1</span>
-                        <span class="k">if</span> <span class="p">(</span><span class="n">xe</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">x</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="k">exit</span>
-<span class="k">                    end do</span>
-                    <span class="c">! nb-- can never drop through here, since xe(j)&lt;x(ir-1).</span>
-                    <span class="c">! at this point, either  xe(j) &lt; x(1)</span>
-                    <span class="c">!    or      x(i-1) &lt;= xe(j) &lt; x(i) .</span>
-                    <span class="c">! reset ir, recognizing that it will be incremented before</span>
-                    <span class="c">! cycling.</span>
-                    <span class="n">ir</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">                    </span><span class="c">! now find out how far to back up in the x-array.</span>
+<span class="w">                    </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">ir</span><span class="o">-</span><span class="mi">1</span><span class="w"></span>
+<span class="w">                        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">xe</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="n">i</span><span class="p">))</span><span class="w"> </span><span class="k">exit</span>
+<span class="k">                    end do</span><span class="w"></span>
+<span class="w">                    </span><span class="c">! nb-- can never drop through here, since xe(j)&lt;x(ir-1).</span>
+<span class="w">                    </span><span class="c">! at this point, either  xe(j) &lt; x(1)</span>
+<span class="w">                    </span><span class="c">!    or      x(i-1) &lt;= xe(j) &lt; x(i) .</span>
+<span class="w">                    </span><span class="c">! reset ir, recognizing that it will be incremented before</span>
+<span class="w">                    </span><span class="c">! cycling.</span>
+<span class="w">                    </span><span class="n">ir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
 
-                <span class="k">end if</span>
+<span class="w">                </span><span class="k">end if</span>
 <span class="k">            end if</span>
 
-<span class="k">            </span><span class="n">jfirst</span> <span class="o">=</span> <span class="n">j</span>
+<span class="k">            </span><span class="n">jfirst</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="w"></span>
 
-        <span class="k">end if</span>
+<span class="w">        </span><span class="k">end if</span>
 
-<span class="k">        </span><span class="n">ir</span> <span class="o">=</span> <span class="n">ir</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">ir</span> <span class="o">&gt;</span> <span class="n">n</span><span class="p">)</span>  <span class="k">return</span>
+<span class="k">        </span><span class="n">ir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ir</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ir</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w">  </span><span class="k">return</span>
 
-<span class="k">    end do</span>
+<span class="k">    end do</span><span class="w"></span>
 
-    <span class="c">! error return from dchfev.</span>
-    <span class="c">! *** this case should never occur ***</span>
-    <span class="n">ierr</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span>
-    <span class="k">call </span><span class="n">xermsg</span> <span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span> <span class="s1">&#39;dpchfe&#39;</span><span class="p">,</span> <span class="s1">&#39;error return from dchfev -- fatal&#39;</span><span class="p">,</span> <span class="n">ierr</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="w">    </span><span class="c">! error return from dchfev.</span>
+<span class="w">    </span><span class="c">! *** this case should never occur ***</span>
+<span class="w">    </span><span class="n">ierr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">5</span><span class="w"></span>
+<span class="w">    </span><span class="k">call </span><span class="n">xermsg</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;PCHIP&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;dpchfe&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;error return from dchfev -- fatal&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">ierr</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">end subroutine </span><span class="n">dpchfe</span>
+<span class="w">    </span><span class="k">end subroutine </span><span class="n">dpchfe</span><span class="w"></span>
 </pre></div>
 
     </section>
     <br>
     
-    
     </div>
   </div>
-
 
     <hr>    
     </div> <!-- /container -->
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-6"><p>PCHIP was developed by Jacob Williams<br>&copy; 2021 
-                                          </p>
+        <div class="col-xs-6 col-md-6"><p>PCHIP was developed by Jacob Williams<br>&copy; 2022 
+</p>
         </div>
         <div class="col-xs-6 col-md-6">
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
-            
-            
           </p>
         </div>
       </div>
@@ -879,14 +643,11 @@ public subroutine dpchfe(n, x, f, d, incfd, skip, ne, xe, fe, ierr)
         extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
       });
     </script>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
     
     <script src="../tipuesearch/tipuesearch_content.js"></script>
     <script src="../tipuesearch/tipuesearch_set.js"></script>
     <script src="../tipuesearch/tipuesearch.js"></script>
-    
     
   </body>
 </html>
