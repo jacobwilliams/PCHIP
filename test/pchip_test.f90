@@ -25,6 +25,7 @@ program pchip_test
 contains
 !*******************************************************************************************************
 
+   !**************************************************************************
    !***PURPOSE  Test the PCHIP evaluators DCHFDV, DCHFEV, DPCHFD, DPCHFE.
    !***AUTHOR  Fritsch, F. N., (LLNL)
    !***DESCRIPTION
@@ -69,16 +70,15 @@ contains
    !   900321  Removed IFAIL from call sequence for SLATEC standards and
    !           made miscellaneous cosmetic changes.  (FNF)
    !   930317  Improved output formats.  (FNF)
+
    subroutine dpchq1(Lun, Kprint, Ipass)
       implicit none
 
-      !
-      !  Declare arguments.
-      !
-      integer Lun, Kprint, Ipass
-      !
-      !  DECLARE LOCAL VARIABLES.
-      !
+      integer,intent(in) :: Lun !! unit number to which output is to be written
+      integer,intent(in) :: Kprint !! controls the amount of output
+      integer,intent(out) :: Ipass !! will contain a pass/fail flag.  IPASS=1 is good.
+                                   !! IPASS=0 indicates one or more tests failed.
+
       integer i1, i2, i3, i4, i5, i6, i7, i8, i9, ifail, npts
       double precision work(4000)
       logical fail
@@ -136,72 +136,73 @@ contains
          Ipass = 1
          if (Kprint >= 2) write (Lun, 99003)
 99003    format(/' ------------ DPCHIP PASSED  ALL EVALUATION TESTS',  &
-                     &' ------------')
+                                          &' ------------')
       else
          Ipass = 0
          if (Kprint >= 1) write (Lun, 99004)
 99004    format(/' ************ DPCHIP FAILED SOME EVALUATION TESTS',  &
-                     &' ************')
+                                          &' ************')
       end if
 
    end subroutine dpchq1
+   !**************************************************************************
+
+   !**************************************************************************
+   !***PURPOSE  Test the PCHIP integrators DPCHIA and DPCHID.
+   !***AUTHOR  Fritsch, F. N., (LLNL)
+   !***DESCRIPTION
+   !
+   !             DPCHIP QUICK CHECK NUMBER 2
+   !
+   !     TESTS THE INTEGRATORS:  DPCHIA, DPCHID.
+   ! *Usage:
+   !
+   !        INTEGER  LUN, KPRINT, IPASS
+   !
+   !        CALL DPCHQ2 (LUN, KPRINT, IPASS)
+   !
+   ! *Arguments:
+   !
+   !     LUN   :IN  is the unit number to which output is to be written.
+   !
+   !     KPRINT:IN  controls the amount of output, as specified in the
+   !                SLATEC Guidelines.
+   !
+   !     IPASS:OUT  will contain a pass/fail flag.  IPASS=1 is good.
+   !                IPASS=0 indicates one or more tests failed.
+   !
+   ! *Description:
+   !
+   !   This routine constructs data from a cubic, integrates it with DPCHIA
+   !   and compares the results with the correct answer.
+   !   Since DPCHIA calls DPCHID, this tests both integrators.
+   !
+   !***REVISION HISTORY  (YYMMDD)
+   !   820601  DATE WRITTEN
+   !   890306  Changed IPASS to the more accurate name IFAIL.  (FNF)
+   !   890316  1. Removed IMPLICIT statement.                  (FNF)
+   !           2. Eliminated unnecessary variable N1.          (FNF)
+   !           3. Miscellaneous cosmetic changes.              (FNF)
+   !   891004  Cosmetic changes to prologue.  (WRB)
+   !   891214  Prologue converted to Version 4.0 format.  (BAB)
+   !   900314  Improved some output formats.  (FNF)
+   !   900315  Revised prologue and improved some output formats.  (FNF)
+   !   900316  Additional minor cosmetic changes.  (FNF)
+   !   900321  Removed IFAIL from call sequence for SLATEC standards and
+   !           made miscellaneous cosmetic changes.  (FNF)
+   !   900323  Corrected list of routines called.  (FNF)
+   !   901130  Added 1P's to formats; changed to allow KPRINT.gt.3.  (FNF)
+   !   910708  Minor modifications in use of KPRINT.  (WRB)
+   !   930317  Improved output formats.  (FNF)
 
    subroutine dpchq2(Lun, Kprint, Ipass)
       implicit none
-      !***PURPOSE  Test the PCHIP integrators DPCHIA and DPCHID.
-      !***AUTHOR  Fritsch, F. N., (LLNL)
-      !***DESCRIPTION
-      !
-      !             DPCHIP QUICK CHECK NUMBER 2
-      !
-      !     TESTS THE INTEGRATORS:  DPCHIA, DPCHID.
-      ! *Usage:
-      !
-      !        INTEGER  LUN, KPRINT, IPASS
-      !
-      !        CALL DPCHQ2 (LUN, KPRINT, IPASS)
-      !
-      ! *Arguments:
-      !
-      !     LUN   :IN  is the unit number to which output is to be written.
-      !
-      !     KPRINT:IN  controls the amount of output, as specified in the
-      !                SLATEC Guidelines.
-      !
-      !     IPASS:OUT  will contain a pass/fail flag.  IPASS=1 is good.
-      !                IPASS=0 indicates one or more tests failed.
-      !
-      ! *Description:
-      !
-      !   This routine constructs data from a cubic, integrates it with DPCHIA
-      !   and compares the results with the correct answer.
-      !   Since DPCHIA calls DPCHID, this tests both integrators.
-      !
-      !***REVISION HISTORY  (YYMMDD)
-      !   820601  DATE WRITTEN
-      !   890306  Changed IPASS to the more accurate name IFAIL.  (FNF)
-      !   890316  1. Removed IMPLICIT statement.                  (FNF)
-      !           2. Eliminated unnecessary variable N1.          (FNF)
-      !           3. Miscellaneous cosmetic changes.              (FNF)
-      !   891004  Cosmetic changes to prologue.  (WRB)
-      !   891214  Prologue converted to Version 4.0 format.  (BAB)
-      !   900314  Improved some output formats.  (FNF)
-      !   900315  Revised prologue and improved some output formats.  (FNF)
-      !   900316  Additional minor cosmetic changes.  (FNF)
-      !   900321  Removed IFAIL from call sequence for SLATEC standards and
-      !           made miscellaneous cosmetic changes.  (FNF)
-      !   900323  Corrected list of routines called.  (FNF)
-      !   901130  Added 1P's to formats; changed to allow KPRINT.gt.3.  (FNF)
-      !   910708  Minor modifications in use of KPRINT.  (WRB)
-      !   930317  Improved output formats.  (FNF)
 
-      !
-      !  Declare arguments.
-      !
-      integer Lun, Kprint, Ipass
-      !
-      !  DECLARE VARIABLES.
-      !
+      integer,intent(in) :: Lun !! unit number to which output is to be written
+      integer,intent(in) :: Kprint !! controls the amount of output
+      integer,intent(out) :: Ipass !! will contain a pass/fail flag.  IPASS=1 is good.
+                                   !! IPASS=0 indicates one or more tests failed.
+
       integer i, ierexp(17), ierr, ifail, n, npairs
       double precision a(17), b(17), calc, d(7), errmax, error,   &
                      & f(7), machep, one, three, thrqtr, tol,     &
@@ -263,9 +264,9 @@ contains
       !
       skip = .false.
       do i = 1, npairs
-         !               ---------------------------------------------
+         !---------------------------------------------
          calc = dpchia(n, x, f, d, 1, skip, a(i), b(i), ierr)
-         !               ---------------------------------------------
+         !---------------------------------------------
          if (ierr >= 0) then
             fail = ierr /= ierexp(i)
             true = antder(b(i)) - antder(a(i))
@@ -299,7 +300,7 @@ contains
       if (Kprint >= 2) then
          write (Lun, 99006) errmax, tol
 99006    format(/'  MAXIMUM RELATIVE ERROR IS:', 1p, d15.5,              &
-                     &',   TOLERANCE:', 1p, d15.5)
+                                          &',   TOLERANCE:', 1p, d15.5)
          if (ifail /= 0) write (Lun, 99007) ifail
 99007    format(/' *** TROUBLE ***', i5, ' INTEGRATION TESTS FAILED.')
       end if
@@ -310,96 +311,97 @@ contains
          Ipass = 1
          if (Kprint >= 2) write (Lun, 99008)
 99008    format(/' ------------ DPCHIP PASSED  ALL INTEGRATION TESTS', &
-                     &' ------------')
+                                          &' ------------')
       else
          Ipass = 0
          if (Kprint >= 1) write (Lun, 99009)
 99009    format(/' ************ DPCHIP FAILED SOME INTEGRATION TESTS', &
-                     &' ************')
+                                          &' ************')
       end if
       !
       return
 99010 format(2f6.1, i5, 1p, 2d20.10, d15.5)
 
-   end
+   end subroutine dpchq2
+   !**************************************************************************
+
+   !**************************************************************************
+   !***PURPOSE  Test the PCHIP interpolators DPCHIC, DPCHIM, DPCHSP.
+   !***AUTHOR  Fritsch, F. N., (LLNL)
+   !***DESCRIPTION
+   !
+   !             DPCHIP QUICK CHECK NUMBER 3
+   !
+   !     TESTS THE INTERPOLATORS:  DPCHIC, DPCHIM, DPCHSP.
+   ! *Usage:
+   !
+   !        INTEGER  LUN, KPRINT, IPASS
+   !
+   !        CALL DPCHQ3 (LUN, KPRINT, IPASS)
+   !
+   ! *Arguments:
+   !
+   !     LUN   :IN  is the unit number to which output is to be written.
+   !
+   !     KPRINT:IN  controls the amount of output, as specified in the
+   !                SLATEC Guidelines.
+   !
+   !     IPASS:OUT  will contain a pass/fail flag.  IPASS=1 is good.
+   !                IPASS=0 indicates one or more tests failed.
+   !
+   ! *Description:
+   !
+   !   This routine interpolates a constructed data set with all three
+   !   DPCHIP interpolators and compares the results with those obtained
+   !   on a Cray X/MP.  Two different values of the DPCHIC parameter SWITCH
+   !   are used.
+   !
+   ! *Remarks:
+   !     1. The Cray results are given only to nine significant figures,
+   !        so don't expect them to match to more.
+   !     2. The results will depend to some extent on the accuracy of
+   !        the EXP function.
+   !
+   !***REVISION HISTORY  (YYMMDD)
+   !   900309  DATE WRITTEN
+   !   900314  Converted to a subroutine and added a SLATEC 4.0 prologue.
+   !   900315  Revised prologue and improved some output formats.  (FNF)
+   !   900316  Made TOLD machine-dependent and added extra output when
+   !           KPRINT=3.  (FNF)
+   !   900320  Added E0's to DATA statement for X to reduce single/double
+   !           differences, and other minor cosmetic changes.
+   !   900320  Converted to double precision.
+   !   900321  Removed IFAIL from call sequence for SLATEC standards and
+   !           made miscellaneous cosmetic changes.  (FNF)
+   !   900322  Minor changes to reduce single/double differences.  (FNF)
+   !   900530  Tolerance (TOLD) and argument to DPCHIC changed.  (WRB)
+   !   900802  Modified TOLD formula and constants in DPCHIC calls to
+   !           correct DPCHQ3 failures.  (FNF)
+   !   901130  Several significant changes:  (FNF)
+   !           1. Changed comparison between DPCHIM and DPCHIC to only
+   !              require agreement to machine precision.
+   !           2. Revised to print more output when KPRINT=3.
+   !           3. Added 1P's to formats.
+   !   910708  Minor modifications in use of KPRINT.  (WRB)
+   !   930317  Improved output formats.  (FNF)
+   !
+   !
+   !*Internal Notes:
+   !
+   !     TOLD is used to compare with stored Cray results.  Its value
+   !          should be consistent with significance of stored values.
+   !     TOLZ is used for cases in which exact equality is expected.
+   !     TOL  is used for cases in which agreement to machine precision
+   !          is expected.
 
    subroutine dpchq3(Lun, Kprint, Ipass)
       implicit none
-      !***PURPOSE  Test the PCHIP interpolators DPCHIC, DPCHIM, DPCHSP.
-      !***AUTHOR  Fritsch, F. N., (LLNL)
-      !***DESCRIPTION
-      !
-      !             DPCHIP QUICK CHECK NUMBER 3
-      !
-      !     TESTS THE INTERPOLATORS:  DPCHIC, DPCHIM, DPCHSP.
-      ! *Usage:
-      !
-      !        INTEGER  LUN, KPRINT, IPASS
-      !
-      !        CALL DPCHQ3 (LUN, KPRINT, IPASS)
-      !
-      ! *Arguments:
-      !
-      !     LUN   :IN  is the unit number to which output is to be written.
-      !
-      !     KPRINT:IN  controls the amount of output, as specified in the
-      !                SLATEC Guidelines.
-      !
-      !     IPASS:OUT  will contain a pass/fail flag.  IPASS=1 is good.
-      !                IPASS=0 indicates one or more tests failed.
-      !
-      ! *Description:
-      !
-      !   This routine interpolates a constructed data set with all three
-      !   DPCHIP interpolators and compares the results with those obtained
-      !   on a Cray X/MP.  Two different values of the DPCHIC parameter SWITCH
-      !   are used.
-      !
-      ! *Remarks:
-      !     1. The Cray results are given only to nine significant figures,
-      !        so don't expect them to match to more.
-      !     2. The results will depend to some extent on the accuracy of
-      !        the EXP function.
-      !
-      !***REVISION HISTORY  (YYMMDD)
-      !   900309  DATE WRITTEN
-      !   900314  Converted to a subroutine and added a SLATEC 4.0 prologue.
-      !   900315  Revised prologue and improved some output formats.  (FNF)
-      !   900316  Made TOLD machine-dependent and added extra output when
-      !           KPRINT=3.  (FNF)
-      !   900320  Added E0's to DATA statement for X to reduce single/double
-      !           differences, and other minor cosmetic changes.
-      !   900320  Converted to double precision.
-      !   900321  Removed IFAIL from call sequence for SLATEC standards and
-      !           made miscellaneous cosmetic changes.  (FNF)
-      !   900322  Minor changes to reduce single/double differences.  (FNF)
-      !   900530  Tolerance (TOLD) and argument to DPCHIC changed.  (WRB)
-      !   900802  Modified TOLD formula and constants in DPCHIC calls to
-      !           correct DPCHQ3 failures.  (FNF)
-      !   901130  Several significant changes:  (FNF)
-      !           1. Changed comparison between DPCHIM and DPCHIC to only
-      !              require agreement to machine precision.
-      !           2. Revised to print more output when KPRINT=3.
-      !           3. Added 1P's to formats.
-      !   910708  Minor modifications in use of KPRINT.  (WRB)
-      !   930317  Improved output formats.  (FNF)
 
-      !
-      !*Internal Notes:
-      !
-      !     TOLD is used to compare with stored Cray results.  Its value
-      !          should be consistent with significance of stored values.
-      !     TOLZ is used for cases in which exact equality is expected.
-      !     TOL  is used for cases in which agreement to machine precision
-      !          is expected.
-      !**End
-      !
-      !  Declare arguments.
-      !
-      integer Lun, Kprint, Ipass
-      !
-      !  Declare variables.
-      !
+      integer,intent(in) :: Lun !! unit number to which output is to be written
+      integer,intent(in) :: Kprint !! controls the amount of output
+      integer,intent(out) :: Ipass !! will contain a pass/fail flag.  IPASS=1 is good.
+                                   !! IPASS=0 indicates one or more tests failed.
+
       integer i, ic(2), ierr, ifail, n, nbad, nbadz, nwk
       parameter(n=9, nwk=2*n)
       double precision d(n), dc(n), dc5, dc6, dm(n), ds(n), err, &
@@ -449,8 +451,8 @@ contains
       if (Kprint >= 3) then
          write (Lun, 99003)
 99003    format(//5x, 'DATA:'/39x,                                      &
-                     &'---------- EXPECTED D-VALUES ----------'/12x, 'X', 9x,  &
-                     &'F', 18x, 'DM', 13x, 'DC', 13x, 'DS')
+                '---------- EXPECTED D-VALUES ----------'/12x, 'X', 9x,  &
+                'F', 18x, 'DM', 13x, 'DC', 13x, 'DS')
          do i = 1, 4
             write (Lun, 99009) x(i), f(i), dm(i), ds(i)
          end do
@@ -492,16 +494,15 @@ contains
                   result = '**BAD'
                end if
             end if
-            if (Kprint >= 3) write (Lun, 99014) i, x(i), d(i), err,  &
-                                  & result
+            if (Kprint >= 3) write (Lun, 99014) i, x(i), d(i), err, result
          end do
          if ((nbadz /= 0) .or. (nbad /= 0)) then
             ifail = ifail + 1
             if ((nbadz /= 0) .and. (Kprint >= 2)) write (Lun, 99004) nbad
-99004       format(/'    **', i5,                                       &
-                           &' DPCHIM RESULTS FAILED TO BE EXACTLY ZERO.')
+99004       format(/'    **', i5, &
+                ' DPCHIM RESULTS FAILED TO BE EXACTLY ZERO.')
             if ((nbad /= 0) .and. (Kprint >= 2)) write (Lun, 99015) nbad, &
-                &'IM', told
+                'IM', told
          else
             if (Kprint >= 2) write (Lun, 99016) 'IM'
          end if
@@ -582,7 +583,7 @@ contains
             ifail = ifail + 1
             if ((nbadz /= 0) .and. (Kprint >= 2)) write (Lun, 99005) nbad
 99005       format(/'    **', i5, ' DPCHIC RESULTS FAILED TO AGREE WITH',&
-                           &' PREVIOUS CALL.')
+                                                                     &' PREVIOUS CALL.')
             if ((nbad /= 0) .and. (Kprint >= 2)) write (Lun, 99015) nbad, &
                 &'IC', told
          else
@@ -631,12 +632,12 @@ contains
          Ipass = 1
          if (Kprint >= 2) write (Lun, 99007)
 99007    format(/' ------------ DPCHIP PASSED  ALL INTERPOLATION TESTS'&
-                    & , ' ------------')
+                                         & , ' ------------')
       else
          Ipass = 0
          if (Kprint >= 1) write (Lun, 99008)
 99008    format(/' ************ DPCHIP FAILED SOME INTERPOLATION TESTS'&
-                    & , ' ************')
+                                         & , ' ************')
       end if
       !
       return
@@ -650,70 +651,70 @@ contains
                &'  TOL =', 1p, d10.3)
 99016 format(/5x, '  ALL DPCH', a2, ' RESULTS OK.')
 
-   end
+   end subroutine dpchq3
+   !**************************************************************************
+
+   !**************************************************************************
+   !***PURPOSE  Test the PCHIP monotonicity checker DPCHCM.
+   !***AUTHOR  Fritsch, F. N., (LLNL)
+   !***DESCRIPTION
+   !
+   !             DPCHIP QUICK CHECK NUMBER 4
+   !
+   !     TESTS THE MONOTONICITY CHECKER:  DPCHCM.
+   ! *Usage:
+   !
+   !        INTEGER  LUN, KPRINT, IPASS
+   !
+   !        CALL DPCHQ4 (LUN, KPRINT, IPASS)
+   !
+   ! *Arguments:
+   !
+   !     LUN   :IN  is the unit number to which output is to be written.
+   !
+   !     KPRINT:IN  controls the amount of output, as specified in the
+   !                SLATEC Guidelines.
+   !
+   !     IPASS:OUT  will contain a pass/fail flag.  IPASS=1 is good.
+   !                IPASS=0 indicates one or more tests failed.
+   !
+   ! *Description:
+   !
+   !   This routine tests a constructed data set with three different
+   !   INCFD settings and compares with the expected results.  It then
+   !   runs a special test to check for bug in overall monotonicity found
+   !   in DPCHMC.  Finally, it reverses the data and repeats all tests.
+   !
+   !***REVISION HISTORY  (YYMMDD)
+   !   890208  DATE WRITTEN
+   !   890306  Changed LOUT to LUN and added it to call list.  (FNF)
+   !   890316  Removed DATA statements to suit new quick check standards.
+   !   890410  Changed PCHMC to PCHCM.
+   !   890410  Added a SLATEC 4.0 format prologue.
+   !   900314  Changed name from PCHQK3 to PCHQK4 and improved some output
+   !           formats.
+   !   900315  Revised prologue and improved some output formats.  (FNF)
+   !   900320  Converted to double precision.
+   !   900321  Removed IFAIL from call sequence for SLATEC standards and
+   !           made miscellaneous cosmetic changes.  (FNF)
+   !   900322  Added declarations so all variables are declared.  (FNF)
+   !   910708  Minor modifications in use of KPRINT.  (WRB)
+   !   930317  Improved output formats.  (FNF)
+   !
+   !*Internal Notes:
+   !
+   !     Data set-up is done via assignment statements to avoid modifying
+   !     DATA-loaded arrays, as required by the 1989 SLATEC Guidelines.
+   !     Run with KPRINT=3 to display the data.
 
    subroutine dpchq4(Lun, Kprint, Ipass)
       implicit none
-      !***PURPOSE  Test the PCHIP monotonicity checker DPCHCM.
-      !***AUTHOR  Fritsch, F. N., (LLNL)
-      !***DESCRIPTION
-      !
-      !             DPCHIP QUICK CHECK NUMBER 4
-      !
-      !     TESTS THE MONOTONICITY CHECKER:  DPCHCM.
-      ! *Usage:
-      !
-      !        INTEGER  LUN, KPRINT, IPASS
-      !
-      !        CALL DPCHQ4 (LUN, KPRINT, IPASS)
-      !
-      ! *Arguments:
-      !
-      !     LUN   :IN  is the unit number to which output is to be written.
-      !
-      !     KPRINT:IN  controls the amount of output, as specified in the
-      !                SLATEC Guidelines.
-      !
-      !     IPASS:OUT  will contain a pass/fail flag.  IPASS=1 is good.
-      !                IPASS=0 indicates one or more tests failed.
-      !
-      ! *Description:
-      !
-      !   This routine tests a constructed data set with three different
-      !   INCFD settings and compares with the expected results.  It then
-      !   runs a special test to check for bug in overall monotonicity found
-      !   in DPCHMC.  Finally, it reverses the data and repeats all tests.
-      !
-      !***REVISION HISTORY  (YYMMDD)
-      !   890208  DATE WRITTEN
-      !   890306  Changed LOUT to LUN and added it to call list.  (FNF)
-      !   890316  Removed DATA statements to suit new quick check standards.
-      !   890410  Changed PCHMC to PCHCM.
-      !   890410  Added a SLATEC 4.0 format prologue.
-      !   900314  Changed name from PCHQK3 to PCHQK4 and improved some output
-      !           formats.
-      !   900315  Revised prologue and improved some output formats.  (FNF)
-      !   900320  Converted to double precision.
-      !   900321  Removed IFAIL from call sequence for SLATEC standards and
-      !           made miscellaneous cosmetic changes.  (FNF)
-      !   900322  Added declarations so all variables are declared.  (FNF)
-      !   910708  Minor modifications in use of KPRINT.  (WRB)
-      !   930317  Improved output formats.  (FNF)
 
-      !
-      !*Internal Notes:
-      !
-      !     Data set-up is done via assignment statements to avoid modifying
-      !     DATA-loaded arrays, as required by the 1989 SLATEC Guidelines.
-      !     Run with KPRINT=3 to display the data.
-      !**End
-      !
-      !  Declare arguments.
-      !
-      integer Lun, Kprint, Ipass
-      !
-      !  DECLARE VARIABLES.
-      !
+      integer,intent(in) :: Lun !! unit number to which output is to be written
+      integer,intent(in) :: Kprint !! controls the amount of output
+      integer,intent(out) :: Ipass !! will contain a pass/fail flag.  IPASS=1 is good.
+                                   !! IPASS=0 indicates one or more tests failed.
+
       integer maxn, maxn2, maxn3, nb
       parameter(maxn=16, maxn2=8, maxn3=6, nb=7)
       integer i, ierr, ifail, incfd, ismex1(maxn), ismex2(maxn2), &
@@ -779,7 +780,7 @@ contains
       if (Kprint >= 3) then
          write (Lun, 99003)
 99003    format(//5x, 'DATA:'//9x, 'I', 4x, 'X', 5x, 'F', 5x, 'D', 5x, 'FB', 4x,  &
-                     &'DB')
+                                          &'DB')
          do i = 1, nb
             write (Lun, 99010) i, x(i), f(i), d(i), fb(i), db(i)
          end do
@@ -861,15 +862,15 @@ contains
          if (ifail == 0) then
             Ipass = 1
             if (Kprint >= 2) write (Lun, 99007)
-99007       format(/                                                   &
-                          &' ------------ DPCHIP PASSED  ALL MONOTONICITY TESTS'&
-                         & , ' ------------')
+99007       format(/ &
+                    ' ------------ DPCHIP PASSED  ALL MONOTONICITY TESTS'&
+                     , ' ------------')
          else
             Ipass = 0
             if (Kprint >= 1) write (Lun, 99008)
-99008       format(/                                                   &
-                          &' ************ DPCHIP FAILED SOME MONOTONICITY TESTS'&
-                         & , ' ************')
+99008       format(/ &
+                     ' ************ DPCHIP FAILED SOME MONOTONICITY TESTS'&
+                      , ' ************')
          end if
          !
          return
@@ -901,10 +902,10 @@ contains
 99011 format(' *** Failed -- bad IERR value.')
 99012 format(' *** Failed -- expect:', 16i3)
 
-   end
+   end subroutine dpchq4
+!**************************************************************************
 
-   SUBROUTINE DPCHQ5(Lun, Kprint, Ipass)
-      IMPLICIT NONE
+!**************************************************************************
 !***PURPOSE  Test the PCH to B-spline conversion routine DPCHBS.
 !***AUTHOR  Fritsch, F. N., (LLNL)
 !***DESCRIPTION
@@ -951,20 +952,15 @@ contains
 !       theoretically be equal.
 !  TOLZ is the tolerance to use for quantities that should be exactly
 !       equal.
-!
-!**End
-!
-!  Declare arguments.
-!
-      INTEGER Lun, Kprint, Ipass
-!
-!  Declare externals.
-!
-      !  DOUBLE PRECISION DBVALU , D1MACH
-      !  EXTERNAL DBVALU , DPCHBS , D1MACH
-!
-!  Declare variables.
-!
+
+   SUBROUTINE DPCHQ5(Lun, Kprint, Ipass)
+      IMPLICIT NONE
+
+      integer,intent(in) :: Lun !! unit number to which output is to be written
+      integer,intent(in) :: Kprint !! controls the amount of output
+      integer,intent(out) :: Ipass !! will contain a pass/fail flag.  IPASS=1 is good.
+                                   !! IPASS=0 indicates one or more tests failed.
+
       INTEGER i, ierr, ifail, inbv, j, knotyp, k, N, ndim,     &
             & nknots
       PARAMETER(N=9)
@@ -1015,7 +1011,7 @@ contains
          IF (Kprint >= 3) WRITE (Lun, 99004) knotyp, nknots, ndim, k,&
                                & ierr
 99004    FORMAT(/4X, 'KNOTYP =', I2, ':  NKNOTS =', I3, ',  NDIM =', I3,     &
-                 &',  K =', I2, ',  IERR =', I3)
+                                      &',  K =', I2, ',  IERR =', I3)
          IF (ierr /= 0) THEN
             ifail = ifail + 1
             IF (Kprint >= 3) WRITE (Lun, 99005)
@@ -1028,7 +1024,7 @@ contains
             IF (Kprint >= 3) THEN
                WRITE (Lun, 99006)
 99006          FORMAT(/15X, 'X', 9X, 'KNOTS', 10X, 'F', 7X, 'FERR', 8X, 'D', 7X, &
-                             &'DERR')
+                        &'DERR')
                WRITE (Lun, 99013) t(1), t(2)
                j = 1
             END IF
@@ -1055,8 +1051,8 @@ contains
             IF ((Kprint >= 3) .OR. (Kprint >= 2) .AND. fail)              &
                & WRITE (Lun, 99008) fermax, dermax, tol
 99008       FORMAT(/5X, 'Maximum relative errors:'/15X, 'F-error =', 1P,  &
-                      & D13.5, 5X, 'D-error =', D13.5/5X,                      &
-                       &'Both should be less than  TOL =', D13.5)
+                & D13.5, 5X, 'D-error =', D13.5/5X,                       &
+                &'Both should be less than  TOL =', D13.5)
          END IF
 !
 !          Special check for KNOTYP=-1.
@@ -1076,7 +1072,7 @@ contains
                ifail = ifail + 1
                IF (Kprint >= 2) WRITE (Lun, 99009) termax, tolz
 99009          FORMAT(/' *** T-ARRAY MAXIMUM CHANGE =', 1P, D13.5,       &
-                             &';  SHOULD NOT EXCEED TOLZ =', D13.5)
+                      ';  SHOULD NOT EXCEED TOLZ =', D13.5)
             END IF
          END IF
       END DO
@@ -1090,77 +1086,76 @@ contains
          Ipass = 1
          IF (Kprint >= 2) WRITE (Lun, 99011)
 99011    FORMAT(/' ------------ DPCHIP PASSED  ALL CONVERSION TESTS',  &
-                 &' ------------')
+                                      &' ------------')
       ELSE
          Ipass = 0
          IF (Kprint >= 1) WRITE (Lun, 99012)
 99012    FORMAT(/' ************ DPCHIP FAILED SOME CONVERSION TESTS',  &
-                 &' ************')
+                                      &' ************')
       END IF
 !
       RETURN
 99013 FORMAT(18X, 2F8.2)
-!------------- LAST LINE OF DPCHQ5 FOLLOWS -----------------------------
-   END
+   END SUBROUTINE DPCHQ5
+!**************************************************************************
+
+   !**************************************************************************
+   !***PURPOSE  Test evaluation accuracy of DCHFDV and DCHFEV for DPCHQ1.
+   !***AUTHOR  Fritsch, F. N., (LLNL)
+   !***DESCRIPTION
+   !
+   ! -------- CODE TO TEST EVALUATION ACCURACY OF DCHFDV AND DCHFEV -------
+   !
+   !     USING FUNCTION AND DERIVATIVE VALUES FROM A CUBIC (COMPUTED IN
+   !     DOUBLE PRECISION) AT NINT DIFFERENT (X1,X2) PAIRS:
+   !     1. CHECKS THAT DCHFDV AND DCHFEV BOTH REPRODUCE ENDPOINT VALUES.
+   !     2. EVALUATES AT NPTS POINTS, 10 OF WHICH ARE OUTSIDE THE INTERVAL
+   !        AND:
+   !        A. CHECKS ACCURACY OF DCHFDV FUNCTION AND DERIVATIVE VALUES
+   !           AGAINST EXACT VALUES.
+   !        B. CHECKS THAT RETURNED VALUES OF NEXT SUM TO 10.
+   !        C. CHECKS THAT FUNCTION VALUES FROM DCHFEV AGREE WITH THOSE
+   !           FROM DCHFDV.
+   !
+   !
+   !     FORTRAN INTRINSICS USED:  ABS, MAX, MIN.
+   !     FORTRAN LIBRARY ROUTINES USED:  SQRT, (READ), (WRITE).
+   !     SLATEC LIBRARY ROUTINES USED:  DCHFDV, DCHFEV, D1MACH, RAND.
+   !     OTHER ROUTINES USED:  DFDTRU.
+   !
+   !***REVISION HISTORY  (YYMMDD)
+   !   820601  DATE WRITTEN
+   !   820624  CONVERTED TO QUICK CHECK FOR SLATEC LIBRARY.
+   !   820630  1. MODIFIED DEFINITIONS OF RELATIVE ERROR AND TEST
+   !             TOLERANCES.
+   !           2. VARIOUS IMPROVEMENTS TO OUTPUT FORMATS.
+   !   820716  1. SET MACHEP VIA A CALL TO D1MACH.
+   !           2. CHANGED FROM FORTLIB'S RANF TO SLATEC'S RAND.
+   !   890628  1. Removed unnecessary IMPLICIT declaration.
+   !           2. Removed unnecessary variable NEV.
+   !           3. Other changes to reduce S.P./D.P. differences.
+   !   890629  Added RERR to DOUBLE PRECISION declaration.
+   !   890706  Cosmetic changes to prologue.  (WRB)
+   !   890831  Modified array declarations.  (WRB)
+   !   890911  Removed unnecessary intrinsics.  (WRB)
+   !   891214  Prologue converted to Version 4.0 format.  (BAB)
+   !   900315  Revised prologue and improved some output formats.  (FNF)
+   !           Also moved formats to end to be consistent with other PCHIP
+   !           quick checks.
+   !   900316  Additional minor cosmetic changes.  (FNF)
+   !   900321  Changed name of DFTRUE to DFDTRU and made additional minor
+   !           cosmetic changes.  (FNF)
+   !   901130  Added 1P's to formats and revised some to reduce maximum
+   !           line length.  (FNF)
+   !   910708  Minor modifications in use of KPRINT.  (WRB)
+   !   910801  Added EXTERNAL statement for RAND due to problem on IBM
+   !           RS 6000.  (WRB)
+   !   910819  Changed argument to RAND function from a D.P. zero to a
+   !           S.P. zero.  (WRB)
 
    subroutine devchk(Lout, Kprint, Npts, Xev, Fev, Dev, Fev2, Fail)
       implicit none
-      !***PURPOSE  Test evaluation accuracy of DCHFDV and DCHFEV for DPCHQ1.
-      !***AUTHOR  Fritsch, F. N., (LLNL)
-      !***DESCRIPTION
-      !
-      ! -------- CODE TO TEST EVALUATION ACCURACY OF DCHFDV AND DCHFEV -------
-      !
-      !     USING FUNCTION AND DERIVATIVE VALUES FROM A CUBIC (COMPUTED IN
-      !     DOUBLE PRECISION) AT NINT DIFFERENT (X1,X2) PAIRS:
-      !     1. CHECKS THAT DCHFDV AND DCHFEV BOTH REPRODUCE ENDPOINT VALUES.
-      !     2. EVALUATES AT NPTS POINTS, 10 OF WHICH ARE OUTSIDE THE INTERVAL
-      !        AND:
-      !        A. CHECKS ACCURACY OF DCHFDV FUNCTION AND DERIVATIVE VALUES
-      !           AGAINST EXACT VALUES.
-      !        B. CHECKS THAT RETURNED VALUES OF NEXT SUM TO 10.
-      !        C. CHECKS THAT FUNCTION VALUES FROM DCHFEV AGREE WITH THOSE
-      !           FROM DCHFDV.
-      !
-      !
-      !     FORTRAN INTRINSICS USED:  ABS, MAX, MIN.
-      !     FORTRAN LIBRARY ROUTINES USED:  SQRT, (READ), (WRITE).
-      !     SLATEC LIBRARY ROUTINES USED:  DCHFDV, DCHFEV, D1MACH, RAND.
-      !     OTHER ROUTINES USED:  DFDTRU.
-      !
-      !***REVISION HISTORY  (YYMMDD)
-      !   820601  DATE WRITTEN
-      !   820624  CONVERTED TO QUICK CHECK FOR SLATEC LIBRARY.
-      !   820630  1. MODIFIED DEFINITIONS OF RELATIVE ERROR AND TEST
-      !             TOLERANCES.
-      !           2. VARIOUS IMPROVEMENTS TO OUTPUT FORMATS.
-      !   820716  1. SET MACHEP VIA A CALL TO D1MACH.
-      !           2. CHANGED FROM FORTLIB'S RANF TO SLATEC'S RAND.
-      !   890628  1. Removed unnecessary IMPLICIT declaration.
-      !           2. Removed unnecessary variable NEV.
-      !           3. Other changes to reduce S.P./D.P. differences.
-      !   890629  Added RERR to DOUBLE PRECISION declaration.
-      !   890706  Cosmetic changes to prologue.  (WRB)
-      !   890831  Modified array declarations.  (WRB)
-      !   890911  Removed unnecessary intrinsics.  (WRB)
-      !   891214  Prologue converted to Version 4.0 format.  (BAB)
-      !   900315  Revised prologue and improved some output formats.  (FNF)
-      !           Also moved formats to end to be consistent with other PCHIP
-      !           quick checks.
-      !   900316  Additional minor cosmetic changes.  (FNF)
-      !   900321  Changed name of DFTRUE to DFDTRU and made additional minor
-      !           cosmetic changes.  (FNF)
-      !   901130  Added 1P's to formats and revised some to reduce maximum
-      !           line length.  (FNF)
-      !   910708  Minor modifications in use of KPRINT.  (WRB)
-      !   910801  Added EXTERNAL statement for RAND due to problem on IBM
-      !           RS 6000.  (WRB)
-      !   910819  Changed argument to RAND function from a D.P. zero to a
-      !           S.P. zero.  (WRB)
 
-      !
-      !  Declare arguments.
-      !
       integer Lout, Kprint, Npts
       double precision Xev(*), Fev(*), Dev(*), Fev2(*)
       logical Fail
@@ -1263,8 +1258,8 @@ contains
          if (Kprint >= 3) then
             write (Lout, 99004) next, aef, aef2, aed, aed2
 99004       format(/' ERRORS AT ENDPOINTS:', 40x, '(NEXT =', 2i3, ')'//1p, &
-                           & 4x, 'F1:', d13.5, 4x, 'F2:', d13.5, 4x, 'D1:', d13.5, 4x,    &
-                            &'D2:', d13.5)
+                & 4x, 'F1:', d13.5, 4x, 'F2:', d13.5, 4x, 'D1:', d13.5, 4x,    &
+                &'D2:', d13.5)
             write (Lout, 99005) ref, ref2, red, red2
 99005       format(1p, 4(7x, d13.5))
          end if
@@ -1281,9 +1276,9 @@ contains
          Fail = Fail .or. failoc
          !
          if (failoc .and. (Kprint >= 2)) write (Lout, 99007)
-99007    format(/                                                      &
-                     &' ***** DCHFEV DOES NOT AGREE WITH DCHFDV AT ENDPOINTS.'&
-                    & )
+99007    format(/ &
+                ' ***** DCHFEV DOES NOT AGREE WITH DCHFDV AT ENDPOINTS.'&
+                )
          !
          !  EVALUATE AT NPTS 'UNIFORMLY RANDOM' POINTS IN (X1,X2).
          !     THIS VERSION EXTENDS EVALUATION DOMAIN BY ADDING 4 SUBINTERVALS
@@ -1375,8 +1370,8 @@ contains
          if (Kprint >= 3) then
             write (Lout, 99009) Npts - 10, next
 99009       format(/' ERRORS AT ', i5, ' INTERIOR POINTS + 10 OUTSIDE:', &
-                           & 15x, '(NEXT =', 2i3, ')'//30x, 'FUNCTION', 17x,          &
-                            &'DERIVATIVE'/15x, 2(11x, 'ABS', 9x, 'REL'))
+                                                                     & 15x, '(NEXT =', 2i3, ')'//30x, 'FUNCTION', 17x,          &
+                                                                      &'DERIVATIVE'/15x, 2(11x, 'ABS', 9x, 'REL'))
             !
             write (Lout, 99018) 'MIN', aefmin, refmin, aedmin, redmin
             write (Lout, 99019) xafmin, xrfmin, xadmin, xrdmin
@@ -1389,8 +1384,7 @@ contains
                if (fermax > tol2) write (Lout, 99020) 'F', fermax, tol2
                if (dermax > tol2) write (Lout, 99020) 'D', dermax, tol2
                if (failnx) write (Lout, 99010) next
-99010          format(/' ***** REPORTED NEXT =', 2i5,                   &
-                                  &'   RATHER THAN    4    6')
+99010          format(/' ***** REPORTED NEXT =', 2i5, '   RATHER THAN    4    6')
             else
                write (Lout, 99011)
 99011          format(/' DCHFDV RESULTS OK.')
@@ -1423,11 +1417,11 @@ contains
                   write (Lout, 99013)
 99013             format(/' ***** DCHFEV DID NOT AGREE WITH DCHFDV:')
                   if (aefmax /= zero) write (Lout, 99014) aefmax, xafmax
-99014             format(7x, 'MAXIMUM DIFFERENCE ', 1p, d12.5,            &
-                                        &'; OCCURRED AT X =', d12.5)
+99014             format(7x, 'MAXIMUM DIFFERENCE ', 1p, d12.5, &
+                             '; OCCURRED AT X =', d12.5)
                   if (failnx) write (Lout, 99015) next2, next
 99015             format(7x, 'REPORTED NEXT =', 2i3, '   RATHER THAN ',   &
-                                       & 2i3)
+                                                                                                                           & 2i3)
                else
                   write (Lout, 99016)
 99016             format(/' DCHFEV AGREES WITH DCHFDV.')
@@ -1448,42 +1442,41 @@ contains
 99020 format(/' ***** MAXIMUM RELATIVE ERROR IN ', a1, ' =', 1p, d12.5,    &
                & ','/17x, 'EXCEEDS TOLERANCE =', d12.5)
 
-   end
+   end subroutine devchk
+   !**************************************************************************
+
+   !**************************************************************************
+   !***PURPOSE  Test error returns from DPCHIP evaluators for DPCHQ1.
+   !***AUTHOR  Fritsch, F. N., (LLNL)
+   !***DESCRIPTION
+   !
+   ! --------- CODE TO TEST ERROR RETURNS FROM DPCHIP EVALUATORS. ---------
+   !
+   !     FORTRAN LIBRARY ROUTINES USED:  (WRITE).
+   !     SLATEC LIBRARY ROUTINES USED:  DCHFDV, DCHFEV, DPCHFD, DPCHFE,
+   !                                    XERDMP, XGETF, XSETF.
+   !     OTHER ROUTINES USED:  COMP.
+   !
+   !***REVISION HISTORY  (YYMMDD)
+   !   820601  DATE WRITTEN
+   !   820715  CONVERTED TO QUICK CHECK FOR SLATEC LIBRARY.
+   !   890207  ADDED CALLS TO ERROR HANDLER.
+   !   890316  Added call to XERDMP if KPRINT.GT.2 (FNF).
+   !   890706  Cosmetic changes to prologue.  (WRB)
+   !   890911  Removed unnecessary intrinsics.  (WRB)
+   !   891009  Removed unreferenced statement label.  (WRB)
+   !   891214  Prologue converted to Version 4.0 format.  (BAB)
+   !   900309  Added COMP to list of routines called.  (FNF)
+   !   900315  Revised prologue and improved some output formats.  (FNF)
+   !   900316  Deleted INCFD tests because some compilers object to them,
+   !           and made additional minor cosmetic changes.  (FNF)
+   !   900322  Made miscellaneous cosmetic changes.  (FNF)
+   !   910708  Minor modifications in use of KPRINT.  (WRB)
+   !   930504  Removed parens from constants in WRITE statements.  (FNF)
 
    subroutine deverk(Lout, Kprint, Fail)
       implicit none
-      !***PURPOSE  Test error returns from DPCHIP evaluators for DPCHQ1.
-      !***AUTHOR  Fritsch, F. N., (LLNL)
-      !***DESCRIPTION
-      !
-      ! --------- CODE TO TEST ERROR RETURNS FROM DPCHIP EVALUATORS. ---------
-      !
-      !
-      !     FORTRAN LIBRARY ROUTINES USED:  (WRITE).
-      !     SLATEC LIBRARY ROUTINES USED:  DCHFDV, DCHFEV, DPCHFD, DPCHFE,
-      !                                    XERDMP, XGETF, XSETF.
-      !     OTHER ROUTINES USED:  COMP.
-      !
-      !***REVISION HISTORY  (YYMMDD)
-      !   820601  DATE WRITTEN
-      !   820715  CONVERTED TO QUICK CHECK FOR SLATEC LIBRARY.
-      !   890207  ADDED CALLS TO ERROR HANDLER.
-      !   890316  Added call to XERDMP if KPRINT.GT.2 (FNF).
-      !   890706  Cosmetic changes to prologue.  (WRB)
-      !   890911  Removed unnecessary intrinsics.  (WRB)
-      !   891009  Removed unreferenced statement label.  (WRB)
-      !   891214  Prologue converted to Version 4.0 format.  (BAB)
-      !   900309  Added COMP to list of routines called.  (FNF)
-      !   900315  Revised prologue and improved some output formats.  (FNF)
-      !   900316  Deleted INCFD tests because some compilers object to them,
-      !           and made additional minor cosmetic changes.  (FNF)
-      !   900322  Made miscellaneous cosmetic changes.  (FNF)
-      !   910708  Minor modifications in use of KPRINT.  (WRB)
-      !   930504  Removed parens from constants in WRITE statements.  (FNF)
 
-      !
-      !  Declare arguments.
-      !
       integer Lout, Kprint
       logical Fail
       !
@@ -1588,8 +1581,7 @@ contains
       else
          Fail = .true.
          if (Kprint >= 2) write (Lout, 99004) nerr
-99004    format(//' ***** TROUBLE IN DEVERK *****'//5x, i5,             &
-                      &' TESTS FAILED TO GIVE EXPECTED RESULTS.')
+99004    format(//' ***** TROUBLE IN DEVERK *****'//5x, i5, ' TESTS FAILED TO GIVE EXPECTED RESULTS.')
       end if
       !
       !  TERMINATE.
@@ -1598,59 +1590,62 @@ contains
       return
 99005 format(/' THIS CALL SHOULD RETURN IERR =', i3)
 
-   end
+   end subroutine deverk
+   !**************************************************************************
+
+   !**************************************************************************
+   !***PURPOSE  Test usage of increment argument in DPCHFD and DPCHFE for
+   !            DPCHQ1.
+   !***AUTHOR  Fritsch, F. N., (LLNL)
+   !***DESCRIPTION
+   !
+   ! ---- CODE TO TEST USAGE OF INCREMENT ARGUMENT IN DPCHFD AND DPCHFE ---
+   !
+   !     EVALUATES A BICUBIC FUNCTION AND ITS FIRST PARTIAL DERIVATIVES
+   !     ON A 4X6 MESH CONTAINED IN A 10X10 ARRAY.
+   !
+   !     INTERPOLATION OF THESE DATA ALONG MESH LINES IN EITHER DIMENSION
+   !     SHOULD AGREE WITH CORRECT FUNCTION WITHIN ROUNDOFF ERROR.
+   !
+   !     ARRAYS ARE ARGUMENTS ONLY TO ALLOW SHARING STORAGE WITH OTHER
+   !     TEST ROUTINES.
+   !
+   !     NOTE:  RUN WITH KPRINT=4 FOR FULL GORY DETAILS (10 PAGES WORTH).
+   !
+   !
+   !     FORTRAN INTRINSICS USED:  ABS.
+   !     FORTRAN LIBRARY ROUTINES USED:  (WRITE).
+   !     SLATEC LIBRARY ROUTINES USED:  DPCHFD, DPCHFE, D1MACH.
+   !
+   !***REVISION HISTORY  (YYMMDD)
+   !   820601  DATE WRITTEN
+   !   820714  CONVERTED TO QUICK CHECK FOR SLATEC LIBRARY.
+   !   820715  1. CORRECTED SOME FORMATS.
+   !           2. ADDED CALL TO D1MACH TO SET MACHEP.
+   !   890406  1. Modified to make sure final elements of X and XE
+   !             agree, to avoid possible failure due to roundoff
+   !             error.
+   !           2. Added printout of TOL in case of failure.
+   !           3. Removed unnecessary IMPLICIT declaration.
+   !           4. Corrected a few S.P. constants to D.P.
+   !           5. Minor cosmetic changes.
+   !   890706  Cosmetic changes to prologue.  (WRB)
+   !   890911  Removed unnecessary intrinsics.  (WRB)
+   !   891004  Cosmetic changes to prologue.  (WRB)
+   !   891214  Prologue converted to Version 4.0 format.  (BAB)
+   !   900315  Revised prologue and improved some output formats.  (FNF)
+   !   900316  Additional minor cosmetic changes.  (FNF)
+   !   900321  Made miscellaneous cosmetic changes.  (FNF)
+   !   901130  Made many changes to output:  (FNF)
+   !           1. Reduced amount of output for KPRINT=3.  (Now need to
+   !              use KPRINT=4 for full output.)
+   !           2. Added 1P's to formats and revised some to reduce maximum
+   !              line length.
+   !   910708  Minor modifications in use of KPRINT.  (WRB)
+   !   930317  Improved output formats.  (FNF)
 
    subroutine devpck(Lout, Kprint, x, y, f, Fx, Fy, Xe, Ye, Fe, De, Fe2, Fail)
       implicit none
-      !***PURPOSE  Test usage of increment argument in DPCHFD and DPCHFE for
-      !            DPCHQ1.
-      !***AUTHOR  Fritsch, F. N., (LLNL)
-      !***DESCRIPTION
-      !
-      ! ---- CODE TO TEST USAGE OF INCREMENT ARGUMENT IN DPCHFD AND DPCHFE ---
-      !
-      !     EVALUATES A BICUBIC FUNCTION AND ITS FIRST PARTIAL DERIVATIVES
-      !     ON A 4X6 MESH CONTAINED IN A 10X10 ARRAY.
-      !
-      !     INTERPOLATION OF THESE DATA ALONG MESH LINES IN EITHER DIMENSION
-      !     SHOULD AGREE WITH CORRECT FUNCTION WITHIN ROUNDOFF ERROR.
-      !
-      !     ARRAYS ARE ARGUMENTS ONLY TO ALLOW SHARING STORAGE WITH OTHER
-      !     TEST ROUTINES.
-      !
-      !     NOTE:  RUN WITH KPRINT=4 FOR FULL GORY DETAILS (10 PAGES WORTH).
-      !
-      !
-      !     FORTRAN INTRINSICS USED:  ABS.
-      !     FORTRAN LIBRARY ROUTINES USED:  (WRITE).
-      !     SLATEC LIBRARY ROUTINES USED:  DPCHFD, DPCHFE, D1MACH.
-      !
-      !***REVISION HISTORY  (YYMMDD)
-      !   820601  DATE WRITTEN
-      !   820714  CONVERTED TO QUICK CHECK FOR SLATEC LIBRARY.
-      !   820715  1. CORRECTED SOME FORMATS.
-      !           2. ADDED CALL TO D1MACH TO SET MACHEP.
-      !   890406  1. Modified to make sure final elements of X and XE
-      !             agree, to avoid possible failure due to roundoff
-      !             error.
-      !           2. Added printout of TOL in case of failure.
-      !           3. Removed unnecessary IMPLICIT declaration.
-      !           4. Corrected a few S.P. constants to D.P.
-      !           5. Minor cosmetic changes.
-      !   890706  Cosmetic changes to prologue.  (WRB)
-      !   890911  Removed unnecessary intrinsics.  (WRB)
-      !   891004  Cosmetic changes to prologue.  (WRB)
-      !   891214  Prologue converted to Version 4.0 format.  (BAB)
-      !   900315  Revised prologue and improved some output formats.  (FNF)
-      !   900316  Additional minor cosmetic changes.  (FNF)
-      !   900321  Made miscellaneous cosmetic changes.  (FNF)
-      !   901130  Made many changes to output:  (FNF)
-      !           1. Reduced amount of output for KPRINT=3.  (Now need to
-      !              use KPRINT=4 for full output.)
-      !           2. Added 1P's to formats and revised some to reduce maximum
-      !              line length.
-      !   910708  Minor modifications in use of KPRINT.  (WRB)
-      !   930317  Improved output formats.  (FNF)
 
       !
       !  Declare arguments.
@@ -1934,57 +1929,60 @@ contains
                & 1x, a1, '-LINES.'//)
 99013 format(/' DPCHFD AND DPCHFE OK ON ', a1, '-LINES.')
 
-   end
+   end subroutine devpck
+   !**************************************************************************
+
+   !**************************************************************************
+   !***PURPOSE  Compute exact function values for DEVCHK.
+   !***AUTHOR  Fritsch, F. N., (LLNL)
+   !***DESCRIPTION
+   !
+   !        COMPUTE EXACT FUNCTION VALUES IN DOUBLE PRECISION.
+   !
+   !                   F(X) = X*(X+1)*(X-2)
+   !
+   !***REVISION HISTORY  (YYMMDD)
+   !   820601  DATE WRITTEN
+   !   890618  REVISION DATE from Version 3.2
+   !   890706  Cosmetic changes to prologue.  (WRB)
+   !   891214  Prologue converted to Version 4.0 format.  (BAB)
+   !   900315  Revised prologue.  (FNF)
+   !   900316  Deleted variables ONE and TWO.  (FNF)
+   !   900321  Changed name of d.p. version from DFTRUE to DFDTRU.
 
    subroutine dfdtru(x, f, d)
       implicit none
-      !***PURPOSE  Compute exact function values for DEVCHK.
-      !***AUTHOR  Fritsch, F. N., (LLNL)
-      !***DESCRIPTION
-      !
-      !        COMPUTE EXACT FUNCTION VALUES IN DOUBLE PRECISION.
-      !
-      !                   F(X) = X*(X+1)*(X-2)
-      !
-      !***REVISION HISTORY  (YYMMDD)
-      !   820601  DATE WRITTEN
-      !   890618  REVISION DATE from Version 3.2
-      !   890706  Cosmetic changes to prologue.  (WRB)
-      !   891214  Prologue converted to Version 4.0 format.  (BAB)
-      !   900315  Revised prologue.  (FNF)
-      !   900316  Deleted variables ONE and TWO.  (FNF)
-      !   900321  Changed name of d.p. version from DFTRUE to DFDTRU.
 
       double precision x, f, d
       double precision fact1, fact2, xx
-      !
 
       xx = x
       fact1 = xx + 1
       fact2 = xx - 2
       f = xx*fact1*fact2
       d = fact1*fact2 + xx*(fact1 + fact2)
-      !
 
-   end
+   end subroutine dfdtru
+   !**************************************************************************
 
+   !**************************************************************************
+   !***PURPOSE  Compare actual and expected values of error flag.
+   !***AUTHOR  Fritsch, F. N., (LLNL)
+   !***DESCRIPTION
+   !
+   !     COMPARE ACTUAL VALUE OF IERR WITH EXPECTED VALUE.
+   !        PRINT ERROR MESSAGE IF THEY DON'T AGREE.
+   !
+   !***REVISION HISTORY  (YYMMDD)
+   !   820601  DATE WRITTEN
+   !   890618  REVISION DATE from Version 3.2
+   !   890706  Cosmetic changes to prologue.  (WRB)
+   !   891214  Prologue converted to Version 4.0 format.  (BAB)
+   !   900315  Revised prologue.  (FNF)
+   !   900316  Minor modification to format 5010.  (FNF)
+   !   910708  Minor modifications in use of KPRINT.  (WRB)
    LOGICAL FUNCTION COMP(Ieract, Ierexp, Lout, Kprint)
       IMPLICIT NONE
-      !***PURPOSE  Compare actual and expected values of error flag.
-      !***AUTHOR  Fritsch, F. N., (LLNL)
-      !***DESCRIPTION
-      !
-      !     COMPARE ACTUAL VALUE OF IERR WITH EXPECTED VALUE.
-      !        PRINT ERROR MESSAGE IF THEY DON'T AGREE.
-      !
-      !***REVISION HISTORY  (YYMMDD)
-      !   820601  DATE WRITTEN
-      !   890618  REVISION DATE from Version 3.2
-      !   890706  Cosmetic changes to prologue.  (WRB)
-      !   891214  Prologue converted to Version 4.0 format.  (BAB)
-      !   900315  Revised prologue.  (FNF)
-      !   900316  Minor modification to format 5010.  (FNF)
-      !   910708  Minor modifications in use of KPRINT.  (WRB)
 
       INTEGER Ieract, Ierexp, Lout, Kprint
 
@@ -1998,7 +1996,8 @@ contains
 99002    FORMAT(' *** COMPARE FAILED -- IERR =', I5)
       END IF
 
-   END
+   END FUNCTION COMP
+   !**************************************************************************
 
 !*****************************************************************************************
 !>
@@ -2071,18 +2070,14 @@ contains
          kmj, km1, kpk, mflag, n
       double precision a, fkmj, t, Work, x
       dimension t(*), a(*), Work(*)
+
       dbvalu = 0.0d0
       if (k < 1) then
          error stop 'K DOES NOT SATISFY K.GE.1'
-         return
       elseif (n < k) then
-         !
-         !
          error stop 'N DOES NOT SATISFY N.GE.K'
-         return
       elseif (Ideriv < 0 .or. Ideriv >= k) then
          error stop 'IDERIV DOES NOT SATISFY 0.LE.IDERIV.LT.K'
-         return
       else
          kmider = k - Ideriv
          !
@@ -2092,17 +2087,14 @@ contains
          call dintrv(t, n + 1, x, Inbv, i, mflag)
          if (x < t(k)) then
             error stop 'X IS N0T GREATER THAN OR EQUAL TO T(K)'
-            return
          else
             if (mflag /= 0) then
                if (x > t(i)) then
                   error stop 'X IS NOT LESS THAN OR EQUAL TO T(N+1)'
-                  return
                else
                   do
 5                    if (i == k) then
                         error stop 'A LEFT LIMITING VALUE CANNOT BE OBTAINED AT T(K)'
-                        return
                      else
                         i = i - 1
                         if (x == t(i)) cycle
