@@ -28,7 +28,7 @@ pchip = { git="https://github.com/jacobwilliams/pchip.git" }
 or, to use a specific version:
 ```toml
 [dependencies]
-pchip = { git="https://github.com/jacobwilliams/pchip.git", tag = "1.0.0"  }
+pchip = { git="https://github.com/jacobwilliams/pchip.git", tag = "1.1.0"  }
 ```
 
 ### Documentation
