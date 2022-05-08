@@ -16,4 +16,4 @@ library = true
 [build]
 auto-executables = false
 auto-examples = false
-auto-tests = false
+auto-tests = true
