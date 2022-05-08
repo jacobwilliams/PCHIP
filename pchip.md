@@ -14,5 +14,6 @@ display: public
          private
 source: true
 graph: true
+extra_mods: iso_fortran_env:https://gcc.gnu.org/onlinedocs/gfortran/ISO_005fFORTRAN_005fENV.html
 
 {!README.md!}
