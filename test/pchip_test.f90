@@ -33,21 +33,6 @@ contains
    !             DPCHIP QUICK CHECK NUMBER 1
    !
    !     TESTS THE EVALUATORS:  DCHFDV, DCHFEV, DPCHFD, DPCHFE.
-   ! *Usage:
-   !
-   !        INTEGER  LUN, KPRINT, IPASS
-   !
-   !        CALL DPCHQ1 (LUN, KPRINT, IPASS)
-   !
-   ! *Arguments:
-   !
-   !     LUN   :IN  is the unit number to which output is to be written.
-   !
-   !     KPRINT:IN  controls the amount of output, as specified in the
-   !                SLATEC Guidelines.
-   !
-   !     IPASS:OUT  will contain a pass/fail flag.  IPASS=1 is good.
-   !                IPASS=0 indicates one or more tests failed.
    !
    ! *Description:
    !
@@ -155,21 +140,6 @@ contains
    !             DPCHIP QUICK CHECK NUMBER 2
    !
    !     TESTS THE INTEGRATORS:  DPCHIA, DPCHID.
-   ! *Usage:
-   !
-   !        INTEGER  LUN, KPRINT, IPASS
-   !
-   !        CALL DPCHQ2 (LUN, KPRINT, IPASS)
-   !
-   ! *Arguments:
-   !
-   !     LUN   :IN  is the unit number to which output is to be written.
-   !
-   !     KPRINT:IN  controls the amount of output, as specified in the
-   !                SLATEC Guidelines.
-   !
-   !     IPASS:OUT  will contain a pass/fail flag.  IPASS=1 is good.
-   !                IPASS=0 indicates one or more tests failed.
    !
    ! *Description:
    !
@@ -333,21 +303,6 @@ contains
    !             DPCHIP QUICK CHECK NUMBER 3
    !
    !     TESTS THE INTERPOLATORS:  DPCHIC, DPCHIM, DPCHSP.
-   ! *Usage:
-   !
-   !        INTEGER  LUN, KPRINT, IPASS
-   !
-   !        CALL DPCHQ3 (LUN, KPRINT, IPASS)
-   !
-   ! *Arguments:
-   !
-   !     LUN   :IN  is the unit number to which output is to be written.
-   !
-   !     KPRINT:IN  controls the amount of output, as specified in the
-   !                SLATEC Guidelines.
-   !
-   !     IPASS:OUT  will contain a pass/fail flag.  IPASS=1 is good.
-   !                IPASS=0 indicates one or more tests failed.
    !
    ! *Description:
    !
@@ -583,7 +538,7 @@ contains
             ifail = ifail + 1
             if ((nbadz /= 0) .and. (Kprint >= 2)) write (Lun, 99005) nbad
 99005       format(/'    **', i5, ' DPCHIC RESULTS FAILED TO AGREE WITH',&
-                                                                     &' PREVIOUS CALL.')
+                    ' PREVIOUS CALL.')
             if ((nbad /= 0) .and. (Kprint >= 2)) write (Lun, 99015) nbad, &
                 &'IC', told
          else
@@ -662,21 +617,6 @@ contains
    !             DPCHIP QUICK CHECK NUMBER 4
    !
    !     TESTS THE MONOTONICITY CHECKER:  DPCHCM.
-   ! *Usage:
-   !
-   !        INTEGER  LUN, KPRINT, IPASS
-   !
-   !        CALL DPCHQ4 (LUN, KPRINT, IPASS)
-   !
-   ! *Arguments:
-   !
-   !     LUN   :IN  is the unit number to which output is to be written.
-   !
-   !     KPRINT:IN  controls the amount of output, as specified in the
-   !                SLATEC Guidelines.
-   !
-   !     IPASS:OUT  will contain a pass/fail flag.  IPASS=1 is good.
-   !                IPASS=0 indicates one or more tests failed.
    !
    ! *Description:
    !
@@ -913,21 +853,6 @@ contains
 !             DPCHIP QUICK CHECK NUMBER 5
 !
 !     TESTS THE CONVERSION ROUTINE:  DPCHBS.
-! *Usage:
-!
-!        INTEGER  LUN, KPRINT, IPASS
-!
-!        CALL DPCHQ5 (LUN, KPRINT, IPASS)
-!
-! *Arguments:
-!
-!     LUN   :IN  is the unit number to which output is to be written.
-!
-!     KPRINT:IN  controls the amount of output, as specified in the
-!                SLATEC Guidelines.
-!
-!     IPASS:OUT  will contain a pass/fail flag.  IPASS=1 is good.
-!                IPASS=0 indicates one or more tests failed.
 !
 ! *Description:
 !
@@ -1117,12 +1042,6 @@ contains
    !        C. CHECKS THAT FUNCTION VALUES FROM DCHFEV AGREE WITH THOSE
    !           FROM DCHFDV.
    !
-   !
-   !     FORTRAN INTRINSICS USED:  ABS, MAX, MIN.
-   !     FORTRAN LIBRARY ROUTINES USED:  SQRT, (READ), (WRITE).
-   !     SLATEC LIBRARY ROUTINES USED:  DCHFDV, DCHFEV, D1MACH, RAND.
-   !     OTHER ROUTINES USED:  DFDTRU.
-   !
    !***REVISION HISTORY  (YYMMDD)
    !   820601  DATE WRITTEN
    !   820624  CONVERTED TO QUICK CHECK FOR SLATEC LIBRARY.
@@ -1172,11 +1091,9 @@ contains
                      & refmax, refmin, right(3), small, ten, tol1,&
                      & tol2, x1, x2, xadmax, xadmin, xafmax,      &
                      & xafmin, xrdmax, xrdmin, xrfmax, xrfmin, zero
-      logical failoc, failnx
-      !
-      !       The following should stay REAL (no D.P. equivalent).
-      !real rand
-      !external rand
+      logical :: failoc, failnx
+      double precision :: r !! a random number
+
       !
       !  DEFINE RELATIVE ERROR WITH FLOOR.
       !
@@ -1286,7 +1203,8 @@ contains
          !
          dx = (x2 - x1)/(Npts - 10)
          do i = 1, Npts
-            Xev(i) = (x1 + (i - 5)*dx) + dx*rand(1) !! JW mod - replace with intrinsic random number generator -TODO
+            call random_number(r)
+            Xev(i) = (x1 + (i - 5)*dx) + dx*r
          end do
          !     --------------------------------------------------------
          call dchfdv(x1, x2, f1, f2, d1, d2, Npts, Xev, Fev, Dev, next, ierr)
@@ -1370,8 +1288,8 @@ contains
          if (Kprint >= 3) then
             write (Lout, 99009) Npts - 10, next
 99009       format(/' ERRORS AT ', i5, ' INTERIOR POINTS + 10 OUTSIDE:', &
-                                                                     & 15x, '(NEXT =', 2i3, ')'//30x, 'FUNCTION', 17x,          &
-                                                                      &'DERIVATIVE'/15x, 2(11x, 'ABS', 9x, 'REL'))
+                & 15x, '(NEXT =', 2i3, ')'//30x, 'FUNCTION', 17x,          &
+                &'DERIVATIVE'/15x, 2(11x, 'ABS', 9x, 'REL'))
             !
             write (Lout, 99018) 'MIN', aefmin, refmin, aedmin, redmin
             write (Lout, 99019) xafmin, xrfmin, xadmin, xrdmin
@@ -1451,11 +1369,6 @@ contains
    !***DESCRIPTION
    !
    ! --------- CODE TO TEST ERROR RETURNS FROM DPCHIP EVALUATORS. ---------
-   !
-   !     FORTRAN LIBRARY ROUTINES USED:  (WRITE).
-   !     SLATEC LIBRARY ROUTINES USED:  DCHFDV, DCHFEV, DPCHFD, DPCHFE,
-   !                                    XERDMP, XGETF, XSETF.
-   !     OTHER ROUTINES USED:  COMP.
    !
    !***REVISION HISTORY  (YYMMDD)
    !   820601  DATE WRITTEN
@@ -1611,11 +1524,6 @@ contains
    !     TEST ROUTINES.
    !
    !     NOTE:  RUN WITH KPRINT=4 FOR FULL GORY DETAILS (10 PAGES WORTH).
-   !
-   !
-   !     FORTRAN INTRINSICS USED:  ABS.
-   !     FORTRAN LIBRARY ROUTINES USED:  (WRITE).
-   !     SLATEC LIBRARY ROUTINES USED:  DPCHFD, DPCHFE, D1MACH.
    !
    !***REVISION HISTORY  (YYMMDD)
    !   820601  DATE WRITTEN
@@ -1923,7 +1831,7 @@ contains
 99008 format('  MAXIMUM DIFFERENCE BETWEEN DPCHFE AND DPCHFD =', 1p,    &
                & d13.5, 0p, ' (AT', f6.2, ').')
 99009 format(/'  DPCHF', a1, ' RETURNED IERR = ', i2, ' INSTEAD OF ', i2)
-99010 format('  *** BOTH SHOULD BE .LE. TOL =', 1p, d12.5, ' ***')
+99010 format('  *** BOTH SHOULD BE <= TOL =', 1p, d12.5, ' ***')
 99011 format(//' ***** ERROR ***** DPCHFD RETURNED IERR =', i5//)
 99012 format(//' ***** ERROR ***** DPCHFD AND/OR DPCHFE FAILED ON', i2, &
                & 1x, a1, '-LINES.'//)
@@ -1981,6 +1889,7 @@ contains
    !   900315  Revised prologue.  (FNF)
    !   900316  Minor modification to format 5010.  (FNF)
    !   910708  Minor modifications in use of KPRINT.  (WRB)
+
    LOGICAL FUNCTION COMP(Ieract, Ierexp, Lout, Kprint)
       IMPLICIT NONE
 
@@ -2017,7 +1926,7 @@ contains
 !         derivatives on IDERIV=1,2,...,K-1.  Right limiting values
 !         (right derivatives) are returned except at the right end
 !         point X=T(N+1) where left limiting values are computed.  The
-!         spline is defined on T(K) .LE. X .LE. T(N+1).  DBVALU returns
+!         spline is defined on T(K) <= X <= T(N+1).  DBVALU returns
 !         a fatal error message when X is outside of this interval.
 !
 !         To compute left derivatives or left limiting values at a
@@ -2032,10 +1941,10 @@ contains
 !          A       - B-spline coefficient vector of length N
 !          N       - number of B-spline coefficients
 !                    N = sum of knot multiplicities-K
-!          K       - order of the B-spline, K .GE. 1
-!          IDERIV  - order of the derivative, 0 .LE. IDERIV .LE. K-1
+!          K       - order of the B-spline, K >= 1
+!          IDERIV  - order of the derivative, 0 <= IDERIV <= K-1
 !                    IDERIV = 0 returns the B-spline value
-!          X       - argument, T(K) .LE. X .LE. T(N+1)
+!          X       - argument, T(K) <= X <= T(N+1)
 !          INBV    - an initialization parameter which must be set
 !                    to 1 the first time DBVALU is called.
 !
@@ -2073,16 +1982,16 @@ contains
 
       dbvalu = 0.0d0
       if (k < 1) then
-         error stop 'K DOES NOT SATISFY K.GE.1'
+         error stop 'K DOES NOT SATISFY K>=1'
       elseif (n < k) then
-         error stop 'N DOES NOT SATISFY N.GE.K'
+         error stop 'N DOES NOT SATISFY N>=K'
       elseif (Ideriv < 0 .or. Ideriv >= k) then
-         error stop 'IDERIV DOES NOT SATISFY 0.LE.IDERIV.LT.K'
+         error stop 'IDERIV DOES NOT SATISFY 0<=IDERIV<K'
       else
          kmider = k - Ideriv
          !
-         ! *** FIND *I* IN (K,N) SUCH THAT T(I) .LE. X .LT. T(I+1)
-         !     (OR, .LE. T(I+1) IF T(I) .LT. T(I+1) = T(N+1)).
+         ! *** FIND *I* IN (K,N) SUCH THAT T(I) <= X < T(I+1)
+         !     (OR, <= T(I+1) IF T(I) < T(I+1) = T(N+1)).
          km1 = k - 1
          call dintrv(t, n + 1, x, Inbv, i, mflag)
          if (x < t(k)) then
@@ -2093,7 +2002,7 @@ contains
                   error stop 'X IS NOT LESS THAN OR EQUAL TO T(N+1)'
                else
                   do
-5                    if (i == k) then
+                     if (i == k) then
                         error stop 'A LEFT LIMITING VALUE CANNOT BE OBTAINED AT T(K)'
                      else
                         i = i - 1
@@ -2155,11 +2064,12 @@ contains
          end if
       end if
    end function dbvalu
+!*****************************************************************************************
 
 !*****************************************************************************************
 !>
-!***PURPOSE  Compute the largest integer ILEFT in 1 .LE. ILEFT .LE. LXT
-!            such that XT(ILEFT) .LE. X where XT(*) is a subdivision of
+!***PURPOSE  Compute the largest integer ILEFT in 1 <= ILEFT <= LXT
+!            such that XT(ILEFT) <= X where XT(*) is a subdivision of
 !            the X interval.
 !***KEYWORDS  B-SPLINE, DATA FITTING, INTERPOLATION, SPLINES
 !***AUTHOR  Amos, D. E., (SNLA)
@@ -2170,13 +2080,13 @@ contains
 !     Abstract    **** a double precision routine ****
 !         DINTRV is the INTERV routine of the reference.
 !
-!         DINTRV computes the largest integer ILEFT in 1 .LE. ILEFT .LE.
-!         LXT such that XT(ILEFT) .LE. X where XT(*) is a subdivision of
+!         DINTRV computes the largest integer ILEFT in 1 <= ILEFT <=
+!         LXT such that XT(ILEFT) <= X where XT(*) is a subdivision of
 !         the X interval.  Precisely,
 !
-!                      X .LT. XT(1)                1         -1
-!         if  XT(I) .LE. X .LT. XT(I+1)  then  ILEFT=I  , MFLAG=0
-!           XT(LXT) .LE. X                         LXT        1,
+!                      X < XT(1)                1         -1
+!         if  XT(I) <= X < XT(I+1)  then  ILEFT=I  , MFLAG=0
+!           XT(LXT) <= X                      LXT          1,
 !
 !         That is, when multiplicities are present in the break point
 !         to the left of X, the largest index is taken for ILEFT.
@@ -2196,7 +2106,7 @@ contains
 !                    ing after the initial call and ILO must not be
 !                    changed by the user.  Distinct splines require
 !                    distinct ILO parameters.
-!          ILEFT   - largest integer satisfying XT(ILEFT) .LE. X
+!          ILEFT   - largest integer satisfying XT(ILEFT) <= X
 !          MFLAG   - signals when X lies out of bounds
 !
 !     Error Conditions
@@ -2235,7 +2145,7 @@ contains
          end if
          !
          if (x >= Xt(ihi)) then
-            ! *** NOW X .GE. XT(ILO) . FIND UPPER BOUND
+            ! *** NOW X >= XT(ILO) . FIND UPPER BOUND
             istep = 1
             do while (.true.)
                Ilo = ihi
@@ -2258,7 +2168,7 @@ contains
             exit
          else
             !
-            ! *** NOW X .LT. XT(IHI) . FIND LOWER BOUND
+            ! *** NOW X < XT(IHI) . FIND LOWER BOUND
             istep = 1
             do while (.true.)
                ihi = Ilo
@@ -2280,11 +2190,11 @@ contains
          exit
       end do
 
-      ! *** NOW XT(ILO) .LE. X .LT. XT(IHI) . NARROW THE INTERVAL
+      ! *** NOW XT(ILO) <= X < XT(IHI) . NARROW THE INTERVAL
       if (gt(4) == 0) then
          if (gt(3) == 0) then
             if (gt(2) == 0) then
-100            do while (.true.)
+               do while (.true.)
                   middle = (Ilo + ihi)/2
                   if (middle == Ilo) exit
                   !     NOTE. IT IS ASSUMED THAT MIDDLE = ILO IN CASE IHI = ILO+1
@@ -2296,20 +2206,21 @@ contains
                end do
             end if
             gt(2) = 0
-200         Mflag = 0
+            Mflag = 0
             Ileft = Ilo
             return
             ! *** SET OUTPUT AND RETURN
          end if
          gt(3) = 0
-300      Mflag = -1
+         Mflag = -1
          Ileft = 1
          return
       end if
       gt(4) = 0
-400   Mflag = 1
+      Mflag = 1
       Ileft = Lxt
    end subroutine dintrv
+!*****************************************************************************************
 
 end program pchip_test
 !*******************************************************************************************************
