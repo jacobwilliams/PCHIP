@@ -88,7 +88,25 @@
           <h1><img alt="pchip-logo" src="media/logo.png"></h1>
 <p>PCHIP, a Fortran package for piecewise cubic Hermite interpolation of data. This is a modern Fortran update of the code in the <a href="http://www.netlib.org/slatec/pchip/">SLATEC</a> library.</p>
 <h3>Status</h3>
-<p><img alt="Build Status" src="https://github.com/jacobwilliams/pchip/actions/workflows/CI.yml/badge.svg"></p>
+<p><a href="https://github.com/jacobwilliams/pchip/releases/latest"><img alt="GitHub release" src="https://img.shields.io/github/release/jacobwilliams/pchip.svg"></a>
+<a href="https://github.com/jacobwilliams/pchip/actions"><img alt="Build Status" src="https://github.com/jacobwilliams/pchip/actions/workflows/CI.yml/badge.svg"></a>
+<a href="https://codecov.io/gh/jacobwilliams/pchip"><img alt="codecov" src="https://codecov.io/gh/jacobwilliams/pchip/branch/master/graph/badge.svg"></a>
+<a href="https://github.com/jacobwilliams/pchip/commits/master"><img alt="last-commit" src="https://img.shields.io/github/last-commit/jacobwilliams/pchip"></a></p>
+<h3>Building pchip</h3>
+<p>The library can be built with the <a href="https://github.com/fortran-lang/fpm">Fortran Package Manager</a> using the provided <code>fpm.toml</code> file like so:</p>
+<div class="codehilite"><pre><span></span><code>fpm build --release
+</code></pre></div>
+
+<p>To use PCHIP within your FPM project, add the following to your <code>fpm.toml</code> file:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">[dependencies]</span><span class="w"></span>
+<span class="n">pchip</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="o">=</span><span class="s">&quot;https://github.com/jacobwilliams/pchip.git&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<p>or, to use a specific version:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">[dependencies]</span><span class="w"></span>
+<span class="n">pchip</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="o">=</span><span class="s">&quot;https://github.com/jacobwilliams/pchip.git&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">tag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;1.0.0&quot;</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
 <h3>Documentation</h3>
 <p>The latest API documentation can be found <a href="https://jacobwilliams.github.io/PCHIP/">here</a>. This was generated from the source code using <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>.</p>
 <h3>Description</h3>
