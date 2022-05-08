@@ -20,6 +20,7 @@
     call dpchq2(Lun,Kprint,Ipass); if (ipass==0) error stop 'test dpchq2 failed'
     call dpchq3(Lun,Kprint,Ipass); if (ipass==0) error stop 'test dpchq3 failed'
     call dpchq4(Lun,Kprint,Ipass); if (ipass==0) error stop 'test dpchq4 failed'
+    call dpchq5(Lun,Kprint,Ipass); if (ipass==0) error stop 'test dpchq5 failed'
 
     contains 
 !*******************************************************************************************************
@@ -209,7 +210,7 @@
                        & f(7) , machep , one , three , thrqtr , tol ,     &
                        & true , two , x(7)
         logical fail , skip
-        
+
   !
   !  DEFINE TEST FUNCTIONS.
   !
@@ -399,7 +400,6 @@
   !  Declare arguments.
   !
         integer Lun , Kprint , Ipass
-        double precision d1mach
   !
   !  Declare variables.
   !
@@ -906,6 +906,208 @@
 
   end
   
+  SUBROUTINE DPCHQ5(Lun,Kprint,Ipass)
+    IMPLICIT NONE
+!***PURPOSE  Test the PCH to B-spline conversion routine DPCHBS.
+!***AUTHOR  Fritsch, F. N., (LLNL)
+!***DESCRIPTION
+!
+!             DPCHIP QUICK CHECK NUMBER 5
+!
+!     TESTS THE CONVERSION ROUTINE:  DPCHBS.
+! *Usage:
+!
+!        INTEGER  LUN, KPRINT, IPASS
+!
+!        CALL DPCHQ5 (LUN, KPRINT, IPASS)
+!
+! *Arguments:
+!
+!     LUN   :IN  is the unit number to which output is to be written.
+!
+!     KPRINT:IN  controls the amount of output, as specified in the
+!                SLATEC Guidelines.
+!
+!     IPASS:OUT  will contain a pass/fail flag.  IPASS=1 is good.
+!                IPASS=0 indicates one or more tests failed.
+!
+! *Description:
+!
+!   This routine tests a constructed data set with four different
+!   KNOTYP settings.  It computes the function and derivatives of the
+!   resulting B-representation via DBVALU and compares with PCH data.
+!
+! *Caution:
+!   This routine assumes DBVALU has already been successfully tested.
+!
+!***ROUTINES CALLED  DBVALU, DPCHBS, D1MACH
+!***REVISION HISTORY  (YYMMDD)
+!   900411  DATE WRITTEN
+!   900412  Corrected minor errors in initial implementation.
+!   900430  Produced double precision version.
+!   900501  Corrected declarations.
+!   930317  Improved output formats.  (FNF)
+!***END PROLOGUE  DPCHQ5
+!
+!*Internal Notes:
+!  TOL  is the tolerance to use for quantities that should only
+!       theoretically be equal.
+!  TOLZ is the tolerance to use for quantities that should be exactly
+!       equal.
+!
+!**End
+!
+!  Declare arguments.
+!
+    INTEGER Lun , Kprint , Ipass
+!
+!  Declare externals.
+!
+  !  DOUBLE PRECISION DBVALU , D1MACH
+  !  EXTERNAL DBVALU , DPCHBS , D1MACH
+!
+!  Declare variables.
+!
+    INTEGER i , ierr , ifail , inbv , j , knotyp , k , N , ndim ,     &
+          & nknots
+    PARAMETER (N=9)
+    DOUBLE PRECISION bcoef(2*N) , d(N) , dcalc , derr , dermax ,      &
+                   & f(N) , fcalc , ferr , fermax , t(2*N+4) , terr , &
+                   & termax , tol , tolz , tsave(2*N+4) , work(16*N) ,&
+                   & x(N) , ZERO
+    PARAMETER (ZERO=0.0D0)
+    LOGICAL fail
+!
+!  Define relative error function.
+!
+    DOUBLE PRECISION ans , err , RELERR
+    RELERR(err,ans) = ABS(err)/MAX(1.0D-5,ABS(ans))
+!
+!  Define test data.
+!
+    DATA x/ - 2.2D0 , -1.2D0 , -1.0D0 , -0.5D0 , -0.01D0 , 0.5D0 ,    &
+       & 1.0D0 , 2.0D0 , 2.2D0/
+    DATA f/0.0079D0 , 0.2369D0 , 0.3679D0 , 0.7788D0 , 0.9999D0 ,     &
+       & 0.7788D0 , 0.3679D0 , 0.1083D0 , 0.0079D0/
+    DATA d/0.0000D0 , 0.3800D0 , 0.7173D0 , 0.5820D0 , 0.0177D0 ,     &
+       & -0.5696D0 , -0.5135D0 , -0.0778D0 , -0.0025D0/
+!
+!  Initialize.
+!
+!***FIRST EXECUTABLE STATEMENT  DPCHQ5
+    ifail = 0
+    tol = 100*D1MACH4
+    tolz = ZERO
+!
+    IF ( Kprint>=3 ) WRITE (Lun,99001)
+!
+!  FORMATS.
+!
+99001 FORMAT ('1'//10X,'TEST PCH TO B-SPLINE CONVERTER')
+    IF ( Kprint>=2 ) WRITE (Lun,99002)
+99002 FORMAT (//10X,'DPCHQ5 RESULTS'/10X,'--------------')
+!
+!  Loop over a series of values of KNOTYP.
+!
+    IF ( Kprint>=3 ) WRITE (Lun,99003)
+99003 FORMAT (/4X,'(Results should be the same for all KNOTYP values.)')
+    DO knotyp = 2 , -1 , -1
+!        ------------
+       CALL DPCHBS(N,x,f,d,1,knotyp,nknots,t,bcoef,ndim,k,ierr)
+!        ------------
+       IF ( Kprint>=3 ) WRITE (Lun,99004) knotyp , nknots , ndim , k ,&
+                             & ierr
+99004    FORMAT (/4X,'KNOTYP =',I2,':  NKNOTS =',I3,',  NDIM =',I3,     &
+              &',  K =',I2,',  IERR =',I3)
+       IF ( ierr/=0 ) THEN
+          ifail = ifail + 1
+          IF ( Kprint>=3 ) WRITE (Lun,99005)
+99005       FORMAT (' *** Failed -- bad IERR value.')
+       ELSE
+!             Compare evaluated results with inputs to DPCHBS.
+          inbv = 1
+          fermax = ZERO
+          dermax = ZERO
+          IF ( Kprint>=3 ) THEN
+             WRITE (Lun,99006)
+99006          FORMAT (/15X,'X',9X,'KNOTS',10X,'F',7X,'FERR',8X,'D',7X, &
+                    &'DERR')
+             WRITE (Lun,99013) t(1) , t(2)
+             j = 1
+          ENDIF
+          DO i = 1 , N
+             fcalc = DBVALU(t,bcoef,ndim,k,0,x(i),inbv,work)
+             ferr = f(i) - fcalc
+             fermax = MAX(fermax,RELERR(ferr,f(i)))
+             dcalc = DBVALU(t,bcoef,ndim,k,1,x(i),inbv,work)
+             derr = d(i) - dcalc
+             dermax = MAX(dermax,RELERR(derr,d(i)))
+             IF ( Kprint>=3 ) THEN
+                j = j + 2
+                WRITE (Lun,99007) x(i) , t(j) , t(j+1) , f(i) , ferr ,&
+                                & d(i) , derr
+99007             FORMAT (10X,3F8.2,F10.4,1P,D10.2,0P,F10.4,1P,D10.2)
+             ENDIF
+          ENDDO
+          IF ( Kprint>=3 ) THEN
+             j = j + 2
+             WRITE (Lun,99013) t(j) , t(j+1)
+          ENDIF
+          fail = (fermax>tol) .OR. (dermax>tol)
+          IF ( fail ) ifail = ifail + 1
+          IF ( (Kprint>=3) .OR. (Kprint>=2) .AND. fail )              &
+             & WRITE (Lun,99008) fermax , dermax , tol
+99008       FORMAT (/5X,'Maximum relative errors:'/15X,'F-error =',1P,  &
+                & D13.5,5X,'D-error =',D13.5/5X,                      &
+                 &'Both should be less than  TOL =',D13.5)
+       ENDIF
+!
+!          Special check for KNOTYP=-1.
+       IF ( knotyp==0 ) THEN
+!             Save knot vector for next test.
+          DO i = 1 , nknots
+             tsave(i) = t(i)
+          ENDDO
+       ELSEIF ( knotyp==-1 ) THEN
+!             Check that knot vector is unchanged.
+          termax = ZERO
+          DO i = 1 , nknots
+             terr = ABS(t(i)-tsave(i))
+             termax = MAX(termax,terr)
+          ENDDO
+          IF ( termax>tolz ) THEN
+             ifail = ifail + 1
+             IF ( Kprint>=2 ) WRITE (Lun,99009) termax , tolz
+99009          FORMAT (/' *** T-ARRAY MAXIMUM CHANGE =',1P,D13.5,       &
+                    &';  SHOULD NOT EXCEED TOLZ =',D13.5)
+          ENDIF
+       ENDIF
+    ENDDO
+!
+!  PRINT SUMMARY AND TERMINATE.
+!
+    IF ( (Kprint>=2) .AND. (ifail/=0) ) WRITE (Lun,99010) ifail
+99010 FORMAT (/' *** TROUBLE ***',I5,' CONVERSION TESTS FAILED.')
+!
+    IF ( ifail==0 ) THEN
+       Ipass = 1
+       IF ( Kprint>=2 ) WRITE (Lun,99011)
+99011    FORMAT (/' ------------ DPCHIP PASSED  ALL CONVERSION TESTS',  &
+              &' ------------')
+    ELSE
+       Ipass = 0
+       IF ( Kprint>=1 ) WRITE (Lun,99012)
+99012    FORMAT (/' ************ DPCHIP FAILED SOME CONVERSION TESTS',  &
+              &' ************')
+    ENDIF
+!
+    RETURN
+99013 FORMAT (18X,2F8.2)
+!------------- LAST LINE OF DPCHQ5 FOLLOWS -----------------------------
+    END
+
+
+
         subroutine devchk(Lout,Kprint,Npts,Xev,Fev,Dev,Fev2,Fail)
          implicit none
    !***PURPOSE  Test evaluation accuracy of DCHFDV and DCHFEV for DPCHQ1.
@@ -982,7 +1184,6 @@
                         & xafmin , xrdmax , xrdmin , xrfmax , xrfmin , zero
          logical failoc , failnx
    !
-         double precision d1mach
    !       The following should stay REAL (no D.P. equivalent).
          !real rand
          !external rand
@@ -1471,7 +1672,6 @@
          double precision dermax , derr , dtrue , dx , fdiff , fdifmx ,    &
                         & fermax , ferr , ftrue , machep , tol , pdermx ,  &
                         & pdifmx , pfermx , zero
-         double precision d1mach
    !
    !  DEFINE TEST FUNCTION AND DERIVATIVES.
    !
@@ -1805,5 +2005,327 @@
 
          END
                
+
+
+!*****************************************************************************************
+!>
+!***PURPOSE  Evaluate the B-representation of a B-spline at X for the   
+!            function value or any of its derivatives.                  
+!***KEYWORDS  DIFFERENTIATION OF B-SPLINE, EVALUATION OF B-SPLINE       
+!***AUTHOR  Amos, D. E., (SNLA)                                         
+!***DESCRIPTION                                                         
+!                                                                       
+!     Written by Carl de Boor and modified by D. E. Amos                
+!                                                                       
+!     Abstract   **** a double precision routine ****                   
+!         DBVALU is the BVALUE function of the reference.               
+!                                                                       
+!         DBVALU evaluates the B-representation (T,A,N,K) of a B-spline 
+!         at X for the function value on IDERIV=0 or any of its         
+!         derivatives on IDERIV=1,2,...,K-1.  Right limiting values     
+!         (right derivatives) are returned except at the right end      
+!         point X=T(N+1) where left limiting values are computed.  The  
+!         spline is defined on T(K) .LE. X .LE. T(N+1).  DBVALU returns 
+!         a fatal error message when X is outside of this interval.     
+!                                                                       
+!         To compute left derivatives or left limiting values at a      
+!         knot T(I), replace N by I-1 and set X=T(I), I=K+1,N+1.        
+!                                                                       
+!         DBVALU calls DINTRV                                           
+!                                                                       
+!     Description of Arguments                                          
+!                                                                       
+!         Input      T,A,X are double precision                         
+!          T       - knot vector of length N+K                          
+!          A       - B-spline coefficient vector of length N            
+!          N       - number of B-spline coefficients                    
+!                    N = sum of knot multiplicities-K                   
+!          K       - order of the B-spline, K .GE. 1                    
+!          IDERIV  - order of the derivative, 0 .LE. IDERIV .LE. K-1    
+!                    IDERIV = 0 returns the B-spline value              
+!          X       - argument, T(K) .LE. X .LE. T(N+1)                  
+!          INBV    - an initialization parameter which must be set      
+!                    to 1 the first time DBVALU is called.              
+!                                                                       
+!         Output     WORK,DBVALU are double precision                   
+!          INBV    - INBV contains information for efficient process-   
+!                    ing after the initial call and INBV must not       
+!                    be changed by the user.  Distinct splines require  
+!                    distinct INBV parameters.                          
+!          WORK    - work vector of length 3*K.                         
+!          DBVALU  - value of the IDERIV-th derivative at X             
+!                                                                       
+!     Error Conditions                                                  
+!         An improper input is a fatal error                            
+!                                                                       
+!***REFERENCES  Carl de Boor, Package for calculating with B-splines,   
+!                 SIAM Journal on Numerical Analysis 14, 3 (June 1977), 
+!                 pp. 441-472.                                          
+!***REVISION HISTORY  (YYMMDD)                                          
+!   800901  DATE WRITTEN                                                
+!   890831  Modified array declarations.  (WRB)                         
+!   890911  Removed unnecessary intrinsics.  (WRB)                      
+!   890911  REVISION DATE from Version 3.2                              
+!   891214  Prologue converted to Version 4.0 format.  (BAB)            
+!   900315  CALLs to XERROR changed to CALLs to XERMSG.  (THJ)          
+!   920501  Reformatted the REFERENCES section.  (WRB)                  
+
+         double precision function dbvalu(t,a,n,k,Ideriv,x,Inbv,Work) 
+         implicit none 
+         
+         integer i , Ideriv , iderp1 , ihi , ihmkmj , ilo , imk , imkpj , &
+                     Inbv , ipj , ip1 , ip1mj , j , jj , j1 , j2 , k , kmider ,&
+                     kmj , km1 , kpk , mflag , n                               
+         double precision a , fkmj , t , Work , x 
+         dimension t(*) , a(*) , Work(*) 
+         dbvalu = 0.0d0 
+         if ( k<1 ) then 
+          error stop 'K DOES NOT SATISFY K.GE.1'
+          return 
+         elseif ( n<k ) then 
+          !                                                                       
+          !                                                                       
+            error stop 'N DOES NOT SATISFY N.GE.K'
+          return 
+         elseif ( Ideriv<0 .or. Ideriv>=k ) then 
+            error stop 'IDERIV DOES NOT SATISFY 0.LE.IDERIV.LT.K'   
+          return 
+         else 
+          kmider = k - Ideriv 
+          !                                                                       
+          ! *** FIND *I* IN (K,N) SUCH THAT T(I) .LE. X .LT. T(I+1)               
+          !     (OR, .LE. T(I+1) IF T(I) .LT. T(I+1) = T(N+1)).                   
+          km1 = k - 1 
+          call dintrv(t,n+1,x,Inbv,i,mflag) 
+          if ( x<t(k) ) then 
+           error stop 'X IS N0T GREATER THAN OR EQUAL TO T(K)'       
+           return 
+          else 
+           if ( mflag/=0 ) then 
+            if ( x>t(i) ) then 
+             error stop 'X IS NOT LESS THAN OR EQUAL TO T(N+1)'     
+             return 
+            else 
+             do
+         5    if ( i==k ) then 
+               error stop 'A LEFT LIMITING VALUE CANNOT BE OBTAINED AT T(K)'                                   
+               return 
+              else 
+               i = i - 1 
+               if ( x==t(i) ) cycle
+             endif
+             exit
+            end do
+            endif
+           endif
+           !                                                                       
+           ! *** DIFFERENCE THE COEFFICIENTS *IDERIV* TIMES                        
+           !     WORK(I) = AJ(I), WORK(K+I) = DP(I), WORK(K+K+I) = DM(I), I=1.K    
+           !                                                                       
+           imk = i - k 
+           do j = 1 , k 
+            imkpj = imk + j 
+            Work(j) = a(imkpj) 
+           enddo
+           if ( Ideriv/=0 ) then 
+            do j = 1 , Ideriv 
+             kmj = k - j 
+             fkmj = kmj 
+             do jj = 1 , kmj 
+              ihi = i + jj 
+              ihmkmj = ihi - kmj 
+              Work(jj) = (Work(jj+1)-Work(jj))/(t(ihi)-t(ihmkmj))*fkmj 
+             enddo
+            enddo
+           endif
+           !                                                                       
+           ! *** COMPUTE VALUE AT *X* IN (T(I),(T(I+1)) OF IDERIV-TH DERIVATIVE,   
+           !     GIVEN ITS RELEVANT B-SPLINE COEFF. IN AJ(1),...,AJ(K-IDERIV).     
+           if ( Ideriv/=km1 ) then 
+            ip1 = i + 1 
+            kpk = k + k 
+            j1 = k + 1 
+            j2 = kpk + 1 
+            do j = 1 , kmider 
+             ipj = i + j 
+             Work(j1) = t(ipj) - x 
+             ip1mj = ip1 - j 
+             Work(j2) = x - t(ip1mj) 
+             j1 = j1 + 1 
+             j2 = j2 + 1 
+            enddo
+            iderp1 = Ideriv + 1 
+            do j = iderp1 , km1 
+             kmj = k - j 
+             ilo = kmj 
+             do jj = 1 , kmj 
+              Work(jj) = (Work(jj+1)*Work(kpk+ilo)+Work(jj)*Work(k+jj)) &
+                                  /(Work(kpk+ilo)+Work(k+jj))                       
+              ilo = ilo - 1 
+             enddo
+            enddo
+           endif
+           dbvalu = Work(1) 
+           return 
+          endif
+         endif
+         end function dbvalu
+
+         
+!*****************************************************************************************
+!>
+!***PURPOSE  Compute the largest integer ILEFT in 1 .LE. ILEFT .LE. LXT 
+!            such that XT(ILEFT) .LE. X where XT(*) is a subdivision of 
+!            the X interval.                                            
+!***KEYWORDS  B-SPLINE, DATA FITTING, INTERPOLATION, SPLINES            
+!***AUTHOR  Amos, D. E., (SNLA)                                         
+!***DESCRIPTION                                                         
+!                                                                       
+!     Written by Carl de Boor and modified by D. E. Amos                
+!                                                                       
+!     Abstract    **** a double precision routine ****                  
+!         DINTRV is the INTERV routine of the reference.                
+!                                                                       
+!         DINTRV computes the largest integer ILEFT in 1 .LE. ILEFT .LE.
+!         LXT such that XT(ILEFT) .LE. X where XT(*) is a subdivision of
+!         the X interval.  Precisely,                                   
+!                                                                       
+!                      X .LT. XT(1)                1         -1         
+!         if  XT(I) .LE. X .LT. XT(I+1)  then  ILEFT=I  , MFLAG=0       
+!           XT(LXT) .LE. X                         LXT        1,        
+!                                                                       
+!         That is, when multiplicities are present in the break point   
+!         to the left of X, the largest index is taken for ILEFT.       
+!                                                                       
+!     Description of Arguments                                          
+!                                                                       
+!         Input      XT,X are double precision                          
+!          XT      - XT is a knot or break point vector of length LXT   
+!          LXT     - length of the XT vector                            
+!          X       - argument                                           
+!          ILO     - an initialization parameter which must be set      
+!                    to 1 the first time the spline array XT is         
+!                    processed by DINTRV.                               
+!                                                                       
+!         Output                                                        
+!          ILO     - ILO contains information for efficient process-    
+!                    ing after the initial call and ILO must not be     
+!                    changed by the user.  Distinct splines require     
+!                    distinct ILO parameters.                           
+!          ILEFT   - largest integer satisfying XT(ILEFT) .LE. X        
+!          MFLAG   - signals when X lies out of bounds                  
+!                                                                       
+!     Error Conditions                                                  
+!         None                                                          
+!                                                                       
+!***REFERENCES  Carl de Boor, Package for calculating with B-splines,   
+!                 SIAM Journal on Numerical Analysis 14, 3 (June 1977), 
+!                 pp. 441-472.                                          
+!***REVISION HISTORY  (YYMMDD)                                          
+!   800901  DATE WRITTEN                                                
+!   890831  Modified array declarations.  (WRB)                         
+!   890831  REVISION DATE from Version 3.2                              
+!   891214  Prologue converted to Version 4.0 format.  (BAB)            
+!   920501  Reformatted the REFERENCES section.  (WRB)                  
+
+         subroutine dintrv(Xt,Lxt,x,Ilo,Ileft,Mflag) 
+            implicit none 
+      
+            integer ihi , Ileft , Ilo , istep , Lxt , Mflag , middle , gt(4)
+            double precision x , Xt 
+            dimension Xt(*) 
+      gt=0
+      ihi = Ilo + 1 
+      do
+       if ( ihi>=Lxt ) then 
+        if ( x>=Xt(Lxt) ) then
+         gt(4)=1
+         exit
+        end if
+        if ( Lxt<=1 ) then
+         gt(3)=1
+         exit
+        end if
+        Ilo = Lxt - 1 
+        ihi = Lxt 
+       endif
+       !                                                                       
+       if ( x>=Xt(ihi) ) then 
+        ! *** NOW X .GE. XT(ILO) . FIND UPPER BOUND                             
+        istep = 1 
+        do while ( .true. ) 
+         Ilo = ihi 
+         ihi = Ilo + istep 
+         if ( ihi>=Lxt ) exit 
+         if ( x<Xt(ihi) ) then
+          gt(1)=1
+          exit
+         end if
+         istep = istep*2 
+        enddo
+        if (any(gt==1)) exit
+        if ( x>=Xt(Lxt) ) then
+         gt(4)=1
+         exit
+        end if
+        ihi = Lxt 
+       elseif ( x>=Xt(Ilo) ) then 
+        gt(2)=1
+        exit
+       else 
+        !                                                                       
+        ! *** NOW X .LT. XT(IHI) . FIND LOWER BOUND                             
+        istep = 1 
+        do while ( .true. ) 
+         ihi = Ilo 
+         Ilo = ihi - istep 
+         if ( Ilo<=1 ) exit 
+         if ( x>=Xt(Ilo) ) then
+          gt(1)=1
+          exit
+         end if
+         istep = istep*2 
+        enddo
+        if (any(gt==1)) exit
+        Ilo = 1 
+        if ( x<Xt(1) ) then
+         gt(3)=1
+         exit
+        end if
+       endif
+       exit
+      end do
+      
+      ! *** NOW XT(ILO) .LE. X .LT. XT(IHI) . NARROW THE INTERVAL             
+      if (gt(4)==0) then
+       if (gt(3)==0) then
+        if (gt(2)==0) then
+      100 do while ( .true. ) 
+          middle = (Ilo+ihi)/2 
+          if ( middle==Ilo ) exit 
+          !     NOTE. IT IS ASSUMED THAT MIDDLE = ILO IN CASE IHI = ILO+1         
+          if ( x<Xt(middle) ) then 
+           ihi = middle 
+          else 
+           Ilo = middle 
+          endif
+         enddo
+        end if
+        gt(2)=0
+      200 Mflag = 0 
+        Ileft = Ilo 
+        return 
+        ! *** SET OUTPUT AND RETURN                                             
+       end if
+       gt(3)=0
+      300 Mflag = -1 
+       Ileft = 1 
+       return 
+      end if
+      gt(4)=0
+      400 Mflag = 1 
+      Ileft = Lxt 
+      end subroutine dintrv
+
     end program pchip_test
 !*******************************************************************************************************
