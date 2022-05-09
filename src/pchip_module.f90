@@ -154,8 +154,8 @@
                                             !! defined by X1,X2, F1,F2, D1,D2 at the points XE.
     real(wp),dimension(*),intent(out) :: de !! array of values of the first derivative of
                                             !! the same function at the points XE.
-    real(wp),intent(in)               :: x1 !! initial endpoint of interval of definition of cubic. (Error return if X1==X2.)
-    real(wp),intent(in)               :: x2 !! final endpoint of interval of definition of cubic. (Error return if X1==X2.)
+    real(wp),intent(in)               :: x1 !! initial endpoint of interval of definition of cubic. (Error return if X1==X2.)
+    real(wp),intent(in)               :: x2 !! final endpoint of interval of definition of cubic. (Error return if X1==X2.)
     real(wp),intent(in)               :: f1 !! value of function at X1.
     real(wp),intent(in)               :: f2 !! value of function at X2.
     real(wp),intent(in)               :: d1 !! value of derivative at X1.
@@ -251,8 +251,8 @@
                                                 !! * "Recoverable" errors (output arrays have not been changed):
                                                 !!    * IERR = -1  if NE<1 .
                                                 !!    * IERR = -2  if X1==X2 .
-    real(wp),intent(in)               :: x1     !! initial endpoint of interval of definition of cubic. (Error return if X1==X2.)
-    real(wp),intent(in)               :: x2     !! final endpoint of interval of definition of cubic. (Error return if X1==X2.)
+    real(wp),intent(in)               :: x1     !! initial endpoint of interval of definition of cubic. (Error return if X1==X2.)
+    real(wp),intent(in)               :: x2     !! final endpoint of interval of definition of cubic. (Error return if X1==X2.)
     real(wp),intent(in)               :: f1     !! value of function at X1.
     real(wp),intent(in)               :: f2     !! value of function at X2.
     real(wp),intent(in)               :: d1     !! value of derivative at X1.
