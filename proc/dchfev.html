@@ -142,13 +142,13 @@ XE(J), J=1(1)NE.</p>
   <td><span class="anchor" id="variable-x1~3"></span>real(kind=wp),</td>
 <td>intent(in)</td>
   <td></td>  <td></td><td>::</td>
-  <td><strong>x1</strong></td><td><p>initial endpoint of interval of definition of cubic. (Error return if X1==X2.)</p></td>
+  <td><strong>x1</strong></td><td><p>initial endpoint of interval of definition of cubic. (Error return if X1==X2.)</p></td>
 </tr>
 <tr>
   <td><span class="anchor" id="variable-x2~3"></span>real(kind=wp),</td>
 <td>intent(in)</td>
   <td></td>  <td></td><td>::</td>
-  <td><strong>x2</strong></td><td><p>final endpoint of interval of definition of cubic. (Error return if X1==X2.)</p></td>
+  <td><strong>x2</strong></td><td><p>final endpoint of interval of definition of cubic. (Error return if X1==X2.)</p></td>
 </tr>
 <tr>
   <td><span class="anchor" id="variable-f1~3"></span>real(kind=wp),</td>
@@ -462,8 +462,8 @@ defined by X1,X2, F1,F2, D1,D2 at the points XE.</p></td>
 <span class="w">                                                </span><span class="c">!! * &quot;Recoverable&quot; errors (output arrays have not been changed):</span>
 <span class="w">                                                </span><span class="c">!!    * IERR = -1  if NE&lt;1 .</span>
 <span class="w">                                                </span><span class="c">!!    * IERR = -2  if X1==X2 .</span>
-<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">x1</span><span class="w">     </span><span class="c">!! initial endpoint of interval of definition of cubic. (Error return if X1==X2.)</span>
-<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">x2</span><span class="w">     </span><span class="c">!! final endpoint of interval of definition of cubic. (Error return if X1==X2.)</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">x1</span><span class="w">     </span><span class="c">!! initial endpoint of interval of definition of cubic. (Error return if X1==X2.)</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">x2</span><span class="w">     </span><span class="c">!! final endpoint of interval of definition of cubic. (Error return if X1==X2.)</span>
 <span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">f1</span><span class="w">     </span><span class="c">!! value of function at X1.</span>
 <span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">f2</span><span class="w">     </span><span class="c">!! value of function at X2.</span>
 <span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">d1</span><span class="w">     </span><span class="c">!! value of derivative at X1.</span>
