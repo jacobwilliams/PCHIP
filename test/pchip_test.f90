@@ -64,30 +64,25 @@ contains
       integer,intent(out) :: Ipass !! will contain a pass/fail flag.  IPASS=1 is good.
                                    !! IPASS=0 indicates one or more tests failed.
 
-      integer i1, i2, i3, i4, i5, i6, i7, i8, i9, ifail, npts
-      double precision work(4000)
-      logical fail
+      integer :: i1, i2, i3, i4, i5, i6, i7, i8, i9, ifail, npts
+      real(wp) :: work(4000)
+      logical :: fail
 
-      if (Kprint >= 2) write (Lun, 99001) Kprint
-      !
-      !  FORMATS.
-      !
-99001 format('1'/' ------------ DPCHIP QUICK CHECK OUTPUT',            &
-               &' ------------'//20x, '( KPRINT =', i2, ' )')
-      !
+      if (Kprint >= 2) write (Lun, '(/A,//20X,A,I2,A)') &
+         ' ------------ DPCHIP QUICK CHECK OUTPUT ------------', '( KPRINT =', Kprint, ' )'
+
       !  TEST DCHFDV AND DCHFEV.
-      !
+
       ifail = 0
       npts = 1000
       i1 = 1 + npts
       i2 = i1 + npts
       i3 = i2 + npts
-      call devchk(Lun, Kprint, npts, work(1), work(i1), work(i2), work(i3),   &
-                & fail)
+      call devchk(Lun, Kprint, npts, work(1), work(i1), work(i2), work(i3), fail)
       if (fail) ifail = ifail + 1
-      !
+
       !  TEST DPCHFD AND DPCHFE.
-      !
+
       i1 = 1 + 10
       i2 = i1 + 10
       i3 = i2 + 100
@@ -97,15 +92,15 @@ contains
       i7 = i6 + 51
       i8 = i7 + 51
       i9 = i8 + 51
-      call devpck(Lun, Kprint, work(1), work(i1), work(i2), work(i3), work(i4)&
-                & , work(i5), work(i6), work(i7), work(i8), work(i9), fail)
+      call devpck(Lun, Kprint, work(1), work(i1), work(i2), work(i3), work(i4), &
+                  work(i5), work(i6), work(i7), work(i8), work(i9), fail)
       if (fail) ifail = ifail + 2
-      !
+
       !  TEST ERROR RETURNS.
-      !
+
       call deverk(Lun, Kprint, fail)
       if (fail) ifail = ifail + 4
-      !
+
       !  PRINT SUMMARY AND TERMINATE.
       !     At this point, IFAIL has the following value:
       !        IFAIL = 0  IF ALL TESTS PASSED.
@@ -113,20 +108,18 @@ contains
       !           IFAIL=1  IF SINGLE CUBIC  TEST FAILED. (SEE DEVCHK OUTPUT.)
       !           IFAIL=2  IF DPCHFD/DPCHFE TEST FAILED. (SEE DEVPCK OUTPUT.)
       !           IFAIL=4  IF ERROR RETURN  TEST FAILED. (SEE DEVERK OUTPUT.)
-      !
-      if ((Kprint >= 2) .and. (ifail /= 0)) write (Lun, 99002) ifail
-99002 format(/' *** TROUBLE ***', i5, ' EVALUATION TESTS FAILED.')
-      !
+
+      if ((Kprint >= 2) .and. (ifail /= 0)) &
+         write (Lun, '(/,A,I5,A)') ' *** TROUBLE ***', ifail, ' EVALUATION TESTS FAILED.'
+
       if (ifail == 0) then
          Ipass = 1
-         if (Kprint >= 2) write (Lun, 99003)
-99003    format(/' ------------ DPCHIP PASSED  ALL EVALUATION TESTS',  &
-                                          &' ------------')
+         if (Kprint >= 2) &
+            write (Lun, '(/,A)') ' ------------ DPCHIP PASSED  ALL EVALUATION TESTS ------------'
       else
          Ipass = 0
-         if (Kprint >= 1) write (Lun, 99004)
-99004    format(/' ************ DPCHIP FAILED SOME EVALUATION TESTS',  &
-                                          &' ************')
+         if (Kprint >= 1) &
+            write (Lun, '(/,A)') ' ************ DPCHIP FAILED SOME EVALUATION TESTS ************'
       end if
 
    end subroutine dpchq1
@@ -173,22 +166,21 @@ contains
       integer,intent(out) :: Ipass !! will contain a pass/fail flag.  IPASS=1 is good.
                                    !! IPASS=0 indicates one or more tests failed.
 
-      integer i, ierexp(17), ierr, ifail, n, npairs
-      double precision a(17), b(17), calc, d(7), errmax, error,   &
+      integer :: i, ierexp(17), ierr, ifail, n, npairs
+      real(wp) :: a(17), b(17), calc, d(7), errmax, error,   &
                      & f(7), machep, one, three, thrqtr, tol,     &
                      & true, two, x(7)
-      logical fail, skip
+      logical :: fail, skip
 
-      !
       !  DEFINE TEST FUNCTIONS.
-      !
-      double precision ax, fcn, deriv, antder
+
+      real(wp) :: ax, fcn, deriv, antder
       fcn(ax) = three*ax*ax*(ax - two)
       deriv(ax) = three*ax*(two*(ax - two) + ax)
       antder(ax) = ax**3*(thrqtr*ax - two)
-      !
+
       !  INITIALIZE.
-      !
+
       data thrqtr/0.75d0/, one/1.d0/, two/2.d0/, three/3.d0/
       data n/7/
       data x/-4.d0, -2.d0, -0.9d0, 0.d0, 0.9d0, 2.d0, 4.d0/
@@ -201,37 +193,37 @@ contains
          & -2.5d0, 3.5d0, 0.5d0/
       data ierexp/0, 0, 0, 0, 2, 0, 0, 2, 1, 3, 3, 3, 0,   &
          & 0, 0, 0, 0/
-      !
+
       !  SET PASS/FAIL TOLERANCE.
-      !
+
       machep = d1mach4
       tol = 100.d0*machep
-      !
+
       !  SET UP PCH FUNCTION DEFINITION.
-      !
+
       do i = 1, n
          f(i) = fcn(x(i))
          d(i) = deriv(x(i))
       end do
-      !
+
       if (Kprint >= 3) write (Lun, 99001)
-      !
+
       !  FORMATS.
-      !
+
 99001 format('1'//10x, 'TEST DPCHIP INTEGRATORS')
       if (Kprint >= 2) write (Lun, 99002)
 99002 format(//10x, 'DPCHQ2 RESULTS'/10x, '--------------')
       if (Kprint >= 3) write (Lun, 99003) (x(i), f(i), d(i), i=1, n)
 99003 format(//5x, 'DATA:'//11x, 'X', 9x, 'F', 9x, 'D'/(5x, 3f10.3))
-      !
+
       !  LOOP OVER (A,B)-PAIRS.
-      !
+
       if (Kprint >= 3) write (Lun, 99004)
 99004 format(//5x, 'TEST RESULTS:'//'    A     B    ERR     TRUE', 16x,  &
                &'CALC', 15x, 'ERROR')
-      !
+
       ifail = 0
-      !
+
       skip = .false.
       do i = 1, npairs
          !---------------------------------------------
@@ -251,7 +243,7 @@ contains
                                   & error
                end if
             end if
-            !
+
             error = abs(error)/max(one, abs(true))
             if (fail .or. (error > tol)) ifail = ifail + 1
             if (i == 1) then
@@ -264,9 +256,9 @@ contains
             ifail = ifail + 1
          end if
       end do
-      !
+
       !  PRINT SUMMARY.
-      !
+
       if (Kprint >= 2) then
          write (Lun, 99006) errmax, tol
 99006    format(/'  MAXIMUM RELATIVE ERROR IS:', 1p, d15.5,              &
@@ -274,9 +266,9 @@ contains
          if (ifail /= 0) write (Lun, 99007) ifail
 99007    format(/' *** TROUBLE ***', i5, ' INTEGRATION TESTS FAILED.')
       end if
-      !
+
       !  TERMINATE.
-      !
+
       if (ifail == 0) then
          Ipass = 1
          if (Kprint >= 2) write (Lun, 99008)
@@ -288,7 +280,7 @@ contains
 99009    format(/' ************ DPCHIP FAILED SOME INTEGRATION TESTS', &
                                           &' ************')
       end if
-      !
+
       return
 99010 format(2f6.1, i5, 1p, 2d20.10, d15.5)
 
@@ -359,7 +351,7 @@ contains
 
       integer i, ic(2), ierr, ifail, n, nbad, nbadz, nwk
       parameter(n=9, nwk=2*n)
-      double precision d(n), dc(n), dc5, dc6, dm(n), ds(n), err, &
+      real(wp) d(n), dc(n), dc5, dc6, dm(n), ds(n), err, &
                      & f(n), mone, tol, told, tolz, vc(2), x(n), &
                      & wk(nwk), zero
       parameter(zero=0.0d0, mone=-1.0d0)
@@ -659,7 +651,7 @@ contains
       parameter(maxn=16, maxn2=8, maxn3=6, nb=7)
       integer i, ierr, ifail, incfd, ismex1(maxn), ismex2(maxn2), &
             & ismex3(maxn3), ismexb(nb), ismon(maxn), k, n, ns(3)
-      double precision d(maxn), db(nb), f(maxn), fb(nb), x(maxn)
+      real(wp) d(maxn), db(nb), f(maxn), fb(nb), x(maxn)
       logical skip
       !
       !  DEFINE EXPECTED RESULTS.
@@ -889,7 +881,7 @@ contains
       INTEGER i, ierr, ifail, inbv, j, knotyp, k, N, ndim,     &
             & nknots
       PARAMETER(N=9)
-      DOUBLE PRECISION bcoef(2*N), d(N), dcalc, derr, dermax,      &
+      real(wp) bcoef(2*N), d(N), dcalc, derr, dermax,      &
                      & f(N), fcalc, ferr, fermax, t(2*N + 4), terr, &
                      & termax, tol, tolz, tsave(2*N + 4), work(16*N),&
                      & x(N), ZERO
@@ -898,7 +890,7 @@ contains
 !
 !  Define relative error function.
 !
-      DOUBLE PRECISION ans, err, RELERR
+      real(wp) ans, err, RELERR
       RELERR(err, ans) = ABS(err)/MAX(1.0D-5, ABS(ans))
 !
 !  Define test data.
@@ -1032,7 +1024,7 @@ contains
    ! -------- CODE TO TEST EVALUATION ACCURACY OF DCHFDV AND DCHFEV -------
    !
    !     USING FUNCTION AND DERIVATIVE VALUES FROM A CUBIC (COMPUTED IN
-   !     DOUBLE PRECISION) AT NINT DIFFERENT (X1,X2) PAIRS:
+   !     real(wp)) AT NINT DIFFERENT (X1,X2) PAIRS:
    !     1. CHECKS THAT DCHFDV AND DCHFEV BOTH REPRODUCE ENDPOINT VALUES.
    !     2. EVALUATES AT NPTS POINTS, 10 OF WHICH ARE OUTSIDE THE INTERVAL
    !        AND:
@@ -1076,13 +1068,13 @@ contains
       implicit none
 
       integer Lout, Kprint, Npts
-      double precision Xev(*), Fev(*), Dev(*), Fev2(*)
+      real(wp) Xev(*), Fev(*), Dev(*), Fev2(*)
       logical Fail
       !
       !  DECLARATIONS.
       !
       integer i, ierr, iint, next(2), next2(2), nint
-      double precision aed, aed2, aedmax, aedmin, aef, aef2,      &
+      real(wp) aed, aed2, aedmax, aedmin, aef, aef2,      &
                      & aefmax, aefmin, check(2), checkf(2),         &
                      & checkd(2), d1, d2, dermax, dtrue, dx,      &
                      & eps1, eps2, f1, f2, fact, fermax, floord, &
@@ -1092,12 +1084,12 @@ contains
                      & tol2, x1, x2, xadmax, xadmin, xafmax,      &
                      & xafmin, xrdmax, xrdmin, xrfmax, xrfmin, zero
       logical :: failoc, failnx
-      double precision :: r !! a random number
+      real(wp) :: r !! a random number
 
       !
       !  DEFINE RELATIVE ERROR WITH FLOOR.
       !
-      double precision rerr, err, value, floor
+      real(wp) rerr, err, value, floor
       rerr(err, value, floor) = err/max(abs(value), floor)
       !
       !  INITIALIZE.
@@ -1396,7 +1388,7 @@ contains
       !  DECLARATIONS.
       !
       integer i, ierr, kontrl, n, nerr, next(2)
-      double precision d(10), dum(2), f(10), temp, x(10)
+      real(wp) d(10), dum(2), f(10), temp, x(10)
       logical skip
       !
       !  INITIALIZE.
@@ -1560,20 +1552,20 @@ contains
       !
       integer Lout, Kprint
       logical Fail
-      double precision x(10), y(10), f(10, 10), Fx(10, 10), Fy(10, 10) &
+      real(wp) x(10), y(10), f(10, 10), Fx(10, 10), Fy(10, 10) &
                      & , Xe(51), Ye(51), Fe(51), De(51), Fe2(51)
       !
       !  DECLARATIONS.
       !
       integer i, ier2, ierr, inc, j, k, ne, nerr, nmax, nx, ny
       logical faild, faile, failoc, skip
-      double precision dermax, derr, dtrue, dx, fdiff, fdifmx,    &
+      real(wp) dermax, derr, dtrue, dx, fdiff, fdifmx,    &
                      & fermax, ferr, ftrue, machep, tol, pdermx,  &
                      & pdifmx, pfermx, zero
       !
       !  DEFINE TEST FUNCTION AND DERIVATIVES.
       !
-      double precision ax, ay, fcn, dfdx, dfdy
+      real(wp) ax, ay, fcn, dfdx, dfdy
       fcn(ax, ay) = ax*(ay*ay)*(ax*ax + 1.d0)
       dfdx(ax, ay) = (ay*ay)*(3.d0*ax*ax + 1.d0)
       dfdy(ax, ay) = 2.d0*ax*ay*(ax*ax + 1.d0)
@@ -1861,8 +1853,8 @@ contains
    subroutine dfdtru(x, f, d)
       implicit none
 
-      double precision x, f, d
-      double precision fact1, fact2, xx
+      real(wp) x, f, d
+      real(wp) fact1, fact2, xx
 
       xx = x
       fact1 = xx + 1
@@ -1971,13 +1963,13 @@ contains
 !   900315  CALLs to XERROR changed to CALLs to XERMSG.  (THJ)
 !   920501  Reformatted the REFERENCES section.  (WRB)
 
-   double precision function dbvalu(t, a, n, k, Ideriv, x, Inbv, Work)
+   real(wp) function dbvalu(t, a, n, k, Ideriv, x, Inbv, Work)
       implicit none
 
       integer i, Ideriv, iderp1, ihi, ihmkmj, ilo, imk, imkpj, &
          Inbv, ipj, ip1, ip1mj, j, jj, j1, j2, k, kmider, &
          kmj, km1, kpk, mflag, n
-      double precision a, fkmj, t, Work, x
+      real(wp) a, fkmj, t, Work, x
       dimension t(*), a(*), Work(*)
 
       dbvalu = 0.0d0
@@ -2126,7 +2118,7 @@ contains
       implicit none
 
       integer ihi, Ileft, Ilo, istep, Lxt, Mflag, middle, gt(4)
-      double precision x, Xt
+      real(wp) x, Xt
       dimension Xt(*)
       gt = 0
       ihi = Ilo + 1
