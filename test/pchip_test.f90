@@ -166,11 +166,27 @@ contains
       integer,intent(out) :: Ipass !! will contain a pass/fail flag.  IPASS=1 is good.
                                    !! IPASS=0 indicates one or more tests failed.
 
-      integer :: i, ierexp(17), ierr, ifail, n, npairs
-      real(wp) :: a(17), b(17), calc, d(7), errmax, error,   &
-                     & f(7), machep, one, three, thrqtr, tol,     &
-                     & true, two, x(7)
+      integer :: i, ierr, ifail
+      real(wp) :: calc, d(7), errmax, error, f(7), tol, true
       logical :: fail, skip
+
+      real(wp),parameter :: machep = d1mach4
+      real(wp),parameter :: thrqtr = 0.75_wp
+      real(wp),parameter :: one = 1.0_wp
+      real(wp),parameter :: two = 2.0_wp
+      real(wp),parameter :: three = 3.0_wp
+      integer,parameter :: n = 7
+      real(wp),parameter :: x(7) = [-4.0_wp, -2.0_wp, -0.9_wp, 0.0_wp, &
+                                     0.9_wp, 2.0_wp, 4.0_wp]
+      integer,parameter :: npairs = 17
+      real(wp),parameter ::  a(17) = [-3.0_wp, 3.0_wp, -0.5_wp, -0.5_wp, -0.5_wp, -4.0_wp, &
+                                      -4.0_wp, 3.0_wp, -5.0_wp, -5.0_wp, -6.0_wp, 6.0_wp, -1.5_wp, &
+                                      -1.5_wp, -3.0_wp, 3.0_wp, 0.5_wp]
+      real(wp),parameter ::  b(17) = [3.0_wp, -3.0_wp, 1.0_wp, 2.0_wp, 5.0_wp, -0.5_wp, 4.0_wp, &
+                                      5.0_wp, -3.0_wp, 5.0_wp, -5.0_wp, 5.0_wp, -0.5_wp, -1.0_wp, &
+                                      -2.5_wp, 3.5_wp, 0.5_wp]
+      integer,parameter :: ierexp(17) = [0, 0, 0, 0, 2, 0, 0, 2, 1, 3, 3, 3, 0,   &
+                                         0, 0, 0, 0]
 
       !  DEFINE TEST FUNCTIONS.
 
@@ -179,25 +195,8 @@ contains
       deriv(ax) = three*ax*(two*(ax - two) + ax)
       antder(ax) = ax**3*(thrqtr*ax - two)
 
-      !  INITIALIZE.
-
-      data thrqtr/0.75d0/, one/1.d0/, two/2.d0/, three/3.d0/
-      data n/7/
-      data x/-4.d0, -2.d0, -0.9d0, 0.d0, 0.9d0, 2.d0, 4.d0/
-      data npairs/17/
-      data a/-3.0d0, 3.0d0, -0.5d0, -0.5d0, -0.5d0, -4.0d0,     &
-         & -4.0d0, 3.0d0, -5.0d0, -5.0d0, -6.0d0, 6.0d0, -1.5d0, &
-         & -1.5d0, -3.0d0, 3.0d0, 0.5d0/
-      data b/3.0d0, -3.0d0, 1.0d0, 2.0d0, 5.0d0, -0.5d0, 4.0d0,  &
-         & 5.0d0, -3.0d0, 5.0d0, -5.0d0, 5.0d0, -0.5d0, -1.0d0,  &
-         & -2.5d0, 3.5d0, 0.5d0/
-      data ierexp/0, 0, 0, 0, 2, 0, 0, 2, 1, 3, 3, 3, 0,   &
-         & 0, 0, 0, 0/
-
       !  SET PASS/FAIL TOLERANCE.
-
-      machep = d1mach4
-      tol = 100.d0*machep
+      tol = 100.0_wp*machep
 
       !  SET UP PCH FUNCTION DEFINITION.
 
@@ -206,22 +205,19 @@ contains
          d(i) = deriv(x(i))
       end do
 
-      if (Kprint >= 3) write (Lun, 99001)
+      if (Kprint >= 3) write (Lun, '(//10x,A)') 'TEST DPCHIP INTEGRATORS'
 
       !  FORMATS.
 
-99001 format('1'//10x, 'TEST DPCHIP INTEGRATORS')
-      if (Kprint >= 2) write (Lun, 99002)
-99002 format(//10x, 'DPCHQ2 RESULTS'/10x, '--------------')
+      if (Kprint >= 2) write (Lun, '(//10X,A,/10X,A)') &
+        'DPCHQ2 RESULTS', '--------------'
       if (Kprint >= 3) write (Lun, 99003) (x(i), f(i), d(i), i=1, n)
 99003 format(//5x, 'DATA:'//11x, 'X', 9x, 'F', 9x, 'D'/(5x, 3f10.3))
 
       !  LOOP OVER (A,B)-PAIRS.
 
-      if (Kprint >= 3) write (Lun, 99004)
-99004 format(//5x, 'TEST RESULTS:'//'    A     B    ERR     TRUE', 16x,  &
-               &'CALC', 15x, 'ERROR')
-
+      if (Kprint >= 3) write (Lun, '(//5x,A,//,A,16X,A,15X,A)') &
+        'TEST RESULTS:', '    A     B    ERR     TRUE', 'CALC', 'ERROR'
       ifail = 0
 
       skip = .false.
@@ -235,12 +231,10 @@ contains
             error = calc - true
             if (Kprint >= 3) then
                if (fail) then
-                  write (Lun, 99005) a(i), b(i), ierr, true, calc,  &
-                                  & error, ierexp(i)
+                  write (Lun, 99005) a(i), b(i), ierr, true, calc, error, ierexp(i)
 99005             format(2f6.1, i5, 1p, 2d20.10, d15.5, '  (', i1, ') *****')
                else
-                  write (Lun, 99010) a(i), b(i), ierr, true, calc,  &
-                                  & error
+                  write (Lun, 99010) a(i), b(i), ierr, true, calc, error
                end if
             end if
 
@@ -261,8 +255,7 @@ contains
 
       if (Kprint >= 2) then
          write (Lun, 99006) errmax, tol
-99006    format(/'  MAXIMUM RELATIVE ERROR IS:', 1p, d15.5,              &
-                                          &',   TOLERANCE:', 1p, d15.5)
+99006    format(/'  MAXIMUM RELATIVE ERROR IS:', 1p, d15.5, ',   TOLERANCE:', 1p, d15.5)
          if (ifail /= 0) write (Lun, 99007) ifail
 99007    format(/' *** TROUBLE ***', i5, ' INTEGRATION TESTS FAILED.')
       end if
@@ -271,14 +264,10 @@ contains
 
       if (ifail == 0) then
          Ipass = 1
-         if (Kprint >= 2) write (Lun, 99008)
-99008    format(/' ------------ DPCHIP PASSED  ALL INTEGRATION TESTS', &
-                                          &' ------------')
+         if (Kprint >= 2) write (Lun, '(/,A)') ' ------------ DPCHIP PASSED  ALL INTEGRATION TESTS ------------'
       else
          Ipass = 0
-         if (Kprint >= 1) write (Lun, 99009)
-99009    format(/' ************ DPCHIP FAILED SOME INTEGRATION TESTS', &
-                                          &' ************')
+         if (Kprint >= 1) write (Lun, '(/,A)') ' ************ DPCHIP FAILED SOME INTEGRATION TESTS ************'
       end if
 
       return
@@ -332,7 +321,6 @@ contains
    !   910708  Minor modifications in use of KPRINT.  (WRB)
    !   930317  Improved output formats.  (FNF)
    !
-   !
    !*Internal Notes:
    !
    !     TOLD is used to compare with stored Cray results.  Its value
@@ -349,56 +337,51 @@ contains
       integer,intent(out) :: Ipass !! will contain a pass/fail flag.  IPASS=1 is good.
                                    !! IPASS=0 indicates one or more tests failed.
 
-      integer i, ic(2), ierr, ifail, n, nbad, nbadz, nwk
-      parameter(n=9, nwk=2*n)
-      real(wp) d(n), dc(n), dc5, dc6, dm(n), ds(n), err, &
-                     & f(n), mone, tol, told, tolz, vc(2), x(n), &
-                     & wk(nwk), zero
-      parameter(zero=0.0d0, mone=-1.0d0)
-      character*6 result
-      !
-      !  Initialize.
-      !
-      !       Data.
-      data ic/0, 0/
-      data x/-2.2d0, -1.2d0, -1.0d0, -0.5d0, -0.01d0, 0.5d0,    &
-         & 1.0d0, 2.0d0, 2.2d0/
-      !
-      !       Results generated on Cray X/MP (9 sign. figs.)
-      data dm/0., 3.80027352d-01, 7.17253009d-01, 5.82014161d-01,   &
-         & 0., -5.68208031d-01, -5.13501618d-01, -7.77910977d-02,   &
-         & -2.45611117d-03/
-      data dc5, dc6/1.76950158d-02, -5.69579814d-01/
-      data ds/-5.16830792d-02, 5.71455855d-01, 7.40530225d-01,     &
-         & 7.63864934d-01, 1.92614386d-02, -7.65324380d-01,          &
-         & -7.28209035d-01, -7.98445427d-02, -2.85983446d-02/
-      !
+      real(wp),parameter :: zero = 0.0_wp
+      real(wp),parameter :: mone = -1.0_wp
+      integer,parameter :: n = 9
+      integer,parameter :: nwk = 2*n
+      integer,parameter :: ic(2) = [0, 0]
+      real(wp),parameter :: x(n) = [-2.2_wp, -1.2_wp, -1.0_wp, &
+                                    -0.5_wp, -0.01_wp, 0.5_wp, &
+                                     1.0_wp,  2.0_wp,  2.2_wp]
+
+      ! Results generated on Cray X/MP (9 sign. figs.)
+      real(wp),parameter :: dm(n) = [0.0_wp, 3.80027352e-01_wp, 7.17253009e-01_wp, &
+                                     5.82014161e-01_wp, 0.0_wp, -5.68208031e-01_wp, &
+                                     -5.13501618e-01_wp, -7.77910977e-02_wp, -2.45611117e-03_wp]
+      real(wp),parameter :: dc5 = 1.76950158e-02_wp
+      real(wp),parameter :: dc6 = -5.69579814e-01_wp
+      real(wp),parameter :: ds(n) = [-5.16830792e-02_wp,  5.71455855e-01_wp,  7.40530225e-01_wp, &
+                                      7.63864934e-01_wp,  1.92614386e-02_wp, -7.65324380e-01_wp, &
+                                     -7.28209035e-01_wp, -7.98445427e-02_wp, -2.85983446e-02_wp]
+
+      integer :: i, ierr, ifail, nbad, nbadz
+      real(wp) :: d(n), dc(n), err, f(n), tol, told, tolz, vc(2), wk(nwk)
+      character(len=6) :: result
+
+      ! Initialize.
 
       ifail = 0
-      !
-      !        Set tolerances.
+
+      ! Set tolerances.
       tol = 10*d1mach4
-      told = max(1.0d-7, 10*tol)
+      told = max(1.0e-7_wp, 10*tol)
       tolz = zero
-      !
-      if (Kprint >= 3) write (Lun, 99001)
-      !
-      !  FORMATS.
-      !
-99001 format('1'//10x, 'TEST DPCHIP INTERPOLATORS')
-      if (Kprint >= 2) write (Lun, 99002)
-99002 format(//10x, 'DPCHQ3 RESULTS'/10x, '--------------')
-      !
+
+      if (Kprint >= 3) write (Lun, '(//10x,A)') 'TEST DPCHIP INTERPOLATORS'
+      if (Kprint >= 2) write (Lun, '(//10X,A,/10X,A)') 'DPCHQ3 RESULTS', '--------------'
+
       !  Set up data.
-      !
+
       do i = 1, n
          f(i) = exp(-x(i)**2)
       end do
-      !
+
       if (Kprint >= 3) then
          write (Lun, 99003)
-99003    format(//5x, 'DATA:'/39x,                                      &
-                '---------- EXPECTED D-VALUES ----------'/12x, 'X', 9x,  &
+99003    format(//5x, 'DATA:'/39x, &
+                '---------- EXPECTED D-VALUES ----------'/12x, 'X', 9x, &
                 'F', 18x, 'DM', 13x, 'DC', 13x, 'DS')
          do i = 1, 4
             write (Lun, 99009) x(i), f(i), dm(i), ds(i)
@@ -409,14 +392,14 @@ contains
             write (Lun, 99009) x(i), f(i), dm(i), ds(i)
          end do
       end if
-      !
+
       !  Test DPCHIM.
-      !
+
       if (Kprint >= 3) write (Lun, 99011) 'IM'
-      !     --------------------------------
+      ! --------------------------------
       call dpchim(n, x, f, d, 1, ierr)
-      !     --------------------------------
-      !        Expect IERR=1 (one monotonicity switch).
+      ! --------------------------------
+      ! Expect IERR=1 (one monotonicity switch).
       if (Kprint >= 3) write (Lun, 99012) 1
       if (.not. comp(ierr, 1, Lun, Kprint)) then
          ifail = ifail + 1
@@ -426,8 +409,8 @@ contains
          nbadz = 0
          do i = 1, n
             result = '  OK'
-            !             D-values should agree with stored values.
-            !               (Zero values should agree exactly.)
+            ! D-values should agree with stored values.
+            ! (Zero values should agree exactly.)
             if (dm(i) == zero) then
                err = abs(d(i))
                if (err > tolz) then
@@ -446,22 +429,20 @@ contains
          if ((nbadz /= 0) .or. (nbad /= 0)) then
             ifail = ifail + 1
             if ((nbadz /= 0) .and. (Kprint >= 2)) write (Lun, 99004) nbad
-99004       format(/'    **', i5, &
-                ' DPCHIM RESULTS FAILED TO BE EXACTLY ZERO.')
-            if ((nbad /= 0) .and. (Kprint >= 2)) write (Lun, 99015) nbad, &
-                'IM', told
+99004       format(/'    **', i5, ' DPCHIM RESULTS FAILED TO BE EXACTLY ZERO.')
+            if ((nbad /= 0) .and. (Kprint >= 2)) write (Lun, 99015) nbad, 'IM', told
          else
             if (Kprint >= 2) write (Lun, 99016) 'IM'
          end if
       end if
-      !
+
       !  Test DPCHIC -- options set to reproduce DPCHIM.
-      !
+
       if (Kprint >= 3) write (Lun, 99011) 'IC'
-      !     --------------------------------------------------------
+      ! --------------------------------------------------------
       call dpchic(ic, vc, zero, n, x, f, dc, 1, wk, nwk, ierr)
-      !     --------------------------------------------------------
-      !        Expect IERR=0 .
+      ! --------------------------------------------------------
+      ! Expect IERR=0 .
       if (Kprint >= 3) write (Lun, 99012) 0
       if (.not. comp(ierr, 0, Lun, Kprint)) then
          ifail = ifail + 1
@@ -470,15 +451,14 @@ contains
          nbad = 0
          do i = 1, n
             result = '  OK'
-            !           D-values should agree exactly with those computed by DPCHIM.
-            !            (To be generous, will only test to machine precision.)
+            ! D-values should agree exactly with those computed by DPCHIM.
+            ! (To be generous, will only test to machine precision.)
             err = abs(d(i) - dc(i))
             if (err > tol) then
                nbad = nbad + 1
                result = '**BAD'
             end if
-            if (Kprint >= 3) write (Lun, 99014) i, x(i), dc(i), err, &
-                                  & result
+            if (Kprint >= 3) write (Lun, 99014) i, x(i), dc(i), err, result
          end do
          if (nbad /= 0) then
             ifail = ifail + 1
@@ -487,14 +467,14 @@ contains
             if (Kprint >= 2) write (Lun, 99016) 'IC'
          end if
       end if
-      !
+
       !  Test DPCHIC -- default nonzero switch derivatives.
-      !
+
       if (Kprint >= 3) write (Lun, 99011) 'IC'
-      !     -------------------------------------------------------
+      ! -------------------------------------------------------
       call dpchic(ic, vc, mone, n, x, f, d, 1, wk, nwk, ierr)
-      !     -------------------------------------------------------
-      !        Expect IERR=0 .
+      ! -------------------------------------------------------
+      ! Expect IERR=0 .
       if (Kprint >= 3) write (Lun, 99012) 0
       if (.not. comp(ierr, 0, Lun, Kprint)) then
          ifail = ifail + 1
@@ -504,8 +484,8 @@ contains
          nbadz = 0
          do i = 1, n
             result = '  OK'
-            !            D-values should agree exactly with those computed in
-            !            previous call, except at points 5 and 6.
+            ! D-values should agree exactly with those computed in
+            ! previous call, except at points 5 and 6.
             if ((i < 5) .or. (i > 6)) then
                err = abs(d(i) - dc(i))
                if (err > tolz) then
@@ -523,8 +503,7 @@ contains
                   result = '**BAD'
                end if
             end if
-            if (Kprint >= 3) write (Lun, 99014) i, x(i), d(i), err,  &
-                                  & result
+            if (Kprint >= 3) write (Lun, 99014) i, x(i), d(i), err, result
          end do
          if ((nbadz /= 0) .or. (nbad /= 0)) then
             ifail = ifail + 1
@@ -532,19 +511,19 @@ contains
 99005       format(/'    **', i5, ' DPCHIC RESULTS FAILED TO AGREE WITH',&
                     ' PREVIOUS CALL.')
             if ((nbad /= 0) .and. (Kprint >= 2)) write (Lun, 99015) nbad, &
-                &'IC', told
+                'IC', told
          else
             if (Kprint >= 2) write (Lun, 99016) 'IC'
          end if
       end if
-      !
+
       !  Test DPCHSP.
-      !
+
       if (Kprint >= 3) write (Lun, 99011) 'SP'
-      !     -------------------------------------------------
+      ! -------------------------------------------------
       call dpchsp(ic, vc, n, x, f, d, 1, wk, nwk, ierr)
-      !     -------------------------------------------------
-      !        Expect IERR=0 .
+      ! -------------------------------------------------
+      ! Expect IERR=0 .
       if (Kprint >= 3) write (Lun, 99012) 0
       if (.not. comp(ierr, 0, Lun, Kprint)) then
          ifail = ifail + 1
@@ -553,14 +532,13 @@ contains
          nbad = 0
          do i = 1, n
             result = '  OK'
-            !             D-values should agree with stored values.
+            ! D-values should agree with stored values.
             err = abs((d(i) - ds(i))/ds(i))
             if (err > told) then
                nbad = nbad + 1
                result = '**BAD'
             end if
-            if (Kprint >= 3) write (Lun, 99014) i, x(i), d(i), err,  &
-                                  & result
+            if (Kprint >= 3) write (Lun, 99014) i, x(i), d(i), err, result
          end do
          if (nbad /= 0) then
             ifail = ifail + 1
@@ -569,24 +547,20 @@ contains
             if (Kprint >= 2) write (Lun, 99016) 'SP'
          end if
       end if
-      !
+
       !  PRINT SUMMARY AND TERMINATE.
-      !
-      if ((Kprint >= 2) .and. (ifail /= 0)) write (Lun, 99006) ifail
-99006 format(/' *** TROUBLE ***', i5, ' INTERPOLATION TESTS FAILED.')
-      !
+
+      if ((Kprint >= 2) .and. (ifail /= 0)) &
+        write (Lun, '(/A,I5,A)') ' *** TROUBLE ***', ifail, ' INTERPOLATION TESTS FAILED.'
+
       if (ifail == 0) then
          Ipass = 1
-         if (Kprint >= 2) write (Lun, 99007)
-99007    format(/' ------------ DPCHIP PASSED  ALL INTERPOLATION TESTS'&
-                                         & , ' ------------')
+         if (Kprint >= 2) write (Lun, '(/A)') ' ------------ DPCHIP PASSED  ALL INTERPOLATION TESTS ------------'
       else
          Ipass = 0
-         if (Kprint >= 1) write (Lun, 99008)
-99008    format(/' ************ DPCHIP FAILED SOME INTERPOLATION TESTS'&
-                                         & , ' ************')
+         if (Kprint >= 1) write (Lun, '(/A)') ' ************ DPCHIP FAILED SOME INTERPOLATION TESTS ************'
       end if
-      !
+
       return
 99009 format(5x, f10.2, 1p, d15.5, 4x, d15.5, 15x, d15.5)
 99010 format(5x, f10.2, 1p, d15.5, 4x, 3d15.5)
@@ -647,72 +621,63 @@ contains
       integer,intent(out) :: Ipass !! will contain a pass/fail flag.  IPASS=1 is good.
                                    !! IPASS=0 indicates one or more tests failed.
 
-      integer maxn, maxn2, maxn3, nb
-      parameter(maxn=16, maxn2=8, maxn3=6, nb=7)
-      integer i, ierr, ifail, incfd, ismex1(maxn), ismex2(maxn2), &
-            & ismex3(maxn3), ismexb(nb), ismon(maxn), k, n, ns(3)
-      real(wp) d(maxn), db(nb), f(maxn), fb(nb), x(maxn)
-      logical skip
-      !
-      !  DEFINE EXPECTED RESULTS.
-      !
-      data ismex1/1, 1, -1, 1, 1, -1, 1, 1, -1, 1, 1, -1,   &
-         & 1, 1, -1, 2/
-      data ismex2/1, 2, 2, 1, 2, 2, 1, 2/
-      data ismex3/1, 1, 1, 1, 1, 1/
-      data ismexb/1, 3, 1, -1, -3, -1, 2/
-      !
-      !  DEFINE TEST DATA.
-      !
-      data ns/16, 8, 6/
-      !
+      integer,parameter :: maxn = 16
+      integer,parameter :: maxn2 = 8
+      integer,parameter :: maxn3 = 6
+      integer,parameter :: nb = 7
+      integer,parameter :: ns(3) = [16, 8, 6]
 
-      if (Kprint >= 3) write (Lun, 99001)
-      !
-      !  FORMATS.
-      !
-99001 format('1'//10x, 'TEST DPCHIP MONOTONICITY CHECKER')
-      if (Kprint >= 2) write (Lun, 99002)
-99002 format(//10x, 'DPCHQ4 RESULTS'/10x, '--------------')
-      !
-      !       Define X, F, D.
+      real(wp) :: ismex1(maxn), ismex2(maxn2), ismex3(maxn3), ismexb(nb)
+      integer :: i, ierr, ifail, incfd, ismon(maxn), k, n
+      real(wp) :: d(maxn), db(nb), f(maxn), fb(nb), x(maxn)
+      logical :: skip
+
+      ! DEFINE EXPECTED RESULTS.
+      ismex1 = [1, 1, -1, 1, 1, -1, 1, 1, -1, 1, 1, -1, 1, 1, -1, 2]
+      ismex2 = [1, 2, 2, 1, 2, 2, 1, 2]
+      ismex3 = [1, 1, 1, 1, 1, 1]
+      ismexb = [1, 3, 1, -1, -3, -1, 2]
+
+      if (Kprint >= 3) write (Lun, '(//10X,A)') 'TEST DPCHIP MONOTONICITY CHECKER'
+      if (Kprint >= 2) write (Lun, '(//10x,A,/10X,A)') 'DPCHQ4 RESULTS', '--------------'
+
+      ! Define X, F, D.
       do i = 1, maxn
          x(i) = i
-         d(i) = 0.d0
+         d(i) = 0.0_wp
       end do
       do i = 2, maxn, 3
-         d(i) = 2.d0
+         d(i) = 2.0_wp
       end do
       do i = 1, 3
          f(i) = x(i)
-         f(i + 3) = f(i) + 1.d0
-         f(i + 6) = f(i + 3) + 1.d0
-         f(i + 9) = f(i + 6) + 1.d0
-         f(i + 12) = f(i + 9) + 1.d0
+         f(i + 3) = f(i) + 1.0_wp
+         f(i + 6) = f(i + 3) + 1.0_wp
+         f(i + 9) = f(i + 6) + 1.0_wp
+         f(i + 12) = f(i + 9) + 1.0_wp
       end do
-      f(16) = 6.d0
-      !       Define FB, DB.
-      fb(1) = 0.d0
-      fb(2) = 2.d0
-      fb(3) = 3.d0
-      fb(4) = 5.d0
-      db(1) = 1.d0
-      db(2) = 3.d0
-      db(3) = 3.d0
-      db(4) = 0.d0
+      f(16) = 6.0_wp
+      ! Define FB, DB.
+      fb(1) = 0.0_wp
+      fb(2) = 2.0_wp
+      fb(3) = 3.0_wp
+      fb(4) = 5.0_wp
+      db(1) = 1.0_wp
+      db(2) = 3.0_wp
+      db(3) = 3.0_wp
+      db(4) = 0.0_wp
       do i = 1, 3
          fb(nb - i + 1) = fb(i)
          db(nb - i + 1) = -db(i)
       end do
-      !
+
       !  INITIALIZE.
-      !
+
       ifail = 0
-      !
+
       if (Kprint >= 3) then
          write (Lun, 99003)
-99003    format(//5x, 'DATA:'//9x, 'I', 4x, 'X', 5x, 'F', 5x, 'D', 5x, 'FB', 4x,  &
-                                          &'DB')
+99003    format(//5x, 'DATA:'//9x, 'I', 4x, 'X', 5x, 'F', 5x, 'D', 5x, 'FB', 4x, 'DB')
          do i = 1, nb
             write (Lun, 99010) i, x(i), f(i), d(i), fb(i), db(i)
          end do
@@ -720,20 +685,18 @@ contains
             write (Lun, 99010) i, x(i), f(i), d(i)
          end do
       end if
-      !
-      !  TRANSFER POINT FOR SECOND SET OF TESTS.
-      !
-      !
+
+   !  TRANSFER POINT FOR SECOND SET OF TESTS.
+   do
+
       !  Loop over a series of values of INCFD.
-      !
-100   do incfd = 1, 3
+      main : do incfd = 1, 3
          n = ns(incfd)
          skip = .false.
-         !        -------------------------------------------------
+         ! -------------------------------------------------
          call dpchcm(n, x, f, d, incfd, skip, ismon, ierr)
-         !        -------------------------------------------------
-         if (Kprint >= 3) write (Lun, 99004) incfd, ierr,              &
-                               & (ismon(i), i=1, n)
+         ! -------------------------------------------------
+         if (Kprint >= 3) write (Lun, 99004) incfd, ierr, (ismon(i), i=1, n)
 99004    format(/4x, 'INCFD =', i2, ':  IERR =', i3/15x, 'ISMON =', 16i3)
          if (ierr /= 0) then
             ifail = ifail + 1
@@ -743,32 +706,30 @@ contains
                if (incfd == 1) then
                   if (ismon(i) /= ismex1(i)) then
                      ifail = ifail + 1
-                     if (Kprint >= 3) write (Lun, 99012)                 &
-                        & (ismex1(k), k=1, n)
-                     goto 200
+                     if (Kprint >= 3) write (Lun, 99012) (ismex1(k), k=1, n)
+                     cycle main
                   end if
                elseif (incfd == 2) then
                   if (ismon(i) /= ismex2(i)) then
                      ifail = ifail + 1
-                     if (Kprint >= 3) write (Lun, 99012)                 &
-                        & (ismex2(k), k=1, n)
-                     goto 200
+                     if (Kprint >= 3) write (Lun, 99012) (ismex2(k), k=1, n)
+                     cycle main
                   end if
                elseif (ismon(i) /= ismex3(i)) then
                   ifail = ifail + 1
                   if (Kprint >= 3) write (Lun, 99012) (ismex3(k), k=1, n)
-                  goto 200
+                  cycle main
                end if
             end do
          end if
-200   end do
-      !
+      end do main
+
       !  Test for -1,3,1 bug.
-      !
+
       skip = .false.
-      !     ------------------------------------------------
+      ! ------------------------------------------------
       call dpchcm(nb, x, fb, db, 1, skip, ismon, ierr)
-      !     ------------------------------------------------
+      ! ------------------------------------------------
       if (Kprint >= 3) write (Lun, 99005) ierr, (ismon(i), i=1, nb)
 99005 format(/4x, ' Bug test:  IERR =', i3/15x, 'ISMON =', 7i3)
       if (ierr /= 0) then
@@ -779,57 +740,53 @@ contains
             if (ismon(i) /= ismexb(i)) then
                ifail = ifail + 1
                if (Kprint >= 3) write (Lun, 99012) (ismexb(k), k=1, nb)
-               goto 300
+               exit
             end if
          end do
       end if
-      !
-300   if (f(1) < 0.) then
-         !
+
+      if (f(1) < 0.0_wp) then
+
          !  PRINT SUMMARY AND TERMINATE.
-         !
-         if ((Kprint >= 2) .and. (ifail /= 0)) write (Lun, 99006) ifail
-99006    format(/' *** TROUBLE ***', i5, ' MONOTONICITY TESTS FAILED.')
-         !
+
+         if ((Kprint >= 2) .and. (ifail /= 0)) &
+            write (Lun, '(/A,I5,A)') ' *** TROUBLE ***', ifail, ' MONOTONICITY TESTS FAILED.'
+
          if (ifail == 0) then
             Ipass = 1
-            if (Kprint >= 2) write (Lun, 99007)
-99007       format(/ &
-                    ' ------------ DPCHIP PASSED  ALL MONOTONICITY TESTS'&
-                     , ' ------------')
+            if (Kprint >= 2) write (Lun, '(/A)') ' ------------ DPCHIP PASSED  ALL MONOTONICITY TESTS ------------'
          else
             Ipass = 0
-            if (Kprint >= 1) write (Lun, 99008)
-99008       format(/ &
-                     ' ************ DPCHIP FAILED SOME MONOTONICITY TESTS'&
-                      , ' ************')
+            if (Kprint >= 1) write (Lun, '(/A)') ' ************ DPCHIP FAILED SOME MONOTONICITY TESTS ************'
          end if
-         !
+
          return
-      else
-         !
-         !  Change sign and do again.
-         !
-         if (Kprint >= 3) write (Lun, 99009)
-99009    format(/4x, 'Changing sign of data.....')
-         do i = 1, maxn
-            f(i) = -f(i)
-            d(i) = -d(i)
-            if (ismex1(i) /= 2) ismex1(i) = -ismex1(i)
-         end do
-         do i = 1, maxn2
-            if (ismex2(i) /= 2) ismex2(i) = -ismex2(i)
-         end do
-         do i = 1, maxn3
-            if (ismex3(i) /= 2) ismex3(i) = -ismex3(i)
-         end do
-         do i = 1, nb
-            fb(i) = -fb(i)
-            db(i) = -db(i)
-            if (ismexb(i) /= 2) ismexb(i) = -ismexb(i)
-         end do
-         goto 100
+
       end if
+
+      !  Change sign and do again.
+
+      if (Kprint >= 3) write (Lun, 99009)
+99009 format(/4x, 'Changing sign of data.....')
+      do i = 1, maxn
+         f(i) = -f(i)
+         d(i) = -d(i)
+         if (ismex1(i) /= 2) ismex1(i) = -ismex1(i)
+      end do
+      do i = 1, maxn2
+         if (ismex2(i) /= 2) ismex2(i) = -ismex2(i)
+      end do
+      do i = 1, maxn3
+         if (ismex3(i) /= 2) ismex3(i) = -ismex3(i)
+      end do
+      do i = 1, nb
+         fb(i) = -fb(i)
+         db(i) = -db(i)
+         if (ismexb(i) /= 2) ismexb(i) = -ismexb(i)
+      end do
+
+   end do
+
 99010 format(5x, i5, 5f6.1)
 99011 format(' *** Failed -- bad IERR value.')
 99012 format(' *** Failed -- expect:', 16i3)
@@ -878,70 +835,66 @@ contains
       integer,intent(out) :: Ipass !! will contain a pass/fail flag.  IPASS=1 is good.
                                    !! IPASS=0 indicates one or more tests failed.
 
-      INTEGER i, ierr, ifail, inbv, j, knotyp, k, N, ndim,     &
-            & nknots
-      PARAMETER(N=9)
-      real(wp) bcoef(2*N), d(N), dcalc, derr, dermax,      &
-                     & f(N), fcalc, ferr, fermax, t(2*N + 4), terr, &
-                     & termax, tol, tolz, tsave(2*N + 4), work(16*N),&
-                     & x(N), ZERO
-      PARAMETER(ZERO=0.0D0)
-      LOGICAL fail
-!
+      integer,parameter :: n = 9
+      real(wp),parameter :: zero = 0.0_wp
+
+      INTEGER :: i, ierr, ifail, inbv, j, knotyp, k, ndim, nknots
+      real(wp) :: bcoef(2*N), d(N), dcalc, derr, dermax, &
+                  f(N), fcalc, ferr, fermax, t(2*N + 4), terr, &
+                  termax, tol, tolz, tsave(2*N + 4), work(16*N), &
+                  x(N)
+      LOGICAL :: fail
+
 !  Define relative error function.
-!
-      real(wp) ans, err, RELERR
-      RELERR(err, ans) = ABS(err)/MAX(1.0D-5, ABS(ans))
-!
+
+      real(wp) :: ans, err, RELERR
+      RELERR(err, ans) = ABS(err)/MAX(1.0e-5_wp, ABS(ans))
+
 !  Define test data.
-!
-      DATA x/-2.2D0, -1.2D0, -1.0D0, -0.5D0, -0.01D0, 0.5D0,    &
-         & 1.0D0, 2.0D0, 2.2D0/
-      DATA f/0.0079D0, 0.2369D0, 0.3679D0, 0.7788D0, 0.9999D0,     &
-         & 0.7788D0, 0.3679D0, 0.1083D0, 0.0079D0/
-      DATA d/0.0000D0, 0.3800D0, 0.7173D0, 0.5820D0, 0.0177D0,     &
-         & -0.5696D0, -0.5135D0, -0.0778D0, -0.0025D0/
-!
+
+      DATA x/-2.2D0, -1.2D0, -1.0D0, -0.5D0, -0.01D0, 0.5D0, &
+           1.0D0, 2.0D0, 2.2D0/
+      DATA f/0.0079D0, 0.2369D0, 0.3679D0, 0.7788D0, 0.9999D0, &
+           0.7788D0, 0.3679D0, 0.1083D0, 0.0079D0/
+      DATA d/0.0000D0, 0.3800D0, 0.7173D0, 0.5820D0, 0.0177D0, &
+           -0.5696D0, -0.5135D0, -0.0778D0, -0.0025D0/
+
 !  Initialize.
-!
-!***FIRST EXECUTABLE STATEMENT  DPCHQ5
+
       ifail = 0
       tol = 100*D1MACH4
       tolz = ZERO
-!
+
       IF (Kprint >= 3) WRITE (Lun, 99001)
-!
+
 !  FORMATS.
-!
+
 99001 FORMAT('1'//10X, 'TEST PCH TO B-SPLINE CONVERTER')
       IF (Kprint >= 2) WRITE (Lun, 99002)
 99002 FORMAT(//10X, 'DPCHQ5 RESULTS'/10X, '--------------')
-!
+
 !  Loop over a series of values of KNOTYP.
-!
+
       IF (Kprint >= 3) WRITE (Lun, 99003)
 99003 FORMAT(/4X, '(Results should be the same for all KNOTYP values.)')
       DO knotyp = 2, -1, -1
-!        ------------
+         ! ------------
          CALL DPCHBS(N, x, f, d, 1, knotyp, nknots, t, bcoef, ndim, k, ierr)
-!        ------------
-         IF (Kprint >= 3) WRITE (Lun, 99004) knotyp, nknots, ndim, k,&
-                               & ierr
-99004    FORMAT(/4X, 'KNOTYP =', I2, ':  NKNOTS =', I3, ',  NDIM =', I3,     &
-                                      &',  K =', I2, ',  IERR =', I3)
+         ! ------------
+         IF (Kprint >= 3) WRITE (Lun, 99004) knotyp, nknots, ndim, k, ierr
+99004    FORMAT(/4X, 'KNOTYP =', I2, ':  NKNOTS =', I3, ',  NDIM =', I3, ',  K =', I2, ',  IERR =', I3)
          IF (ierr /= 0) THEN
             ifail = ifail + 1
             IF (Kprint >= 3) WRITE (Lun, 99005)
 99005       FORMAT(' *** Failed -- bad IERR value.')
          ELSE
-!             Compare evaluated results with inputs to DPCHBS.
+            ! Compare evaluated results with inputs to DPCHBS.
             inbv = 1
             fermax = ZERO
             dermax = ZERO
             IF (Kprint >= 3) THEN
                WRITE (Lun, 99006)
-99006          FORMAT(/15X, 'X', 9X, 'KNOTS', 10X, 'F', 7X, 'FERR', 8X, 'D', 7X, &
-                        &'DERR')
+99006          FORMAT(/15X, 'X', 9X, 'KNOTS', 10X, 'F', 7X, 'FERR', 8X, 'D', 7X, 'DERR')
                WRITE (Lun, 99013) t(1), t(2)
                j = 1
             END IF
@@ -954,8 +907,7 @@ contains
                dermax = MAX(dermax, RELERR(derr, d(i)))
                IF (Kprint >= 3) THEN
                   j = j + 2
-                  WRITE (Lun, 99007) x(i), t(j), t(j + 1), f(i), ferr,&
-                                  & d(i), derr
+                  WRITE (Lun, 99007) x(i), t(j), t(j + 1), f(i), ferr, d(i), derr
 99007             FORMAT(10X, 3F8.2, F10.4, 1P, D10.2, 0P, F10.4, 1P, D10.2)
                END IF
             END DO
@@ -965,21 +917,21 @@ contains
             END IF
             fail = (fermax > tol) .OR. (dermax > tol)
             IF (fail) ifail = ifail + 1
-            IF ((Kprint >= 3) .OR. (Kprint >= 2) .AND. fail)              &
-               & WRITE (Lun, 99008) fermax, dermax, tol
-99008       FORMAT(/5X, 'Maximum relative errors:'/15X, 'F-error =', 1P,  &
-                & D13.5, 5X, 'D-error =', D13.5/5X,                       &
-                &'Both should be less than  TOL =', D13.5)
+            IF ((Kprint >= 3) .OR. (Kprint >= 2) .AND. fail) &
+                 WRITE (Lun, 99008) fermax, dermax, tol
+99008       FORMAT(/5X, 'Maximum relative errors:'/15X, 'F-error =', 1P, &
+                   D13.5, 5X, 'D-error =', D13.5/5X, &
+                  'Both should be less than  TOL =', D13.5)
          END IF
-!
-!          Special check for KNOTYP=-1.
+
+         ! Special check for KNOTYP=-1.
          IF (knotyp == 0) THEN
-!             Save knot vector for next test.
+            ! Save knot vector for next test.
             DO i = 1, nknots
                tsave(i) = t(i)
             END DO
          ELSEIF (knotyp == -1) THEN
-!             Check that knot vector is unchanged.
+            ! Check that knot vector is unchanged.
             termax = ZERO
             DO i = 1, nknots
                terr = ABS(t(i) - tsave(i))
@@ -988,31 +940,28 @@ contains
             IF (termax > tolz) THEN
                ifail = ifail + 1
                IF (Kprint >= 2) WRITE (Lun, 99009) termax, tolz
-99009          FORMAT(/' *** T-ARRAY MAXIMUM CHANGE =', 1P, D13.5,       &
-                      ';  SHOULD NOT EXCEED TOLZ =', D13.5)
+99009          FORMAT(/' *** T-ARRAY MAXIMUM CHANGE =', 1P, D13.5, ';  SHOULD NOT EXCEED TOLZ =', D13.5)
             END IF
          END IF
       END DO
-!
+
 !  PRINT SUMMARY AND TERMINATE.
-!
+
       IF ((Kprint >= 2) .AND. (ifail /= 0)) WRITE (Lun, 99010) ifail
 99010 FORMAT(/' *** TROUBLE ***', I5, ' CONVERSION TESTS FAILED.')
-!
+
       IF (ifail == 0) THEN
          Ipass = 1
-         IF (Kprint >= 2) WRITE (Lun, 99011)
-99011    FORMAT(/' ------------ DPCHIP PASSED  ALL CONVERSION TESTS',  &
-                                      &' ------------')
+         IF (Kprint >= 2) WRITE (Lun, '(/A)') ' ------------ DPCHIP PASSED  ALL CONVERSION TESTS ------------'
       ELSE
          Ipass = 0
-         IF (Kprint >= 1) WRITE (Lun, 99012)
-99012    FORMAT(/' ************ DPCHIP FAILED SOME CONVERSION TESTS',  &
-                                      &' ************')
+         IF (Kprint >= 1) WRITE (Lun, '(/A)') ' ************ DPCHIP FAILED SOME CONVERSION TESTS ************'
       END IF
-!
+
       RETURN
+
 99013 FORMAT(18X, 2F8.2)
+
    END SUBROUTINE DPCHQ5
 !**************************************************************************
 
@@ -1073,16 +1022,16 @@ contains
       !
       !  DECLARATIONS.
       !
-      integer i, ierr, iint, next(2), next2(2), nint
+      integer i, ierr, iint, next(2), next2(2)
       real(wp) aed, aed2, aedmax, aedmin, aef, aef2,      &
-                     & aefmax, aefmin, check(2), checkf(2),         &
-                     & checkd(2), d1, d2, dermax, dtrue, dx,      &
-                     & eps1, eps2, f1, f2, fact, fermax, floord, &
-                     & floorf, four, ftrue, left(3), machep, one, &
-                     & red, red2, redmax, redmin, ref, ref2,      &
-                     & refmax, refmin, right(3), small, ten, tol1,&
-                     & tol2, x1, x2, xadmax, xadmin, xafmax,      &
-                     & xafmin, xrdmax, xrdmin, xrfmax, xrfmin, zero
+               aefmax, aefmin, check(2), checkf(2),       &
+               checkd(2), d1, d2, dermax, dtrue, dx,      &
+               eps1, eps2, f1, f2, fact, fermax, floord,  &
+               floorf, ftrue, machep, &
+               red, red2, redmax, redmin, ref, ref2,      &
+               refmax, refmin, tol1,&
+               tol2, x1, x2, xadmax, xadmin, xafmax,      &
+               xafmin, xrdmax, xrdmin, xrfmax, xrfmin
       logical :: failoc, failnx
       real(wp) :: r !! a random number
 
@@ -1094,12 +1043,14 @@ contains
       !
       !  INITIALIZE.
       !
-      data zero/0.d0/, one/1.d0/, four/4.d0/, ten/10.d0/
-      data small/1.0d-10/
-      data nint/3/
-      data left/-1.5d0, 2.0d-10, 1.0d0/
-      data right/2.5d0, 3.0d-10, 1.0d+8/
-      !
+      real(wp),parameter :: zero = 0.0_wp
+      real(wp),parameter :: one = 1.0_wp
+      real(wp),parameter :: four = 4.0_wp
+      real(wp),parameter :: ten = 10.0_wp
+      real(wp),parameter :: small = 1.0e-10_wp
+      integer,parameter ::  nint = 3
+      real(wp),parameter :: left(3) = [-1.5_wp, 2.0e-10_wp, 1.0_wp]
+      real(wp),parameter :: right(3) = [2.5_wp, 3.0e-10_wp, 1.0e+8_wp]
 
       machep = d1mach4
       eps1 = four*machep
@@ -1387,13 +1338,13 @@ contains
       !
       !  DECLARATIONS.
       !
-      integer i, ierr, kontrl, n, nerr, next(2)
+      integer i, ierr, kontrl, nerr, next(2)
       real(wp) d(10), dum(2), f(10), temp, x(10)
       logical skip
       !
       !  INITIALIZE.
       !
-      parameter(n=10)
+      integer,parameter :: n = 10
 
       nerr = 0
       !
@@ -1552,35 +1503,39 @@ contains
       !
       integer Lout, Kprint
       logical Fail
-      real(wp) x(10), y(10), f(10, 10), Fx(10, 10), Fy(10, 10) &
-                     & , Xe(51), Ye(51), Fe(51), De(51), Fe2(51)
+      real(wp) x(10), y(10), f(10, 10), Fx(10, 10), Fy(10, 10), &
+               Xe(51), Ye(51), Fe(51), De(51), Fe2(51)
       !
       !  DECLARATIONS.
       !
-      integer i, ier2, ierr, inc, j, k, ne, nerr, nmax, nx, ny
+      integer i, ier2, ierr, inc, j, k, nerr
       logical faild, faile, failoc, skip
-      real(wp) dermax, derr, dtrue, dx, fdiff, fdifmx,    &
-                     & fermax, ferr, ftrue, machep, tol, pdermx,  &
-                     & pdifmx, pfermx, zero
+      real(wp) dermax, derr, dtrue, dx, fdiff, fdifmx, &
+               fermax, ferr, ftrue, tol, pdermx,  &
+               pdifmx, pfermx
+
+      real(wp),parameter :: machep = d1mach4
+      real(wp),parameter :: zero = 0.0_wp
+      integer,parameter :: nmax = 10
+      integer,parameter :: nx = 4
+      integer,parameter :: ny = 6
+      integer,parameter :: ne = 51
+
       !
       !  DEFINE TEST FUNCTION AND DERIVATIVES.
       !
       real(wp) ax, ay, fcn, dfdx, dfdy
-      fcn(ax, ay) = ax*(ay*ay)*(ax*ax + 1.d0)
-      dfdx(ax, ay) = (ay*ay)*(3.d0*ax*ax + 1.d0)
-      dfdy(ax, ay) = 2.d0*ax*ay*(ax*ax + 1.d0)
+      fcn(ax, ay) = ax*(ay*ay)*(ax*ax + 1.0_wp)
+      dfdx(ax, ay) = (ay*ay)*(3.0_wp*ax*ax + 1.0_wp)
+      dfdy(ax, ay) = 2.0_wp*ax*ay*(ax*ax + 1.0_wp)
       !
-      data nmax/10/, nx/4/, ny/6/
-      data ne/51/
-      data zero/0.d0/
       !
       !  INITIALIZE.
       !
 
-      machep = d1mach4
-      !       Following tolerance is looser than S.P. version to avoid
-      !       spurious failures on some systems.
-      tol = 25.d0*machep
+      ! Following tolerance is looser than S.P. version to avoid
+      ! spurious failures on some systems.
+      tol = 25.0_wp*machep
       !
       Fail = .false.
       !
@@ -1589,11 +1544,11 @@ contains
       !     Y = -0.75(0.5 )1.75 .
       !
       do i = 1, nx - 1
-         x(i) = 0.25d0*i
+         x(i) = 0.25_wp*i
       end do
-      x(nx) = 1.d0
+      x(nx) = 1.0_wp
       do j = 1, ny
-         y(j) = 0.5d0*j - 1.25d0
+         y(j) = 0.5_wp*j - 1.25_wp
          do i = 1, nx
             f(i, j) = fcn(x(i), y(j))
             Fx(i, j) = dfdx(x(i), y(j))
@@ -1605,13 +1560,13 @@ contains
       !     XE =  0.(0.02)1. ;
       !     YE = -2.(0.08)2. .
       !
-      dx = 1.d0/(ne - 1)
+      dx = 1.0_wp/(ne - 1)
       do k = 1, ne - 1
          Xe(k) = dx*(k - 1)
-         Ye(k) = 4.d0*Xe(k) - 2.d0
+         Ye(k) = 4.0_wp*Xe(k) - 2.0_wp
       end do
-      Xe(ne) = 1.d0
-      Ye(ne) = 2.d0
+      Xe(ne) = 1.0_wp
+      Ye(ne) = 2.0_wp
       !
       if (Kprint >= 3) write (Lout, 99001)
       !
@@ -1630,8 +1585,7 @@ contains
          !        --------------------------------------------------------------
          call dpchfd(nx, x, f(1, j), Fx(1, j), inc, skip, ne, Xe, Fe, De, ierr)
          !        --------------------------------------------------------------
-         if (Kprint >= 3) write (Lout, 99003) inc, 'J', j, 'Y',      &
-                               & y(j), ierr
+         if (Kprint >= 3) write (Lout, 99003) inc, 'J', j, 'Y', y(j), ierr
          if (ierr < 0) then
             !
             failoc = .true.
@@ -1650,9 +1604,9 @@ contains
                ferr = Fe(k) - ftrue
                dtrue = dfdx(Xe(k), y(j))
                derr = De(k) - dtrue
-               if (Kprint > 3) write (Lout, 99005) Xe(k), ftrue,       &
-                                    & Fe(k), ferr, dtrue, De(k),    &
-                                    & derr
+               if (Kprint > 3) write (Lout, 99005) Xe(k), ftrue, &
+                                     Fe(k), ferr, dtrue, De(k), &
+                                     derr
                if (k == 1) then
                   !              INITIALIZE.
                   fermax = abs(ferr)
@@ -1972,7 +1926,7 @@ contains
       real(wp) a, fkmj, t, Work, x
       dimension t(*), a(*), Work(*)
 
-      dbvalu = 0.0d0
+      dbvalu = 0.0_wp
       if (k < 1) then
          error stop 'K DOES NOT SATISFY K>=1'
       elseif (n < k) then
