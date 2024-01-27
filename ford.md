@@ -1,5 +1,5 @@
 project: PCHIP
-project_dir: ./src
+src_dir: ./src
 output_dir: ./doc
 media_dir: ./media
 project_github: https://github.com/jacobwilliams/PCHIP

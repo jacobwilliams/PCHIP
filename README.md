@@ -5,6 +5,7 @@ PCHIP, a Fortran package for piecewise cubic Hermite interpolation of data. This
 
 ### Status
 
+[![Language](https://img.shields.io/badge/-Fortran-734f96?logo=fortran&logoColor=white)](https://github.com/topics/fortran)
 [![GitHub release](https://img.shields.io/github/release/jacobwilliams/pchip.svg)](https://github.com/jacobwilliams/pchip/releases/latest)
 [![Build Status](https://github.com/jacobwilliams/pchip/actions/workflows/CI.yml/badge.svg)](https://github.com/jacobwilliams/pchip/actions)
 [![codecov](https://codecov.io/gh/jacobwilliams/pchip/branch/master/graph/badge.svg)](https://codecov.io/gh/jacobwilliams/pchip)
@@ -28,7 +29,7 @@ pchip = { git="https://github.com/jacobwilliams/pchip.git" }
 or, to use a specific version:
 ```toml
 [dependencies]
-pchip = { git="https://github.com/jacobwilliams/pchip.git", tag = "1.1.0"  }
+pchip = { git="https://github.com/jacobwilliams/pchip.git", tag = "1.1.0" }
 ```
 
 ### Documentation

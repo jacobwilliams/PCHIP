@@ -52,7 +52,7 @@
 !>
 !  Check a single cubic for monotonicity
 !
-!  Called by [[DPCHCM]] to determine the monotonicity properties of the
+!  Called by [[dpchcm]] to determine the monotonicity properties of the
 !  cubic with boundary derivative values D1,D2 and chord slope DELTA.
 !
 !### Cautions
@@ -135,10 +135,10 @@
 !
 !  Evaluate a cubic polynomial given in Hermite form and its
 !  first derivative at an array of points.  While designed for
-!  use by [[DPCHFD]], it may be useful directly as an evaluator
+!  use by [[dpchfd]], it may be useful directly as an evaluator
 !  for a piecewise cubic Hermite function in applications,
 !  such as graphing, where the interval is known in advance.
-!  If only function values are required, use [[DCHFEV]] instead.
+!  If only function values are required, use [[dchfev]] instead.
 !
 !  Evaluates the cubic polynomial determined by function values
 !  F1,F2 and derivatives D1,D2 on interval (X1,X2), together with
@@ -228,7 +228,7 @@
 !  Cubic Hermite Function Evaluator
 !
 !  Evaluate a cubic polynomial given in Hermite form at an
-!  array of points.  While designed for use by [[DPCHFE]], it may
+!  array of points.  While designed for use by [[dpchfe]], it may
 !  be useful directly as an evaluator for a piecewise cubic
 !  Hermite function in applications, such as graphing, where
 !  the interval is known in advance.
@@ -312,7 +312,7 @@
 !>
 !  Cubic Hermite Function Integral Evaluator
 !
-!  Called by [[DPCHIA]] to evaluate the integral of a single cubic (in
+!  Called by [[dpchia]] to evaluate the integral of a single cubic (in
 !  Hermite form) over an arbitrary interval (A,B).
 !
 !@note There is no error return from this routine because zero is
@@ -402,7 +402,7 @@
 !  but it works on all systems on which DPCHBS has been tested.
 !
 !### See Also
-!  * [[DPCHIC]], [[DPCHIM]], or [[DPCHSP]] can be used to determine an interpolating
+!  * [[dpchic]], [[dpchim]], or [[dpchsp]] can be used to determine an interpolating
 !    PCH function from a set of data.
 !  * The B-spline routine `DBVALU` can be used to evaluate the
 !    B-representation that is output by DPCHBS.
@@ -516,16 +516,16 @@
 
 !***************************************************************************
 !>
-!  Set boundary conditions for [[DPCHIC]]
+!  Set boundary conditions for [[dpchic]]
 !
-!  Called by [[DPCHIC]] to set end derivatives as requested by the user.
+!  Called by [[dpchic]] to set end derivatives as requested by the user.
 !  It must be called after interior derivative values have been set.
 !
 !  To facilitate two-dimensional applications, includes an increment
 !  between successive values of the D-array.
 !
 !### Programming notes
-!  1. The function [[DPCHST]](ARG1,ARG2) is assumed to return zero if
+!  1. The function [[dpchst]](ARG1,ARG2) is assumed to return zero if
 !     either argument is zero, +1 if they are of the same sign, and
 !     -1 if they are of opposite sign.
 !  2. One could reduce the number of arguments and amount of local
@@ -547,7 +547,7 @@
                                     !! * IC(1) = IBEG, desired condition at beginning of data.
                                     !! * IC(2) = IEND, desired condition at end of data.
                                     !!
-                                    !! ( see prologue to [[DPCHIC]] for details. )
+                                    !! ( see prologue to [[dpchic]] for details. )
     integer,intent(in)     :: n     !! number of data points.  (assumes N>=2)
     integer,intent(in)     :: incfd !! increment between successive values in D.
                                     !! This argument is provided primarily for 2-D applications.
@@ -707,7 +707,7 @@
 !>
 !  Set interior derivatives for DPCHIC
 !
-!  Called by [[DPCHIC]] to set derivatives needed to determine a monotone
+!  Called by [[dpchic]] to set derivatives needed to determine a monotone
 !  piecewise cubic Hermite interpolant to the data.
 !
 !  Default boundary conditions are provided which are compatible
@@ -719,10 +719,10 @@
 !  between successive values of the D-array.
 !
 !  The resulting piecewise cubic Hermite function should be identical
-!  (within roundoff error) to that produced by [[DPCHIM]].
+!  (within roundoff error) to that produced by [[dpchim]].
 !
 !### Programming notes
-!  1. The function [[DPCHST]](ARG1,ARG2) is assumed to return zero if
+!  1. The function [[dpchst]](ARG1,ARG2) is assumed to return zero if
 !     either argument is zero, +1 if they are of the same sign, and
 !     -1 if they are of opposite sign.
 !
@@ -831,7 +831,7 @@
 !  Checks the piecewise cubic Hermite function defined by  N,X,F,D
 !  for monotonicity.
 !
-!  To provide compatibility with [[DPCHIM]] and [[DPCHIC]], includes an
+!  To provide compatibility with [[dpchim]] and [[dpchic]], includes an
 !  increment between successive values of the F- and D-arrays.
 !
 !### Cautions
@@ -984,14 +984,14 @@
 !>
 !  Monotonicity Switch Derivative Setter
 !
-!  Called by [[DPCHIC]] to adjust the values of D in the vicinity of a
+!  Called by [[dpchic]] to adjust the values of D in the vicinity of a
 !  switch in direction of monotonicity, to produce a more "visually
-!  pleasing" curve than that given by [[DPCHIM]].
+!  pleasing" curve than that given by [[dpchim]].
 !
 !@warning This routine does no validity-checking of arguments.
 !
 !### Programming notes:
-!  1. The function  [[DPCHST]](ARG1,ARG2)  is assumed to return zero if
+!  1. The function  [[dpchst]](ARG1,ARG2)  is assumed to return zero if
 !     either argument is zero, +1 if they are of the same sign, and
 !     -1 if they are of opposite sign.
 
@@ -1007,7 +1007,7 @@
                                          !! * H(I) =  X(I+1)-X(I),
                                          !! * SLOPE(I) = (Y(I+1)-Y(I))/H(I),  I=1(1)N-1.
     real(wp),intent(inout) :: d(incfd,*) !! (input) array of derivative values at the data points,
-                                         !! as determined by [[DPCHCI]].
+                                         !! as determined by [[dpchci]].
                                          !!
                                          !! (output) derivatives in the vicinity of switches in direction
                                          !! of monotonicity may be adjusted to produce a more "visually
@@ -1018,7 +1018,7 @@
     integer,intent(in)    :: incfd       !! increment between successive values in D.
                                          !! This argument is provided primarily for 2-D applications.
     integer,intent(out)   :: ierr        !! error flag.  should be zero.
-                                         !! If negative, trouble in [[DPCHSW]].  (should never happen.)
+                                         !! If negative, trouble in [[dpchsw]].  (should never happen.)
 
     integer :: i, indx, k, nless1
     real(wp) :: del(3), dext, dfloc, dfmx, fact, slmax, wtave(2)
@@ -1119,13 +1119,13 @@
 
 !***************************************************************************
 !>
-!  Computes divided differences for [[DPCHCE]] and [[DPCHSP]]
+!  Computes divided differences for [[dpchce]] and [[dpchsp]]
 !
 !  Uses a divided difference formulation to compute a K-point
 !  approximation to the derivative at X(K) based on the data
 !  in X and S.
 !
-!  Called by [[DPCHCE]] and [[DPCHSP]] to compute 3- and 4-point boundary
+!  Called by [[dpchce]] and [[dpchsp]] to compute 3- and 4-point boundary
 !  derivative approximations.
 !
 !### References
@@ -1185,24 +1185,24 @@
 !
 !  Evaluate a piecewise cubic Hermite function and its first
 !  derivative at an array of points.  May be used by itself
-!  for Hermite interpolation, or as an evaluator for [[DPCHIM]]
-!  or [[DPCHIC]].
+!  for Hermite interpolation, or as an evaluator for [[dpchim]]
+!  or [[dpchic]].
 !
 !  Evaluates the cubic Hermite function defined by  N, X, F, D,  to-
 !  gether with its first derivative, at the points  XE(J), J=1(1)NE.
 !
-!  If only function values are required, use [[DPCHFE]], instead.
+!  If only function values are required, use [[dpchfe]], instead.
 !
-!  To provide compatibility with [[DPCHIM]] and [[DPCHIC]], includes an
+!  To provide compatibility with [[dpchim]] and [[dpchic]], includes an
 !  increment between successive values of the F- and D-arrays.
 !
 !### Programming notes
 !
-! 1. Most of the coding between the call to [[DCHFDV]] and the end of
+! 1. Most of the coding between the call to [[dchfdv]] and the end of
 !    the IR-loop could be eliminated if it were permissible to
 !    assume that XE is ordered relative to X.
 !
-! 2. [[DCHFDV]] does not assume that X1 is less than X2.  thus, it would
+! 2. [[dchfdv]] does not assume that X1 is less than X2.  thus, it would
 !    be possible to write a version of DPCHFD that assumes a strictly
 !    decreasing X-array by simply running the IR-loop backwards
 !    (and reversing the order of appropriate tests).
@@ -1267,7 +1267,7 @@
                                         !! .TRUE. if the user wishes to skip checks for validity of
                                         !! preceding parameters, or to .FALSE. otherwise.
                                         !! This will save time in case these checks have already
-                                        !! been performed (say, in [[DPCHIM]] or [[DPCHIC]]).
+                                        !! been performed (say, in [[dpchim]] or [[dpchic]]).
                                         !! SKIP will be set to .TRUE. on normal return.
 
     integer :: i, ierc, ir, j, jfirst, next(2), nj
@@ -1418,22 +1418,22 @@
 !
 !  Evaluate a piecewise cubic Hermite function at an array of
 !  points.  May be used by itself for Hermite interpolation,
-!  or as an evaluator for [[DPCHIM]] or [[DPCHIC]].
+!  or as an evaluator for [[dpchim]] or [[dpchic]].
 !
 !  Evaluates the cubic Hermite function defined by  N, X, F, D  at
 !  the points  XE(J), J=1(1)NE.
 !
-!  To provide compatibility with [[DPCHIM]] and [[DPCHIC]], includes an
+!  To provide compatibility with [[dpchim]] and [[dpchic]], includes an
 !  increment between successive values of the F- and D-arrays.
 !
 !### Programming notes
 !
-!  1. Most of the coding between the call to [[DCHFEV]] and the end of
+!  1. Most of the coding between the call to [[dchfev]] and the end of
 !     the IR-loop could be eliminated if it were permissible to
 !     assume that XE is ordered relative to X.
 !
-!  2. [[DCHFEV]] does not assume that X1 is less than X2.  thus, it would
-!     be possible to write a version of [[DPCHFE]] that assumes a
+!  2. [[dchfev]] does not assume that X1 is less than X2.  thus, it would
+!     be possible to write a version of [[dpchfe]] that assumes a
 !     decreasing X-array by simply running the IR-loop backwards
 !     (and reversing the order of appropriate tests).
 !
@@ -1490,7 +1490,7 @@
                                         !! .TRUE. if the user wishes to skip checks for validity of
                                         !! preceding parameters, or to .FALSE. otherwise.
                                         !! This will save time in case these checks have already
-                                        !! been performed (say, in [[DPCHIM]] or [[DPCHIC]]).
+                                        !! been performed (say, in [[dpchim]] or [[dpchic]]).
                                         !! SKIP will be set to .TRUE. on normal return.
 
     integer :: i, ierc, ir, j, jfirst, next(2), nj
@@ -1642,11 +1642,11 @@
 !  Evaluates the definite integral of the cubic Hermite function
 !  defined by  N, X, F, D  over the interval [A, B].
 !
-!  To provide compatibility with [[DPCHIM]] and [[DPCHIC]], includes an
+!  To provide compatibility with [[dpchim]] and [[dpchic]], includes an
 !  increment between successive values of the F- and D-arrays.
 !
 !### Programming notes
-!  1. The error flag from [[DPCHID]] is tested, because a logic flaw
+!  1. The error flag from [[dpchid]] is tested, because a logic flaw
 !     could conceivably result in IERD=-4, which should be reported.
 
     function dpchia (n, x, f, d, incfd, skip, a, b, ierr) result(value)
@@ -1693,7 +1693,7 @@
                                             !! .TRUE. if the user wishes to skip checks for validity of
                                             !! preceding parameters, or to .FALSE. otherwise.
                                             !! This will save time in case these checks have already
-                                            !! been performed (say, in [[DPCHIM]] or [[DPCHIC]]).
+                                            !! been performed (say, in [[dpchim]] or [[dpchic]]).
                                             !! SKIP will be set to .TRUE. on return with IERR>=0 .
     real(wp) :: value !! value of the requested integral.
 
@@ -1821,7 +1821,7 @@
 !  between successive values of the F- and D-arrays.
 !
 !  The resulting piecewise cubic Hermite function may be evaluated
-!  by [[DPCHFE]] or [[DPCHFD]].
+!  by [[dpchfe]] or [[dpchfd]].
 !
 !### References
 !  1. F. N. Fritsch, Piecewise Cubic Hermite Interpolation
@@ -1845,7 +1845,7 @@
                                    !!
                                    !! Valid values for IBEG:
                                    !!
-                                   !!  * IBEG = 0  for the default boundary condition (the same as used by [[DPCHIM]]).
+                                   !!  * IBEG = 0  for the default boundary condition (the same as used by [[dpchim]]).
                                    !!  * If IBEG/=0, then its sign indicates whether the boundary
                                    !!            derivative is to be adjusted, if necessary, to be
                                    !!            compatible with monotonicity:
@@ -2073,14 +2073,14 @@
 !  Evaluates the definite integral of the cubic Hermite function
 !  defined by  N, X, F, D  over the interval [X(IA), X(IB)].
 !
-!  To provide compatibility with [[DPCHIM]] and [[DPCHIC]], includes an
+!  To provide compatibility with [[dpchim]] and [[dpchic]], includes an
 !  increment between successive values of the F- and D-arrays.
 !
 !### Programming notes
 !  1. This routine uses a special formula that is valid only for
 !     integrals whose limits coincide with data values.  This is
 !     mathematically equivalent to, but much more efficient than,
-!     calls to [[DCHFIE]].
+!     calls to [[dchfie]].
 
     function dpchid (n, x, f, d, incfd, skip, ia, ib, ierr) result(value)
 
@@ -2118,7 +2118,7 @@
                                         !! .TRUE. if the user wishes to skip checks for validity of
                                         !! preceding parameters, or to .FALSE. otherwise.
                                         !! This will save time in case these checks have already
-                                        !! been performed (say, in [[DPCHIM]] or [[DPCHIC]]).
+                                        !! been performed (say, in [[dpchim]] or [[dpchic]]).
                                         !! SKIP will be set to .TRUE. on return with IERR = 0 or -4.
     real(wp) :: value   !! value of the requested integral.
 
@@ -2186,18 +2186,18 @@
 !  Hermite interpolant to the data given in X and F.
 !
 !  Default boundary conditions are provided which are compatible
-!  with monotonicity.  (See [[DPCHIC]] if user control of boundary conditions
+!  with monotonicity.  (See [[dpchic]] if user control of boundary conditions
 !  is desired.)
 !
 !  If the data are only piecewise monotonic, the interpolant will
 !  have an extremum at each point where monotonicity switches direction.
-!  (See [[DPCHIC]] if user control is desired in such cases.)
+!  (See [[dpchic]] if user control is desired in such cases.)
 !
 !  To facilitate two-dimensional applications, includes an increment
 !  between successive values of the F- and D-arrays.
 !
 !  The resulting piecewise cubic Hermite function may be evaluated
-!  by [[DPCHFE]] or [[DPCHFD]].
+!  by [[dpchfe]] or [[dpchfd]].
 !
 !### References
 !  1. F. N. Fritsch and J. Butland, A method for constructing
@@ -2209,7 +2209,7 @@
 !     2 (April 1980), pp. 238-246.
 !
 !### Programming notes
-!  1. The function [[DPCHST]](ARG1,ARG2) is assumed to return zero if
+!  1. The function [[dpchst]](ARG1,ARG2) is assumed to return zero if
 !     either argument is zero, +1 if they are of the same sign, and
 !     -1 if they are of opposite sign.
 
@@ -2245,7 +2245,7 @@
                                         !! X(I).  DPCHIM is designed for monotonic data, but it will
                                         !! work for any F-array.  It will force extrema at points where
                                         !! monotonicity switches direction.  If some other treatment of
-                                        !! switch points is desired, [[DPCHIC]] should be used instead.
+                                        !! switch points is desired, [[dpchic]] should be used instead.
     real(wp),intent(out) :: d(incfd,*)  !! array of derivative values at the data
                                         !! points.  If the data are monotonic, these values will
                                         !! determine a monotone cubic Hermite function.
@@ -2382,7 +2382,7 @@
 !  3. 0<=KNOTYP<=2 .  (Acts like KNOTYP=0 for any other value.)
 !
 !### Internal Notes
-!  Since this is subsidiary to [[DPCHBS]], which validates its input before
+!  Since this is subsidiary to [[dpchbs]], which validates its input before
 !  calling, it is unnecessary for such validation to be done here.
 
     subroutine dpchkt (n, x, knotyp, t)
@@ -2445,7 +2445,7 @@
 !  between successive values of the F- and D-arrays.
 !
 !  The resulting piecewise cubic Hermite function may be evaluated
-!  by [[DPCHFE]] or [[DPCHFD]].
+!  by [[dpchfe]] or [[dpchfd]].
 !
 !### References
 !  * Carl de Boor, A Practical Guide to Splines, Springer-Verlag,
@@ -2818,7 +2818,7 @@
 !>
 !  Switch Excursion Limiter.
 !
-!  Called by [[DPCHCS]] to adjust D1 and D2 if necessary to insure that
+!  Called by [[dpchcs]] to adjust D1 and D2 if necessary to insure that
 !  the extremum on this interval is not further than DFMAX from the
 !  extreme data value.
 !
