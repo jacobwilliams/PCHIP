@@ -1,190 +1,213 @@
+<!-- -*- mode: jinja2 -*- -->
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-   <meta name="description" content="PCHIP -- Piecewise Cubic Hermite Interpolation Package">
+      <meta name="description" content="PCHIP -- Piecewise Cubic Hermite Interpolation Package">
     <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="../favicon.png">
 
     <title>pchip_module &ndash; PCHIP</title>
 
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link href="../css/pygments.css" rel="stylesheet">
     <link href="../css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/local.css" rel="stylesheet">
-    <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
+      <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    
-    <script src="../js/jquery-2.1.3.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="../js/svg-pan-zoom.min.js"></script>
-
   </head>
 
   <body>
 
     <!-- Fixed navbar -->
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
           <a class="navbar-brand" href="../index.html">PCHIP </a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
-              <a href="#" class="dropdown-toggle"
-              data-toggle="dropdown" role="button"
-              aria-haspopup="true"
-     aria-expanded="false">Contents <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-            <li><a href="../sourcefile/pchip_module.f90.html">Source File</a></li>
-            <li><a href="../lists/modules.html">Modules</a></li>
-            <li><a href="../lists/procedures.html">Procedures</a></li>
-              
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="sourcefile/pchip_module.f90.html">Source File</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
             </ul>
-        
-            </li>
-<li class="visible-xs hidden-sm visible-lg"><a href="../sourcefile/pchip_module.f90.html">Source File</a></li>
-<li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
-<li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
-                                       </ul>
-        <form action="../search.html" class="navbar-form navbar-right" role="search">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
         </div>
-<!--
-        <button type="submit" class="btn btn-default">Submit</button>
--->
-        </form>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
+      </nav>
+    </div>
 
     <div class="container">
   <div class="row">
-    <h1>pchip_module 
-    <small>Module</small>
+    <h1>pchip_module
+      <small>Module</small>
+      
     </h1>
-    <div class="row">
-  <div class="col-lg-12">
-<div class="well well-sm">
-  <ul class="list-inline" style="margin-bottom:0px;display:inline">
-     <li><i class="fa fa-list-ol"></i>
-       <a data-toggle="tooltip"
-    data-placement="bottom" data-html="true"
-    title="100.0% of total for modules and submodules.">1275 statements</a>
-     </li> 
-    <li><i class="fa fa-code"></i><a href="../src/pchip_module.f90"> Source File</a></li>
-  </ul>
-  <ol class="breadcrumb in-well text-right">
-     <li><a href='../sourcefile/pchip_module.f90.html'>pchip_module.f90</a></li>
-     <li class="active">pchip_module</li>
-  </ol>
-</div>
-</div>
-</div>
-<script>
-  $(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-  })
-</script>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip"
+                 data-bs-placement="bottom" data-html="true"
+                 title="100.0% of total for modules and submodules.">1275 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/pchip_module.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/pchip_module.f90.html'>pchip_module.f90</a></li>
+            <li class="breadcrumb-item active" aria-current="page">pchip_module</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    $(function () {
+    $('[data-bs-toggle="tooltip"]').tooltip()
+    })
+  </script>
 
   </div>
-  
+
   <div class="row">
-    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
-    <div id="sidebar">
-  <h3>Contents</h3>
- 
-<div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars-0">Variables</a></h3></div>
-  <div id="vars-0" class="panel-collapse collapse">
-    <div class="list-group">
-      <a class="list-group-item" href="../module/pchip_module.html#variable-zero">zero</a>
-      <a class="list-group-item" href="../module/pchip_module.html#variable-half">half</a>
-      <a class="list-group-item" href="../module/pchip_module.html#variable-one">one</a>
-      <a class="list-group-item" href="../module/pchip_module.html#variable-two">two</a>
-      <a class="list-group-item" href="../module/pchip_module.html#variable-three">three</a>
-      <a class="list-group-item" href="../module/pchip_module.html#variable-four">four</a>
-      <a class="list-group-item" href="../module/pchip_module.html#variable-six">six</a>
-      <a class="list-group-item" href="../module/pchip_module.html#variable-ten">ten</a>
-      <a class="list-group-item" href="../module/pchip_module.html#variable-d1mach4">d1mach4</a>
+    <div class="col-md-3">
+        <div id="sidebar">
+      <h3>Contents</h3>
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#vars-0"
+         aria-expanded="false" aria-controls="vars-0">
+         <h4 class="card-header bg-primary text-white">Variables</h4>
+      </a>
+      <div id="vars-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/pchip_module.html#variable-zero">zero</a>
+            <a class="list-group-item" href="../module/pchip_module.html#variable-half">half</a>
+            <a class="list-group-item" href="../module/pchip_module.html#variable-one">one</a>
+            <a class="list-group-item" href="../module/pchip_module.html#variable-two">two</a>
+            <a class="list-group-item" href="../module/pchip_module.html#variable-three">three</a>
+            <a class="list-group-item" href="../module/pchip_module.html#variable-four">four</a>
+            <a class="list-group-item" href="../module/pchip_module.html#variable-six">six</a>
+            <a class="list-group-item" href="../module/pchip_module.html#variable-ten">ten</a>
+            <a class="list-group-item" href="../module/pchip_module.html#variable-d1mach4">d1mach4</a>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-<div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#funcs-0">Functions</a></h3></div>
-  <div id="funcs-0" class="panel-collapse collapse">
-    <div class="list-group">
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchsd">dpchsd</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dchfcm">dchfcm</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dchfie">dchfie</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchdf">dpchdf</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchia">dpchia</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchid">dpchid</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchst">dpchst</a>
-    </div>
-  </div>
-</div>
-<div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#subs-0">Subroutines</a></h3></div>
-  <div class="list-group">
-    <div id="subs-0" class="panel-collapse collapse">
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dchfdv">dchfdv</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dchfev">dchfev</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchbs">dpchbs</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchce">dpchce</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchci">dpchci</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchcm">dpchcm</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchcs">dpchcs</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchfd">dpchfd</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchfe">dpchfe</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchic">dpchic</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchim">dpchim</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchkt">dpchkt</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchsp">dpchsp</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchsw">dpchsw</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-xermsg">xermsg</a>
-    </div>
-  </div>
-</div>
 
-</div>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#funcs-0"
+         aria-expanded="false" aria-controls="funcs-0">
+         <h4 class="card-header bg-primary text-white">Functions</h4>
+      </a>
+      <div id="funcs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/pchip_module.html#proc-dpchsd">dpchsd</a>
+            <a class="list-group-item" href="../module/pchip_module.html#proc-dchfcm">dchfcm</a>
+            <a class="list-group-item" href="../module/pchip_module.html#proc-dchfie">dchfie</a>
+            <a class="list-group-item" href="../module/pchip_module.html#proc-dpchdf">dpchdf</a>
+            <a class="list-group-item" href="../module/pchip_module.html#proc-dpchia">dpchia</a>
+            <a class="list-group-item" href="../module/pchip_module.html#proc-dpchid">dpchid</a>
+            <a class="list-group-item" href="../module/pchip_module.html#proc-dpchst">dpchst</a>
+        </div>
+      </div>
+    </div>
+
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#subs-0"
+         aria-expanded="false" aria-controls="subs-0">
+         <h4 class="card-header bg-primary text-white">Subroutines</h4>
+      </a>
+      <div id="subs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/pchip_module.html#proc-dchfdv">dchfdv</a>
+            <a class="list-group-item" href="../module/pchip_module.html#proc-dchfev">dchfev</a>
+            <a class="list-group-item" href="../module/pchip_module.html#proc-dpchbs">dpchbs</a>
+            <a class="list-group-item" href="../module/pchip_module.html#proc-dpchce">dpchce</a>
+            <a class="list-group-item" href="../module/pchip_module.html#proc-dpchci">dpchci</a>
+            <a class="list-group-item" href="../module/pchip_module.html#proc-dpchcm">dpchcm</a>
+            <a class="list-group-item" href="../module/pchip_module.html#proc-dpchcs">dpchcs</a>
+            <a class="list-group-item" href="../module/pchip_module.html#proc-dpchfd">dpchfd</a>
+            <a class="list-group-item" href="../module/pchip_module.html#proc-dpchfe">dpchfe</a>
+            <a class="list-group-item" href="../module/pchip_module.html#proc-dpchic">dpchic</a>
+            <a class="list-group-item" href="../module/pchip_module.html#proc-dpchim">dpchim</a>
+            <a class="list-group-item" href="../module/pchip_module.html#proc-dpchkt">dpchkt</a>
+            <a class="list-group-item" href="../module/pchip_module.html#proc-dpchsp">dpchsp</a>
+            <a class="list-group-item" href="../module/pchip_module.html#proc-dpchsw">dpchsw</a>
+            <a class="list-group-item" href="../module/pchip_module.html#proc-xermsg">xermsg</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+
+
+  </div>
 
     </div>
-    
+
     <div class="col-md-9" id='text'>
-    <p>A Fortran package for piecewise cubic Hermite interpolation of data.</p>
+      <p>A Fortran package for piecewise cubic Hermite interpolation of data.</p>
 <h3>Author</h3>
 <ul>
 <li>Fritsch, F. N., (LLNL) -- original author</li>
 <li>Oct 2019 : Jacob Williams, Extensive refactoring
     and modernization of the SLATEC code.</li>
 </ul>
-<br>        <div class="panel panel-default">
-      <div class="panel-heading">
-  <h3 class="panel-title">Uses</h3>
-      </div>
-      <ul class="list-group">
-      <li class="list-group-item">
-  <ul class="list-inline">
-    <li><a href="https://gcc.gnu.org/onlinedocs/gfortran/ISO_005fFORTRAN_005fENV.html">iso_fortran_env</a></li>
-  </ul>
-      </li>
-      <li class="list-group-item">
-  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<br>          <div class="card mb-4">
+      <h3 class="card-header card-title bg-light">Uses</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <ul class="list-inline">
+                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_fortran_env'>iso_fortran_env</a></li>
+              </ul>
+            </li>
+            <li class="list-group-item">
+              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.43.0 (0)
@@ -204,11 +227,8 @@
 <!-- iso_fortran_env -->
 <g id="module~~pchip_module~~UsesGraph_node2" class="node">
 <title>iso_fortran_env</title>
-<g id="a_module~~pchip_module~~UsesGraph_node2"><a xlink:href="https://gcc.gnu.org/onlinedocs/gfortran/ISO_005fFORTRAN_005fENV.html" xlink:title="iso_fortran_env">
 <polygon fill="#337ab7" stroke="#337ab7" points="94,-24 0,-24 0,0 94,0 94,-24"/>
 <text text-anchor="middle" x="47" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">iso_fortran_env</text>
-</a>
-</g>
 </g>
 <!-- module~pchip_module&#45;&gt;iso_fortran_env -->
 <g id="module~~pchip_module~~UsesGraph_edge1" class="edge">
@@ -218,9 +238,19 @@
 </g>
 </g>
 </svg>
-</div><div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div><div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog"><div class="modal-dialog modal-lg" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title" id="-graph-help-label">Graph Key</h4></div><div class="modal-body">
-    <p>Nodes of different colours represent the following: </p>
-    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#UsesGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="UsesGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.43.0 (0)
@@ -270,214 +300,361 @@
 </g>
 </svg>
 
-    
-    <p>Solid arrows point from a submodule to the (sub)module which it is
-    descended from. Dashed arrows point from a module or program unit to 
-    modules which it uses.
-    </p>
-    </div></div></div></div>
-      </li>
-      </ul>
+<p>Solid arrows point from a submodule to the (sub)module which it is
+descended from. Dashed arrows point from a module or program unit to 
+modules which it uses.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+            </li>
+        </ul>
+      </div>
     </div>
 
-    
-    <br>
+      
+      <br>
 
-    <section class="visible-xs visible-sm hidden-md">
-      <h3>Contents</h3>
- 
-<div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars-1">Variables</a></h3></div>
-  <div id="vars-1" class="panel-collapse collapse">
-    <div class="list-group">
-      <a class="list-group-item" href="../module/pchip_module.html#variable-zero">zero</a>
-      <a class="list-group-item" href="../module/pchip_module.html#variable-half">half</a>
-      <a class="list-group-item" href="../module/pchip_module.html#variable-one">one</a>
-      <a class="list-group-item" href="../module/pchip_module.html#variable-two">two</a>
-      <a class="list-group-item" href="../module/pchip_module.html#variable-three">three</a>
-      <a class="list-group-item" href="../module/pchip_module.html#variable-four">four</a>
-      <a class="list-group-item" href="../module/pchip_module.html#variable-six">six</a>
-      <a class="list-group-item" href="../module/pchip_module.html#variable-ten">ten</a>
-      <a class="list-group-item" href="../module/pchip_module.html#variable-d1mach4">d1mach4</a>
+
+        <section>
+          <h2>Variables</h2>
+            <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-zero"></span>
+              real(kind=wp),
+            </td>
+              <td>private,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>zero</strong></td>
+<td> =</td>
+                <td>0.0_wp</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-half"></span>
+              real(kind=wp),
+            </td>
+              <td>private,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>half</strong></td>
+<td> =</td>
+                <td>0.5_wp</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-one"></span>
+              real(kind=wp),
+            </td>
+              <td>private,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>one</strong></td>
+<td> =</td>
+                <td>1.0_wp</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-two"></span>
+              real(kind=wp),
+            </td>
+              <td>private,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>two</strong></td>
+<td> =</td>
+                <td>2.0_wp</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-three"></span>
+              real(kind=wp),
+            </td>
+              <td>private,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>three</strong></td>
+<td> =</td>
+                <td>3.0_wp</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-four"></span>
+              real(kind=wp),
+            </td>
+              <td>private,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>four</strong></td>
+<td> =</td>
+                <td>4.0_wp</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-six"></span>
+              real(kind=wp),
+            </td>
+              <td>private,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>six</strong></td>
+<td> =</td>
+                <td>6.0_wp</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ten"></span>
+              real(kind=wp),
+            </td>
+              <td>private,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>ten</strong></td>
+<td> =</td>
+                <td>10.0_wp</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-d1mach4"></span>
+              real(kind=wp),
+            </td>
+              <td>private,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>d1mach4</strong></td>
+<td> =</td>
+                <td>epsilon(one)</td>
+            <td>
+                <p>d1mach(4) -- the largest relative spacing</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+        </section>
+        <br>
+
+
+
+
+
+        <section>
+          <h2>Functions</h2>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-dpchsd"></span> <h3>private pure function <a href='../proc/dpchsd.html'>dpchsd</a>(s1, s2, h1, h2)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>inline function for weighted average of slopes.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-s1"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>s1</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-s2"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>s2</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-h1"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h1</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-h2"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h2</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>real(kind=wp)</small>
+    </h4>
+    
+
     </div>
   </div>
-</div>
-<div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#funcs-1">Functions</a></h3></div>
-  <div id="funcs-1" class="panel-collapse collapse">
-    <div class="list-group">
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchsd">dpchsd</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dchfcm">dchfcm</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dchfie">dchfie</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchdf">dpchdf</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchia">dpchia</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchid">dpchid</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchst">dpchst</a>
-    </div>
-  </div>
-</div>
-<div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#subs-1">Subroutines</a></h3></div>
-  <div class="list-group">
-    <div id="subs-1" class="panel-collapse collapse">
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dchfdv">dchfdv</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dchfev">dchfev</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchbs">dpchbs</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchce">dpchce</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchci">dpchci</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchcm">dpchcm</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchcs">dpchcs</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchfd">dpchfd</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchfe">dpchfe</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchic">dpchic</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchim">dpchim</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchkt">dpchkt</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchsp">dpchsp</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-dpchsw">dpchsw</a>
-      <a class="list-group-item" href="../module/pchip_module.html#proc-xermsg">xermsg</a>
-    </div>
-  </div>
-</div>
 
-    </section>
-    <br class="visible-xs visible-sm hidden-md">
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-dchfcm"></span> <h3>private  function <a href='../proc/dchfcm.html'>dchfcm</a>(d1, d2, delta) result(ismon)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Check a single cubic for monotonicity</p><a href="../proc/dchfcm.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
-
-    <section>
-    <h2>Variables</h2>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-zero"></span>real(kind=wp),</td>
-<td>private,</td>  <td>parameter</td><td>::</td>
-  <td><strong>zero</strong></td><td> =</td><td>0.0_wp</td><td></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-half"></span>real(kind=wp),</td>
-<td>private,</td>  <td>parameter</td><td>::</td>
-  <td><strong>half</strong></td><td> =</td><td>0.5_wp</td><td></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-one"></span>real(kind=wp),</td>
-<td>private,</td>  <td>parameter</td><td>::</td>
-  <td><strong>one</strong></td><td> =</td><td>1.0_wp</td><td></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-two"></span>real(kind=wp),</td>
-<td>private,</td>  <td>parameter</td><td>::</td>
-  <td><strong>two</strong></td><td> =</td><td>2.0_wp</td><td></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-three"></span>real(kind=wp),</td>
-<td>private,</td>  <td>parameter</td><td>::</td>
-  <td><strong>three</strong></td><td> =</td><td>3.0_wp</td><td></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-four"></span>real(kind=wp),</td>
-<td>private,</td>  <td>parameter</td><td>::</td>
-  <td><strong>four</strong></td><td> =</td><td>4.0_wp</td><td></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-six"></span>real(kind=wp),</td>
-<td>private,</td>  <td>parameter</td><td>::</td>
-  <td><strong>six</strong></td><td> =</td><td>6.0_wp</td><td></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-ten"></span>real(kind=wp),</td>
-<td>private,</td>  <td>parameter</td><td>::</td>
-  <td><strong>ten</strong></td><td> =</td><td>10.0_wp</td><td></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-d1mach4"></span>real(kind=wp),</td>
-<td>private,</td>  <td>parameter</td><td>::</td>
-  <td><strong>d1mach4</strong></td><td> =</td><td>epsilon(one)</td><td><p>d1mach(4) -- the largest relative spacing</p></td>
-</tr>
-</tbody>
-</table>
-
-    </section>
-    <br>
-    
-    
-
-    
-    
- 
-    <section>
-    <h2>Functions</h2>
-      <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-dpchsd"></span><h3>private pure function <a href='../proc/dpchsd.html'>dpchsd</a>(s1, s2, h1, h2)</h3></div>
-  <div class="panel-body">
-       
-<p>inline function for weighted average of slopes.</p>
-    
-<h4>Arguments</h4>      <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-d1"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>s1</strong></td><td></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>d1</strong></td>
+            <td>
+<p>derivative value at the end of an interval.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-d2"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>s2</strong></td><td></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>d2</strong></td>
+            <td>
+<p>derivative value at the end of an interval.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-delta"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>h1</strong></td><td></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-<td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>h2</strong></td><td></td>
-</tr>
-</tbody>
-</table>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>delta</strong></td>
+            <td>
+<p>the data slope over that interval</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
 
-<h4>Return Value <small>real(kind=wp)</small></h4>  
-
-  </div>
-  </div>
-
-      <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-dchfcm"></span><h3>private function <a href='../proc/dchfcm.html'>dchfcm</a>(d1, d2, delta) result(ismon)</h3></div>
-  <div class="panel-body">
-       
-<p>Check a single cubic for monotonicity</p><a href="../proc/dchfcm.html" class="pull-right"><emph>Read more&hellip;</emph></a>
-    
-<h4>Arguments</h4>      <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-<td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>d1</strong></td><td><p>derivative value at the end of an interval.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-<td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>d2</strong></td><td><p>derivative value at the end of an interval.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-<td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>delta</strong></td><td><p>the data slope over that interval</p></td>
-</tr>
-</tbody>
-</table>
-
-<h4>Return Value <small>integer</small></h4>  <p>indicates the monotonicity of the cubic segment:</p>
+    <h4>
+    Return Value
+    <small>integer</small>
+    </h4>
+    <p>indicates the monotonicity of the cubic segment:</p>
 <ul>
 <li>ISMON = -3  if function is probably decreasing</li>
 <li>ISMON = -1  if function is strictly decreasing</li>
@@ -490,1955 +667,3166 @@
 boundary of the monotonicity region to declare monotonicity
 in the presence of roundoff error.</p>
 
-  </div>
+    </div>
   </div>
 
-      <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-dchfie"></span><h3>private pure function <a href='../proc/dchfie.html'>dchfie</a>(x1, x2, f1, f2, d1, d2, a, b) result(integral)</h3></div>
-  <div class="panel-body">
-       
-<p>Cubic Hermite Function Integral Evaluator</p><a href="../proc/dchfie.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-dchfie"></span> <h3>private pure function <a href='../proc/dchfie.html'>dchfie</a>(x1, x2, f1, f2, d1, d2, a, b) result(integral)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Cubic Hermite Function Integral Evaluator</p><a href="../proc/dchfie.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x1~3"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>x1</strong></td>
+            <td>
+<p>endpoints if interval of definition of cubic</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x2~3"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>x2</strong></td>
+            <td>
+<p>endpoints if interval of definition of cubic</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f1~3"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>f1</strong></td>
+            <td>
+<p>function values at the ends of the interval</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f2~3"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>f2</strong></td>
+            <td>
+<p>function values at the ends of the interval</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-d1~4"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>d1</strong></td>
+            <td>
+<p>derivative values at the ends of the interval</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-d2~4"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>d2</strong></td>
+            <td>
+<p>derivative values at the ends of the interval</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-a~2"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>a</strong></td>
+            <td>
+<p>endpoints of interval of integration</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-b~2"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>b</strong></td>
+            <td>
+<p>endpoints of interval of integration</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>real(kind=wp)</small>
+    </h4>
     
-<h4>Arguments</h4>      <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-<td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>x1</strong></td><td><p>endpoints if interval of definition of cubic</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-<td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>x2</strong></td><td><p>endpoints if interval of definition of cubic</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-<td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>f1</strong></td><td><p>function values at the ends of the interval</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-<td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>f2</strong></td><td><p>function values at the ends of the interval</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-<td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>d1</strong></td><td><p>derivative values at the ends of the interval</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-<td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>d2</strong></td><td><p>derivative values at the ends of the interval</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-<td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>a</strong></td><td><p>endpoints of interval of integration</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-<td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>b</strong></td><td><p>endpoints of interval of integration</p></td>
-</tr>
-</tbody>
-</table>
 
-<h4>Return Value <small>real(kind=wp)</small></h4>  
-
-  </div>
+    </div>
   </div>
 
-      <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-dpchdf"></span><h3>private function <a href='../proc/dpchdf.html'>dpchdf</a>(k, x, s, ierr) result(deriv)</h3></div>
-  <div class="panel-body">
-       
-<p>Computes divided differences for <a href="../proc/dpchce.html">dpchce</a> and <a href="../proc/dpchsp.html">dpchsp</a></p><a href="../proc/dpchdf.html" class="pull-right"><emph>Read more&hellip;</emph></a>
-    
-<h4>Arguments</h4>      <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-dpchdf"></span> <h3>private  function <a href='../proc/dpchdf.html'>dpchdf</a>(k, x, s, ierr) result(deriv)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Computes divided differences for <a href="../proc/dpchce.html">dpchce</a> and <a href="../proc/dpchsp.html">dpchsp</a></p><a href="../proc/dpchdf.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-k~4"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>k</strong></td><td><p>is the order of the desired derivative approximation.
-K must be at least 3 (error return if not).</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>k</strong></td>
+            <td>
+<p>is the order of the desired derivative approximation.
+K must be at least 3 (error return if not).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x~6"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>x</strong>(k)</td><td><p>contains the K values of the independent variable.
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>x</strong>(k)</td>
+            <td>
+<p>contains the K values of the independent variable.
 X need not be ordered, but the values <strong>MUST</strong> be
-distinct.  (Not checked here.)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+distinct.  (Not checked here.)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-s"></span>
+              real(kind=wp),
+            </td>
 <td>intent(inout)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>s</strong>(k)</td><td><p>contains the associated slope values:
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>s</strong>(k)</td>
+            <td>
+<p>contains the associated slope values:
 <code>S(I) = (F(I+1)-F(I))/(X(I+1)-X(I)), I=1(1)K-1</code>.
 (Note that S need only be of length K-1.)
-Will be destroyed on output.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+Will be destroyed on output.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ierr~7"></span>
+              integer,
+            </td>
 <td>intent(out)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>ierr</strong></td><td><p>will be set to -1 if K&lt;2 .</p></td>
-</tr>
-</tbody>
-</table>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ierr</strong></td>
+            <td>
+<p>will be set to -1 if K&lt;2 .</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
 
-<h4>Return Value <small>real(kind=wp)</small></h4>  <p>will be set to the desired derivative approximation if
+    <h4>
+    Return Value
+    <small>real(kind=wp)</small>
+    </h4>
+    <p>will be set to the desired derivative approximation if
 IERR=0 or to zero if IERR=-1.</p>
 
-  </div>
+    </div>
   </div>
 
-      <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-dpchia"></span><h3>public function <a href='../proc/dpchia.html'>dpchia</a>(n, x, f, d, incfd, skip, a, b, ierr) result(value)</h3></div>
-  <div class="panel-body">
-       
-<p>Piecewise Cubic Hermite Integrator, Arbitrary limits</p><a href="../proc/dpchia.html" class="pull-right"><emph>Read more&hellip;</emph></a>
-    
-<h4>Arguments</h4>      <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-dpchia"></span> <h3>public  function <a href='../proc/dpchia.html'>dpchia</a>(n, x, f, d, incfd, skip, a, b, ierr) result(value)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Piecewise Cubic Hermite Integrator, Arbitrary limits</p><a href="../proc/dpchia.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~8"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>n</strong></td><td><p>number of data points.  (Error return if N&lt;2).</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+<p>number of data points.  (Error return if N&lt;2).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x~9"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>x</strong>(*)</td><td><p>array of independent variable values.  The
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>x</strong>(*)</td>
+            <td>
+<p>array of independent variable values.  The
 elements of X must be strictly increasing:
 <code>X(I-1) &lt; X(I),  I = 2(1)N</code>.
-(Error return if not.)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+(Error return if not.)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f~5"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>f</strong>(incfd,*)</td><td><p>array of function values.  F(1+(I-1)*INCFD) is
-the value corresponding to X(I).</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>f</strong>(incfd,*)</td>
+            <td>
+<p>array of function values.  F(1+(I-1)*INCFD) is
+the value corresponding to X(I).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-d~8"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>d</strong>(incfd,*)</td><td><p>array of derivative values.  D(1+(I-1)*INCFD)
-is the value corresponding to X(I).</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>d</strong>(incfd,*)</td>
+            <td>
+<p>array of derivative values.  D(1+(I-1)*INCFD)
+is the value corresponding to X(I).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-incfd~8"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>incfd</strong></td><td><p>increment between successive values in F and D.
-(Error return if  INCFD&lt;1).</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>logical,</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>incfd</strong></td>
+            <td>
+<p>increment between successive values in F and D.
+(Error return if  INCFD&lt;1).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-skip~4"></span>
+              logical,
+            </td>
 <td>intent(inout)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>skip</strong></td><td><p>logical variable which should be set to
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>skip</strong></td>
+            <td>
+<p>logical variable which should be set to
 .TRUE. if the user wishes to skip checks for validity of
 preceding parameters, or to .FALSE. otherwise.
 This will save time in case these checks have already
 been performed (say, in <a href="../proc/dpchim.html">dpchim</a> or <a href="../proc/dpchic.html">dpchic</a>).
-SKIP will be set to .TRUE. on return with IERR&gt;=0 .</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+SKIP will be set to .TRUE. on return with IERR&gt;=0 .</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-a~3"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>a</strong></td><td><p>the limits of integration.
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>a</strong></td>
+            <td>
+<p>the limits of integration.
 NOTE:  There is no requirement that [A,B] be contained in
        [X(1),X(N)].  However, the resulting integral value
-       will be highly suspect, if not.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+       will be highly suspect, if not.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-b~3"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>b</strong></td><td><p>the limits of integration.
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>b</strong></td>
+            <td>
+<p>the limits of integration.
 NOTE:  There is no requirement that [A,B] be contained in
        [X(1),X(N)].  However, the resulting integral value
-       will be highly suspect, if not.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+       will be highly suspect, if not.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ierr~10"></span>
+              integer,
+            </td>
 <td>intent(inout)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>ierr</strong></td><td><p>error flag.</p>
-<ul>
-<li>Normal return:<ul>
-<li>IERR = 0  (no errors).</li>
-</ul>
-</li>
-<li>Warning errors:<ul>
-<li>IERR = 1  if  A  is outside the interval [X(1),X(N)].</li>
-<li>IERR = 2  if  B  is outside the interval [X(1),X(N)].</li>
-<li>IERR = 3  if both of the above are true.  (Note that this
-          means that either [A,B] contains data interval
-          or the intervals do not intersect at all.)</li>
-</ul>
-</li>
-<li>"Recoverable" errors:<ul>
-<li>IERR = -1  if N&lt;2 .</li>
-<li>IERR = -2  if INCFD&lt;1 .</li>
-<li>IERR = -3  if the X-array is not strictly increasing.
-  (VALUE will be zero in any of these cases.)
- NOTE:  The above errors are checked in the order listed,
-     and following arguments have <strong>NOT</strong> been validated.</li>
-<li>IERR = -4  in case of an error return from DPCHID (which
-           should never occur).</li>
-</ul>
-</li>
-</ul></td>
-</tr>
-</tbody>
-</table>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ierr</strong></td>
+            <td>
+<p>error flag.</p><a href="../proc/dpchia.html#variable-ierr~10" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+    </tbody>
+  </table>
 
-<h4>Return Value <small>real(kind=wp)</small></h4>  <p>value of the requested integral.</p>
+    <h4>
+    Return Value
+    <small>real(kind=wp)</small>
+    </h4>
+    <p>value of the requested integral.</p>
 
-  </div>
+    </div>
   </div>
 
-      <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-dpchid"></span><h3>public function <a href='../proc/dpchid.html'>dpchid</a>(n, x, f, d, incfd, skip, ia, ib, ierr) result(value)</h3></div>
-  <div class="panel-body">
-       
-<p>Piecewise Cubic Hermite Integrator, Data limits</p><a href="../proc/dpchid.html" class="pull-right"><emph>Read more&hellip;</emph></a>
-    
-<h4>Arguments</h4>      <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-dpchid"></span> <h3>public  function <a href='../proc/dpchid.html'>dpchid</a>(n, x, f, d, incfd, skip, ia, ib, ierr) result(value)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Piecewise Cubic Hermite Integrator, Data limits</p><a href="../proc/dpchid.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~10"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>n</strong></td><td><p>number of data points.  (Error return if N&lt;2).</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+<p>number of data points.  (Error return if N&lt;2).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x~11"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>x</strong>(*)</td><td><p>array of independent variable values.  The
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>x</strong>(*)</td>
+            <td>
+<p>array of independent variable values.  The
 elements of X must be strictly increasing:
 <code>X(I-1) &lt; X(I),  I = 2(1)N</code>.
-(Error return if not.)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+(Error return if not.)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f~7"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>f</strong>(incfd,*)</td><td><p>array of function values.  <code>F(1+(I-1)*INCFD)</code> is
-the value corresponding to <code>X(I)</code>.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>f</strong>(incfd,*)</td>
+            <td>
+<p>array of function values.  <code>F(1+(I-1)*INCFD)</code> is
+the value corresponding to <code>X(I)</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-d~10"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>d</strong>(incfd,*)</td><td><p>array of derivative values. <code>D(1+(I-1)*INCFD)</code>
-is the value corresponding to <code>X(I)</code>.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>d</strong>(incfd,*)</td>
+            <td>
+<p>array of derivative values. <code>D(1+(I-1)*INCFD)</code>
+is the value corresponding to <code>X(I)</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-incfd~10"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>incfd</strong></td><td><p>increment between successive values in F and D.
-(Error return if  INCFD&lt;1).</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>logical,</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>incfd</strong></td>
+            <td>
+<p>increment between successive values in F and D.
+(Error return if  INCFD&lt;1).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-skip~5"></span>
+              logical,
+            </td>
 <td>intent(inout)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>skip</strong></td><td><p>logical variable which should be set to
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>skip</strong></td>
+            <td>
+<p>logical variable which should be set to
 .TRUE. if the user wishes to skip checks for validity of
 preceding parameters, or to .FALSE. otherwise.
 This will save time in case these checks have already
 been performed (say, in <a href="../proc/dpchim.html">dpchim</a> or <a href="../proc/dpchic.html">dpchic</a>).
-SKIP will be set to .TRUE. on return with IERR = 0 or -4.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+SKIP will be set to .TRUE. on return with IERR = 0 or -4.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ia~2"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>ia</strong></td><td><p>indices in X-array for the limits of integration.
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ia</strong></td>
+            <td>
+<p>indices in X-array for the limits of integration.
 both must be in the range [1,N].  (Error return if not.)
-No restrictions on their relative values.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+No restrictions on their relative values.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ib~2"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>ib</strong></td><td><p>indices in X-array for the limits of integration.
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ib</strong></td>
+            <td>
+<p>indices in X-array for the limits of integration.
 both must be in the range [1,N].  (Error return if not.)
-No restrictions on their relative values.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+No restrictions on their relative values.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ierr~12"></span>
+              integer,
+            </td>
 <td>intent(out)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>ierr</strong></td><td><p>error flag.</p>
-<ul>
-<li>Normal return:</li>
-<li>
-<p>IERR = 0  (no errors).</p>
-</li>
-<li>
-<p>"Recoverable" errors (VALUE will be zero in any of these cases.):</p>
-</li>
-<li>IERR = -1  if N&lt;2 .</li>
-<li>IERR = -2  if INCFD&lt;1 .</li>
-<li>IERR = -3  if the X-array is not strictly increasing.</li>
-<li>IERR = -4  if IA or IB is out of range.</li>
-</ul>
-<p>NOTE: The above errors are checked in the order listed,
-and following arguments have <strong>NOT</strong> been validated.</p></td>
-</tr>
-</tbody>
-</table>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ierr</strong></td>
+            <td>
+<p>error flag.</p><a href="../proc/dpchid.html#variable-ierr~12" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+    </tbody>
+  </table>
 
-<h4>Return Value <small>real(kind=wp)</small></h4>  <p>value of the requested integral.</p>
+    <h4>
+    Return Value
+    <small>real(kind=wp)</small>
+    </h4>
+    <p>value of the requested integral.</p>
 
-  </div>
+    </div>
   </div>
 
-      <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-dpchst"></span><h3>private pure function <a href='../proc/dpchst.html'>dpchst</a>(arg1, arg2) result(s)</h3></div>
-  <div class="panel-body">
-       
-<p>DPCHIP Sign-Testing Routine</p><a href="../proc/dpchst.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-dpchst"></span> <h3>private pure function <a href='../proc/dpchst.html'>dpchst</a>(arg1, arg2) result(s)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>DPCHIP Sign-Testing Routine</p><a href="../proc/dpchst.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-arg1"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>arg1</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-arg2"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>arg2</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>real(kind=wp)</small>
+    </h4>
     
-<h4>Arguments</h4>      <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-<td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>arg1</strong></td><td></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-<td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>arg2</strong></td><td></td>
-</tr>
-</tbody>
-</table>
 
-<h4>Return Value <small>real(kind=wp)</small></h4>  
-
-  </div>
+    </div>
   </div>
 
-    </section>
-    <br>
+        </section>
+        <br>
 
-    <section>
-    <h2>Subroutines</h2>
-      <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-dchfdv"></span><h3>public subroutine <a href='../proc/dchfdv.html'>dchfdv</a>(x1, x2, f1, f2, d1, d2, ne, xe, fe, de, next, ierr)</h3></div>
-  <div class="panel-body">
-       
-<p>Cubic Hermite Function and Derivative Evaluator</p><a href="../proc/dchfdv.html" class="pull-right"><emph>Read more&hellip;</emph></a>
-    
-<h4>Arguments</h4>      <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+        <section>
+          <h2>Subroutines</h2>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-dchfdv"></span> <h3>public  subroutine <a href='../proc/dchfdv.html'>dchfdv</a>(x1, x2, f1, f2, d1, d2, ne, xe, fe, de, next, ierr)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Cubic Hermite Function and Derivative Evaluator</p><a href="../proc/dchfdv.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x1"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>x1</strong></td><td><p>initial endpoint of interval of definition of cubic. (Error return if X1==X2.)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>x1</strong></td>
+            <td>
+<p>initial endpoint of interval of definition of cubic. (Error return if X1==X2.)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x2"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>x2</strong></td><td><p>final endpoint of interval of definition of cubic. (Error return if X1==X2.)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>x2</strong></td>
+            <td>
+<p>final endpoint of interval of definition of cubic. (Error return if X1==X2.)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f1"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>f1</strong></td><td><p>value of function at X1.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>f1</strong></td>
+            <td>
+<p>value of function at X1.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f2"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>f2</strong></td><td><p>value of function at X2.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>f2</strong></td>
+            <td>
+<p>value of function at X2.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-d1~2"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>d1</strong></td><td><p>value of derivative at X1.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>d1</strong></td>
+            <td>
+<p>value of derivative at X1.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-d2~2"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>d2</strong></td><td><p>value of derivative at X2.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>d2</strong></td>
+            <td>
+<p>value of derivative at X2.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ne"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>ne</strong></td><td><p>number of evaluation points.  (Error return if NE&lt;1).</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ne</strong></td>
+            <td>
+<p>number of evaluation points.  (Error return if NE&lt;1).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-xe"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in),</td>
-  <td></td>  <td>dimension(*)</td><td>::</td>
-  <td><strong>xe</strong></td><td><p>array of points at which the functions are to
+              <td></td>            <td>
+              dimension(*)
+            </td>
+            <td>::</td>
+            <td><strong>xe</strong></td>
+            <td>
+<p>array of points at which the functions are to
 be evaluated.  If any of the XE are outside the interval
-[X1,X2], a warning error is returned in NEXT.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+[X1,X2], a warning error is returned in NEXT.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fe"></span>
+              real(kind=wp),
+            </td>
 <td>intent(out),</td>
-  <td></td>  <td>dimension(*)</td><td>::</td>
-  <td><strong>fe</strong></td><td><p>array of values of the cubic function
-defined by X1,X2, F1,F2, D1,D2 at the points XE.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              dimension(*)
+            </td>
+            <td>::</td>
+            <td><strong>fe</strong></td>
+            <td>
+<p>array of values of the cubic function
+defined by X1,X2, F1,F2, D1,D2 at the points XE.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-de"></span>
+              real(kind=wp),
+            </td>
 <td>intent(out),</td>
-  <td></td>  <td>dimension(*)</td><td>::</td>
-  <td><strong>de</strong></td><td><p>array of values of the first derivative of
-the same function at the points XE.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <td></td>            <td>
+              dimension(*)
+            </td>
+            <td>::</td>
+            <td><strong>de</strong></td>
+            <td>
+<p>array of values of the first derivative of
+the same function at the points XE.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-next"></span>
+              integer,
+            </td>
 <td>intent(out),</td>
-  <td></td>  <td>dimension(2)</td><td>::</td>
-  <td><strong>next</strong></td><td><p>array indicating number of extrapolation points:</p>
-<ul>
-<li>NEXT(1) = number of evaluation points to left of interval.</li>
-<li>NEXT(2) = number of evaluation points to right of interval.</li>
-</ul></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <td></td>            <td>
+              dimension(2)
+            </td>
+            <td>::</td>
+            <td><strong>next</strong></td>
+            <td>
+<p>array indicating number of extrapolation points:</p><a href="../proc/dchfdv.html#variable-next" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ierr"></span>
+              integer,
+            </td>
 <td>intent(out)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>ierr</strong></td><td><p>error flag.</p>
-<p>Normal return:</p>
-<ul>
-<li>IERR = 0  (no errors).</li>
-</ul>
-<p>"Recoverable" errors (output arrays have not been changed):</p>
-<ul>
-<li>IERR = -1  if NE&lt;1 .</li>
-<li>IERR = -2  if X1==X2 .</li>
-</ul></td>
-</tr>
-</tbody>
-</table>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ierr</strong></td>
+            <td>
+<p>error flag.</p><a href="../proc/dchfdv.html#variable-ierr" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+    </tbody>
+  </table>
 
 
-  </div>
+    </div>
   </div>
 
-      <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-dchfev"></span><h3>public subroutine <a href='../proc/dchfev.html'>dchfev</a>(x1, x2, f1, f2, d1, d2, ne, xe, fe, next, ierr)</h3></div>
-  <div class="panel-body">
-       
-<p>Cubic Hermite Function Evaluator</p><a href="../proc/dchfev.html" class="pull-right"><emph>Read more&hellip;</emph></a>
-    
-<h4>Arguments</h4>      <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-dchfev"></span> <h3>public  subroutine <a href='../proc/dchfev.html'>dchfev</a>(x1, x2, f1, f2, d1, d2, ne, xe, fe, next, ierr)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Cubic Hermite Function Evaluator</p><a href="../proc/dchfev.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x1~2"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>x1</strong></td><td><p>initial endpoint of interval of definition of cubic. (Error return if X1==X2.)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>x1</strong></td>
+            <td>
+<p>initial endpoint of interval of definition of cubic. (Error return if X1==X2.)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x2~2"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>x2</strong></td><td><p>final endpoint of interval of definition of cubic. (Error return if X1==X2.)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>x2</strong></td>
+            <td>
+<p>final endpoint of interval of definition of cubic. (Error return if X1==X2.)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f1~2"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>f1</strong></td><td><p>value of function at X1.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>f1</strong></td>
+            <td>
+<p>value of function at X1.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f2~2"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>f2</strong></td><td><p>value of function at X2.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>f2</strong></td>
+            <td>
+<p>value of function at X2.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-d1~3"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>d1</strong></td><td><p>value of derivative at X1.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>d1</strong></td>
+            <td>
+<p>value of derivative at X1.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-d2~3"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>d2</strong></td><td><p>value of derivative at X2.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>d2</strong></td>
+            <td>
+<p>value of derivative at X2.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ne~2"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>ne</strong></td><td><p>number of evaluation points.  (Error return if NE&lt;1).</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ne</strong></td>
+            <td>
+<p>number of evaluation points.  (Error return if NE&lt;1).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-xe~2"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in),</td>
-  <td></td>  <td>dimension(*)</td><td>::</td>
-  <td><strong>xe</strong></td><td><p>array of points at which the function is to
+              <td></td>            <td>
+              dimension(*)
+            </td>
+            <td>::</td>
+            <td><strong>xe</strong></td>
+            <td>
+<p>array of points at which the function is to
 be evaluated. If any of the XE are outside the interval
-[X1,X2], a warning error is returned in NEXT.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+[X1,X2], a warning error is returned in NEXT.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fe~2"></span>
+              real(kind=wp),
+            </td>
 <td>intent(out),</td>
-  <td></td>  <td>dimension(*)</td><td>::</td>
-  <td><strong>fe</strong></td><td><p>array of values of the cubic function
-defined by X1,X2, F1,F2, D1,D2 at the points XE.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <td></td>            <td>
+              dimension(*)
+            </td>
+            <td>::</td>
+            <td><strong>fe</strong></td>
+            <td>
+<p>array of values of the cubic function
+defined by X1,X2, F1,F2, D1,D2 at the points XE.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-next~2"></span>
+              integer,
+            </td>
 <td>intent(out),</td>
-  <td></td>  <td>dimension(2)</td><td>::</td>
-  <td><strong>next</strong></td><td><p>integer array indicating number of extrapolation points:</p>
-<ul>
-<li>NEXT(1) = number of evaluation points to left of interval.</li>
-<li>NEXT(2) = number of evaluation points to right of interval.</li>
-</ul></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <td></td>            <td>
+              dimension(2)
+            </td>
+            <td>::</td>
+            <td><strong>next</strong></td>
+            <td>
+<p>integer array indicating number of extrapolation points:</p><a href="../proc/dchfev.html#variable-next~2" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ierr~2"></span>
+              integer,
+            </td>
 <td>intent(out)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>ierr</strong></td><td><p>error flag.</p>
-<ul>
-<li>Normal return:</li>
-<li>IERR = 0  (no errors).</li>
-<li>"Recoverable" errors (output arrays have not been changed):</li>
-<li>IERR = -1  if NE&lt;1 .</li>
-<li>IERR = -2  if X1==X2 .</li>
-</ul></td>
-</tr>
-</tbody>
-</table>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ierr</strong></td>
+            <td>
+<p>error flag.</p><a href="../proc/dchfev.html#variable-ierr~2" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+    </tbody>
+  </table>
 
 
+    </div>
   </div>
-  </div>
 
-      <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-dpchbs"></span><h3>public subroutine <a href='../proc/dpchbs.html'>dpchbs</a>(n, x, f, d, incfd, knotyp, nknots, t, bcoef, ndim, kord, ierr)</h3></div>
-  <div class="panel-body">
-       
-<p>Piecewise Cubic Hermite to B-Spline converter.</p><a href="../proc/dpchbs.html" class="pull-right"><emph>Read more&hellip;</emph></a>
-    
-<h4>Arguments</h4>      <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-dpchbs"></span> <h3>public  subroutine <a href='../proc/dpchbs.html'>dpchbs</a>(n, x, f, d, incfd, knotyp, nknots, t, bcoef, ndim, kord, ierr)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Piecewise Cubic Hermite to B-Spline converter.</p><a href="../proc/dpchbs.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>n</strong></td><td><p>the number of data points, N&gt;=2 .  (not checked)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+<p>the number of data points, N&gt;=2 .  (not checked)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x~3"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>x</strong>(*)</td><td><p>array of independent variable values.  The
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>x</strong>(*)</td>
+            <td>
+<p>array of independent variable values.  The
 elements of X must be strictly increasing:
      X(I-1) &lt; X(I),  I = 2(1)N.   (not checked)
-nmax, the dimension of X, must be &gt;=N.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+nmax, the dimension of X, must be &gt;=N.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>f</strong>(incfd,*)</td><td><p>array of dependent variable values.
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>f</strong>(incfd,*)</td>
+            <td>
+<p>array of dependent variable values.
 F(1+(I-1)*INCFD) is the value corresponding to X(I).
-nmax, the second dimension of F, must be &gt;=N.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+nmax, the second dimension of F, must be &gt;=N.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-d"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>d</strong>(incfd,*)</td><td><p>array of derivative values at the data points.
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>d</strong>(incfd,*)</td>
+            <td>
+<p>array of derivative values at the data points.
 D(1+(I-1)*INCFD) is the value corresponding to X(I).
-nmax, the second dimension of D, must be &gt;=N.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+nmax, the second dimension of D, must be &gt;=N.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-incfd"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>incfd</strong></td><td><p>the increment between successive values in F and D.
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>incfd</strong></td>
+            <td>
+<p>the increment between successive values in F and D.
 This argument is provided primarily for 2-D applications.
 It may have the value 1 for one-dimensional applications,
-in which case F and D may be singly-subscripted arrays.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+in which case F and D may be singly-subscripted arrays.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-knotyp"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>knotyp</strong></td><td><p>a flag to control the knot sequence.
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>knotyp</strong></td>
+            <td>
+<p>a flag to control the knot sequence.
 The knot sequence T is normally computed from X by putting
 a double knot at each X and setting the end knot pairs
-according to the value of KNOTYP:</p>
-<ul>
-<li>KNOTYP = 0:  Quadruple knots at X(1) and X(N).  (default)</li>
-<li>KNOTYP = 1:  Replicate lengths of extreme subintervals:
-                T( 1 ) = T( 2 ) = X(1) - (X(2)-X(1))  ;
-                T(M+4) = T(M+3) = X(N) + (X(N)-X(N-1)).</li>
-<li>KNOTYP = 2:  Periodic placement of boundary knots:
-                T( 1 ) = T( 2 ) = X(1) - (X(N)-X(N-1));
-                T(M+4) = T(M+3) = X(N) + (X(2)-X(1))  .
-Here M=NDIM=2*N.</li>
-</ul>
-<p>If the input value of KNOTYP is negative, however, it is
-assumed that NKNOTS and T were set in a previous call.
-This option is provided for improved efficiency when used
-in a parametric setting.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+according to the value of KNOTYP:</p><a href="../proc/dpchbs.html#variable-knotyp" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-nknots"></span>
+              integer,
+            </td>
 <td>intent(inout)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>nknots</strong></td><td><p>the number of knots.</p>
-<ul>
-<li>If KNOTYP&gt;=0, then NKNOTS will be set to NDIM+4.</li>
-<li>If KNOTYP&lt;0, then NKNOTS is an input variable, and an
-   error return will be taken if it is not equal to NDIM+4.</li>
-</ul></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>nknots</strong></td>
+            <td>
+<p>the number of knots.</p><a href="../proc/dpchbs.html#variable-nknots" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-t"></span>
+              real(kind=wp),
+            </td>
 <td>intent(inout)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>t</strong>(*)</td><td><p>array of 2*N+4 knots for the B-representation.</p>
-<ul>
-<li>If KNOTYP&gt;=0, T will be returned by DPCHBS with the
-  interior double knots equal to the X-values and the
-  boundary knots set as indicated above.</li>
-<li>If KNOTYP&lt;0, it is assumed that T was set by a
-  previous call to DPCHBS.  (This routine does <strong>not</strong>
-  verify that T forms a legitimate knot sequence.)</li>
-</ul></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>t</strong>(*)</td>
+            <td>
+<p>array of 2*N+4 knots for the B-representation.</p><a href="../proc/dpchbs.html#variable-t" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-bcoef"></span>
+              real(kind=wp),
+            </td>
 <td>intent(out)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>bcoef</strong>(*)</td><td><p>array of 2*N B-spline coefficients.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>bcoef</strong>(*)</td>
+            <td>
+<p>array of 2*N B-spline coefficients.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ndim"></span>
+              integer,
+            </td>
 <td>intent(out)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>ndim</strong></td><td><p>the dimension of the B-spline space.  (Set to 2*N.)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ndim</strong></td>
+            <td>
+<p>the dimension of the B-spline space.  (Set to 2*N.)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-kord"></span>
+              integer,
+            </td>
 <td>intent(out)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>kord</strong></td><td><p>the order of the B-spline.  (Set to 4.)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>kord</strong></td>
+            <td>
+<p>the order of the B-spline.  (Set to 4.)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ierr~3"></span>
+              integer,
+            </td>
 <td>intent(out)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>ierr</strong></td><td><p>an error flag:</p>
-<ul>
-<li>Normal return:</li>
-<li>IERR = 0  (no errors).</li>
-<li>"Recoverable" errors:</li>
-<li>IERR = -4  if KNOTYP&gt;2 .</li>
-<li>IERR = -5  if KNOTYP&lt;0 and NKNOTS/=(2*N+4).</li>
-</ul></td>
-</tr>
-</tbody>
-</table>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ierr</strong></td>
+            <td>
+<p>an error flag:</p><a href="../proc/dpchbs.html#variable-ierr~3" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+    </tbody>
+  </table>
 
 
+    </div>
   </div>
-  </div>
 
-      <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-dpchce"></span><h3>private subroutine <a href='../proc/dpchce.html'>dpchce</a>(ic, vc, n, x, h, slope, d, incfd, ierr)</h3></div>
-  <div class="panel-body">
-       
-<p>Set boundary conditions for <a href="../proc/dpchic.html">dpchic</a></p><a href="../proc/dpchce.html" class="pull-right"><emph>Read more&hellip;</emph></a>
-    
-<h4>Arguments</h4>      <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-dpchce"></span> <h3>private  subroutine <a href='../proc/dpchce.html'>dpchce</a>(ic, vc, n, x, h, slope, d, incfd, ierr)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Set boundary conditions for <a href="../proc/dpchic.html">dpchic</a></p><a href="../proc/dpchce.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ic"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>ic</strong>(2)</td><td><p>array of length 2 specifying desired
-boundary conditions:</p>
-<ul>
-<li>IC(1) = IBEG, desired condition at beginning of data.</li>
-<li>IC(2) = IEND, desired condition at end of data.</li>
-</ul>
-<p>( see prologue to <a href="../proc/dpchic.html">dpchic</a> for details. )</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ic</strong>(2)</td>
+            <td>
+<p>array of length 2 specifying desired
+boundary conditions:</p><a href="../proc/dpchce.html#variable-ic" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-vc"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>vc</strong>(2)</td><td><p>array of length 2 specifying desired boundary
-values.</p>
-<ul>
-<li>VC(1) need be set only if IC(1) = 2 or 3 .</li>
-<li>VC(2) need be set only if IC(2) = 2 or 3 .</li>
-</ul></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>vc</strong>(2)</td>
+            <td>
+<p>array of length 2 specifying desired boundary
+values.</p><a href="../proc/dpchce.html#variable-vc" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~2"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>n</strong></td><td><p>number of data points.  (assumes N&gt;=2)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+<p>number of data points.  (assumes N&gt;=2)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x~4"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>x</strong>(*)</td><td><p>array of independent variable values.  (the
-elements of X are assumed to be strictly increasing.)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>x</strong>(*)</td>
+            <td>
+<p>array of independent variable values.  (the
+elements of X are assumed to be strictly increasing.)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-h~4"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>h</strong>(*)</td><td><p>array of interval lengths.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h</strong>(*)</td>
+            <td>
+<p>array of interval lengths.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-slope"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>slope</strong>(*)</td><td><p>array of data slopes.
-If the data are (X(I),Y(I)), I=1(1)N, then these inputs are:</p>
-<ul>
-<li>H(I) =  X(I+1)-X(I),</li>
-<li>SLOPE(I) = (Y(I+1)-Y(I))/H(I),  I=1(1)N-1.</li>
-</ul></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>slope</strong>(*)</td>
+            <td>
+<p>array of data slopes.
+If the data are (X(I),Y(I)), I=1(1)N, then these inputs are:</p><a href="../proc/dpchce.html#variable-slope" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-d~2"></span>
+              real(kind=wp),
+            </td>
 <td>intent(inout)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>d</strong>(incfd,*)</td><td><p>(input) real<em>8 array of derivative values at the data points.
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>d</strong>(incfd,*)</td>
+            <td>
+<p>(input) real<em>8 array of derivative values at the data points.
  The value corresponding to X(I) must be stored in
- D(1+(I-1)</em>INCFD),  I=1(1)N.</p>
-<p>(output) the value of D at X(1) and/or X(N) is changed, if
- necessary, to produce the requested boundary conditions.
- no other entries in D are changed.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+ D(1+(I-1)</em>INCFD),  I=1(1)N.</p><a href="../proc/dpchce.html#variable-d~2" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-incfd~2"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>incfd</strong></td><td><p>increment between successive values in D.
-This argument is provided primarily for 2-D applications.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>incfd</strong></td>
+            <td>
+<p>increment between successive values in D.
+This argument is provided primarily for 2-D applications.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ierr~4"></span>
+              integer,
+            </td>
 <td>intent(out)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>ierr</strong></td><td><p>error flag.</p>
-<ul>
-<li>Normal return:</li>
-<li>IERR = 0  (no errors).</li>
-<li>Warning errors:</li>
-<li>IERR = 1  if IBEG&lt;0 and D(1) had to be adjusted for
-             monotonicity.</li>
-<li>IERR = 2  if IEND&lt;0 and D(1+(N-1)*INCFD) had to be
-             adjusted for monotonicity.</li>
-<li>IERR = 3  if both of the above are true.</li>
-</ul></td>
-</tr>
-</tbody>
-</table>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ierr</strong></td>
+            <td>
+<p>error flag.</p><a href="../proc/dpchce.html#variable-ierr~4" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+    </tbody>
+  </table>
 
 
-  </div>
+    </div>
   </div>
 
-      <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-dpchci"></span><h3>private subroutine <a href='../proc/dpchci.html'>dpchci</a>(n, h, slope, d, incfd)</h3></div>
-  <div class="panel-body">
-       
-<p>Set interior derivatives for DPCHIC</p><a href="../proc/dpchci.html" class="pull-right"><emph>Read more&hellip;</emph></a>
-    
-<h4>Arguments</h4>      <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-dpchci"></span> <h3>private  subroutine <a href='../proc/dpchci.html'>dpchci</a>(n, h, slope, d, incfd)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Set interior derivatives for DPCHIC</p><a href="../proc/dpchci.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~3"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>n</strong></td><td><p>number of data points.
-If N=2, simply does linear interpolation.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+<p>number of data points.
+If N=2, simply does linear interpolation.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-h~5"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>h</strong>(*)</td><td><p>array of interval lengths.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h</strong>(*)</td>
+            <td>
+<p>array of interval lengths.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-slope~2"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>slope</strong>(*)</td><td><p>array of data slopes.
-If the data are (X(I),Y(I)), I=1(1)N, then these inputs are:</p>
-<ul>
-<li>H(I) =  X(I+1)-X(I),</li>
-<li>SLOPE(I) = (Y(I+1)-Y(I))/H(I),  I=1(1)N-1.</li>
-</ul></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>slope</strong>(*)</td>
+            <td>
+<p>array of data slopes.
+If the data are (X(I),Y(I)), I=1(1)N, then these inputs are:</p><a href="../proc/dpchci.html#variable-slope~2" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-d~3"></span>
+              real(kind=wp),
+            </td>
 <td>intent(out)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>d</strong>(incfd,*)</td><td><p>array of derivative values at data points.
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>d</strong>(incfd,*)</td>
+            <td>
+<p>array of derivative values at data points.
 If the data are monotonic, these values will determine a
 a monotone cubic Hermite function.
 The value corresponding to X(I) is stored in
      <code>D(1+(I-1)*INCFD),  I=1(1)N</code>.
-No other entries in D are changed.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+No other entries in D are changed.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-incfd~3"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>incfd</strong></td><td><p>increment between successive values in D.
-This argument is provided primarily for 2-D applications.</p></td>
-</tr>
-</tbody>
-</table>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>incfd</strong></td>
+            <td>
+<p>increment between successive values in D.
+This argument is provided primarily for 2-D applications.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
 
 
+    </div>
   </div>
-  </div>
 
-      <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-dpchcm"></span><h3>public subroutine <a href='../proc/dpchcm.html'>dpchcm</a>(n, x, f, d, incfd, skip, ismon, ierr)</h3></div>
-  <div class="panel-body">
-       
-<p>Check a cubic Hermite function for monotonicity</p><a href="../proc/dpchcm.html" class="pull-right"><emph>Read more&hellip;</emph></a>
-    
-<h4>Arguments</h4>      <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-dpchcm"></span> <h3>public  subroutine <a href='../proc/dpchcm.html'>dpchcm</a>(n, x, f, d, incfd, skip, ismon, ierr)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Check a cubic Hermite function for monotonicity</p><a href="../proc/dpchcm.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~4"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>n</strong></td><td><p>the number of data points.  (Error return if N&lt;2).</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+<p>the number of data points.  (Error return if N&lt;2).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x~5"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>x</strong>(n)</td><td><p>array of independent variable values.  The
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>x</strong>(n)</td>
+            <td>
+<p>array of independent variable values.  The
 elements of X must be strictly increasing:
      X(I-1) &lt; X(I),  I = 2(1)N.
-(Error return if not.)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+(Error return if not.)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f~2"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>f</strong>(incfd,n)</td><td><p>array of function values.  F(1+(I-1)*INCFD) is
-the value corresponding to X(I).</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>f</strong>(incfd,n)</td>
+            <td>
+<p>array of function values.  F(1+(I-1)*INCFD) is
+the value corresponding to X(I).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-d~4"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>d</strong>(incfd,n)</td><td><p>array of derivative values.  D(1+(I-1)*INCFD) is
-is the value corresponding to X(I).</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>d</strong>(incfd,n)</td>
+            <td>
+<p>array of derivative values.  D(1+(I-1)*INCFD) is
+is the value corresponding to X(I).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-incfd~4"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>incfd</strong></td><td><p>the increment between successive values in F and D.
-(Error return if  INCFD&lt;1).</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>logical,</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>incfd</strong></td>
+            <td>
+<p>the increment between successive values in F and D.
+(Error return if  INCFD&lt;1).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-skip"></span>
+              logical,
+            </td>
 <td>intent(inout)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>skip</strong></td><td><p>logical variable which should be set to
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>skip</strong></td>
+            <td>
+<p>logical variable which should be set to
 .TRUE. if the user wishes to skip checks for validity of
 preceding parameters, or to .FALSE. otherwise.
 This will save time in case these checks have already
 been performed.
-SKIP will be set to .TRUE. on normal return.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+SKIP will be set to .TRUE. on normal return.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ismon~2"></span>
+              integer,
+            </td>
 <td>intent(out)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>ismon</strong>(n)</td><td><p>array indicating on which intervals the
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ismon</strong>(n)</td>
+            <td>
+<p>array indicating on which intervals the
 PCH function defined by  N, X, F, D  is monotonic.
-For data interval [X(I),X(I+1)]:</p>
-<ul>
-<li>ISMON(I) = -3  if function is probably decreasing;</li>
-<li>ISMON(I) = -1  if function is strictly decreasing;</li>
-<li>ISMON(I) =  0  if function is constant;</li>
-<li>ISMON(I) =  1  if function is strictly increasing;</li>
-<li>ISMON(I) =  2  if function is non-monotonic;</li>
-<li>ISMON(I) =  3  if function is probably increasing.</li>
-</ul>
-<p>If ABS(ISMON)=3, this means that the D-values are near
-the boundary of the monotonicity region.  A small
-increase produces non-monotonicity; decrease, strict
-monotonicity.</p>
-<p>The above applies to I=1(1)N-1.  ISMON(N) indicates whether
-the entire function is monotonic on [X(1),X(N)].</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+For data interval [X(I),X(I+1)]:</p><a href="../proc/dpchcm.html#variable-ismon~2" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ierr~5"></span>
+              integer,
+            </td>
 <td>intent(out)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>ierr</strong></td><td><p>error flag.</p>
-<ul>
-<li>Normal return:<ul>
-<li>IERR = 0  (no errors).</li>
-</ul>
-</li>
-<li>"Recoverable" errors:<ul>
-<li>IERR = -1  if N&lt;2 .</li>
-<li>IERR = -2  if INCFD&lt;1 .</li>
-<li>IERR = -3  if the X-array is not strictly increasing.</li>
-</ul>
-</li>
-</ul>
-<p>(The ISMON-array has not been changed in any of these cases.)
-NOTE:  The above errors are checked in the order listed,
-and following arguments have <strong>NOT</strong> been validated.</p></td>
-</tr>
-</tbody>
-</table>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ierr</strong></td>
+            <td>
+<p>error flag.</p><a href="../proc/dpchcm.html#variable-ierr~5" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+    </tbody>
+  </table>
 
 
-  </div>
+    </div>
   </div>
 
-      <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-dpchcs"></span><h3>private subroutine <a href='../proc/dpchcs.html'>dpchcs</a>(switch, n, h, slope, d, incfd, ierr)</h3></div>
-  <div class="panel-body">
-       
-<p>Monotonicity Switch Derivative Setter</p><a href="../proc/dpchcs.html" class="pull-right"><emph>Read more&hellip;</emph></a>
-    
-<h4>Arguments</h4>      <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-dpchcs"></span> <h3>private  subroutine <a href='../proc/dpchcs.html'>dpchcs</a>(switch, n, h, slope, d, incfd, ierr)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Monotonicity Switch Derivative Setter</p><a href="../proc/dpchcs.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-switch"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>switch</strong></td><td><p>indicates the amount of control desired over
-local excursions from data.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>switch</strong></td>
+            <td>
+<p>indicates the amount of control desired over
+local excursions from data.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~5"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>n</strong></td><td><p>number of data points.  (assumes N&gt;2).</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+<p>number of data points.  (assumes N&gt;2).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-h~6"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>h</strong>(*)</td><td><p>array of interval lengths.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h</strong>(*)</td>
+            <td>
+<p>array of interval lengths.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-slope~3"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>slope</strong>(*)</td><td><p>array of data slopes.
-If the data are (X(I),Y(I)), I=1(1)N, then these inputs are:</p>
-<ul>
-<li>H(I) =  X(I+1)-X(I),</li>
-<li>SLOPE(I) = (Y(I+1)-Y(I))/H(I),  I=1(1)N-1.</li>
-</ul></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>slope</strong>(*)</td>
+            <td>
+<p>array of data slopes.
+If the data are (X(I),Y(I)), I=1(1)N, then these inputs are:</p><a href="../proc/dpchcs.html#variable-slope~3" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-d~5"></span>
+              real(kind=wp),
+            </td>
 <td>intent(inout)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>d</strong>(incfd,*)</td><td><p>(input) array of derivative values at the data points,
-as determined by <a href="../proc/dpchci.html">dpchci</a>.</p>
-<p>(output) derivatives in the vicinity of switches in direction
-of monotonicity may be adjusted to produce a more "visually
-pleasing" curve.
-The value corresponding to X(I) is stored in
-<code>D(1+(I-1)*INCFD),  I=1(1)N</code>
-No other entries in D are changed.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>d</strong>(incfd,*)</td>
+            <td>
+<p>(input) array of derivative values at the data points,
+as determined by <a href="../proc/dpchci.html">dpchci</a>.</p><a href="../proc/dpchcs.html#variable-d~5" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-incfd~5"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>incfd</strong></td><td><p>increment between successive values in D.
-This argument is provided primarily for 2-D applications.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>incfd</strong></td>
+            <td>
+<p>increment between successive values in D.
+This argument is provided primarily for 2-D applications.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ierr~6"></span>
+              integer,
+            </td>
 <td>intent(out)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>ierr</strong></td><td><p>error flag.  should be zero.
-If negative, trouble in <a href="../proc/dpchsw.html">dpchsw</a>.  (should never happen.)</p></td>
-</tr>
-</tbody>
-</table>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ierr</strong></td>
+            <td>
+<p>error flag.  should be zero.
+If negative, trouble in <a href="../proc/dpchsw.html">dpchsw</a>.  (should never happen.)</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
 
 
+    </div>
   </div>
-  </div>
 
-      <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-dpchfd"></span><h3>public subroutine <a href='../proc/dpchfd.html'>dpchfd</a>(n, x, f, d, incfd, skip, ne, xe, fe, de, ierr)</h3></div>
-  <div class="panel-body">
-       
-<p>Piecewise Cubic Hermite Function and Derivative evaluator</p><a href="../proc/dpchfd.html" class="pull-right"><emph>Read more&hellip;</emph></a>
-    
-<h4>Arguments</h4>      <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-dpchfd"></span> <h3>public  subroutine <a href='../proc/dpchfd.html'>dpchfd</a>(n, x, f, d, incfd, skip, ne, xe, fe, de, ierr)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Piecewise Cubic Hermite Function and Derivative evaluator</p><a href="../proc/dpchfd.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~6"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>n</strong></td><td><p>number of data points.  (Error return if N&lt;2).</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+<p>number of data points.  (Error return if N&lt;2).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x~7"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>x</strong>(*)</td><td><p>array of independent variable values.  The
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>x</strong>(*)</td>
+            <td>
+<p>array of independent variable values.  The
 elements of X must be strictly increasing:
 <code>X(I-1) &lt; X(I),  I = 2(1)N</code>.
-(Error return if not.)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+(Error return if not.)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f~3"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>f</strong>(incfd,*)</td><td><p>array of function values.  F(1+(I-1)*INCFD) is
-the value corresponding to X(I).</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>f</strong>(incfd,*)</td>
+            <td>
+<p>array of function values.  F(1+(I-1)*INCFD) is
+the value corresponding to X(I).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-d~6"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>d</strong>(incfd,*)</td><td><p>array of derivative values.  D(1+(I-1)*INCFD)
-is the value corresponding to X(I).</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>d</strong>(incfd,*)</td>
+            <td>
+<p>array of derivative values.  D(1+(I-1)*INCFD)
+is the value corresponding to X(I).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-incfd~6"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>incfd</strong></td><td><p>increment between successive values in F and D.
-(Error return if INCFD&lt;1).</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>logical,</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>incfd</strong></td>
+            <td>
+<p>increment between successive values in F and D.
+(Error return if INCFD&lt;1).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-skip~2"></span>
+              logical,
+            </td>
 <td>intent(inout)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>skip</strong></td><td><p>logical variable which should be set to
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>skip</strong></td>
+            <td>
+<p>logical variable which should be set to
 .TRUE. if the user wishes to skip checks for validity of
 preceding parameters, or to .FALSE. otherwise.
 This will save time in case these checks have already
 been performed (say, in <a href="../proc/dpchim.html">dpchim</a> or <a href="../proc/dpchic.html">dpchic</a>).
-SKIP will be set to .TRUE. on normal return.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+SKIP will be set to .TRUE. on normal return.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ne~3"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>ne</strong></td><td><p>number of evaluation points.  (Error return if NE&lt;1).</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ne</strong></td>
+            <td>
+<p>number of evaluation points.  (Error return if NE&lt;1).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-xe~3"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>xe</strong>(*)</td><td><p>array of points at which the functions are to
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>xe</strong>(*)</td>
+            <td>
+<p>array of points at which the functions are to
 be evaluated.
-NOTES:</p>
-<ol>
-<li>The evaluation will be most efficient if the elements
-   of XE are increasing relative to X;
-   that is,   XE(J) &gt;= X(I)
-   implies    XE(K) &gt;= X(I),  all K&gt;=J .</li>
-<li>If any of the XE are outside the interval [X(1),X(N)],
-   values are extrapolated from the nearest extreme cubic,
-   and a warning error is returned.</li>
-</ol></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+NOTES:</p><a href="../proc/dpchfd.html#variable-xe~3" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fe~3"></span>
+              real(kind=wp),
+            </td>
 <td>intent(out)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>fe</strong>(*)</td><td><p>array of values of the cubic Hermite
-function defined by  N, X, F, D at the points XE.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>fe</strong>(*)</td>
+            <td>
+<p>array of values of the cubic Hermite
+function defined by  N, X, F, D at the points XE.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-de~2"></span>
+              real(kind=wp),
+            </td>
 <td>intent(out)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>de</strong>(*)</td><td><p>array of values of the first derivative of
-the same function at the points XE.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>de</strong>(*)</td>
+            <td>
+<p>array of values of the first derivative of
+the same function at the points XE.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ierr~8"></span>
+              integer,
+            </td>
 <td>intent(out)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>ierr</strong></td><td><p>error flag.</p>
-<ul>
-<li>Normal return:</li>
-<li>IERR = 0  (no errors).</li>
-<li>Warning error:</li>
-<li>IERR&gt;0  means that extrapolation was performed at
-     IERR points.</li>
-<li>"Recoverable" errors:</li>
-<li>IERR = -1  if N&lt;2 .</li>
-<li>IERR = -2  if INCFD&lt;1 .</li>
-<li>IERR = -3  if the X-array is not strictly increasing.</li>
-<li>IERR = -4  if NE&lt;1 .</li>
-</ul>
-<p>(Output arrays have not been changed in any of these cases.)</p>
-<p>NOTE:  The above errors are checked in the order listed,
-       and following arguments have <strong>NOT</strong> been validated.</p>
-<ul>
-<li>IERR = -5  if an error has occurred in the lower-level
-             routine DCHFDV.  NB: this should never happen.
-             Notify the author <strong>IMMEDIATELY</strong> if it does.</li>
-</ul></td>
-</tr>
-</tbody>
-</table>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ierr</strong></td>
+            <td>
+<p>error flag.</p><a href="../proc/dpchfd.html#variable-ierr~8" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+    </tbody>
+  </table>
 
 
+    </div>
   </div>
-  </div>
 
-      <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-dpchfe"></span><h3>public subroutine <a href='../proc/dpchfe.html'>dpchfe</a>(n, x, f, d, incfd, skip, ne, xe, fe, ierr)</h3></div>
-  <div class="panel-body">
-       
-<p>Piecewise Cubic Hermite Function Evaluator</p><a href="../proc/dpchfe.html" class="pull-right"><emph>Read more&hellip;</emph></a>
-    
-<h4>Arguments</h4>      <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-dpchfe"></span> <h3>public  subroutine <a href='../proc/dpchfe.html'>dpchfe</a>(n, x, f, d, incfd, skip, ne, xe, fe, ierr)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Piecewise Cubic Hermite Function Evaluator</p><a href="../proc/dpchfe.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~7"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>n</strong></td><td><p>number of data points.  (Error return if N&lt;2).</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+<p>number of data points.  (Error return if N&lt;2).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x~8"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>x</strong>(*)</td><td><p>array of independent variable values.  The
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>x</strong>(*)</td>
+            <td>
+<p>array of independent variable values.  The
 elements of X must be strictly increasing:
 X(I-1) &lt; X(I),  I = 2(1)N.
-(Error return if not.)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+(Error return if not.)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f~4"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>f</strong>(incfd,*)</td><td><p>array of function values.  F(1+(I-1)*INCFD) is
-the value corresponding to X(I).</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>f</strong>(incfd,*)</td>
+            <td>
+<p>array of function values.  F(1+(I-1)*INCFD) is
+the value corresponding to X(I).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-d~7"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>d</strong>(incfd,*)</td><td><p>array of derivative values.  D(1+(I-1)*INCFD)
-is the value corresponding to X(I).</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>d</strong>(incfd,*)</td>
+            <td>
+<p>array of derivative values.  D(1+(I-1)*INCFD)
+is the value corresponding to X(I).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-incfd~7"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>incfd</strong></td><td><p>increment between successive values in F and D.
-(Error return if  INCFD&lt;1).</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>logical,</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>incfd</strong></td>
+            <td>
+<p>increment between successive values in F and D.
+(Error return if  INCFD&lt;1).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-skip~3"></span>
+              logical,
+            </td>
 <td>intent(inout)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>skip</strong></td><td><p>logical variable which should be set to
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>skip</strong></td>
+            <td>
+<p>logical variable which should be set to
 .TRUE. if the user wishes to skip checks for validity of
 preceding parameters, or to .FALSE. otherwise.
 This will save time in case these checks have already
 been performed (say, in <a href="../proc/dpchim.html">dpchim</a> or <a href="../proc/dpchic.html">dpchic</a>).
-SKIP will be set to .TRUE. on normal return.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+SKIP will be set to .TRUE. on normal return.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ne~4"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>ne</strong></td><td><p>number of evaluation points.  (Error return if NE&lt;1).</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ne</strong></td>
+            <td>
+<p>number of evaluation points.  (Error return if NE&lt;1).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-xe~4"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>xe</strong>(*)</td><td><p>array of points at which the function is to
-be evaluated.</p>
-<p>NOTES:</p>
-<ol>
-<li>The evaluation will be most efficient if the elements
-    of XE are increasing relative to X;
-    that is,   <code>XE(J) &gt;= X(I)</code>
-    implies    <code>XE(K) &gt;= X(I)</code>,  all <code>K&gt;=J</code>.</li>
-<li>If any of the XE are outside the interval <code>[X(1),X(N)]</code>,
-    values are extrapolated from the nearest extreme cubic,
-    and a warning error is returned.</li>
-</ol></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>xe</strong>(*)</td>
+            <td>
+<p>array of points at which the function is to
+be evaluated.</p><a href="../proc/dpchfe.html#variable-xe~4" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fe~4"></span>
+              real(kind=wp),
+            </td>
 <td>intent(out)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>fe</strong>(*)</td><td><p>array of values of the cubic Hermite
-function defined by  N, X, F, D  at the points XE.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>fe</strong>(*)</td>
+            <td>
+<p>array of values of the cubic Hermite
+function defined by  N, X, F, D  at the points XE.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ierr~9"></span>
+              integer,
+            </td>
 <td>intent(out)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>ierr</strong></td><td><p>error flag.</p>
-<ul>
-<li>Normal return:</li>
-<li>IERR = 0  (no errors).</li>
-<li>Warning error:</li>
-<li>IERR&gt;0  means that extrapolation was performed at IERR points.</li>
-<li>"Recoverable" errors:</li>
-<li>IERR = -1  if N&lt;2 .</li>
-<li>IERR = -2  if INCFD&lt;1 .</li>
-<li>IERR = -3  if the X-array is not strictly increasing.</li>
-<li>IERR = -4  if NE&lt;1 .</li>
-</ul>
-<p>(The FE-array has not been changed in any of these cases.)
-NOTE: The above errors are checked in the order listed,
-and following arguments have <strong>NOT</strong> been validated.</p></td>
-</tr>
-</tbody>
-</table>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ierr</strong></td>
+            <td>
+<p>error flag.</p><a href="../proc/dpchfe.html#variable-ierr~9" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+    </tbody>
+  </table>
 
 
-  </div>
+    </div>
   </div>
 
-      <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-dpchic"></span><h3>public subroutine <a href='../proc/dpchic.html'>dpchic</a>(ic, vc, switch, n, x, f, d, incfd, wk, nwk, ierr)</h3></div>
-  <div class="panel-body">
-       
-<p>Piecewise Cubic Hermite Interpolation Coefficients.</p><a href="../proc/dpchic.html" class="pull-right"><emph>Read more&hellip;</emph></a>
-    
-<h4>Arguments</h4>      <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-dpchic"></span> <h3>public  subroutine <a href='../proc/dpchic.html'>dpchic</a>(ic, vc, switch, n, x, f, d, incfd, wk, nwk, ierr)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Piecewise Cubic Hermite Interpolation Coefficients.</p><a href="../proc/dpchic.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ic~2"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>ic</strong>(2)</td><td><p>array of length 2 specifying desired boundary conditions:</p>
-<ul>
-<li>IC(1) = IBEG, desired condition at beginning of data.</li>
-<li>IC(2) = IEND, desired condition at end of data.</li>
-</ul>
-<p>Valid values for IBEG:</p>
-<ul>
-<li>IBEG = 0  for the default boundary condition (the same as used by <a href="../proc/dpchim.html">dpchim</a>).</li>
-<li>
-<p>If IBEG/=0, then its sign indicates whether the boundary
-           derivative is to be adjusted, if necessary, to be
-           compatible with monotonicity:</p>
-<ul>
-<li>IBEG&gt;0  if no adjustment is to be performed.</li>
-<li>IBEG&lt;0  if the derivative is to be adjusted for monotonicity.</li>
-</ul>
-</li>
-</ul>
-<p>Allowable values for the magnitude of IBEG are:</p>
-<ul>
-<li>IBEG = 1  if first derivative at X(1) is given in VC(1).</li>
-<li>IBEG = 2  if second derivative at X(1) is given in VC(1).</li>
-<li>IBEG = 3  to use the 3-point difference formula for D(1).
-             (Reverts to the default b.c. if N&lt;3).</li>
-<li>IBEG = 4  to use the 4-point difference formula for D(1).
-             (Reverts to the default b.c. if N&lt;4).</li>
-<li>IBEG = 5  to set D(1) so that the second derivative is continuous
-             at X(2). (Reverts to the default b.c. if N&lt;4.)
-             This option is somewhat analogous to the "not a knot"
-             boundary condition provided by DPCHSP.</li>
-</ul>
-<p>NOTES (IBEG):</p>
-<ol>
-<li>An error return is taken if ABS(IBEG)&gt;5 .</li>
-<li>Only in case  IBEG&lt;=0  is it guaranteed that the
-    interpolant will be monotonic in the first interval.
-    If the returned value of D(1) lies between zero and
-    3<em>SLOPE(1), the interpolant will be monotonic.  This
-    is </em><em>NOT</em>* checked if IBEG&gt;0 .</li>
-<li>If IBEG&lt;0 and D(1) had to be changed to achieve mono-
-    tonicity, a warning error is returned.</li>
-</ol>
-<p>IEND may take on the same values as IBEG, but applied to
-derivative at X(N).  In case IEND = 1 or 2, the value is
-given in VC(2).</p>
-<p>NOTES (IEND):</p>
-<ol>
-<li>An error return is taken if ABS(IEND)&gt;5 .</li>
-<li>Only in case  IEND&lt;=0  is it guaranteed that the
-    interpolant will be monotonic in the last interval.
-    If the returned value of D(1+(N-1)<em>INCFD) lies between
-    zero and 3</em>SLOPE(N-1), the interpolant will be monotonic.
-    This is <strong>NOT</strong> checked if IEND&gt;0 .</li>
-<li>If IEND&lt;0 and D(1+(N-1)*INCFD) had to be changed to
-    achieve monotonicity, a warning error is returned.</li>
-</ol></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ic</strong>(2)</td>
+            <td>
+<p>array of length 2 specifying desired boundary conditions:</p><a href="../proc/dpchic.html#variable-ic~2" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-vc~2"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>vc</strong>(2)</td><td><p>array of length 2 specifying desired boundary
-values, as indicated above.</p>
-<ul>
-<li>VC(1) need be set only if IC(1) = 1 or 2 .</li>
-<li>VC(2) need be set only if IC(2) = 1 or 2 .</li>
-</ul></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>vc</strong>(2)</td>
+            <td>
+<p>array of length 2 specifying desired boundary
+values, as indicated above.</p><a href="../proc/dpchic.html#variable-vc~2" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-switch~2"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>switch</strong></td><td><p>indicates desired treatment of points where
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>switch</strong></td>
+            <td>
+<p>indicates desired treatment of points where
 direction of monotonicity switches:
 Set SWITCH to zero if interpolant is required to be mono-
-tonic in each interval, regardless of monotonicity of data.</p>
-<p>NOTES:</p>
-<ol>
-<li>This will cause D to be set to zero at all switch
-   points, thus forcing extrema there.</li>
-<li>The result of using this option with the default boun-
-   dary conditions will be identical to using DPCHIM, but
-   will generally cost more compute time.
-   This option is provided only to facilitate comparison
-   of different switch and/or boundary conditions.</li>
-</ol>
-<p>Set SWITCH nonzero to use a formula based on the 3-point
-difference formula in the vicinity of switch points.</p>
-<p>If SWITCH is positive, the interpolant on each interval
-containing an extremum is controlled to not deviate from
-the data by more than SWITCH*DFLOC, where DFLOC is the
-maximum of the change of F on this interval and its two
-immediate neighbors.</p>
-<p>If SWITCH is negative, no such control is to be imposed.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+tonic in each interval, regardless of monotonicity of data.</p><a href="../proc/dpchic.html#variable-switch~2" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~9"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>n</strong></td><td><p>number of data points.  (Error return if N&lt;2).</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+<p>number of data points.  (Error return if N&lt;2).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x~10"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>x</strong>(*)</td><td><p>array of independent variable values.  The
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>x</strong>(*)</td>
+            <td>
+<p>array of independent variable values.  The
 elements of X must be strictly increasing:
      X(I-1) &lt; X(I),  I = 2(1)N.
-(Error return if not.)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+(Error return if not.)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f~6"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>f</strong>(incfd,*)</td><td><p>array of dependent variable values to be
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>f</strong>(incfd,*)</td>
+            <td>
+<p>array of dependent variable values to be
 interpolated.  F(1+(I-1)*INCFD) is value corresponding to
-X(I).</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+X(I).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-d~9"></span>
+              real(kind=wp),
+            </td>
 <td>intent(out)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>d</strong>(incfd,*)</td><td><p>array of derivative values at the data
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>d</strong>(incfd,*)</td>
+            <td>
+<p>array of derivative values at the data
 points.  These values will determine a monotone cubic
 Hermite function on each subinterval on which the data
 are monotonic, except possibly adjacent to switches in
 monotonicity. The value corresponding to X(I) is stored in
      D(1+(I-1)*INCFD),  I=1(1)N.
-No other entries in D are changed.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+No other entries in D are changed.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-incfd~9"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>incfd</strong></td><td><p>increment between successive values in F and D.
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>incfd</strong></td>
+            <td>
+<p>increment between successive values in F and D.
 This argument is provided primarily for 2-D applications.
-(Error return if  INCFD&lt;1).</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+(Error return if  INCFD&lt;1).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-wk"></span>
+              real(kind=wp),
+            </td>
 <td>intent(inout)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>wk</strong>(nwk)</td><td><p>array of working storage.  The user may
-wish to know that the returned values are:</p>
-<ul>
-<li><code>WK(I)     = H(I)     = X(I+1) - X(I)</code> ;</li>
-<li><code>WK(N-1+I) = SLOPE(I) = (F(1,I+1) - F(1,I)) / H(I)</code></li>
-</ul>
-<p>for <code>I = 1(1)N-1</code>.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>wk</strong>(nwk)</td>
+            <td>
+<p>array of working storage.  The user may
+wish to know that the returned values are:</p><a href="../proc/dpchic.html#variable-wk" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-nwk"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>nwk</strong></td><td><p>length of work array. (Error return if  NWK&lt;2*(N-1)).</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>nwk</strong></td>
+            <td>
+<p>length of work array. (Error return if  NWK&lt;2*(N-1)).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ierr~11"></span>
+              integer,
+            </td>
 <td>intent(out)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>ierr</strong></td><td><p>error flag.</p>
-<ul>
-<li>
-<p>Normal return:</p>
-</li>
-<li>
-<p>IERR = 0  (no errors).</p>
-</li>
-<li>
-<p>Warning errors:</p>
-</li>
-<li>
-<p>IERR = 1  if IBEG&lt;0 and D(1) had to be adjusted for
-               monotonicity.</p>
-</li>
-<li>IERR = 2  if IEND&lt;0 and D(1+(N-1)*INCFD) had to be
-               adjusted for monotonicity.</li>
-<li>
-<p>IERR = 3  if both of the above are true.</p>
-</li>
-<li>
-<p>"Recoverable" errors:</p>
-</li>
-<li>
-<p>IERR = -1  if N&lt;2 .</p>
-</li>
-<li>IERR = -2  if INCFD&lt;1 .</li>
-<li>IERR = -3  if the X-array is not strictly increasing.</li>
-<li>IERR = -4  if ABS(IBEG)&gt;5 .</li>
-<li>IERR = -5  if ABS(IEND)&gt;5 .</li>
-<li>IERR = -6  if both of the above are true.</li>
-<li>IERR = -7  if NWK&lt;2*(N-1) .</li>
-</ul>
-<p>(The D-array has not been changed in any of these cases.)
-NOTE:  The above errors are checked in the order listed,
-and following arguments have <strong>NOT</strong> been validated.</p></td>
-</tr>
-</tbody>
-</table>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ierr</strong></td>
+            <td>
+<p>error flag.</p><a href="../proc/dpchic.html#variable-ierr~11" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+    </tbody>
+  </table>
 
 
-  </div>
+    </div>
   </div>
 
-      <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-dpchim"></span><h3>public subroutine <a href='../proc/dpchim.html'>dpchim</a>(n, x, f, d, incfd, ierr)</h3></div>
-  <div class="panel-body">
-       
-<p>Piecewise Cubic Hermite Interpolation to Monotone data.</p><a href="../proc/dpchim.html" class="pull-right"><emph>Read more&hellip;</emph></a>
-    
-<h4>Arguments</h4>      <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-dpchim"></span> <h3>public  subroutine <a href='../proc/dpchim.html'>dpchim</a>(n, x, f, d, incfd, ierr)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Piecewise Cubic Hermite Interpolation to Monotone data.</p><a href="../proc/dpchim.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~11"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>n</strong></td><td><p>number of data points.  (Error return if N&lt;2).
-If N=2, simply does linear interpolation.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+<p>number of data points.  (Error return if N&lt;2).
+If N=2, simply does linear interpolation.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x~12"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>x</strong>(*)</td><td><p>array of independent variable values.  The
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>x</strong>(*)</td>
+            <td>
+<p>array of independent variable values.  The
 elements of X must be strictly increasing:
 <code>X(I-1) &lt; X(I),  I = 2(1)N</code>.
-(Error return if not.)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+(Error return if not.)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f~8"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>f</strong>(incfd,*)</td><td><p>array of dependent variable values to be
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>f</strong>(incfd,*)</td>
+            <td>
+<p>array of dependent variable values to be
 interpolated.  F(1+(I-1)*INCFD) is value corresponding to
 X(I).  DPCHIM is designed for monotonic data, but it will
 work for any F-array.  It will force extrema at points where
 monotonicity switches direction.  If some other treatment of
-switch points is desired, <a href="../proc/dpchic.html">dpchic</a> should be used instead.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+switch points is desired, <a href="../proc/dpchic.html">dpchic</a> should be used instead.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-d~11"></span>
+              real(kind=wp),
+            </td>
 <td>intent(out)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>d</strong>(incfd,*)</td><td><p>array of derivative values at the data
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>d</strong>(incfd,*)</td>
+            <td>
+<p>array of derivative values at the data
 points.  If the data are monotonic, these values will
 determine a monotone cubic Hermite function.
 The value corresponding to X(I) is stored in
 <code>D(1+(I-1)*INCFD),  I=1(1)N</code>.
-No other entries in D are changed.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+No other entries in D are changed.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-incfd~11"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>incfd</strong></td><td><p>increment between successive values in F and D.
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>incfd</strong></td>
+            <td>
+<p>increment between successive values in F and D.
 This argument is provided primarily for 2-D applications.
-(Error return if  INCFD&lt;1).</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+(Error return if  INCFD&lt;1).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ierr~13"></span>
+              integer,
+            </td>
 <td>intent(out)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>ierr</strong></td><td><p>error flag.</p>
-<ul>
-<li>Normal return:</li>
-<li>
-<p>IERR = 0  (no errors).</p>
-</li>
-<li>
-<p>Warning error:</p>
-</li>
-<li>
-<p>IERR&gt;0  means that IERR switches in the direction
-     of monotonicity were detected.</p>
-</li>
-<li>
-<p>"Recoverable" errors (The D-array has not been changed in any of these cases.):</p>
-</li>
-<li>IERR = -1  if N&lt;2 .</li>
-<li>IERR = -2  if INCFD&lt;1 .</li>
-<li>IERR = -3  if the X-array is not strictly increasing.</li>
-</ul>
-<p>NOTE: The above errors are checked in the order listed,
-and following arguments have <strong>NOT</strong> been validated.</p></td>
-</tr>
-</tbody>
-</table>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ierr</strong></td>
+            <td>
+<p>error flag.</p><a href="../proc/dpchim.html#variable-ierr~13" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+    </tbody>
+  </table>
 
 
-  </div>
+    </div>
   </div>
 
-      <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-dpchkt"></span><h3>private subroutine <a href='../proc/dpchkt.html'>dpchkt</a>(n, x, knotyp, t)</h3></div>
-  <div class="panel-body">
-       
-<p>Set a knot sequence for the B-spline representation of a PCH
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-dpchkt"></span> <h3>private  subroutine <a href='../proc/dpchkt.html'>dpchkt</a>(n, x, knotyp, t)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Set a knot sequence for the B-spline representation of a PCH
   function with breakpoints X.  All knots will be at least double.
   Endknots are set as:</p><a href="../proc/dpchkt.html" class="pull-right"><emph>Read more&hellip;</emph></a>
-    
-<h4>Arguments</h4>      <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~12"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>n</strong></td><td></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x~13"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>x</strong>(*)</td><td></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>x</strong>(*)</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-knotyp~2"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>knotyp</strong></td><td></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>knotyp</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-t~2"></span>
+              real(kind=wp),
+            </td>
 <td>intent(out)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>t</strong>(*)</td><td></td>
-</tr>
-</tbody>
-</table>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>t</strong>(*)</td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
 
 
+    </div>
   </div>
-  </div>
 
-      <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-dpchsp"></span><h3>public subroutine <a href='../proc/dpchsp.html'>dpchsp</a>(ic, vc, n, x, f, d, incfd, wk, nwk, ierr)</h3></div>
-  <div class="panel-body">
-       
-<p>Piecewise Cubic Hermite Spline</p><a href="../proc/dpchsp.html" class="pull-right"><emph>Read more&hellip;</emph></a>
-    
-<h4>Arguments</h4>      <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-dpchsp"></span> <h3>public  subroutine <a href='../proc/dpchsp.html'>dpchsp</a>(ic, vc, n, x, f, d, incfd, wk, nwk, ierr)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Piecewise Cubic Hermite Spline</p><a href="../proc/dpchsp.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ic~3"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>ic</strong>(2)</td><td><p>integer array of length 2 specifying desired
-boundary conditions:</p>
-<ul>
-<li>IC(1) = IBEG, desired condition at beginning of data.</li>
-<li>IC(2) = IEND, desired condition at end of data.</li>
-</ul>
-<p>Valid values for IBEG:</p>
-<ul>
-<li>IBEG = 0  to set D(1) so that the third derivative is
-    continuous at X(2).  This is the "not a knot" condition
-    provided by de Boor's cubic spline routine CUBSPL.
-    <strong>This is the default boundary condition.</strong></li>
-<li>IBEG = 1  if first derivative at X(1) is given in VC(1).</li>
-<li>IBEG = 2  if second derivative at X(1) is given in VC(1).</li>
-<li>IBEG = 3  to use the 3-point difference formula for D(1).
-           (Reverts to the default b.c. if N&lt;3).</li>
-<li>IBEG = 4  to use the 4-point difference formula for D(1).
-           (Reverts to the default b.c. if N&lt;4).</li>
-</ul>
-<p>NOTES:</p>
-<ol>
-<li>An error return is taken if IBEG is out of range.</li>
-<li>For the "natural" boundary condition, use IBEG=2 and
-   VC(1)=0.</li>
-</ol>
-<p>IEND may take on the same values as IBEG, but applied to
-derivative at X(N).  In case IEND = 1 or 2, the value is
-given in VC(2).</p>
-<p>NOTES:</p>
-<ol>
-<li>An error return is taken if IEND is out of range.</li>
-<li>For the "natural" boundary condition, use IEND=2 and
-    VC(2)=0.</li>
-</ol></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ic</strong>(2)</td>
+            <td>
+<p>integer array of length 2 specifying desired
+boundary conditions:</p><a href="../proc/dpchsp.html#variable-ic~3" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-vc~3"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>vc</strong>(2)</td><td><p>array of length 2 specifying desired boundary
-values, as indicated above.</p>
-<ul>
-<li>VC(1) need be set only if IC(1) = 1 or 2 .</li>
-<li>VC(2) need be set only if IC(2) = 1 or 2 .</li>
-</ul></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>vc</strong>(2)</td>
+            <td>
+<p>array of length 2 specifying desired boundary
+values, as indicated above.</p><a href="../proc/dpchsp.html#variable-vc~3" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~13"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>n</strong></td><td><p>number of data points.  (Error return if N&lt;2).</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+<p>number of data points.  (Error return if N&lt;2).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x~14"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>x</strong>(*)</td><td><p>array of independent variable values.  The
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>x</strong>(*)</td>
+            <td>
+<p>array of independent variable values.  The
 elements of X must be strictly increasing:
 <code>X(I-1) &lt; X(I),  I = 2(1)N</code>.
-(Error return if not.)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+(Error return if not.)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f~9"></span>
+              real(kind=wp),
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>f</strong>(incfd,*)</td><td><p>array of dependent variable values to be
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>f</strong>(incfd,*)</td>
+            <td>
+<p>array of dependent variable values to be
 interpolated.  F(1+(I-1)*INCFD) is value
-corresponding to X(I).</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+corresponding to X(I).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-d~12"></span>
+              real(kind=wp),
+            </td>
 <td>intent(out)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>d</strong>(incfd,*)</td><td><p>array of derivative values at the data
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>d</strong>(incfd,*)</td>
+            <td>
+<p>array of derivative values at the data
 points.  These values will determine the cubic spline
 interpolant with the requested boundary conditions.
 The value corresponding to X(I) is stored in
 <code>D(1+(I-1)*INCFD),  I=1(1)N</code>.
-No other entries in D are changed.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+No other entries in D are changed.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-incfd~12"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>incfd</strong></td><td><p>increment between successive values in F and D.
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>incfd</strong></td>
+            <td>
+<p>increment between successive values in F and D.
 This argument is provided primarily for 2-D applications.
-(Error return if  INCFD&lt;1).</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
+(Error return if  INCFD&lt;1).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-wk~2"></span>
+              real(kind=wp),
+            </td>
 <td>intent(inout)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>wk</strong>(2,*)</td><td><p>array of working storage.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>wk</strong>(2,*)</td>
+            <td>
+<p>array of working storage.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-nwk~2"></span>
+              integer,
+            </td>
 <td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>nwk</strong></td><td><p>length of work array. (Error return if NWK&lt;2*N).</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>nwk</strong></td>
+            <td>
+<p>length of work array. (Error return if NWK&lt;2*N).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ierr~14"></span>
+              integer,
+            </td>
 <td>intent(out)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>ierr</strong></td><td><p>error flag.</p>
-<ul>
-<li>Normal return:<ul>
-<li>IERR = 0  (no errors).</li>
-</ul>
-</li>
-<li>
-<p>"Recoverable" errors:</p>
-<ul>
-<li>IERR = -1  if N&lt;2 .</li>
-<li>IERR = -2  if INCFD&lt;1 .</li>
-<li>IERR = -3  if the X-array is not strictly increasing.</li>
-<li>IERR = -4  if IBEG&lt;0 or IBEG&gt;4 .</li>
-<li>IERR = -5  if IEND&lt;0 of IEND&gt;4 .</li>
-<li>IERR = -6  if both of the above are true.</li>
-<li>IERR = -7  if NWK is too small.</li>
-</ul>
-<p>NOTE:  The above errors are checked in the order listed,
-     and following arguments have <strong>NOT</strong> been validated.
-   (The D-array has not been changed in any of these cases.)</p>
-<ul>
-<li>IERR = -8  in case of trouble solving the linear system
-           for the interior derivative values.
-   (The D-array may have been changed in this case.)
-   (             Do <strong>NOT</strong> use it!                )</li>
-</ul>
-</li>
-</ul></td>
-</tr>
-</tbody>
-</table>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ierr</strong></td>
+            <td>
+<p>error flag.</p><a href="../proc/dpchsp.html#variable-ierr~14" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+    </tbody>
+  </table>
 
 
-  </div>
-  </div>
-
-      <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-dpchsw"></span><h3>private subroutine <a href='../proc/dpchsw.html'>dpchsw</a>(dfmax, iextrm, d1, d2, h, slope, ierr)</h3></div>
-  <div class="panel-body">
-       
-<p>Switch Excursion Limiter.</p><a href="../proc/dpchsw.html" class="pull-right"><emph>Read more&hellip;</emph></a>
-    
-<h4>Arguments</h4>      <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-<td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>dfmax</strong></td><td><p>maximum allowed difference between F(IEXTRM) and
-the cubic determined by derivative values D1,D2.  (assumes
-DFMAX&gt;0.)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
-<td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>iextrm</strong></td><td><p>index of the extreme data value.  (assumes
-IEXTRM = 1 or 2 .  Any value /=1 is treated as 2.)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-<td>intent(inout)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>d1</strong></td><td><p>derivative values at the ends of the interval.
-(Assumes D1*D2 &lt;= 0.)
-(output) may be modified if necessary to meet the restriction
-imposed by DFMAX.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-<td>intent(inout)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>d2</strong></td><td><p>derivative values at the ends of the interval.
-(Assumes D1*D2 &lt;= 0.)
-(output) may be modified if necessary to meet the restriction
-imposed by DFMAX.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-<td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>h</strong></td><td><p>interval length.  (Assumes  H&gt;0.)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-<td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>slope</strong></td><td><p>data slope on the interval.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
-<td>intent(out)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>ierr</strong></td><td><p>error flag.  should be zero.</p>
-<ul>
-<li>If IERR=-1, assumption on D1 and D2 is not satisfied.</li>
-<li>If IERR=-2, quadratic equation locating extremum has
-  negative discriminant (should never occur).</li>
-</ul></td>
-</tr>
-</tbody>
-</table>
-
-
-  </div>
-  </div>
-
-      <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-xermsg"></span><h3>private subroutine <a href='../proc/xermsg.html'>xermsg</a>(librar, subrou, messg, nerr, level)</h3></div>
-  <div class="panel-body">
-       
-<p>Error reporter.</p><a href="../proc/xermsg.html" class="pull-right"><emph>Read more&hellip;</emph></a>
-    
-<h4>Arguments</h4>      <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" ></span>character(len=*),</td>
-<td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>librar</strong></td><td><p>name of the library</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>character(len=*),</td>
-<td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>subrou</strong></td><td><p>name of the routine that detected the error</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>character(len=*),</td>
-<td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>messg</strong></td><td><p>text of the error or warning message</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
-<td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>nerr</strong></td><td><p>error code</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" ></span>integer,</td>
-<td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>level</strong></td><td><p>value in the range 0 to 2 that indicates the
-level (severity) of the error.</p></td>
-</tr>
-</tbody>
-</table>
-
-
-  </div>
-  </div>
-
-    </section>    
-    <br>
-    
     </div>
   </div>
 
-    <hr>    
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-dpchsw"></span> <h3>private  subroutine <a href='../proc/dpchsw.html'>dpchsw</a>(dfmax, iextrm, d1, d2, h, slope, ierr)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Switch Excursion Limiter.</p><a href="../proc/dpchsw.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-dfmax"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>dfmax</strong></td>
+            <td>
+<p>maximum allowed difference between F(IEXTRM) and
+the cubic determined by derivative values D1,D2.  (assumes
+DFMAX&gt;0.)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-iextrm"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>iextrm</strong></td>
+            <td>
+<p>index of the extreme data value.  (assumes
+IEXTRM = 1 or 2 .  Any value /=1 is treated as 2.)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-d1~5"></span>
+              real(kind=wp),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>d1</strong></td>
+            <td>
+<p>derivative values at the ends of the interval.
+(Assumes D1*D2 &lt;= 0.)
+(output) may be modified if necessary to meet the restriction
+imposed by DFMAX.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-d2~5"></span>
+              real(kind=wp),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>d2</strong></td>
+            <td>
+<p>derivative values at the ends of the interval.
+(Assumes D1*D2 &lt;= 0.)
+(output) may be modified if necessary to meet the restriction
+imposed by DFMAX.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-h~8"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h</strong></td>
+            <td>
+<p>interval length.  (Assumes  H&gt;0.)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-slope~4"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>slope</strong></td>
+            <td>
+<p>data slope on the interval.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ierr~15"></span>
+              integer,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ierr</strong></td>
+            <td>
+<p>error flag.  should be zero.</p><a href="../proc/dpchsw.html#variable-ierr~15" class="pull-right"><emph>Read more&hellip;</emph></a>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-xermsg"></span> <h3>private  subroutine <a href='../proc/xermsg.html'>xermsg</a>(librar, subrou, messg, nerr, level)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Error reporter.</p><a href="../proc/xermsg.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-librar"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>librar</strong></td>
+            <td>
+<p>name of the library</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-subrou"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>subrou</strong></td>
+            <td>
+<p>name of the routine that detected the error</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-messg"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>messg</strong></td>
+            <td>
+<p>text of the error or warning message</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-nerr"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>nerr</strong></td>
+            <td>
+<p>error code</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-level"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>level</strong></td>
+            <td>
+<p>value in the range 0 to 2 that indicates the
+level (severity) of the error.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+
+
+    </div>
+  </div>
+
+      <hr>
     </div> <!-- /container -->
     <footer>
       <div class="container">
-      <div class="row">
-        <div class="col-xs-6 col-md-6"><p>PCHIP was developed by Jacob Williams<br>&copy; 2022 
+        <div class="row justify-content-between">
+          <div class="col"><p>PCHIP was developed by Jacob Williams<br>&copy; 2024 
 </p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
         </div>
-        <div class="col-xs-6 col-md-6">
-          <p class="text-right">
-            Documentation generated by 
-            <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
-          </p>
-        </div>
-      </div>
-      <br>
-      </div> <!-- /container -->    
+        <br>
+      </div> <!-- /container -->
     </footer>
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
+    <!-- Bootstrap core JavaScript -->
     <!-- Placed at the end of the document so the pages load faster -->
-<!--
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
--->
-    <script src="../js/bootstrap.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../js/ie10-viewport-bug-workaround.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>    
 
     <!-- MathJax JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
-        jax: ['input/TeX','input/MathML','output/HTML-CSS'],
-        extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
-      });
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
-    <script src="../tipuesearch/tipuesearch_content.js"></script>
-    <script src="../tipuesearch/tipuesearch_set.js"></script>
-    <script src="../tipuesearch/tipuesearch.js"></script>
-    
+             ================================================== -->
+             <!-- Placed at the end of the document so the pages load faster -->
+        <script type="text/x-mathjax-config">
+          MathJax.Hub.Config({
+          TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
+          jax: ['input/TeX','input/MathML','output/HTML-CSS'],
+          extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
+          });
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+          <script src="../tipuesearch/tipuesearch_content.js"></script>
+          <script src="../tipuesearch/tipuesearch_set.js"></script>
+          <script src="../tipuesearch/tipuesearch.js"></script>
+
   </body>
 </html>
