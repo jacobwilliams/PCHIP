@@ -862,9 +862,9 @@
                                         !! elements of X must be strictly increasing:
                                         !!      X(I-1) < X(I),  I = 2(1)N.
                                         !! (Error return if not.)
-    real(wp),intent(in)   :: f(incfd,n) !! array of function values.  F(1+(I-1)*INCFD) is
+    real(wp),intent(in)   :: f(incfd,*) !! array of function values.  F(1+(I-1)*INCFD) is
                                         !! the value corresponding to X(I).
-    real(wp),intent(in)   :: d(incfd,n) !! array of derivative values.  D(1+(I-1)*INCFD) is
+    real(wp),intent(in)   :: d(incfd,*) !! array of derivative values.  D(1+(I-1)*INCFD) is
                                         !! is the value corresponding to X(I).
     integer,intent(in)    :: incfd      !! the increment between successive values in F and D.
                                         !! (Error return if  INCFD<1).
